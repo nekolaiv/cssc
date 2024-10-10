@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Design by foolishdeveloper.com -->
-    <title>Glassmorphism login Form Tutorial in html css</title>
- 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <title>Student Login Form</title>
     <link rel="stylesheet" href="/cssc/public/assets/css/global.css">
     <link rel="stylesheet" href="/cssc/public/assets/css/auth.css">
-    <!--Stylesheet-->
 </head>
 <body>
-    <form>
+    <form action="" method="POST">
         <h3>Student Account</h3>
-        <label for="username">Username</label>
-        <input type="text" id="username">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
         <div class="password">
             <label for="password">Password</label>
-            <a href="#" class="forgot-password">forgot password?</a>
+            <a href="./forgot-password.php" class="forgot-password">forgot password?</a>
         </div>
-        <input type="password" id="password">
-        <button type="submit" class="submit-button">log in</button>
+        <input type="password" name="password" id="password" required>
+        <button type="submit" class="primary-button">log in</button>
+        <a href="./register.php"><button type="button" class="secondary-button">or register</button></a>
     </form>
 </body>
 </html>
