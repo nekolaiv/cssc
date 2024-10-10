@@ -29,7 +29,6 @@ This project allows users to input their college grades and calculates whether t
 ## Usage
 - Start the XAMPP server.
 - Open your web browser and go to `http://localhost/cssc`.
-- Follow the prompts to input grades and check standings.
 
 ## Contributing
 Feel free to submit issues or pull requests to improve the project!
