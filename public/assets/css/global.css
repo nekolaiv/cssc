@@ -39,8 +39,8 @@ body {
     justify-content: center;
     background-color: var(--bg-black);
     color: var(--color-white);
-    border: 1px solid red;
     font-size: var(--Gfont-size);
+    /* border: 1px solid red; */
 }
 
 /* ===TEMPORARY PAGE=== */
