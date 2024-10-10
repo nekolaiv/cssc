@@ -88,21 +88,38 @@ input:focus{
     border-color: var(--color-white);
 }
 
-.submit-button {
+.primary-button {
     margin-top: 20px;
     width: var(--Ginput-width);
     height: 35px;
     padding: 10px;
     background-color: var(--color-white);
-    color: #080710;
+    color: var(--color-black);
     border-radius: var(--Gborder-radius);
     border: none;
     cursor: pointer;
     /* font-size: calc(var(--Gfont-size) + 10px); */
 }
 
-.submit-button:hover{
+.secondary-button {
+    margin-top: 10px;
+    width: var(--Ginput-width);
+    height: 35px;
+    padding: 10px;
+    background-color: var(--bg-black);
+    color: var(--color-white);
+    border-radius: var(--Gborder-radius);
+    border: 1px solid var(--outline-dark);
+    cursor: pointer;
+    /* font-size: calc(var(--Gfont-size) + 10px); */
+}
+
+.primary-button:hover{
     background-color: rgb(255, 255, 255, 0.5);
+}
+
+.secondary-button:hover {
+    background-color: rgba(255, 255, 255, 0.144);
 }
 
 /* ===MEDIA QUERIES=== */
@@ -120,7 +137,7 @@ input:focus{
         width: calc(var(--Ginput-width) - 10vw);
     }
 
-    .submit-button {
+    .primary-button {
         width: calc(var(--Ginput-width) - 10vw);
     }
 } */
@@ -156,10 +173,17 @@ input:focus{
         font-size: calc(var(--Gfont-size) + 4px);
     }
 
-    .submit-button {
+    .primary-button {
         width: calc(var(--Ginput-width) - 20vw);
         height: 35px;
         margin-top: 20px;
+        font-size: calc(var(--Gfont-size) + 3px);
+    }
+
+    .secondary-button {
+        width: calc(var(--Ginput-width) - 20vw);
+        height: 35px;
+        margin-top: 10px;
         font-size: calc(var(--Gfont-size) + 3px);
     }
 }
@@ -177,7 +201,11 @@ input:focus{
         width: calc(var(--Ginput-width) - 30vw);
     }
 
-    .submit-button {
+    .primary-button {
+        width: calc(var(--Ginput-width) - 30vw);
+    }
+    
+    .secondary-button {
         width: calc(var(--Ginput-width) - 30vw);
     }
 }
@@ -199,7 +227,12 @@ input:focus{
         height: 50px;
     }
 
-    .submit-button{
+    .primary-button{
+        height: 50px;
+        font-size: calc(var(--Gfont-size) + 10px);
+    }
+    
+    .secondary-button{
         height: 50px;
         font-size: calc(var(--Gfont-size) + 10px);
     }
