@@ -1,0 +1,207 @@
+/* 
+
+===TABLE OF KEYWORDS===
+
+1. =UNIVERSAL
+2. =FORM
+3. =ELEMENTS
+4. =MEDIA QUERIES
+
+Note: 
+- ctrl+f and look for keywords with equal sign "=Keyword". 
+- This template will be followed throughout the project.
+- Will Strictly follow a mobile first approach.
+*/
+
+
+
+/* ===UNIVERSAL=== */
+:root {
+    --bg-black: #1f1f29;
+    --bg-grey: #2f2f38;
+    --bg-white: #f0f0f5;
+    --color-black: #1f1f29;
+    --color-grey: #36363f;
+    --color-white: #f0f0f5;
+    --outline-dark: #656565;
+    --Gfont-size: 10px;
+    --Gborder-radius: 7px;
+    --Ginput-width: 50vw;
+}
+
+
+/* ===FORM=== */
+form {
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--bg-grey);
+    border-radius: var(--Gborder-radius);
+    border: 1px solid var(--outline-dark);
+    /* border: 1px solid green; */
+}
+
+/* ===ELEMENTS=== */
+form h3 {
+    font-size: calc(var(--Gfont-size) + 10px);
+    text-align: center;
+
+}
+
+label {
+    margin-top: 20px;
+    font-size: calc(var(--Gfont-size) + 2px);
+    font-weight: 500;
+    align-self: self-start;
+}
+
+.password{
+    width: var(--Ginput-width);
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    /* border: 1px solid red; */
+}
+
+.forgot-password{
+    font-size: calc(var(--Gfont-size) + 2px);
+    color: rgb(27, 147, 228);
+    text-decoration: none;
+}
+
+input {
+    height: 35px;
+    width: var(--Ginput-width);
+    padding: 0 20px;
+    margin-top: 10px;
+    font-size: calc(var(--Gfont-size) + 20px);
+    font-weight: 300;
+    display: block;
+    background-color: var(--color-black);
+    border: 1px solid var(--outline-dark);
+    border-radius: var(--Gborder-radius);
+    color: white;
+}
+
+input:focus{
+    border-color: var(--color-white);
+}
+
+.submit-button {
+    margin-top: 20px;
+    width: var(--Ginput-width);
+    height: 35px;
+    padding: 10px;
+    background-color: var(--color-white);
+    color: #080710;
+    border-radius: var(--Gborder-radius);
+    border: none;
+    cursor: pointer;
+    /* font-size: calc(var(--Gfont-size) + 10px); */
+}
+
+.submit-button:hover{
+    background-color: rgb(255, 255, 255, 0.5);
+}
+
+/* ===MEDIA QUERIES=== */
+
+/* @media (min-width: 768px){
+    .password {
+        width: calc(var(--Ginput-width) - 10vw);
+    }
+
+    input {
+        width: calc(var(--Ginput-width) - 10vw);
+    }
+
+    input {
+        width: calc(var(--Ginput-width) - 10vw);
+    }
+
+    .submit-button {
+        width: calc(var(--Ginput-width) - 10vw);
+    }
+} */
+
+
+@media (min-width: 768px) {
+
+    form {
+        padding: 1.5%;
+    }
+
+    form h3 {
+        font-size: calc(var(--Gfont-size) + 10px);
+    }
+
+    label {
+        margin-top: 20px;
+        font-size: calc(var(--Gfont-size) + 3px);
+    }
+
+    .password{
+        width: calc(var(--Ginput-width) - 20vw);
+    }
+
+    .forgot-password {
+        margin-top: 10px;
+        font-size: calc(var(--Gfont-size) + 2px);
+    }
+
+    input {
+        width: calc(var(--Ginput-width) - 20vw);
+        padding: 0 10px;
+        font-size: calc(var(--Gfont-size) + 4px);
+    }
+
+    .submit-button {
+        width: calc(var(--Ginput-width) - 20vw);
+        height: 35px;
+        margin-top: 20px;
+        font-size: calc(var(--Gfont-size) + 3px);
+    }
+}
+
+@media (min-width: 1020px){
+    .password {
+        width: calc(var(--Ginput-width) - 30vw);
+    }
+
+    input {
+        width: calc(var(--Ginput-width) - 30vw);
+    }
+
+    input {
+        width: calc(var(--Ginput-width) - 30vw);
+    }
+
+    .submit-button {
+        width: calc(var(--Ginput-width) - 30vw);
+    }
+}
+
+@media (min-width: 2560px){
+    form h3{
+        font-size: calc(var(--Gfont-size) + 15px);
+    }
+
+    label{
+        font-size: calc(var(--Gfont-size) + 10px);
+    }
+
+    .forgot-password{
+        font-size: calc(var(--Gfont-size) + 9px);
+    }
+
+    input{
+        height: 50px;
+    }
+
+    .submit-button{
+        height: 50px;
+        font-size: calc(var(--Gfont-size) + 10px);
+    }
+
+}
