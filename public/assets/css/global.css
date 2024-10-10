@@ -25,10 +25,14 @@ Note:
 
 :root {
     --bg-black: #1f1f29;
+    --bg-grey: #2f2f38;
     --bg-white: #f0f0f5;
     --color-black: #1f1f29;
+    --color-grey: #36363f;
     --color-white: #f0f0f5;
+    --outline-dark: #656565;
     --Gfont-size: 10px;
+    --Gborder-radius: 7px;
 }
 
 body {
@@ -91,12 +95,7 @@ body {
     }
 
     .tp-section {
-        width: 100vw;
         height: 40vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
         /* border: 1px solid green; */
     }
 
