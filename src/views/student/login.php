@@ -2,18 +2,14 @@
 
 session_start();
 
-if (isset($_SESSION["user_id"])) {
-  header("location: ../index.php");
-  return;
+extract($_SESSION);
+
+if (isset($_SESSION["student_loggedIn"])) {
+  header("location: ./home.php");
 }
 
-if (isset($_SESSION["user_loggedin"])) {
-  header("location: ./index.php");
-  return;
-}
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +19,7 @@ if (isset($_SESSION["user_loggedin"])) {
     <link rel="stylesheet" href="/cssc/public/assets/css/auth.css">
 </head>
 <body>
-    <form action="" method="POST">
+    <form action="/cssc/src/controllers/auth.controller.php?action=student_login" method="POST">
         <h3>Student Account</h3>
         <label for="email">Email</label>
         <input type="email" name="email" id="email" required>

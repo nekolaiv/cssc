@@ -1,8 +1,11 @@
 <?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 ob_start();
 
 require_once "../classes/auth.class.php";
-$auth = new AdminClass();
+$auth = new Auth();
 $action = isset($_GET["action"]) ? $_GET["action"] : ""; // Alternative: could be post
 
 switch ($action) {
