@@ -35,7 +35,6 @@ class Auth{
 
 		// if (password_verify($_POST["password"], $student["password"])) 
 		if ($_POST["password"] == $student["password"]){
-		var_dump($student);
 			$_SESSION["user_id"] = $student["user_id"];
 			$_SESSION["student_loggedIn"] = TRUE;
 			$_SESSION["email"] = $student["email"];
