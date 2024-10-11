@@ -29,7 +29,7 @@ class Auth{
 		}
 
 		if (!$student) {
-			header("location:" . $_SERVER["HTTP_REFERER"]."?status=false");
+			header("location:" . $_SERVER["HTTP_REFERER"]);
 			return;
 		}
 
