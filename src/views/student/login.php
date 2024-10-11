@@ -1,3 +1,20 @@
+<?php 
+
+session_start();
+
+if (isset($_SESSION["user_id"])) {
+  header("location: ../index.php");
+  return;
+}
+
+if (isset($_SESSION["user_loggedin"])) {
+  header("location: ./index.php");
+  return;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
