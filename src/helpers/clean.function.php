@@ -1,5 +1,5 @@
 <?php
-function clean_input($input){
+function cleanInput($input){
     $input = trim($input);
     $input = stripslashes($input);
     $input = htmlspecialchars($input);
