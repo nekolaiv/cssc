@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Home Page</title>
-    <link rel="stylesheet" href="/cssc/public/assets/css/global.css">
-</head>
-<body>
-    <h1>Student Home Page</h1>
-</body>
-</html>
+<?php include_once "../../includes/header.php" ?>
+
+<main>
+    <h1>Main Component</h1>
+</main>
+
+<?php include_once "../../includes/footer.php" ?>

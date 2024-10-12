@@ -4,6 +4,9 @@
 
 1. =UNIVERSAL
 2. =TEMPORARY PAGE
+3. =HEADER
+4. =MAIN
+5. =FOOTER
 
 Note: 
 - ctrl+f and look for keywords with equal sign "=Keyword". 
@@ -118,4 +121,40 @@ body {
         border-radius: 7px;
         font-size: calc(var(--Gfont-size) + 5px);
     }
+}
+
+/* ===HEADER=== */
+.home-body{
+    flex-direction: column;
+}
+
+header{
+    width: 100vw;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid red;
+}
+
+
+/* ===MAIN=== */
+main{
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    border: 1px solid red;
+}
+
+
+/* ===FOOTER=== */
+footer{
+    width: 100vw;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid red;
 }
