@@ -1,9 +1,11 @@
 <?php
-session_start(); // Start or resume the session
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 
-// Function to check if a user is logged in
+
 function isLoggedIn() {
-    return isset($_SESSION['user_id']); // Check if user ID is set in the session
+    return isset($_SESSION['user_id']) && isset($_SESSION['is_loggedIn']);
 }
 
 // Function to get the user's role
