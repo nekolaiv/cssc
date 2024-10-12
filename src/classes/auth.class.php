@@ -19,8 +19,6 @@ class Auth{
     }
 
     function studentLogin($email) {
-		// $sql = "SELECT * FROM students WHERE email = '$email'";
-		// $user = $this->database->query($sql)->fetch_assoc();
 		$sql = "SELECT * FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -44,6 +42,18 @@ class Auth{
 			return False;
 		}
   	}
+
+	function studentRegister(string $email, string $password){
+		$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->bindParam(':password', $password);
+		if($query->execute()){
+            return true;
+        } else {
+            return false;
+        }
+	}
 
 	function studentResetPassword($email, $new_password){
 		$sql = "UPDATE Students set password = :password WHERE email = :email";
