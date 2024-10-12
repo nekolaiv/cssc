@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 
     if($email_err == '' && $password_err == ''){
-        if($auth->studentLogin()){
+        if($auth->studentLogin($email)){
             header("Location: ./login.php");
             exit;
         } else {

@@ -18,8 +18,7 @@ class Auth{
         ob_end_flush();
     }
 
-    function studentLogin() {
-		extract($_POST);
+    function studentLogin($email) {
 		// $sql = "SELECT * FROM students WHERE email = '$email'";
 		// $user = $this->database->query($sql)->fetch_assoc();
 		$sql = "SELECT * FROM Students WHERE email = :email";
