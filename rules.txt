@@ -1,0 +1,35 @@
+TABLE OF CONTENTS
+A. NAMING CONVENTIONS
+B. MEDIA QUERIES
+C. FOLDER STRUCTURE
+
+
+===
+A. NAMING CONVENTIONS
+- PHP Variables:
+snake_case
+
+- PHP Functions:
+camelCase
+
+- PHP Classes:
+PascalCase
+
+- HTML input names:
+kebab-case
+
+- CSS class names:
+kebab-case
+
+- SQL tables:
+Title_Case | Capitalized_Snake_Case
+
+===
+B. MEDIA QUERIES
+- css must be strictly follow mobile first approach styling.
+
+===
+C. FOLDER STRUCTURE
+- Folder Structure will remain as it is, consult owner for more info.
+
+
