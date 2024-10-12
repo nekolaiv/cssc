@@ -1,5 +1,6 @@
 <?php 
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 
 extract($_SESSION);
@@ -7,8 +8,6 @@ extract($_SESSION);
 if (isset($_SESSION["is_loggedIn"])) {
   header("location: ./home.php");
 }
-
-
 ?>
 
 <!DOCTYPE html>
