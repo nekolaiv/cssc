@@ -4,7 +4,7 @@ session_start();
 
 extract($_SESSION);
 
-if (isset($_SESSION["student_loggedIn"])) {
+if (isset($_SESSION["is_loggedIn"])) {
   header("location: ./home.php");
 }
 
