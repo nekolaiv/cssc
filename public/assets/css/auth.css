@@ -27,6 +27,7 @@ Note:
     --Gfont-size: 10px;
     --Gborder-radius: 7px;
     --Ginput-width: 50vw;
+    --Ginput-height: 35px;
 }
 
 
@@ -45,20 +46,20 @@ form {
 
 /* ===ELEMENTS=== */
 form h3 {
-    font-size: calc(var(--Gfont-size) + 10px);
+    font-size: calc(var(--Gfont-size) + 5px);
     text-align: center;
 
 }
 
 label {
     margin-top: 20px;
-    font-size: calc(var(--Gfont-size) + 2px);
+    font-size: calc(var(--Gfont-size));
     font-weight: 500;
     align-self: self-start;
 }
 
 .password{
-    width: var(--Ginput-width);
+    width: calc(var(--Ginput-width) + 20px);
     display: flex;
     align-items: end;
     justify-content: space-between;
@@ -66,7 +67,7 @@ label {
 }
 
 .forgot-password{
-    font-size: calc(var(--Gfont-size) + 2px);
+    font-size: calc(var(--Gfont-size) - 1px);
     color: rgb(27, 147, 228);
     text-decoration: none;
 }
@@ -74,16 +75,16 @@ label {
 .auth-err {
     margin-top: 5px;
     margin-bottom: -15px;
-    font-size: calc(var(--Gfont-size));
+    font-size: calc(var(--Gfont-size) - 2px);
     align-self: self-start;
 }
 
 input {
-    height: 35px;
-    width: var(--Ginput-width);
-    padding: 0 20px;
-    margin-top: 10px;
-    font-size: calc(var(--Gfont-size) + 20px);
+    height: calc(var(--Ginput-height) - 5px);
+    width: calc(var(--Ginput-width) + 20px);
+    padding: 0 10px;
+    margin-top: 5px;
+    font-size: calc(var(--Gfont-size));
     font-weight: 300;
     display: block;
     background-color: var(--color-black);
@@ -97,10 +98,10 @@ input:focus{
 }
 
 .primary-button {
+    width: calc(var(--Ginput-width) + 20px);
+    height: calc(var(--Ginput-height) - 5px);
     margin-top: 20px;
-    width: var(--Ginput-width);
-    height: 35px;
-    padding: 10px;
+    font-size: calc(var(--Gfont-size));
     background-color: var(--color-white);
     color: var(--color-black);
     border-radius: var(--Gborder-radius);
@@ -110,10 +111,10 @@ input:focus{
 }
 
 .secondary-button {
+    width: calc(var(--Ginput-width) + 20px);
+    height: calc(var(--Ginput-height) - 5px);
     margin-top: 10px;
-    width: var(--Ginput-width);
-    height: 35px;
-    padding: 10px;
+    font-size: calc(var(--Gfont-size));
     background-color: var(--bg-black);
     color: var(--color-white);
     border-radius: var(--Gborder-radius);
@@ -175,6 +176,13 @@ input:focus{
         font-size: calc(var(--Gfont-size) + 2px);
     }
 
+    .auth-err {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size) - 2px);
+        align-self: self-start;
+    }
+
     input {
         width: calc(var(--Ginput-width) - 20vw);
         padding: 0 10px;
@@ -196,25 +204,33 @@ input:focus{
     }
 }
 
-@media (min-width: 1020px){
+@media (min-width: 1024px){
+
     .password {
-        width: calc(var(--Ginput-width) - 30vw);
+        width: calc(var(--Ginput-width) - 25vw);
+    }
+
+    .auth-err {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size));
+        align-self: self-start;
     }
 
     input {
-        width: calc(var(--Ginput-width) - 30vw);
+        width: calc(var(--Ginput-width) - 25vw);
     }
 
     input {
-        width: calc(var(--Ginput-width) - 30vw);
+        width: calc(var(--Ginput-width) - 25vw);
     }
 
     .primary-button {
-        width: calc(var(--Ginput-width) - 30vw);
+        width: calc(var(--Ginput-width) - 25vw);
     }
     
     .secondary-button {
-        width: calc(var(--Ginput-width) - 30vw);
+        width: calc(var(--Ginput-width) - 25vw);
     }
 }
 
@@ -231,8 +247,16 @@ input:focus{
         font-size: calc(var(--Gfont-size) + 9px);
     }
 
+    .auth-err {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size) + 5px);
+        align-self: self-start;
+    }
+
     input{
         height: 50px;
+        font-size: calc(var(--Gfont-size) + 10px);
     }
 
     .primary-button{
