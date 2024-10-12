@@ -36,8 +36,9 @@ class Auth{
 		// if (password_verify($_POST["password"], $student["password"])) 
 		if ($_POST["password"] == $student["password"]){
 			$_SESSION["user_id"] = $student["user_id"];
-			$_SESSION["student_loggedIn"] = TRUE;
+			$_SESSION["is_loggedIn"] = TRUE;
 			$_SESSION["email"] = $student["email"];
+			$_SESSION["user_type"] = "student";
 			header("location: " . $_SERVER["HTTP_REFERER"]);
 		}  
     
