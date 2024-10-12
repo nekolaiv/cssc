@@ -13,7 +13,6 @@ class Database{
                 $this->username,
                 $this->password
             );
-            echo "connected";
         } catch (PDOEXCEPTION $e){
             echo "Connection error: " . $e->getMessage();
         }
