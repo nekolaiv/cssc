@@ -5,11 +5,13 @@ require_once "../../helpers/session.function.php";
 
 if (!isLoggedIn()) {
   header("location: ./login.php");
-  return;
+  exit;
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
     logout();
+    header("location: ./login.php");
+    exit;
 }
 
 ?>
