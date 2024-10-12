@@ -32,4 +32,9 @@ B. MEDIA QUERIES
 C. FOLDER STRUCTURE
 - Folder Structure will remain as it is, consult owner for more info.
 
+===
+D. ARCHITECTURE
+- Project will initially follow MV(MODEL-VIEW) Architecture as for the mean time.
+- Refactor to MVC in latter development.
+
 
