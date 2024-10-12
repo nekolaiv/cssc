@@ -71,7 +71,7 @@ label {
     text-decoration: none;
 }
 
-#confirm-passwordErr {
+.auth-err {
     margin-top: 5px;
     margin-bottom: -15px;
     font-size: calc(var(--Gfont-size));
