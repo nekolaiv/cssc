@@ -41,8 +41,16 @@ class Auth{
 			$_SESSION["user_type"] = "student";
 			header("location: " . $_SERVER["HTTP_REFERER"]);
 		}  
-    
   	}
+
+	function studentResetPassword(){
+		extract($_POST);
+
+		$sql = "UPDATE Student set password = :password WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $_POST['email']);
+		return $query->execute();
+	}
 
 
 }
