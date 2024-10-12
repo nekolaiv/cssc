@@ -16,8 +16,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $email = cleanInput($_POST['email']);
     $password = cleanInput($_POST['password']);
 
+    if(!(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph')){
+        $email_err = "invalid email";
+    }
+
     if(!($auth->emailExists($email))){
         $email_err = "email does not exist";
+    }
+
+    if(strlen($_POST['password']) < 8){
+        $password_err = "Password must be at least 8 characters long.";
     }
 
     if($email_err == '' && $password_err == ''){
