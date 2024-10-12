@@ -18,7 +18,7 @@ class Auth{
         ob_end_flush();
     }
 
-    function studentLogin($email) {
+    function studentLogin($email, $password) {
 		$sql = "SELECT * FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -32,7 +32,7 @@ class Auth{
 			return;
 		}
 		// if (password_verify($_POST["password"], $student["password"])) 
-		if ($_POST["password"] == $student["password"]){
+		if ($password == $student["password"]){
 			$_SESSION["user_id"] = $student["user_id"];
 			$_SESSION["is_loggedIn"] = TRUE;
 			$_SESSION["email"] = $student["email"];
