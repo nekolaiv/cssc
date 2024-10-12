@@ -30,6 +30,7 @@ Note:
 }
 
 
+
 /* ===FORM=== */
 form {
     padding: 5%;
@@ -68,6 +69,13 @@ label {
     font-size: calc(var(--Gfont-size) + 2px);
     color: rgb(27, 147, 228);
     text-decoration: none;
+}
+
+#confirm-passwordErr {
+    margin-top: 5px;
+    margin-bottom: -15px;
+    font-size: calc(var(--Gfont-size));
+    align-self: self-start;
 }
 
 input {
