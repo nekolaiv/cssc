@@ -10,3 +10,4 @@ STUDENT
 3. set show password functionality
 4. set password minimum length error
 5. validation with login
+6. refix css for mobile view
