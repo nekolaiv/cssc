@@ -1,21 +1,32 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+require_once("../../classes/auth.class.php");
+require_once("../../helpers/clean.function.php");
 
-
+$required = '*';
 $email = $new_password = $confirm_password = '';
-$email_required = $new_password_required = $confirm_password_required = '*';
 $email_err = $new_password_err = $confirm_password_err = '';
+$auth = new Auth();
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $email = $_POST['email'];
-    $new_password = $_POST['new-password'];
-    $confirm_password = $_POST['confirm-password'];
+    $email = cleanInput($_POST['email']);
+    $new_password = cleanInput($_POST['new-password']);
+    $confirm_password = cleanInput($_POST['confirm-password']);
 
-    if($_POST['new-password'] == $_POST['confirm-password']){
-        
-    } else {
-        $confirm_passwordErr = "Passwords do not match!";
+    if(!$auth->emailExists($email)){
+        $email_err = "email does not exist";
+    }
+
+    if(!($_POST['new-password'] == $_POST['confirm-password'])){
+        $confirm_password_err = "passwords do not match";
+    }
+
+    if($email_err == '' && $new_password_err == '' && $confirm_password_err == ''){
+        $auth->studentResetPassword($email, $new_password);
+        header("Location: ./login.php");
+        exit;
     }
 }
 
@@ -32,28 +43,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <body>
     <form action="" method="POST">
         <h3>Student Account</h3>
-        <label for="email">Email
-            <?php if (!empty($emailRequired)): ?>
-                <span class="error"><?= $emailRequired ?></span><br>
-            <?php endif; ?>
-        </label>
+        <label for="email">Email <span class="error"><?= $required ?></span></label>
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
+        <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
 
-        <label for="new_password">New Password
-            <?php if (!empty($new_passwordRequired)): ?>
-                <span class="error"><?= $new_passwordRequired ?></span><br>
-            <?php endif; ?>
-        </label>
+        <label for="new_password">New Password <span class="error"><?= $required ?></span></label>
         <input type="password" name="new-password" id="new-password" value="<?php echo htmlspecialchars($new_password); ?>" required>
+        <?php if (!empty($new_password_err)): ?>
+            <span class="error auth-err"><?= $new_password_err ?></span><br>
+        <?php endif; ?>
 
-        <label for="confirm-password">Confirm Password
-            <?php if (!empty($confirm_passwordRequired)): ?>
-                <span class="error"><?= $confirm_passwordRequired ?></span><br>
-            <?php endif; ?>
+        <label for="confirm-password">Confirm Password <span class="error"><?= $required ?></span>
         </label>
         <input type="password" name="confirm-password" id="confirm-password" value="<?php echo htmlspecialchars($confirm_password); ?>" required>
-        <?php if (!empty($confirm_passwordErr)): ?>
-            <span class="error" id="confirm-passwordErr"><?= $confirm_passwordErr ?></span><br>
+        <?php if (!empty($confirm_password_err)): ?>
+            <span class="error auth-err"><?= $confirm_password_err ?></span><br>
         <?php endif; ?>
 
         <button type="submit" class="primary-button">reset password</button>
