@@ -31,8 +31,7 @@ class Auth{
 			header("location:" . $_SERVER["HTTP_REFERER"]);
 			return;
 		}
-		// if (password_verify($_POST["password"], $student["password"])) 
-		if ($password == $student["password"]){
+		if (password_verify($password, $student["password"])){
 			$_SESSION["user_id"] = $student["user_id"];
 			$_SESSION["is_loggedIn"] = TRUE;
 			$_SESSION["email"] = $student["email"];
@@ -47,7 +46,8 @@ class Auth{
 		$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
-		$query->bindParam(':password', $password);
+		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+		$query->bindParam(':password', $hashed_password);
 		if($query->execute()){
             return true;
         } else {
