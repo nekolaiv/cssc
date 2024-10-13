@@ -79,6 +79,13 @@ label {
     align-self: self-start;
 }
 
+.feedback {
+    margin-top: 5px;
+    margin-bottom: -15px;
+    font-size: calc(var(--Gfont-size) - 2px);
+    align-self: center;
+}
+
 input {
     height: calc(var(--Ginput-height) - 5px);
     width: calc(var(--Ginput-width) + 20px);
@@ -133,25 +140,6 @@ input:focus{
 
 /* ===MEDIA QUERIES=== */
 
-/* @media (min-width: 768px){
-    .password {
-        width: calc(var(--Ginput-width) - 10vw);
-    }
-
-    input {
-        width: calc(var(--Ginput-width) - 10vw);
-    }
-
-    input {
-        width: calc(var(--Ginput-width) - 10vw);
-    }
-
-    .primary-button {
-        width: calc(var(--Ginput-width) - 10vw);
-    }
-} */
-
-
 @media (min-width: 768px) {
 
     form {
@@ -180,7 +168,12 @@ input:focus{
         margin-top: 5px;
         margin-bottom: -15px;
         font-size: calc(var(--Gfont-size) - 2px);
-        align-self: self-start;
+    }
+
+    .feedback {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size) - 2px);
     }
 
     input {
@@ -214,7 +207,12 @@ input:focus{
         margin-top: 5px;
         margin-bottom: -15px;
         font-size: calc(var(--Gfont-size));
-        align-self: self-start;
+    }
+
+    .feedback {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size));
     }
 
     input {
@@ -251,7 +249,12 @@ input:focus{
         margin-top: 5px;
         margin-bottom: -15px;
         font-size: calc(var(--Gfont-size) + 5px);
-        align-self: self-start;
+    }
+
+    .feedback {
+        margin-top: 5px;
+        margin-bottom: -15px;
+        font-size: calc(var(--Gfont-size) + 5px);
     }
 
     input{

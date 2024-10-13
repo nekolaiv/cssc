@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once("../../classes/auth.class.php");
 require_once("../../helpers/clean.function.php");
+require_once("../../helpers/session.function.php");
 
 $required = '*';
 $email = $password = $confirm_password = '';
@@ -31,6 +32,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if($email_err == '' && $password_err == '' && $confirm_password_err == ''){
         if($auth->studentRegister($email, $password)){
+            $_SESSION['feedback'] = 'account registered successfully';
             header("Location: ./login.php");
             exit;
         } else {

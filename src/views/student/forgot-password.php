@@ -31,6 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if($email_err == '' && $new_password_err == '' && $confirm_password_err == ''){
         $auth->studentResetPassword($email, $new_password);
+        $_SESSION['feedback'] = 'reset password successful';
         header("Location: ./login.php");
         exit;
     }

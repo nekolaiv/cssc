@@ -54,6 +54,10 @@ body {
     color: rgb(255, 42, 42);
 }
 
+.success {
+    color: rgb(85, 255, 42);
+}
+
 /* ===TEMPORARY PAGE=== */
 
 .tp-h1{
