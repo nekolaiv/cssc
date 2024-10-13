@@ -59,7 +59,8 @@ class Auth{
 		$sql = "UPDATE Students set password = :password WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
-		$query->bindParam(':password', $new_password);
+		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+		$query->bindParam(':password', $new_hashed_password);
 		return $query->execute();
 	}
 
