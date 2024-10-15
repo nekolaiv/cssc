@@ -11,7 +11,7 @@ $email_err = $password_err = $confirm_password_err = '';
 $auth = new Auth();
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = cleanInput($_POST['email']);
     $password = cleanInput($_POST['password']);
     $confirm_password = cleanInput($_POST['confirm-password']);
@@ -26,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $password_err = "password must be at least 8 characters long.";
     }
 
-    if(!($_POST['password'] == $_POST['confirm-password'])){
+    if(!($_POST['password'] === $_POST['confirm-password'])){
         $confirm_password_err = "passwords do not match";
     }
 

@@ -12,7 +12,7 @@ $email_err = $password_err = '';
 $auth = new Auth();
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = cleanInput($_POST['email']);
     $password = cleanInput($_POST['password']);
 

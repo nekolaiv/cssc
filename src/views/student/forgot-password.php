@@ -32,7 +32,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $confirm_password_err = "passwords do not match";
     }
 
-
     if($email_err == '' && $new_password_err == '' && $confirm_password_err == ''){
         if($auth->studentResetPassword($email, $new_password)){
             $_SESSION['feedback'] = 'reset password successful';
@@ -43,11 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
     }    
 }
-
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
