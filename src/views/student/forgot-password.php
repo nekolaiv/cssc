@@ -24,7 +24,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     if(strlen($_POST['new-password']) < 8){
-        unset($_SESSION['reset_password_status']);
         $new_password_err = "password must be at least 8 characters long.";
     }
 
@@ -38,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             header("Location: ./login.php");
             exit;
         } else {
-            $new_password_err = $_SESSION['reset_password_status'];
+            $new_password_err = 'new password is similar to old password';
         }
     }    
 }

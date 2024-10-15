@@ -73,13 +73,11 @@ class Auth{
 		$sql = "UPDATE Students set password = :password WHERE email = :email";
 		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 		if(!$this->_retrievePassword($email, $new_password)){
-			unset($_SESSION['reset_password_status']);
 			$query = $this->database->connect()->prepare($sql);
 			$query->bindParam(':email', $email);
 			$query->bindParam(':password', $new_hashed_password);
 			return $query->execute();
 		} else {
-			$_SESSION['reset_password_status'] = 'new password is similar to old password';
 			return false;
 		}
 		
