@@ -53,6 +53,7 @@ extract($_SESSION);
     <title>Student Login Form</title>
     <link rel="stylesheet" href="/cssc/public/assets/css/global.css">
     <link rel="stylesheet" href="/cssc/public/assets/css/auth.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <form action="" method="POST">
@@ -62,12 +63,15 @@ extract($_SESSION);
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
         
-        <div class="password">
+        <div class="password-util">
             <label for="password">Password <span class="error"><?= $required ?></span></label>
             <a href="./forgot-password.php" class="forgot-password">forgot password?</a>
         </div>
         
-        <input type="password" name="password" id="password" value="<?php echo htmlspecialchars($password); ?>" required>
+        <div class="password-container">
+            <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
+            <span class="togglePassword toggle-eye"><i class="uil-eye-slash"></i></span>
+        </div>
         <?php if (!empty($password_err)): ?>
             <span class="error auth-err"><?= $password_err ?></span><br>
         <?php endif; ?>
@@ -75,5 +79,6 @@ extract($_SESSION);
         <button type="submit" class="primary-button">login</button>
         <a href="./register.php"><button type="button" class="secondary-button">or register</button></a>
     </form>
+    <script src="/cssc/src/js/script.js"></script>
 </body>
 </html>

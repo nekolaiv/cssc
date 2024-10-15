@@ -24,6 +24,7 @@ Note:
     --color-grey: #36363f;
     --color-white: #f0f0f5;
     --outline-dark: #656565;
+    --element-blue: rgb(27, 147, 228);
     --Gfont-size: 10px;
     --Gborder-radius: 7px;
     --Ginput-width: 50vw;
@@ -58,7 +59,7 @@ label {
     align-self: self-start;
 }
 
-.password{
+.password-util{
     width: calc(var(--Ginput-width) + 20px);
     display: flex;
     align-items: end;
@@ -68,7 +69,7 @@ label {
 
 .forgot-password{
     font-size: calc(var(--Gfont-size) - 1px);
-    color: rgb(27, 147, 228);
+    color: var(--element-blue);
     text-decoration: none;
 }
 
@@ -102,6 +103,33 @@ input {
 
 input:focus{
     border-color: var(--color-white);
+}
+
+.password-input {
+    padding-right: 30px;
+}
+
+.password-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+.toggle-eye {
+    position: absolute;
+    right: 7px;
+    top: 55%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: calc(var(--Gfont-size) + 5px);
+}
+
+.uil-eye{
+    color: var(--color-white);
+}
+
+.uil-eye-slash {
+    color: var(--outline-dark);
 }
 
 .primary-button {
@@ -155,7 +183,7 @@ input:focus{
         font-size: calc(var(--Gfont-size) + 3px);
     }
 
-    .password{
+    .password-util{
         width: calc(var(--Ginput-width) - 20vw);
     }
 
@@ -182,6 +210,14 @@ input:focus{
         font-size: calc(var(--Gfont-size) + 4px);
     }
 
+    .password-input{
+        padding-right: 33px;
+    }
+
+    .toggle-eye {
+        font-size: calc(var(--Gfont-size) + 7px);
+    }
+
     .primary-button {
         width: calc(var(--Ginput-width) - 20vw);
         height: 35px;
@@ -199,7 +235,7 @@ input:focus{
 
 @media (min-width: 1024px){
 
-    .password {
+    .password-util {
         width: calc(var(--Ginput-width) - 25vw);
     }
 
@@ -221,6 +257,14 @@ input:focus{
 
     input {
         width: calc(var(--Ginput-width) - 25vw);
+    }
+
+    .password-input{
+        padding-right: 33px;
+    }
+
+    .toggle-eye {
+        font-size: calc(var(--Gfont-size) + 10px);
     }
 
     .primary-button {
