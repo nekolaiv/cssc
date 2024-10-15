@@ -3,14 +3,16 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once("../../classes/auth.class.php");
 require_once("../../helpers/clean.function.php");
+require_once("../../helpers/session.function.php");
 
 $required = '*';
 $email = $new_password = $confirm_password = '';
 $email_err = $new_password_err = $confirm_password_err = '';
 $auth = new Auth();
 
+extract($_SESSION);
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = cleanInput($_POST['email']);
     $new_password = cleanInput($_POST['new-password']);
     $confirm_password = cleanInput($_POST['confirm-password']);
@@ -22,20 +24,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 
     if(strlen($_POST['new-password']) < 8){
+        unset($_SESSION['reset_password_status']);
         $new_password_err = "password must be at least 8 characters long.";
     }
 
-    if(!($_POST['new-password'] == $_POST['confirm-password'])){
+    if(!($_POST['new-password'] === $_POST['confirm-password'])){
         $confirm_password_err = "passwords do not match";
     }
 
+
     if($email_err == '' && $new_password_err == '' && $confirm_password_err == ''){
-        $auth->studentResetPassword($email, $new_password);
-        $_SESSION['feedback'] = 'reset password successful';
-        header("Location: ./login.php");
-        exit;
-    }
+        if($auth->studentResetPassword($email, $new_password)){
+            $_SESSION['feedback'] = 'reset password successful';
+            header("Location: ./login.php");
+            exit;
+        } else {
+            $new_password_err = $_SESSION['reset_password_status'];
+        }
+    }    
 }
+
+
 
 ?>
 

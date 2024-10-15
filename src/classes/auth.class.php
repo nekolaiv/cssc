@@ -55,13 +55,34 @@ class Auth{
         }
 	}
 
-	function studentResetPassword($email, $new_password){
-		$sql = "UPDATE Students set password = :password WHERE email = :email";
+	private function _retrievePassword($email, $password){
+		$sql = "SELECT password FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
+		$retrieved_password=null;
+		if($query->execute()){
+			$retrieved_password = $query->fetch();
+		}
+		if(password_verify($password, $retrieved_password["password"])){
+			return true;
+		}
+		return false;
+	}
+
+	function studentResetPassword($email, $new_password){
+		$sql = "UPDATE Students set password = :password WHERE email = :email";
 		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		$query->bindParam(':password', $new_hashed_password);
-		return $query->execute();
+		if(!$this->_retrievePassword($email, $new_password)){
+			unset($_SESSION['reset_password_status']);
+			$query = $this->database->connect()->prepare($sql);
+			$query->bindParam(':email', $email);
+			$query->bindParam(':password', $new_hashed_password);
+			return $query->execute();
+		} else {
+			$_SESSION['reset_password_status'] = 'new password is similar to old password';
+			return false;
+		}
+		
 	}
 
 	function emailExists($email){
