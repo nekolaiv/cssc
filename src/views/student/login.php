@@ -51,8 +51,8 @@ extract($_SESSION);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login Form</title>
-    <link rel="stylesheet" href="/cssc/public/assets/css/global.css">
-    <link rel="stylesheet" href="/cssc/public/assets/css/auth.css">
+    <link rel="stylesheet" href="/cssc/src/css/global.css">
+    <link rel="stylesheet" href="/cssc/src/css/auth.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
