@@ -15,4 +15,4 @@ STUDENT
 8. validate register page /
 9. set logics for register page /
 10. set status variable for successful actions in auth
-11. hash passwords and handle auth logic
+11. hash passwords and handle auth logic /
