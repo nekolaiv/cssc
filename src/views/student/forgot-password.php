@@ -48,14 +48,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login Form</title>
+    <title>Reset Password Form</title>
     <link rel="stylesheet" href="/cssc/src/css/global.css">
     <link rel="stylesheet" href="/cssc/src/css/auth.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <form action="" method="POST">
-        <h3>Student Account</h3>
+        <h3>Reset Password</h3>
         <label for="email">Email <span class="error"><?= $required ?></span></label>
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
