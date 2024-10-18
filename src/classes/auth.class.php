@@ -55,7 +55,7 @@ class Auth{
         }
 	}
 
-	private function _retrievePassword($email, $password){
+	private function _retrieveStudentPassword($email, $password){
 		$sql = "SELECT password FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -72,7 +72,7 @@ class Auth{
 	function studentResetPassword($email, $new_password){
 		$sql = "UPDATE Students set password = :password WHERE email = :email";
 		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrievePassword($email, $new_password)){
+		if(!$this->_retrieveStudentPassword($email, $new_password)){
 			$query = $this->database->connect()->prepare($sql);
 			$query->bindParam(':email', $email);
 			$query->bindParam(':password', $new_hashed_password);
@@ -83,7 +83,7 @@ class Auth{
 		
 	}
 
-	function emailExists($email){
+	function studentEmailExists($email){
 		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);

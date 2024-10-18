@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if(!(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph')){
         $email_err = "invalid email - use @wmsu.edu.ph";
-    } else if(!($auth->emailExists($email))){
+    } else if(!($auth->studentEmailExists($email))){
         $email_err = "email does not exist";
     }
 

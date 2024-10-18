@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if(!(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph')){
         $email_err = "invalid email - use @wmsu.edu.ph";
-    } else if($auth->emailExists($email)){
+    } else if($auth->studentEmailExists($email)){
         $email_err = "email already exists";
     }
 
@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <label for="password">Password <span class="error"><?= $required ?></span></label>
         <div class="password-container">
             <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
-            <span id="togglePassword" class="toggle-eye"><i class="uil-eye-slash"></i></span>
+            <span class="togglePassword toggle-eye"><i class="uil-eye-slash"></i></span>
         </div>
         <?php if (!empty($password_err)): ?>
             <span class="error auth-err"><?= $password_err ?></span><br>
