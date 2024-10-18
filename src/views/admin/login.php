@@ -50,14 +50,14 @@ extract($_SESSION);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Login Form</title>
+    <title>Admin Login Form</title>
     <link rel="stylesheet" href="/cssc/src/css/global.css">
     <link rel="stylesheet" href="/cssc/src/css/auth.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <form action="" method="POST">
-        <h3>Staff Account</h3>
+        <h3>Admin Account</h3>
         <?php if (!empty($_SESSION['feedback'])): ?><span class="success feedback"><?= $_SESSION['feedback'] ?></span><br><?php unset($_SESSION['feedback']); endif; ?>
         <label for="email">Email <span class="error"><?= $required ?></span></label>
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
