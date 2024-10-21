@@ -6,6 +6,14 @@ togglePasswordElements.forEach((togglePassword, index) => {
         const passwordInput = passwordInputs[index];
         const isPasswordVisible = passwordInput.getAttribute('type') === 'text';
         passwordInput.setAttribute('type', isPasswordVisible ? 'password' : 'text');
-        this.innerHTML = isPasswordVisible ? '<i class="uil-eye-slash"></i>' : '<i class="uil-eye"></i>'; // Toggle the icon
     });
 });
+
+function myFunction() {
+  var x = document.querySelectorAll("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}

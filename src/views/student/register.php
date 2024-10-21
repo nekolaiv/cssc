@@ -7,7 +7,7 @@ require_once("../../helpers/session.function.php");
 
 $required = '*';
 $email = $password = $confirm_password = '';
-$email_err = $password_err = $confirm_password_err = '';
+$email_err = $password_err = $confirm_password_err = ' ';
 $auth = new Auth();
 
 
@@ -23,14 +23,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     if(strlen($_POST['password']) < 8){
-        $password_err = "password must be at least 8 characters long.";
+        $password_err = "minimum 8 characters";
     }
 
     if(!($_POST['password'] === $_POST['confirm-password'])){
         $confirm_password_err = "passwords do not match";
     }
 
-    if($email_err == '' && $password_err == '' && $confirm_password_err == ''){
+    if($email_err == ' ' && $password_err == ' ' && $confirm_password_err == ' '){
         if($auth->studentRegister($email, $password)){
             $_SESSION['feedback'] = 'account registered successfully';
             header("Location: ./login.php");
@@ -54,7 +54,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <title>Student Register Form</title>
     <link rel="stylesheet" href="/cssc/src/css/global.css">
     <link rel="stylesheet" href="/cssc/src/css/auth.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <form action="" method="POST">
@@ -64,22 +63,28 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
 
         <label for="password">Password <span class="error"><?= $required ?></span></label>
-        <div class="password-container">
-            <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
-            <span class="togglePassword toggle-eye"><i class="uil-eye-slash"></i></span>
+        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
+        <div class="below-input">
+            <?php if (!empty($password_err)): ?>
+                <span class="error auth-err"><?= $password_err ?></span><br>
+            <?php endif; ?>
+            <div class="show-password">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <p>show password</p>
+            </div>
         </div>
-        <?php if (!empty($password_err)): ?>
-            <span class="error auth-err"><?= $password_err ?></span><br>
-        <?php endif; ?>
 
         <label for="confirm-password">Confirm Password <span class="error"><?= $required ?></span></label>
-        <div class="password-container">
-            <input type="password" name="confirm-password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>" required>
-            <span class="togglePassword toggle-eye"><i class="uil-eye-slash"></i></span>
+        <input type="password" name="confirm-password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>" required>
+        <div class="below-input">
+            <?php if (!empty($confirm_password_err)): ?>
+                <span class="error auth-err"><?= $confirm_password_err ?></span><br>
+            <?php endif; ?>
+            <div class="show-password">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <p>show password</p>
+            </div>
         </div>
-        <?php if (!empty($confirm_password_err)): ?>
-            <span class="error auth-err"><?= $confirm_password_err ?></span><br>
-        <?php endif; ?>
 
         <button type="submit" class="primary-button">register</button>
         <a href="./login.php"><button type="button" class="secondary-button">login instead</button></a>

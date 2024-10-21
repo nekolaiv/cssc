@@ -8,7 +8,7 @@ require_once("../../helpers/session.function.php");
 
 $required = '*';
 $email = $password = '';
-$email_err = $password_err = '';
+$email_err = $password_err = ' ';
 $auth = new Auth();
 
 
@@ -23,10 +23,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     if(strlen($_POST['password']) < 8){
-        $password_err = "password must be at least 8 characters long.";
+        $password_err = "minimum 8 characters";
     }
 
-    if($email_err == '' && $password_err == ''){
+    if($email_err == ' ' && $password_err == ' '){
         if($auth->studentLogin($email, $password)){
             header("Location: ./login.php");
             exit;
@@ -53,7 +53,6 @@ extract($_SESSION);
     <title>Student Login Form</title>
     <link rel="stylesheet" href="/cssc/src/css/global.css">
     <link rel="stylesheet" href="/cssc/src/css/auth.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>
 <body>
     <form action="" method="POST">
@@ -68,13 +67,17 @@ extract($_SESSION);
             <a href="./forgot-password.php" class="forgot-password">forgot password?</a>
         </div>
         
-        <div class="password-container">
-            <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
-            <span class="togglePassword toggle-eye"><i class="uil-eye-slash"></i></span>
+        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
+
+        <div class="below-input">
+            <?php if (!empty($password_err)): ?>
+                <span class="error auth-err"><?= $password_err ?></span><br>
+            <?php endif; ?>
+            <div class="show-password">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <p>show password</p>
+            </div>
         </div>
-        <?php if (!empty($password_err)): ?>
-            <span class="error auth-err"><?= $password_err ?></span><br>
-        <?php endif; ?>
 
         <button type="submit" class="primary-button">login</button>
         <a href="./register.php"><button type="button" class="secondary-button">or register</button></a>
