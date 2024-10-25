@@ -12,8 +12,11 @@ use Src\Classes\Auth;
 use Src\Middlewares\AuthMiddleware;
 
 class AuthController extends BaseController {
+
+    protected $middleware;
+
     public function __construct(){
-        $middleware = new AuthMiddleware(); 
+        $this->$middleware = new AuthMiddleware(); 
     }
 
     public function login() {
@@ -23,18 +26,19 @@ class AuthController extends BaseController {
         $auth = new Auth();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $email = cleanInput($_POST['email']);
-            $password = cleanInput($_POST['password']);
+            $email = $this->middleware->cleanInput($_POST['email']);
+            $password = $this->middleware->cleanInput($_POST['password']);
 
-            if(!(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph')){
-                $email_err = "invalid email - use @wmsu.edu.ph";
-            } else if(!($auth->emailExists($email))){
-                $email_err = "email does not exist";
+            $credentials = $this->middleware->verifyCredentials($email, $password);
+
+            if($credentials !== NULL){
+                
             }
 
-            if(strlen($_POST['password']) < 8){
-                $password_err = "minimum 8 characters";
+            if($this->middleware->verifyCredentials($email, $password)){
+                $_SESSION['is-logged-in'] = true;
             }
+            
 
             if($email_err == ' ' && $password_err == ' '){
                 echo 'login';
