@@ -19,6 +19,9 @@ $middleware = new AuthMiddleware();
 
 if(empty($_SESSION['is-logged-in'])){
     $_SERVER['REQUEST_URI'] = '/login';
+} else {
+    header('Location: ../resources/views/student/home.php');
+    exit;
 }
 
 $requestUri = $_SERVER['REQUEST_URI'];
@@ -32,11 +35,11 @@ switch ($requestUri) {
         $controller->logout();
         break;
 
-    case '/dashboard':
+    case '/home':
         $middleware->handle();
         require_once '../views/dashboard.php';
         break;
-
+    
     default:
         break;
 }

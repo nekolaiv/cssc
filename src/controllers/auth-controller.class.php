@@ -9,15 +9,20 @@ require_once('base-controller.class.php');
 require_once("../src/utils/clean.function.php");
 
 use Src\Classes\Auth;
+use Src\Middlewares\AuthMiddleware;
 
 class AuthController extends BaseController {
+    public function __construct(){
+        $middleware = new AuthMiddleware(); 
+    }
+
     public function login() {
         $required = '*';
         $email = $password = '';
         $email_err = $password_err = ' ';
         $auth = new Auth();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $email = cleanInput($_POST['email']);
             $password = cleanInput($_POST['password']);
 
@@ -32,8 +37,10 @@ class AuthController extends BaseController {
             }
 
             if($email_err == ' ' && $password_err == ' '){
+                echo 'login';
                 if($auth->login($email, $password)){
                     $_SESSION['is-logged-in'] = true;
+                    header('Location: ../../public/index.php');
                     exit;
                 } else {
                     $password_err = "incorrect password"; // Temporary, verify later with hashed.
