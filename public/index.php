@@ -1,7 +1,48 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once('../src/controllers/auth-controller.class.php');
+require_once('../src/middlewares/auth-middleware.class.php');
+
+use Src\Controllers\AuthController;
+use Src\Middlewares\AuthMiddleware;
+
+
+$controller = new AuthController();
+$middleware = new AuthMiddleware();
+
+if(empty($_SESSION['is-logged-in'])){
+    $_SERVER['REQUEST_URI'] = '/login';
+}
+
+$requestUri = $_SERVER['REQUEST_URI'];
+
+switch ($requestUri) {
+    case '/login':
+        $controller->login();
+        break;
+
+    case '/logout':
+        $controller->logout();
+        break;
+
+    case '/dashboard':
+        $middleware->handle();
+        require_once '../views/dashboard.php';
+        break;
+
+    default:
+        break;
+}
 ?>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,4 +61,4 @@
         <p>Note: Temporary Page for Development Purposes</p>
     </section>
 </body>
-</html>
+</html> -->

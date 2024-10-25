@@ -1,11 +1,16 @@
 <?php
+namespace Src\Classes;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once "database.class.php";
+require_once("database.class.php");
+use Src\Classes\Database;
+use PDO;
 
 class Auth{
     protected $database;
@@ -18,31 +23,98 @@ class Auth{
         ob_end_flush();
     }
 
-    function studentLogin($email, $password) {
-		$sql = "SELECT * FROM Students WHERE email = :email";
+	private function _isAdmin($email){
+		$sql = "SELECT COUNT(*) FROM Admin WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
-		$student=null;
-		if($query->execute()){
-			$student = $query->fetch();
-		}
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
 
-		if (!$student) {
-			header("location:" . $_SERVER["HTTP_REFERER"]);
-			return;
-		}
-		if (password_verify($password, $student["password"])){
-			$_SESSION["user_id"] = $student["user_id"];
-			$_SESSION["is_loggedIn"] = TRUE;
-			$_SESSION["email"] = $student["email"];
-			$_SESSION["user_type"] = "student";
-			header("location: " . $_SERVER["HTTP_REFERER"]);
-		} else {
-			return False;
-		}
-  	}
+	private function _isStaff($email){
+		$sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
 
-	function studentRegister(string $email, string $password){
+	private function _isStudent($email){
+		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _detectRole($email){
+		if($this->_isStudent($email)){
+			return 'student';
+		} else if($this->_isStaff($email)){
+			return 'staff';
+		} else if($this->_isAdmin($email)){
+			return 'admin';
+		}
+	}
+
+	public function login($email, $password) {
+		if($this->_detectRole($email) == 'student'){
+			$sql = "SELECT user_id, password FROM Students WHERE email = :email";
+		} else if($this->_detectRole() == 'staff'){
+			$sql = "SELECT user_id, password FROM Staffs WHERE email = :email";
+		} else if($this->_detectRole() == 'admin'){
+			$sql = "SELECT user_id, password FROM Admin WHERE email = :email";
+		}
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':email', $email);
+        $query->execute();
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            return true;
+        }
+        return false;
+    }
+
+	// public function register($username, $password) {
+    //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+    //     $stmt = $this->db->prepare("INSERT INTO users (username, password, role) VALUES (:username, :password, 'user')");
+    //     $stmt->bindParam(':username', $username);
+    //     $stmt->bindParam(':password', $hashedPassword);
+        
+    //     return $stmt->execute(); // Returns true on success
+    // }
+
+
+    // function login($email, $password) {
+	// 	$sql = "SELECT * FROM Students WHERE email = :email";
+	// 	$query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':email', $email);
+	// 	$student=null;
+	// 	if($query->execute()){
+	// 		$student = $query->fetch();
+	// 	}
+
+	// 	if (!$student) {
+	// 		header("location:" . $_SERVER["HTTP_REFERER"]);
+	// 		return;
+	// 	}
+	// 	if (password_verify($password, $student["password"])){
+	// 		$_SESSION["user_id"] = $student["user_id"];
+	// 		$_SESSION["is_loggedIn"] = TRUE;
+	// 		$_SESSION["email"] = $student["email"];
+	// 		$_SESSION["user_type"] = "student";
+	// 		header("location: " . $_SERVER["HTTP_REFERER"]);
+	// 	} else {
+	// 		return False;
+	// 	}
+  	// }
+
+	function register(string $email, string $password){
 		$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -55,7 +127,7 @@ class Auth{
         }
 	}
 
-	private function _retrieveStudentPassword($email, $password){
+	private function _retrievePassword($email, $password){
 		$sql = "SELECT password FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -69,10 +141,10 @@ class Auth{
 		return false;
 	}
 
-	function studentResetPassword($email, $new_password){
+	function resetPassword($email, $new_password){
 		$sql = "UPDATE Students set password = :password WHERE email = :email";
 		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrieveStudentPassword($email, $new_password)){
+		if(!$this->_retrievePassword($email, $new_password)){
 			$query = $this->database->connect()->prepare($sql);
 			$query->bindParam(':email', $email);
 			$query->bindParam(':password', $new_hashed_password);
@@ -83,7 +155,7 @@ class Auth{
 		
 	}
 
-	function studentEmailExists($email){
+	function emailExists($email){
 		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
@@ -91,160 +163,6 @@ class Auth{
 		$count = $query->fetchColumn();
 		return $count > 0;
 	}
-
-	// STAFF AUTH SECTION
-
-	function staffLogin($email, $password) {
-		$sql = "SELECT * FROM Staffs WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$staff=null;
-		if($query->execute()){
-			$staff = $query->fetch();
-		}
-
-		if (!$staff) {
-			header("location:" . $_SERVER["HTTP_REFERER"]);
-			return;
-		}
-		if (password_verify($password, $staff["password"])){
-			$_SESSION["user_id"] = $staff["user_id"];
-			$_SESSION["is_loggedIn"] = TRUE;
-			$_SESSION["email"] = $staff["email"];
-			$_SESSION["user_type"] = "staff";
-			header("location: " . $_SERVER["HTTP_REFERER"]);
-		} else {
-			return False;
-		}
-  	}
-
-	function staffRegister(string $email, string $password){
-		$sql = "INSERT INTO Staffs(email, password) VALUES(:email, :password)";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-		$query->bindParam(':password', $hashed_password);
-		if($query->execute()){
-            return true;
-        } else {
-            return false;
-        }
-	}
-
-	private function _retrieveStaffPassword($email, $password){
-		$sql = "SELECT password FROM Staffs WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$retrieved_password=null;
-		if($query->execute()){
-			$retrieved_password = $query->fetch();
-		}
-		if(password_verify($password, $retrieved_password["password"])){
-			return true;
-		}
-		return false;
-	}
-
-	function staffResetPassword($email, $new_password){
-		$sql = "UPDATE Staffs set password = :password WHERE email = :email";
-		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrieveStPassword($email, $new_password)){
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$query->bindParam(':password', $new_hashed_password);
-			return $query->execute();
-		} else {
-			return false;
-		}
-		
-	}
-
-	function staffEmailExists($email){
-		$sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-	// ADMIN SECTION
-
-	function adminLogin($email, $password) {
-		$sql = "SELECT * FROM Staffs WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$admin=null;
-		if($query->execute()){
-			$admin = $query->fetch();
-		}
-
-		if (!$admin) {
-			header("location:" . $_SERVER["HTTP_REFERER"]);
-			return;
-		}
-		if (password_verify($password, $admin["password"])){
-			$_SESSION["user_id"] = $admin["user_id"];
-			$_SESSION["is_loggedIn"] = TRUE;
-			$_SESSION["email"] = $admin["email"];
-			$_SESSION["user_type"] = "admin";
-			header("location: " . $_SERVER["HTTP_REFERER"]);
-		} else {
-			return False;
-		}
-  	}
-
-	function adminRegister(string $email, string $password){
-		$sql = "INSERT INTO Admin(email, password) VALUES(:email, :password)";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-		$query->bindParam(':password', $hashed_password);
-		if($query->execute()){
-            return true;
-        } else {
-            return false;
-        }
-	}
-
-	private function _retrieveAdminPassword($email, $password){
-		$sql = "SELECT password FROM Admin WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$retrieved_password=null;
-		if($query->execute()){
-			$retrieved_password = $query->fetch();
-		}
-		if(password_verify($password, $retrieved_password["password"])){
-			return true;
-		}
-		return false;
-	}
-
-	function adminResetPassword($email, $new_password){
-		$sql = "UPDATE Admin set password = :password WHERE email = :email";
-		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrieveStPassword($email, $new_password)){
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$query->bindParam(':password', $new_hashed_password);
-			return $query->execute();
-		} else {
-			return false;
-		}
-		
-	}
-
-	function adminEmailExists($email){
-		$sql = "SELECT COUNT(*) FROM Admin WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-
 }
 
 ?>

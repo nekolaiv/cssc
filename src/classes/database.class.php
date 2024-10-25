@@ -1,4 +1,6 @@
 <?php
+namespace Src\Classes;
+use PDO;
 class Database{
     private $host = 'localhost';
     private $username = 'root';
