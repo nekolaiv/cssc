@@ -62,11 +62,11 @@ class Auth{
 
 	public function login($email, $password) {
 		if($this->_detectRole($email) == 'student'){
-			$sql = "SELECT user_id, password FROM Students WHERE email = :email";
+			$sql = "SELECT user_id, password, role FROM Students WHERE email = :email";
 		} else if($this->_detectRole() == 'staff'){
-			$sql = "SELECT user_id, password FROM Staffs WHERE email = :email";
+			$sql = "SELECT user_id, password, role FROM Staffs WHERE email = :email";
 		} else if($this->_detectRole() == 'admin'){
-			$sql = "SELECT user_id, password FROM Admin WHERE email = :email";
+			$sql = "SELECT user_id, password, role FROM Admin WHERE email = :email";
 		}
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -74,6 +74,10 @@ class Auth{
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])){
+			$_SESSION["user_id"] = $student["user_id"];
+			$_SESSION["is_logged-in"] = true;
+			$_SESSION["email"] = $student["email"];
+			$_SESSION["user_type"] = "student";
             return true;
         }
         return false;

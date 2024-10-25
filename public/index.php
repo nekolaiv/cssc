@@ -14,30 +14,28 @@ use Src\Controllers\AuthController;
 use Src\Middlewares\AuthMiddleware;
 
 
-$controller = new AuthController();
+$auth_controller = new AuthController();
 $middleware = new AuthMiddleware();
 
 if(empty($_SESSION['is-logged-in'])){
     $_SERVER['REQUEST_URI'] = '/login';
 } else {
-    header('Location: ../resources/views/student/home.php');
-    exit;
+    $_SERVER['REQUEST_URI'] = '/home';
 }
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
 switch ($requestUri) {
     case '/login':
-        $controller->login();
+        $auth_controller->login();
         break;
 
     case '/logout':
-        $controller->logout();
+        $auth_controller->logout();
         break;
 
     case '/home':
         $middleware->handle();
-        require_once '../views/dashboard.php';
         break;
     
     default:

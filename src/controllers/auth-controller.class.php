@@ -28,20 +28,9 @@ class AuthController extends BaseController {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $email = $this->middleware->cleanInput($_POST['email']);
             $password = $this->middleware->cleanInput($_POST['password']);
+            $credentials_status = $this->middleware->verifyCredentials($email, $password);
 
-            $credentials = $this->middleware->verifyCredentials($email, $password);
-
-            if($credentials !== NULL){
-                
-            }
-
-            if($this->middleware->verifyCredentials($email, $password)){
-                $_SESSION['is-logged-in'] = true;
-            }
-            
-
-            if($email_err == ' ' && $password_err == ' '){
-                echo 'login';
+            if($credentials_status === true){
                 if($auth->login($email, $password)){
                     $_SESSION['is-logged-in'] = true;
                     header('Location: ../../public/index.php');
@@ -50,6 +39,8 @@ class AuthController extends BaseController {
                     $password_err = "incorrect password"; // Temporary, verify later with hashed.
                 }
             } else {
+                $email_err = $credentials_status[0];
+                $password_err = $credentials_status[1];
                 require_once('../resources/views/auth/login.php');
             }
             
