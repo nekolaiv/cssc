@@ -1,18 +1,14 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once "../../helpers/session.function.php";
+// require_once "../../helpers/session.function.php";
 
-if (!isLoggedIn()) {
-  header("location: ./login.php");
-  exit;
-}
+// if (!isLoggedIn()) {
+//   header("location: ./login.php");
+//   exit;
+// }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
-    logout();
-    header("location: ./login.php");
-    exit;
-}
+
 
 ?>
 
@@ -29,7 +25,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
         <p class="logo">CSSC</p>
         <nav>
             <p>navbar</p>
-            <form action="/logout" method="POST">
+            <form action="" method="POST">
+                <!-- <input type="hidden" name="action" value="logout"> -->
                 <button type="submit" name="logout">Logout</button>
             </form>
         </nav>

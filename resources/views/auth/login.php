@@ -45,7 +45,8 @@ ini_set('display_errors', 1);
 
 // extract($_SESSION);
 
-// ?>
+// 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +62,7 @@ ini_set('display_errors', 1);
         <h3>Login Form</h3>
         <?php if (!empty($_SESSION['feedback'])): ?><span class="success feedback"><?= $_SESSION['feedback'] ?></span><br><?php unset($_SESSION['feedback']); endif; ?>
         <label for="email">Email <span class="error"><?= $required ?></span></label>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
+        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
         
         <div class="password-util">
@@ -69,7 +70,7 @@ ini_set('display_errors', 1);
             <a href="./forgot-password.php" class="forgot-password">forgot password?</a>
         </div>
         
-        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" required>
+        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" >
 
         <div class="below-input">
             <?php if (!empty($password_err)): ?>
@@ -81,8 +82,8 @@ ini_set('display_errors', 1);
             </div>
         </div>
 
-        <button type="submit" class="primary-button">login</button>
-        <a href="./register.php"><button type="button" class="secondary-button">or register</button></a>
+        <button type="submit" class="primary-button" name="form-action" value="login">login</button>
+        <button type="submit" class="secondary-button" name="form-action" value="switch-to-register">or register</button>
     </form>
     <script src="/cssc/resources/js/script.js"></script>
 </body>

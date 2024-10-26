@@ -63,24 +63,34 @@ class Auth{
 	public function login($email, $password) {
 		if($this->_detectRole($email) == 'student'){
 			$sql = "SELECT user_id, password, role FROM Students WHERE email = :email";
-		} else if($this->_detectRole() == 'staff'){
+			$user_type = 'student';
+		} else if($this->_detectRole($email) == 'staff'){
 			$sql = "SELECT user_id, password, role FROM Staffs WHERE email = :email";
-		} else if($this->_detectRole() == 'admin'){
+			$user_type = 'staff';
+		} else if($this->_detectRole($email) == 'admin'){
 			$sql = "SELECT user_id, password, role FROM Admin WHERE email = :email";
+			$user_type = 'admin';
+		} else {
+			return ['email does not exist', ' '];
 		}
+		
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
-        $query->execute();
-        $user = $query->fetch(PDO::FETCH_ASSOC);
+		$user = NULL;
+		if($query->execute()){
+			$user = $query->fetch(PDO::FETCH_ASSOC);
+		}
 
-        if ($user && password_verify($password, $user['password'])){
-			$_SESSION["user_id"] = $student["user_id"];
-			$_SESSION["is_logged-in"] = true;
-			$_SESSION["email"] = $student["email"];
-			$_SESSION["user_type"] = "student";
+		if (!password_verify($password, $user['password'])){
+			return [' ', 'incorrect password'];	
+        } else {
+			$_SESSION["user-id"] = $user["user_id"];
+			$_SESSION["email"] = $user["email"];
+			$_SESSION["user-type"] = $user_type;
+			$_SESSION["is-logged-in"] = true;
             return true;
-        }
-        return false;
+		}
+        
     }
 
 	// public function register($username, $password) {

@@ -10,9 +10,11 @@ class AuthMiddleware {
     }
 
     public function cleanInput($input){
-        $input = trim($input);
-        $input = stripslashes($input);
-        $input = htmlspecialchars($input);
+        if($input !== NULL){
+            $input = trim($input);
+            $input = stripslashes($input);
+            $input = htmlspecialchars($input);
+        }
         return $input;
     }
 
@@ -22,11 +24,10 @@ class AuthMiddleware {
 
     private function _verifyEmail($email){
         if(!(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph')){
-            return 'invalid email - use @wmsu.edu.ph';
-        } else if(!($auth->emailExists($email))){
-            return 'email does not exist';
+            return '';
+        } else {
+            return '';
         }
-        return NULL;
     }
 
 
@@ -34,27 +35,35 @@ class AuthMiddleware {
         if(strlen($password) < 8){
             return 'minimum 8 characters';
         }
-        return NULL;
+        return '';
     }
 
-    public function verifyCredentials($email, $password, $password2=NULL){
-        $email_err = $password_err = $password2_err = NULL;
-
-        $clean_email = cleanInput($email);
-        $email_err = $this->_verifyEmail($clean_email);
-
-        $clean_password = cleanInput($password);
-        $password_err = $this->_verifyPassword($clean_password);
-
-        if($password2 !== NULL){
-            $clean_password2 = cleanInput($password2);
-            $password2_err = $this->_verifyPassword($clean_password);
-        }
-
-        if($email_err === NULL && $password_err === NULL && $password2_err === NULL){
+    private function _isEmpty($email, $password){
+        if($email == '' && $password == ''){
             return true;
         } else {
-            [$email_err, $password_err, $password2_err];
+            return false;
+        }
+    }
+
+    public function verifyLoginCredentials($email, $password){
+        $email_err = $password_err = '';
+        $clean_email = cleanInput($email);
+        $clean_password = cleanInput($password);
+
+        if($this->_isEmpty($email, $password)){
+            $email_err = 'email is required';
+            $password_err = 'password is required';
+        }
+
+        if($this->_verifyEmail($clean_email)){
+            $email_err = 'invalid email - use @wmsu.edu.ph';
+        }
+
+        if($email_err === '' && $password_err === ''){
+            return true;
+        } else {
+            return [$email_err, $password_err];
         }
     }
 }

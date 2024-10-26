@@ -5,43 +5,87 @@ ini_set('display_errors', 1);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    session_regenerate_id(true);
 }
 
 require_once('../src/controllers/auth-controller.class.php');
-require_once('../src/middlewares/auth-middleware.class.php');
+require_once('../src/controllers/route-controller.class.php');
 
 use Src\Controllers\AuthController;
-use Src\Middlewares\AuthMiddleware;
-
+use Src\Controllers\RouteController;
 
 $auth_controller = new AuthController();
-$middleware = new AuthMiddleware();
+$route_controller = new RouteController();
+
+// Testing purposes
+// print_r($_POST);
+// print_r($_SESSION);
+// echo 'outside';
+
+if(empty($_SESSION['action'])){
+    $_SESSION['action'] = 'login';
+    header('Refresh: 0');
+}
 
 if(empty($_SESSION['is-logged-in'])){
-    $_SERVER['REQUEST_URI'] = '/login';
-} else {
-    $_SERVER['REQUEST_URI'] = '/home';
+    // echo 'not logged';
+    $action = $_SESSION['action'];
+    switch ($action) {
+        case 'register':
+            $action = $auth_controller->register();
+            break;
+
+        case 'forgot-password':
+            $action = $auth_controller->forgotPassword();
+            break;
+
+        case 'logout':
+            $action = $auth_controller->logout();
+            break;
+        
+        default:
+            $action = $auth_controller->login();
+            break;
+    }
+} else if ($_SESSION['is-logged-in'] === true && isset($_SESSION['user-id'])){
+    // echo 'logged';
+    $user_type = $_SESSION['user-type'];
+    switch ($user_type) {
+        case 'student':
+            $route_controller->studentMainView();
+            break;
+
+        case 'staff':
+            require_once(STUDENT_DIR . 'home.php');
+            break;
+
+        case 'admin':
+            require_once(STUDENT_DIR . 'home.php');
+            break;
+        
+    }
 }
 
-$requestUri = $_SERVER['REQUEST_URI'];
 
-switch ($requestUri) {
-    case '/login':
-        $auth_controller->login();
-        break;
 
-    case '/logout':
-        $auth_controller->logout();
-        break;
 
-    case '/home':
-        $middleware->handle();
-        break;
-    
-    default:
-        break;
-}
+
 ?>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <pre>
+        <?php //print_r($_SESSION);?>
+    </pre>
+</body>
+</html> -->
 
 <!-- <!DOCTYPE html>
 <html lang="en">
