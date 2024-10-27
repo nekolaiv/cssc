@@ -1,6 +1,9 @@
 FOR DEVELOPMENT PURPOSES ONLY:
 New notes must be placed on top of the last notes. Stack algorithm.
 
+COPY THIS TEMPLATE~
+Datetime: 10-12-09:23
+- Lorem ipsum dolor....
 
 NOTE LOGS~
 

@@ -2,6 +2,8 @@ TABLE OF CONTENTS
 A. NAMING CONVENTIONS
 B. MEDIA QUERIES
 C. FOLDER STRUCTURE
+D. ARCHITECTURE
+E.
 
 
 ===
@@ -34,7 +36,20 @@ C. FOLDER STRUCTURE
 
 ===
 D. ARCHITECTURE
-- Project will initially follow MV(MODEL-VIEW) Architecture as for the mean time.
-- Refactor to MVC in latter development.
+- Project will initially follow MVC(MODEL-VIEW-CONTROLLER) Architecture as for the mean time.
+- Includes usage of middleware for user data validation.
+
+===
+E. GIT COMMIT MESSAGE
+- label each commit with the ff: {feat, update, chore, debug}
+a. feat = introduce new feature
+b. update = major changes or quick changes on txt files
+d. chore = minor changes | fixes or code | folder | file arrangements
+d. debug = debugged logic problems
+example:
+feat: finish table search functionality
+- First word of the commit message must be present tense (e.g.,(above ex.) finish)
+- for updating txt files, message may be empty.
+
 
 
