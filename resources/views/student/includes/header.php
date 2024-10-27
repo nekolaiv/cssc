@@ -24,7 +24,12 @@ ini_set('display_errors', 1);
     <header>
         <p class="logo">CSSC</p>
         <nav>
-            <p>navbar</p>
+            <ul>
+                <li><a href="/cssc/"></a>Home</li>
+                <li><a href="/cssc/about"></a>About</li>
+                <li><a href="/cssc/profile"></a>Profile</li>
+                <li><a href="/cssc/contact"></a>Contact</li>
+            </ul>
             <form action="" method="POST">
                 <!-- <input type="hidden" name="action" value="logout"> -->
                 <button type="submit" name="logout">Logout</button>
