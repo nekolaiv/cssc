@@ -34,23 +34,23 @@ if(empty($_SESSION['is-logged-in'])){
     $action = $_SESSION['action'];
     switch ($action) {
         case 'login':
-            $action = $auth_controller->login();
+            $auth_controller->login();
             break;
 
         case 'register':
-            $action = $auth_controller->register();
+            $auth_controller->register();
             break;
 
         case 'forgot-password':
-            $action = $auth_controller->forgotPassword();
+            $auth_controller->forgotPassword();
             break;
 
         case 'logout':
-            $action = $auth_controller->logout();
+            $auth_controller->logout();
             break;
 
         default:
-            header('Location: ./index.php');
+            header('Location: ./index.php', 'Refresh: 0');
             exit;
     }
 } else if ($_SESSION['is-logged-in'] === true && isset($_SESSION['user-id'])){

@@ -31,9 +31,9 @@ class AuthController {
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
             if($_POST['form-action'] === 'attempt-login') {
                 // echo 'attempt login';
-                $email = $this->middleware->cleanInput($_POST['email']);
-                $password = $this->middleware->cleanInput($_POST['password']);
-                $credentials_status = $this->middleware->verifyLoginCredentials($email, $password);
+                $email = $this->middleware->cleanInput($_POST['email']) ?? NULL;
+                $password = $this->middleware->cleanInput($_POST['password']) ?? NULL;
+                $credentials_status = $this->middleware->verifyLoginCredentials($email, $password) ?? NULL;
                 if($credentials_status === true) {
                     $login_status = $this->auth->login($email, $password);
                     if($login_status === true) {
@@ -71,9 +71,9 @@ class AuthController {
         
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
             if($_POST['form-action'] === 'attempt-register') {
-                $email = $this->middleware->cleanInput($_POST['email']);
-                $password = $this->middleware->cleanInput($_POST['password']);
-                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']);
+                $email = $this->middleware->cleanInput($_POST['email']) ?? NULL;
+                $password = $this->middleware->cleanInput($_POST['password']) ?? NULL;
+                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']) ?? NULL;
                 $credentials_status = $this->middleware->verifyRegisterCredentials($email, $password, $confirm_password);
                 if($credentials_status === true) {
                     $register_status = $this->auth->register($email, $password);
@@ -109,9 +109,9 @@ class AuthController {
         
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
             if($_POST['form-action'] === 'attempt-reset-password') {
-                $email = $this->middleware->cleanInput($_POST['email']);
-                $new_password = $this->middleware->cleanInput($_POST['new-password']);
-                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']);
+                $email = $this->middleware->cleanInput($_POST['email']) ?? NULL;
+                $new_password = $this->middleware->cleanInput($_POST['new-password']) ?? NULL;
+                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']) ?? NULL;
                 $credentials_status = $this->middleware->verifyRegisterCredentials($email, $new_password, $confirm_password);
                 if($credentials_status === true) {
                     $reset_password_status = $this->auth->resetPassword($email, $new_password);
