@@ -2,48 +2,13 @@
 namespace Src\Middlewares;
 
 class AuthMiddleware {
-    public function handle() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../resources/views/student/home.php');
-            exit;
-        }
-    }
-
     public function cleanInput($input){
-        if($input !== NULL){
+        if($input !== '' || $input !== NULL){
             $input = trim($input);
             $input = stripslashes($input);
             $input = htmlspecialchars($input);
-        }
-        return $input;
-    }
-
-    public function hashPassword($password){
-
-    }
-
-    private function _verifyEmail($email){
-        if(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph'){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    private function _verifyPasswordLength($password){
-        if(strlen($password) >= 8){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function _verifyPasswordMatch($password, $confirm_password){
-        if($password === $confirm_password){
-            return true;
-        } else {
-            return false;
+        } else { 
+            return $input;
         }
     }
 
@@ -62,14 +27,12 @@ class AuthMiddleware {
 
         if($this->_isEmpty($email)){
             $email_err = 'email is required';
+        } else if(!$this->_verifyEmail($clean_email)){
+            $email_err = 'invalid email - use @wmsu.edu.ph';
         }
 
         if($this->_isEmpty($password)){
             $password_err = 'password is required';
-        }
-
-        if(!$this->_verifyEmail($clean_email)){
-            $email_err = 'invalid email - use @wmsu.edu.ph';
         }
 
         if($email_err === ' ' && $password_err === ' '){
@@ -148,6 +111,31 @@ class AuthMiddleware {
             return true;
         } else {
             return [$email_err, $password_err, $confirm_password_err];
+        }
+    }
+
+    private function _verifyEmail($email){
+        if(filter_var($email, FILTER_VALIDATE_EMAIL) && substr($email, -12) === '@wmsu.edu.ph'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    private function _verifyPasswordLength($password){
+        if(strlen($password) >= 8){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function _verifyPasswordMatch($password, $confirm_password){
+        if($password === $confirm_password){
+            return true;
+        } else {
+            return false;
         }
     }
 }
