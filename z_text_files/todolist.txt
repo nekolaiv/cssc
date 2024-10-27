@@ -17,7 +17,8 @@ STUDENT
 10. set status variable for successful actions in auth
 11. hash passwords and handle auth logic /
 12. Set auth for admin
-13. set auth for stadd
+13. set auth for staff
 14. change show password/
-15. merge all auth in one
-16. retrieve controller
+15. merge all auth in one/
+16. retrieve controller/
+17. restructure for MVC architecture /
