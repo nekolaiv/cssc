@@ -3,11 +3,12 @@ namespace Src\Middlewares;
 
 class AuthMiddleware {
     public function cleanInput($input){
-        if($input !== '' || $input !== NULL){
+        if($input === '' || $input === NULL){
+            return false;
+        } else { 
             $input = trim($input);
             $input = stripslashes($input);
             $input = htmlspecialchars($input);
-        } else { 
             return $input;
         }
     }
@@ -21,8 +22,8 @@ class AuthMiddleware {
     }
 
     public function verifyLoginCredentials($email, $password){
-        $clean_email = cleanInput($email);
-        $clean_password = cleanInput($password);
+        $clean_email = $this->cleanInput($email);
+        $clean_password = $this->cleanInput($password);
         $email_err = $password_err = ' ';
 
         if($this->_isEmpty($email)){
@@ -43,9 +44,9 @@ class AuthMiddleware {
     }
 
     public function verifyRegisterCredentials($email, $password, $confirm_password){
-        $clean_email = cleanInput($email);
-        $clean_password = cleanInput($password);
-        $clean_confirm_password = cleanInput($confirm_password);
+        $clean_email = $this->cleanInput($email);
+        $clean_password = $this->cleanInput($password);
+        $clean_confirm_password = $this->cleanInput($confirm_password);
         $email_err = $password_err = $confirm_password_err = ' ';
         
 
@@ -79,9 +80,9 @@ class AuthMiddleware {
     }
 
     public function verifyResetPasswordCredentials($email, $new_password, $confirm_password){
-        $clean_email = cleanInput($email);
-        $clean_new_password = cleanInput($new_password);
-        $clean_confirm_password = cleanInput($confirm_password);
+        $clean_email = $this->cleanInput($email);
+        $clean_new_password = $this->cleanInput($new_password);
+        $clean_confirm_password = $this->cleanInput($confirm_password);
         $email_err = $new_password_err = $confirm_password_err = ' ';
         
 
