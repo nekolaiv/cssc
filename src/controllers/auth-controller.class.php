@@ -4,8 +4,8 @@ namespace Src\Controllers;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once('../src/classes/auth.class.php');
 require_once('base-controller.class.php');
+require_once('../src/classes/auth.class.php');
 require_once('../src/middlewares/auth-middleware.class.php');
 
 use Src\Classes\Auth;
@@ -13,9 +13,9 @@ use Src\Middlewares\AuthMiddleware;
 
 class AuthController {
 
-    private $root_directory;
-    private $middleware;
     private $auth;
+    private $middleware;
+    private $root_directory;
 
     public function __construct(){
         $this->middleware = new AuthMiddleware(); 
