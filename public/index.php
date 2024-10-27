@@ -9,107 +9,75 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once('../src/controllers/auth-controller.class.php');
-require_once('../src/controllers/route-controller.class.php');
+require_once('../src/controllers/student-controller.class.php');
 
 use Src\Controllers\AuthController;
-use Src\Controllers\RouteController;
+use Src\Controllers\StudentController;
 
-$auth_controller = new AuthController();
-$route_controller = new RouteController();
+class FrontController {
+    private $auth_controller;
+    private $student_controller;
 
-// ================
-// TESTING PURPOSES
-// print_r($_POST);
-// print_r($_SESSION);
-// echo 'outside';
-// ================
+    public function __construct() {
+        $this->auth_controller = new AuthController();
+        $this->student_controller = new StudentController();
+    }
 
-if(empty($_SESSION['action'])){
-    $_SESSION['action'] = 'login';
-    header('Refresh: 0');
-}
-
-if(empty($_SESSION['is-logged-in'])){
-    // echo 'not logged';
-    $action = $_SESSION['action'];
-    switch ($action) {
-        case 'login':
-            $auth_controller->login();
-            break;
-
-        case 'register':
-            $auth_controller->register();
-            break;
-
-        case 'forgot-password':
-            $auth_controller->forgotPassword();
-            break;
-
-        case 'logout':
-            $auth_controller->logout();
-            break;
-
-        default:
-            header('Location: ./index.php', 'Refresh: 0');
+    public function run() {
+        if (empty($_SESSION['action'])) {
+            $_SESSION['action'] = 'login';
+            header('Refresh: 0');
             exit;
+        }
+
+        if (empty($_SESSION['is-logged-in'])) {
+            $this->handleUnauthenticatedUser();
+        } else if ($_SESSION['is-logged-in'] === true && isset($_SESSION['user-id'])) {
+            $this->handleAuthenticatedUser();
+        }
     }
-} else if ($_SESSION['is-logged-in'] === true && isset($_SESSION['user-id'])){
-    // echo 'logged';
-    $user_type = $_SESSION['user-type'];
-    switch ($user_type) {
-        case 'student':
-            $route_controller->studentMainView();
-            break;
 
-        case 'staff':
-            require_once(STUDENT_DIR . 'home.php');
-            break;
+    private function handleUnauthenticatedUser() {
+        $action = $_SESSION['action'];
+        switch ($action) {
+            case 'login':
+                $this->auth_controller->login();
+                break;
 
-        case 'admin':
-            require_once(STUDENT_DIR . 'home.php');
-            break;
-        
+            case 'register':
+                $this->auth_controller->register();
+                break;
+
+            case 'forgot-password':
+                $this->auth_controller->forgotPassword();
+                break;
+
+            case 'logout':
+                $this->auth_controller->logout();
+                break;
+
+            default:
+                header('Location: ./index.php', true, 302);
+                exit;
+        }
+    }
+
+    private function handleAuthenticatedUser() {
+        $user_type = $_SESSION['user-type'];
+        switch ($user_type) {
+            case 'student':
+                $this->student_controller->routeUser();
+                break;
+
+            case 'staff':
+            case 'admin':
+                require_once(STUDENT_DIR . 'home.php');
+                break;
+        }
     }
 }
 
-
-
-
+$frontController = new FrontController();
+$frontController->run();
 
 ?>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-    <pre>
-        <?php //print_r($_SESSION);?>
-    </pre>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select User</title>
-    <link rel="stylesheet" href="/cssc/src/css/global.css">
-</head>
-<body class="tp-body">
-    <section class="tp-section">
-        <h1 class="tp-h1">SELECT USER TYPE</h1>
-        <div class="tp-buttons">
-            <a href="/cssc/src/views/student/login.php"><button class="tp-options">Student</button></a>
-            <a href="/cssc/src/views/staff/login.php"><button class="tp-options">Staff</button></a>
-            <a href="/cssc/src/views/admin/login.php"><button class="tp-options">Admin</button></a>
-        </div>
-        <p>Note: Temporary Page for Development Purposes</p>
-    </section>
-</body>
-</html> -->
