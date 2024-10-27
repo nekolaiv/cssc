@@ -23,42 +23,7 @@ class Auth{
         ob_end_flush();
     }
 
-	private function _isAdmin($email){
-		$sql = "SELECT COUNT(*) FROM Admin WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-	private function _isStaff($email){
-		$sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-	private function _isStudent($email){
-		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-	private function _detectRole($email){
-		if($this->_isStudent($email)){
-			return 'student';
-		} else if($this->_isStaff($email)){
-			return 'staff';
-		} else if($this->_isAdmin($email)){
-			return 'admin';
-		}
-	}
+	
 
 	public function login($email, $password) {
 		if($this->_detectRole($email) == 'student'){
@@ -93,6 +58,117 @@ class Auth{
         
     }
 
+	
+
+	public function register(string $email, string $password){
+		if($this->emailExists($email, 'student')){
+			return 'email exists';
+		} else {
+			$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
+			$query = $this->database->connect()->prepare($sql);
+			$query->bindParam(':email', $email);
+			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+			$query->bindParam(':password', $hashed_password);
+			if($query->execute()){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	
+
+	public function resetPassword($email, $new_password){
+		$role = $this->_detectRole($email);
+		if($this->emailExists($email, $role) === false){
+			return ['email does not exists', ' '];
+		} else {
+			if($role === 'student'){ $sql = "UPDATE Students set password = :password WHERE email = :email"; }
+			else if($role === 'staff'){ $sql = "UPDATE Staffs set password = :password WHERE email = :email"; }
+			else if($role === 'admin'){ $sql = "UPDATE Admin set password = :password WHERE email = :email"; }
+		}
+
+		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+		if(!$this->_retrievePassword($email, $new_password)){
+			$query = $this->database->connect()->prepare($sql);
+			$query->bindParam(':email', $email);
+			$query->bindParam(':password', $new_hashed_password);
+			return $query->execute();
+		} else {
+			return [' ', 'similar to old password'];
+		}
+		
+	}
+
+	private function emailExists($email, $role){
+		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Students WHERE email = :email"; } 
+		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email"; } 
+		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin WHERE email = :email"; }
+		else { return false; }
+
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _retrievePassword($email, $password){
+		$sql = "SELECT password FROM Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$retrieved_password=null;
+		if($query->execute()){
+			$retrieved_password = $query->fetch();
+		}
+		if(password_verify($password, $retrieved_password["password"])){ 
+			return true;
+		} else { 
+			return false; 
+		}
+	}
+
+	private function _detectRole($email){
+		if($this->_isStudent($email)){
+			return 'student';
+		} else if($this->_isStaff($email)){
+			return 'staff';
+		} else if($this->_isAdmin($email)){
+			return 'admin';
+		} else {
+			return false;
+		}
+	}
+
+	private function _isStudent($email){
+		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _isStaff($email){
+		$sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _isAdmin($email){
+		$sql = "SELECT COUNT(*) FROM Admin WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	// =================== DUMPS BUT MIGHT BE USEFUL =================== 
 	// public function register($username, $password) {
     //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         
@@ -127,56 +203,6 @@ class Auth{
 	// 		return False;
 	// 	}
   	// }
-
-	function register(string $email, string $password){
-		$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-		$query->bindParam(':password', $hashed_password);
-		if($query->execute()){
-            return true;
-        } else {
-            return false;
-        }
-	}
-
-	private function _retrievePassword($email, $password){
-		$sql = "SELECT password FROM Students WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$retrieved_password=null;
-		if($query->execute()){
-			$retrieved_password = $query->fetch();
-		}
-		if(password_verify($password, $retrieved_password["password"])){
-			return true;
-		}
-		return false;
-	}
-
-	function resetPassword($email, $new_password){
-		$sql = "UPDATE Students set password = :password WHERE email = :email";
-		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrievePassword($email, $new_password)){
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$query->bindParam(':password', $new_hashed_password);
-			return $query->execute();
-		} else {
-			return false;
-		}
-		
-	}
-
-	function emailExists($email){
-		$sql = "SELECT COUNT(*) FROM Students WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
 }
 
 ?>

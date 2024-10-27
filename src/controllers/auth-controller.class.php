@@ -23,44 +23,132 @@ class AuthController {
         $this->auth = new Auth();
     }
 
-    // ORIGINAL LOGIN VERSION
     public function login() {
         $required = '*';
         $email = $password = '';
         $email_err = $password_err = ' ';
         
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])){
-            if($_POST['form-action'] == 'attempt-login'){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
+            if($_POST['form-action'] === 'attempt-login') {
+                // echo 'attempt login';
                 $email = $this->middleware->cleanInput($_POST['email']);
                 $password = $this->middleware->cleanInput($_POST['password']);
                 $credentials_status = $this->middleware->verifyLoginCredentials($email, $password);
-                if($credentials_status === true){
+                if($credentials_status === true) {
                     $login_status = $this->auth->login($email, $password);
-                    if($login_status === true){
+                    if($login_status === true) {
                         $_SESSION['is-logged-in'] = true;
                         header('Location: ' . FRONT_DIR);
                         exit;
                     } else {
-                        $email_err = $login_status[0];
-                        $password_err = $login_status[1];
+                        $email_err = $login_status[0] ?? NULL;
+                        $password_err = $login_status[1] ?? NULL;
                         require_once($this->root_directory . '/resources/views/auth/login.php');
                     }
                 } else {
-                    $email_err = $credentials_status[0];
-                    $password_err = $credentials_status[1];
+                    $email_err = $credentials_status[0] ?? NULL;
+                    $password_err = $credentials_status[1] ?? NULL;
                     require_once($this->root_directory . '/resources/views/auth/login.php');
                 }
-            } else if($_POST['form-action'] == 'switch-to-register'){
+            } else if($_POST['form-action'] === 'switch-to-register') {
                 $_SESSION['action'] = 'register';
                 header('Location: ' . FRONT_DIR);
                 exit;
-            }
-            
+            } else if($_POST['form-action'] === 'forgot-password') {
+                $_SESSION['action'] = 'forgot-password';
+                header('Location: ' . FRONT_DIR, 'Refresh: 0');
+                exit;
+            }  
         } else {
             require_once($this->root_directory . '/resources/views/auth/login.php');
         }
     }
 
+    public function register() {
+        $required = '*';
+        $email = $password = $confirm_password = '';
+        $email_err = $password_err = $confirm_password_err = ' ';
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
+            if($_POST['form-action'] === 'attempt-register') {
+                $email = $this->middleware->cleanInput($_POST['email']);
+                $password = $this->middleware->cleanInput($_POST['password']);
+                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']);
+                $credentials_status = $this->middleware->verifyRegisterCredentials($email, $password, $confirm_password);
+                if($credentials_status === true) {
+                    $register_status = $this->auth->register($email, $password);
+                    if($register_status === true) {
+                        $_SESSION['action'] = 'login';
+                        $_SESSION['feedback'] = 'account registered successfully';
+                        header('Location: ' . FRONT_DIR, 'Refresh: 0');
+                        exit;
+                    } else {
+                        $email_err = $register_status ?? NULL;
+                        require_once($this->root_directory . '/resources/views/auth/register.php');
+                    }
+                } else {
+                    $email_err = $credentials_status[0] ?? NULL;
+                    $password_err = $credentials_status[1] ?? NULL;
+                    $confirm_password_err = $credentials_status[2] ?? NULL;
+                    require_once($this->root_directory . '/resources/views/auth/register.php');
+                }
+            } else if($_POST['form-action'] == 'switch-to-login'){
+                $_SESSION['action'] = 'login';
+                header('Location: ' . FRONT_DIR, 'Refresh: 0');
+                exit;
+            }  
+        } else {
+            require_once($this->root_directory . '/resources/views/auth/register.php');
+        }
+    }
+
+    public function forgotPassword() {
+        $required = '*';
+        $email = $new_password = $confirm_password = '';
+        $email_err = $new_password_err = $confirm_password_err = ' ';
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
+            if($_POST['form-action'] === 'attempt-reset-password') {
+                $email = $this->middleware->cleanInput($_POST['email']);
+                $new_password = $this->middleware->cleanInput($_POST['new-password']);
+                $confirm_password = $this->middleware->cleanInput($_POST['confirm-password']);
+                $credentials_status = $this->middleware->verifyRegisterCredentials($email, $new_password, $confirm_password);
+                if($credentials_status === true) {
+                    $reset_password_status = $this->auth->resetPassword($email, $new_password);
+                    if($reset_password_status === true) {
+                        $_SESSION['action'] = 'login';
+                        $_SESSION['feedback'] = 'password reset successfully';
+                        header('Location: ' . FRONT_DIR, 'Refresh: 0');
+                        exit;
+                    } else {
+                        $email_err = $reset_password_status[0] ?? NULL;
+                        $new_password_err = $reset_password_status[1] ?? NULL;
+                        require_once($this->root_directory . '/resources/views/auth/forgot-password.php');
+                    }
+                } else {
+                    $email_err = $credentials_status[0] ?? NULL;
+                    $new_password_err = $credentials_status[1] ?? NULL;
+                    $confirm_password_err = $credentials_status[2] ?? NULL;
+                    require_once($this->root_directory . '/resources/views/auth/forgot-password.php');
+                }
+            } else if($_POST['form-action'] == 'switch-to-login'){
+                $_SESSION['action'] = 'login';
+                header('Location: ' . FRONT_DIR, 'Refresh: 0');
+                exit;
+            }  
+        } else {
+            require_once($this->root_directory . '/resources/views/auth/forgot-password.php');
+        }
+    }
+
+    public function logout() {
+        $_SESSION = [];
+        session_destroy();
+        header('Location: ' . FRONT_DIR);
+        exit;
+    }
+
+    // =================== DUMPS BUT MIGHT BE USEFUL =================== 
     // ENHANCED LOGIN VERSION
     // public function login() {
 
@@ -109,48 +197,5 @@ class AuthController {
     //     $email = $password = '';
     //     require_once($this->root_directory . '/resources/views/auth/login.php');
     // }
-
-
-    // public function logout() {
-    //     $_SESSION = [];
-    //     session_destroy();
-    //     header('Location: ' . FRONT_DIR);
-    //     exit;
-    // }
-
-
-    public function register() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Handle user registration logic (e.g., saving user to the database)
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            // Assume User model has a register method
-            $user = new User();
-            if ($user->register($username, $password)) {
-                header('Location: /login');
-                exit;
-            } else {
-                echo "Registration failed.";
-            }
-        } else {
-            $this->render('auth/register');
-        }
-    }
-
-    public function forgotPassword() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Handle forgot password logic (e.g., sending reset email)
-            $email = $_POST['email'];
-            // Assume User model has a method to send reset email
-            $user = new User();
-            if ($user->sendResetEmail($email)) {
-                echo "Reset email sent.";
-            } else {
-                echo "Email not found.";
-            }
-        } else {
-            $this->render('auth/forgot-password');
-        }
-    }
 }
 ?>

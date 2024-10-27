@@ -21,7 +21,7 @@ class RouteController {
     }
 
     public function studentMainView(){
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])){
             unset($_SESSION['is-logged-in']);
             $_SESSION['action'] = 'logout';
             header('Location: ' . FRONT_DIR);

@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// =================== DUMPS BUT MIGHT BE USEFUL =================== 
 // require_once("../../../src/classes/auth.class.php");
 // require_once("../../../src/utils/clean.function.php");
 // require_once("../../../src/utils/session.function.php");
@@ -67,7 +68,8 @@ ini_set('display_errors', 1);
         
         <div class="password-util">
             <label for="password">Password <span class="error"><?= $required ?></span></label>
-            <a href="./forgot-password.php" class="forgot-password">forgot password?</a>
+            <!-- <a href="./forgot-password.php" class="forgot-password">forgot password?</a> -->
+            <button type="submit" class="forgot-password" name="form-action" value="forgot-password">forgot password?</button>
         </div>
         
         <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" >
@@ -82,7 +84,7 @@ ini_set('display_errors', 1);
             </div>
         </div>
 
-        <button type="submit" class="primary-button" name="form-action" value="login">login</button>
+        <button type="submit" class="primary-button" name="form-action" value="attempt-login">login</button>
         <button type="submit" class="secondary-button" name="form-action" value="switch-to-register">or register</button>
     </form>
     <script src="/cssc/resources/js/script.js"></script>

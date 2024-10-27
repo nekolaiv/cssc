@@ -17,10 +17,12 @@ use Src\Controllers\RouteController;
 $auth_controller = new AuthController();
 $route_controller = new RouteController();
 
-// Testing purposes
+// ================
+// TESTING PURPOSES
 // print_r($_POST);
 // print_r($_SESSION);
 // echo 'outside';
+// ================
 
 if(empty($_SESSION['action'])){
     $_SESSION['action'] = 'login';
@@ -31,6 +33,10 @@ if(empty($_SESSION['is-logged-in'])){
     // echo 'not logged';
     $action = $_SESSION['action'];
     switch ($action) {
+        case 'login':
+            $action = $auth_controller->login();
+            break;
+
         case 'register':
             $action = $auth_controller->register();
             break;
@@ -42,10 +48,10 @@ if(empty($_SESSION['is-logged-in'])){
         case 'logout':
             $action = $auth_controller->logout();
             break;
-        
+
         default:
-            $action = $auth_controller->login();
-            break;
+            header('Location: ./index.php');
+            exit;
     }
 } else if ($_SESSION['is-logged-in'] === true && isset($_SESSION['user-id'])){
     // echo 'logged';

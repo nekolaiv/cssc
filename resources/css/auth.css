@@ -63,35 +63,37 @@ label {
 }
 
 .forgot-password {
-  font-size: calc(var(--Gfont-size) - 1px);
+  all: unset;
+  background: none;
   color: var(--element-blue);
+  font-size: calc(var(--Gfont-size) - 1px);
   text-decoration: none;
+  cursor: pointer;
 }
 
-.below-input{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    /* border: 1px solid red; */
+.below-input {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid red; */
 }
 
-.show-password{
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    font-size: calc(var(--Gfont-size) + 1px);
-    gap: 5px;
-    /* border: 1px solid red; */
+.show-password {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  font-size: calc(var(--Gfont-size) + 1px);
+  gap: 5px;
+  /* border: 1px solid red; */
 }
 
-.showpassword-checkbox{
-    margin: 0;
-    padding: 0;
-    height: 13px;
-    width: 13px;
-    background-color: var(--color-white);
-    cursor: pointer;
-    
+.showpassword-checkbox {
+  margin: 0;
+  padding: 0;
+  height: 13px;
+  width: 13px;
+  background-color: var(--color-white);
+  cursor: pointer;
 }
 
 .auth-err {
