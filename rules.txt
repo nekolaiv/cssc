@@ -3,7 +3,7 @@ A. NAMING CONVENTIONS
 B. MEDIA QUERIES
 C. FOLDER STRUCTURE
 D. ARCHITECTURE
-E.
+E. GIT COMMIT MESSAGE
 
 
 ===
@@ -46,9 +46,9 @@ a. feat = introduce new feature
 b. update = major changes or quick changes on txt files
 d. chore = minor changes | fixes or code | folder | file arrangements
 d. debug = debugged logic problems
-example:
+-example:
 feat: finish table search functionality
-- First word of the commit message must be present tense (e.g.,(above ex.) finish)
+- First word of the commit message must be verb present tense (e.g.,(above ex.) finish)
 - for updating txt files, message may be empty.
 
 
