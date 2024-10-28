@@ -19,16 +19,17 @@ ini_set('display_errors', 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
+    <script src="/cssc/resources/js/student-AJAX.js"></script>
 </head>
 <body class="home-body">
     <header>
         <p class="logo">CSSC</p>
         <nav>
             <ul>
-                <li><a href="/cssc/"></a>Home</li>
-                <li><a href="/cssc/about"></a>About</li>
-                <li><a href="/cssc/profile"></a>Profile</li>
-                <li><a href="/cssc/contact"></a>Contact</li>
+                <button onclick="loadPage('home')">Home</button>
+                <button onclick="loadPage('about')">About</button>
+                <button onclick="loadPage('profile')">Profile</button>
+                <button onclick="loadPage('contact')">Contact</button>
             </ul>
             <form action="" method="POST">
                 <!-- <input type="hidden" name="action" value="logout"> -->
