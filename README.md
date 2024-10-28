@@ -10,7 +10,7 @@ This project allows users to input their college grades and calculates whether t
 - Honor roll qualification checks
 - Admin and instructor management interfaces
 
-## Installation
+## Installation - For Users
 
 1. **Clone the repository:**
 
@@ -36,7 +36,7 @@ This project allows users to input their college grades and calculates whether t
 - Start the XAMPP server.
 - Open your web browser and go to `http://localhost/cssc`.
 
-## Contributing
+## Contributing - For Developers
 
 We welcome contributions from the community! Here’s how you can help improve the project:
 
@@ -54,6 +54,7 @@ We welcome contributions from the community! Here’s how you can help improve t
      git clone https://github.com/your-username/cssc.git
      ```
    - Replace `your-username` with your actual GitHub username.
+   - Move project directory to xampp or lampp folder (Refer to installation above on how to move project)
 
 3. **Create a New Branch:**
 
