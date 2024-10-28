@@ -69,7 +69,7 @@ ini_set('display_errors', 1);
         <div class="password-util">
             <label for="password">Password <span class="error"><?= $required ?></span></label>
             <!-- <a href="./forgot-password.php" class="forgot-password">forgot password?</a> -->
-            <button type="submit" class="forgot-password" name="form-action" value="forgot-password">forgot password?</button>
+            <button type="submit" class="forgot-password" name="form-action" value="forgot-password" tabindex="-1">forgot password?</button>
         </div>
         
         <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>" >
@@ -79,7 +79,7 @@ ini_set('display_errors', 1);
                 <span class="error auth-err"><?= $password_err ?></span><br>
             <?php endif; ?>
             <div class="show-password">
-                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()" tabindex="-1">
                 <p>show password</p>
             </div>
         </div>
