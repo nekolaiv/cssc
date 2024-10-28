@@ -26,13 +26,13 @@ class AuthMiddleware {
         $clean_password = $this->cleanInput($password);
         $email_err = $password_err = ' ';
 
-        if($this->_isEmpty($email)){
+        if($this->_isEmpty($clean_email)){
             $email_err = 'email is required';
         } else if(!$this->_verifyEmail($clean_email)){
             $email_err = 'invalid email - use @wmsu.edu.ph';
         }
 
-        if($this->_isEmpty($password)){
+        if($this->_isEmpty($clean_password)){
             $password_err = 'password is required';
         }
 
@@ -50,13 +50,13 @@ class AuthMiddleware {
         $email_err = $password_err = $confirm_password_err = ' ';
         
 
-        if($this->_isEmpty($email)){
+        if($this->_isEmpty($clean_email)){
             $email_err = 'email is required';
         } else if(!$this->_verifyEmail($clean_email)){
             $email_err = 'invalid email - use @wmsu.edu.ph';
         }
 
-        if($this->_isEmpty($password)){
+        if($this->_isEmpty($clean_password)){
             $password_err = 'password is required';
         } else if(!$this->_verifyPasswordLength($clean_password)){
             $password_err = 'minimum 8 characters';
@@ -64,7 +64,7 @@ class AuthMiddleware {
             $password_err = 'passwords do not match';
         }
 
-        if($this->_isEmpty($confirm_password)){
+        if($this->_isEmpty($clean_confirm_password)){
             $confirm_password_err = 'confirm password is required';
         } else if(!$this->_verifyPasswordLength($clean_confirm_password)){
             $confirm_password_err = 'minimum 8 characters';
@@ -86,13 +86,13 @@ class AuthMiddleware {
         $email_err = $new_password_err = $confirm_password_err = ' ';
         
 
-        if($this->_isEmpty($email)){
+        if($this->_isEmpty($clean_email)){
             $email_err = 'email is required';
         } else if(!$this->_verifyEmail($clean_email)){
             $email_err = 'invalid email - use @wmsu.edu.ph';
         }
 
-        if($this->_isEmpty($new_password)){
+        if($this->_isEmpty($clean_new_password)){
             $new_password_err = 'password is required';
         } else if(!$this->_verifyPasswordLength($clean_new_password)){
             $new_password_err = 'minimum 8 characters';
@@ -100,7 +100,7 @@ class AuthMiddleware {
             $new_password_err = 'passwords do not match';
         }
 
-        if($this->_isEmpty($confirm_password)){
+        if($this->_isEmpty($clean_confirm_password)){
             $confirm_password_err = 'confirm password is required';
         } else if(!$this->_verifyPasswordLength($clean_confirm_password)){
             $confirm_password_err = 'minimum 8 characters';
