@@ -8,6 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_regenerate_id(true);
 }
 
+require_once('../config/config.php');
 require_once('../src/controllers/auth-controller.class.php');
 require_once('../src/controllers/student-controller.class.php');
 
@@ -66,7 +67,8 @@ class FrontController {
         $user_type = $_SESSION['user-type'];
         switch ($user_type) {
             case 'student':
-                $this->student_controller->routeUser();
+                $page = isset($_GET['page']) ? $_GET['page'] : 'main';
+                $this->student_controller->loadPage($page);
                 break;
 
             case 'staff':
