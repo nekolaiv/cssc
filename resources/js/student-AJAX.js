@@ -1,8 +1,16 @@
 function loadPage(page) {
-    fetch(`index.php?page=${page}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('content').innerHTML = html;
-        })
-        .catch(error => console.error('Error:', error));
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `index.php?page=${page}`, true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                document.getElementById('content').innerHTML = xhr.responseText;
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        }
+    };
+
+    xhr.send();
 }
