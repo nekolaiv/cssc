@@ -59,8 +59,9 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" href="/cssc/resources/css/auth.css">
 </head>
 <body>
-    <form action="" method="POST">
+    <form id="myForm" action="" method="POST">
         <h3>Login Form</h3>
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'];?>">
         <?php if (!empty($_SESSION['feedback'])): ?><span class="success feedback"><?= $_SESSION['feedback'] ?></span><br><?php unset($_SESSION['feedback']); endif; ?>
         <label for="email">Email <span class="error"><?= $required ?></span></label>
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
@@ -88,5 +89,10 @@ ini_set('display_errors', 1);
         <button type="submit" class="secondary-button" name="form-action" value="switch-to-register">or register</button>
     </form>
     <script src="/cssc/resources/js/script.js"></script>
+    <script>
+    document.getElementById('myForm').onsubmit = function() {
+        history.pushState(null, '', location.href); // Prevent back navigation
+    };
+    </script>
 </body>
 </html>

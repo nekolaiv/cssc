@@ -59,8 +59,9 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" href="/cssc/resources/css/auth.css">
 </head>
 <body>
-    <form action="" method="POST">
+    <form id="myForm" action="" method="POST">
         <h3>Register Student Account</h3>
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <label for="email">Email <span class="error"><?= $required ?></span></label>
         <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
@@ -93,5 +94,10 @@ ini_set('display_errors', 1);
         <button type="submit" class="secondary-button" name="form-action" value="switch-to-login">login instead</button>
     </form>
     <script src="/cssc/resources/js/script.js"></script>
+    <script>
+    document.getElementById('myForm').onsubmit = function() {
+        history.pushState(null, '', location.href); // Prevent back navigation
+    };
+    </script>
 </body>
 </html>
