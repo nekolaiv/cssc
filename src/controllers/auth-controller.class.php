@@ -25,42 +25,68 @@ class AuthController {
     public function login() {
         $required = '*';
         $email = $password = '';
-        $email_err = $password_err = ' ';
+        $email_err = $_SESSION['email-err'] ?? ' ';
+        $password_err = $_SESSION['password-err'] ?? ' ';
         
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
-            if($_POST['form-action'] === 'attempt-login') {
-                // echo 'attempt login';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form-action'])) {
+			if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+				die("Invalid CSRF token.");
+			}
+            if ($_POST['form-action'] === 'attempt-login') {
+                // Clean inputs
                 $email = $this->middleware->cleanInput($_POST['email']) ?? NULL;
                 $password = $this->middleware->cleanInput($_POST['password']) ?? NULL;
+
+                // Verify credentials
                 $credentials_status = $this->middleware->verifyLoginCredentials($email, $password) ?? NULL;
-                if($credentials_status === true) {
+
+                if ($credentials_status === true) {
+                    // Attempt login
                     $login_status = $this->auth->login($email, $password);
-                    if($login_status === true) {
+
+                    if ($login_status === true) {
                         $_SESSION['is-logged-in'] = true;
+                        unset($_SESSION['email-err']);
+                        unset($_SESSION['password-err']);
+						unset($_SESSION['csrf_token']);
                         header('Location: ' . FRONT_DIR);
                         exit;
                     } else {
-                        $email_err = $login_status[0] ?? NULL;
-                        $password_err = $login_status[1] ?? NULL;
-                        require_once($this->root_directory . '/resources/views/auth/login.php');
+                        // Handle login errors
+                        $_SESSION['email-err'] = $login_status[0] ?? NULL;
+                        $_SESSION['password-err'] = $login_status[1] ?? NULL;
                     }
                 } else {
-                    $email_err = $credentials_status[0] ?? NULL;
-                    $password_err = $credentials_status[1] ?? NULL;
-                    require_once($this->root_directory . '/resources/views/auth/login.php');
+                    // Handle credential verification errors
+                    $_SESSION['email-err'] = $credentials_status[0] ?? NULL;
+                    $_SESSION['password-err'] = $credentials_status[1] ?? NULL;
                 }
-            } else if($_POST['form-action'] === 'switch-to-register') {
+
+                // Redirect to the login page to prevent resubmission
+                $_SESSION['action'] = 'login';
+				unset($_SESSION['csrf_token']);
+                header('Location: ' . FRONT_DIR);
+
+            } else if ($_POST['form-action'] === 'switch-to-register') {
                 $_SESSION['action'] = 'register';
+				unset($_SESSION['email-err']);
+				unset($_SESSION['password-err']);
+				unset($_SESSION['csrf_token']);
                 header('Location: ' . FRONT_DIR);
                 exit;
-            } else if($_POST['form-action'] === 'forgot-password') {
+
+            } else if ($_POST['form-action'] === 'forgot-password') {
                 $_SESSION['action'] = 'forgot-password';
-                header('Location: ' . FRONT_DIR, 'Refresh: 0');
+				unset($_SESSION['email-err']);
+				unset($_SESSION['password-err']);
+				unset($_SESSION['csrf_token']);
+                header('Location: ' . FRONT_DIR);
                 exit;
-            }  
-        } else {
-            require_once($this->root_directory . '/resources/views/auth/login.php');
+            }
         }
+
+        // Render the login view if no form submission
+        include_once($this->root_directory . '/resources/views/auth/login.php');
     }
 
     public function register() {
