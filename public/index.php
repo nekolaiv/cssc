@@ -8,9 +8,26 @@ if (session_status() === PHP_SESSION_NONE) {
     session_regenerate_id(true);
 }
 
+ob_start();
+
+// ================
+// TESTING PURPOSES
+// print_r($_POST);
+// print_r($_SESSION);
+// echo 'outside';
+// ================
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 require_once('../config/config.php');
 require_once('../src/controllers/auth-controller.class.php');
 require_once('../src/controllers/student-controller.class.php');
+
+// header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+// header("Cache-Control: post-check=0, pre-check=0", false);
+// header("Pragma: no-cache");
 
 use Src\Controllers\AuthController;
 use Src\Controllers\StudentController;
@@ -43,22 +60,22 @@ class FrontController {
         switch ($action) {
             case 'login':
                 $this->auth_controller->login();
-                break;
+                return;
 
             case 'register':
                 $this->auth_controller->register();
-                break;
+                return;
 
             case 'forgot-password':
                 $this->auth_controller->forgotPassword();
-                break;
+                return;
 
             case 'logout':
                 $this->auth_controller->logout();
-                break;
+                return;
 
             default:
-                header('Location: ./index.php', true, 302);
+                header('Location: ./index.php');
                 exit;
         }
     }
@@ -81,5 +98,7 @@ class FrontController {
 
 $frontController = new FrontController();
 $frontController->run();
+
+ob_end_flush();
 
 ?>

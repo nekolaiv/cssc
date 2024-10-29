@@ -19,12 +19,6 @@ class Auth{
         $this->database = new Database();
     }
 
-    function __destruct(){
-        ob_end_flush();
-    }
-
-	
-
 	public function login($email, $password) {
 		if($this->_detectRole($email) == 'student'){
 			$sql = "SELECT user_id, password, role FROM Students WHERE email = :email";
