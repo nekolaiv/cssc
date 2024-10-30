@@ -9,11 +9,4 @@ togglePasswordElements.forEach((togglePassword, index) => {
     });
 });
 
-function myFunction() {
-  var x = document.querySelectorAll("password");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
-}
+

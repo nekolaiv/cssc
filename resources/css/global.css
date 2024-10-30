@@ -59,7 +59,7 @@ body {
 }
 
 /* ===TEMPORARY PAGE=== */
-
+/* 
 .tp-h1{
     font-size: calc(var(--Gfont-size) + 10px);
 }
@@ -71,7 +71,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    /* border: 1px solid green; */
 }
 
 .tp-buttons{
@@ -81,7 +80,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    /* border: 1px solid red; */
 }
 
 .tp-options{
@@ -107,7 +105,6 @@ body {
 
     .tp-section {
         height: 40vh;
-        /* border: 1px solid green; */
     }
 
     .tp-buttons {
@@ -117,7 +114,6 @@ body {
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
-        /* border: 1px solid red; */
     }
 
     .tp-options {
@@ -129,24 +125,14 @@ body {
         border-radius: 7px;
         font-size: calc(var(--Gfont-size) + 5px);
     }
-}
+} */
 
 /* ===HEADER=== */
 .home-body{
     flex-direction: column;
 }
 
-header{
-    width: 100vw;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid red;
-}
 
-
-/* ===MAIN=== */
 main{
     width: 100vw;
     display: flex;
