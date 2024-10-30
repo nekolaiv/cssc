@@ -19,21 +19,26 @@ ini_set('display_errors', 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
-    <script src="/cssc/resources/js/student-AJAX.js"></script>
+    <link rel="stylesheet" href="/cssc/resources/css/student.views.css">
+    
 </head>
 <body class="home-body">
     <header>
-        <p class="logo">CSSC</p>
-        <nav>
+        <p class="logo"><a onclick="loadPage('home.php')">CSSC</a></p>
+        <button class="menu-toggle" id="menu-toggle">
+            <span class="menu-icon"></span>
+        </button>
+        <nav class="nav-menu" id="nav-menu">
             <ul>
-                <button onclick="loadPage('home')">Home</button>
-                <button onclick="loadPage('about')">About</button>
-                <button onclick="loadPage('profile')">Profile</button>
-                <button onclick="loadPage('contact')">Contact</button>
+                <button onclick="loadPage('home.php')">Home</button>
+                <button onclick="loadPage('about.php')">About</button>
+                <button onclick="loadPage('profile.php')">Profile</button>
+                <button onclick="loadPage('contact.php')">Contact</button>
             </ul>
             <form action="" method="POST">
                 <!-- <input type="hidden" name="action" value="logout"> -->
-                <button type="submit" name="logout">Logout</button>
+                <button type="submit" name="logout" id="logout-button">Logout</button>
             </form>
         </nav>
     </header>
+    <script src="/cssc/resources/js/hamburger.js"></script>

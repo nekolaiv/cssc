@@ -42,6 +42,11 @@ class FrontController {
     }
 
     public function run() {
+        if ($this->isAjaxRequest()) {
+            $this->handleAjaxRequest();
+            return; // Exit after handling AJAX
+        }
+
         if (empty($_SESSION['action'])) {
             $_SESSION['action'] = 'login';
             header('Refresh: 0');
@@ -84,14 +89,53 @@ class FrontController {
         $user_type = $_SESSION['user-type'];
         switch ($user_type) {
             case 'student':
-                $page = isset($_GET['page']) ? $_GET['page'] : 'main';
-                $this->student_controller->loadPage($page);
+                $this->student_controller->loadPage('main.php');
                 break;
 
             case 'staff':
             case 'admin':
                 require_once(STUDENT_DIR . 'home.php');
                 break;
+        }
+    }
+
+    private function isAjaxRequest() {
+        return isset($_GET['page']);
+    }
+
+    private function handleAjaxRequest(){
+        // $_SESSION['current-page'] = isset($_GET['page']) ? $_GET['page'] : '';
+        // $page = $_GET['page'] ?? 'home';
+        if (isset($_GET['page'])) {
+            $this->student_controller->loadPage($_GET['page']);
+        }
+        
+    }
+
+    private function handleAjaxRequest1() {
+        $action = $_GET['action'] ?? null;
+        if (empty($_SESSION['is-logged-in'])) {
+            echo json_encode(['error' => 'Unauthorized']);
+            http_response_code(401);
+            return;
+        }
+
+        // Handle AJAX actions based on user type
+        $user_type = $_SESSION['user-type'];
+        switch ($user_type) {
+            case 'student':
+                // Call the appropriate method in StudentController
+                if ($action === 'getProfile') {
+                    $this->student_controller->getProfile();
+                }
+                break;
+            case 'staff':
+            case 'admin':
+                // Handle staff/admin AJAX requests here
+                break;
+            default:
+                echo json_encode(['error' => 'Invalid user type']);
+                http_response_code(403);
         }
     }
 }
