@@ -127,7 +127,7 @@ Navigate to your local repository using the terminal:
 cd path/to/your/local/repo
 ```
 
-2. Add Upstream Remote
+2. Add Upstream Remote: Do this once only
 
 If you haven't already added the upstream repository as a remote, run the following command:
 
