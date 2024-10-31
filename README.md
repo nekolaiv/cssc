@@ -107,6 +107,88 @@ We welcome contributions from the community! Here’s how you can help improve t
 - **Testing:** If applicable, add tests for your changes.
 - **Documentation:** Update the documentation if your changes affect the way users interact with the project.
 
+## Fetching Latest Updates from Main Repository
+
+Certainly! Here’s a sample `README.md` file for instructions on how to fetch updates from the upstream repository for your forked repository.
+
+````markdown
+# Updating Your Fork from the Upstream Repository
+
+This guide provides step-by-step instructions on how to update your forked repository with the latest changes from the original (upstream) repository.
+
+## Prerequisites
+
+- You have a forked repository on GitHub.
+- You have Git installed on your local machine.
+- You have cloned your forked repository to your local machine.
+
+## Steps to Update Your Fork
+
+### 1. Open Your Terminal
+
+Navigate to your local repository using the terminal:
+
+```bash
+cd path/to/your/local/repo
+```
+````
+
+### 2. Add Upstream Remote
+
+If you haven't already added the upstream repository as a remote, run the following command:
+
+```bash
+git remote add upstream https://github.com/nekolaiv/cssc
+```
+
+`<URL-of-upstream-repo>` should be the URL of the main repository. You can find this URL on the original repo's GitHub page.
+
+### 3. Fetch the Changes from Upstream
+
+To retrieve the latest changes from the upstream repository, execute:
+
+```bash
+git fetch upstream
+```
+
+### 4. Merge Changes into Your Local Branch
+
+Switch to your main branch (usually `main` or `master`):
+
+```bash
+git checkout main  # or master
+```
+
+Now, merge the upstream changes:
+
+```bash
+git merge upstream/main  # or upstream/master
+```
+
+### 5. Resolve Conflicts (if any)
+
+If there are any conflicts, Git will indicate which files are conflicting. Open those files and manually resolve the conflicts. Look for conflict markers (`<<<<<<`, `======`, `>>>>>>`) and edit the code as needed.
+
+After resolving conflicts, mark the files as resolved:
+
+```bash
+git add <specific-file-with-conflict> # or git add .
+```
+
+Then, complete the merge:
+
+```bash
+git commit -m "commit message"
+```
+
+### 6. Push Updates to Your Fork
+
+Finally, push the updated changes to your fork on GitHub:
+
+```bash
+git push origin main  # or master
+```
+
 ### Collaborations
 
 All contributions must be made from branches other than the `main` branch. This ensures that the main codebase remains stable while we review contributions.
