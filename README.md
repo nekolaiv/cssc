@@ -191,4 +191,4 @@ Thank you for considering contributing to our project! We appreciate your help i
 
 ## License
 
-This project is licensed under the MIT [License](License).
+This project is licensed under the MIT [LICENSE](LICENSE).
