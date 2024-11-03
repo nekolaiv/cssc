@@ -63,8 +63,8 @@ label {
 }
 
 .forgot-password {
-  all: unset;
   background: none;
+  border: none;
   color: var(--element-blue);
   font-size: calc(var(--Gfont-size) - 1px);
   text-decoration: none;
