@@ -4,5 +4,4 @@
     <!-- Content will be loaded here -->
 </main>
 <script src="/cssc/resources/js/student-AJAX.js"></script>
-
-<?php include_once "../resources/views/student/includes/footer.php" ?>
+<!-- <script src="/cssc/resources/js/student-calculate-ajax.js"></script> -->
