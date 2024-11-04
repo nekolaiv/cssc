@@ -39,44 +39,51 @@ class StudentController {
         }
     }
 
-    public function addCourse(){
-        if (!isset($_SESSION['subjects'])) {
-            $_SESSION['subjects'] = [['subject-code' => '', 'unit' => '', 'grade' => '']];
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add-subject') {
-            echo 'got';
+    public function addCourse() {
+    // Initialize session subjects if not set
+    if (!isset($_SESSION['subjects'])) {
+        $_SESSION['subjects'] = [['subject-code' => '', 'unit' => '', 'grade' => '']];
+    }
+
+    // Handle POST requests
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? null;
+
+        if ($action === 'add-subject') {
             $_SESSION['subjects'][] = ['subject-code' => '', 'unit' => '', 'grade' => ''];
-            header('Location: ./index.php');
-            exit;
+            $this->redirect();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save-courses') {
-            echo 'got';
-            if(isset($_POST['subjects'])){
-                foreach($_POST['subjects'] as $index => $subject_data){
-                    $_SESSION['subjects'][$index]['subject-code'] = $subject_data['subject-code'];
-                    $_SESSION['subjects'][$index]['unit'] = $subject_data['unit'];
-                    $_SESSION['subjects'][$index]['grade'] = $subject_data['grade'];
+        if ($action === 'save-courses' && isset($_POST['subjects'])) {
+            foreach ($_POST['subjects'] as $index => $subject_data) {
+                // Basic validation
+                if (isset($subject_data['subject-code'], $subject_data['unit'], $subject_data['grade'])) {
+                    $_SESSION['subjects'][$index] = [
+                        'subject-code' => htmlspecialchars($subject_data['subject-code']),
+                        'unit' => htmlspecialchars($subject_data['unit']),
+                        'grade' => htmlspecialchars($subject_data['grade']),
+                    ];
                 }
-                echo 'saved';
             }
-            header('Location: ./index.php');
-            exit;
+            $this->redirect();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove-subject'])) {
-            echo 'got';
+        if (isset($_POST['remove-subject'])) {
             $index = intval($_POST['remove-subject']);
-
-            if(isset($_SESSION['subjects'][$index])){
+            if (isset($_SESSION['subjects'][$index])) {
                 unset($_SESSION['subjects'][$index]);
+                $_SESSION['subjects'] = array_values($_SESSION['subjects']);
             }
-
-            $_SESSION['subjects'] = array_values($_SESSION['subjects']);
-            header('Location: ./index.php');
-            exit;
+            $this->redirect();
         }
     }
+}
+
+private function redirect() {
+    header('Location: ./index.php');
+    exit;
+}
+
 
     public function saveCourse() {
         // Check if the request method is POST

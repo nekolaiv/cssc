@@ -1,14 +1,4 @@
 <?php
-
-$currentDir = getcwd();
-
-// Echo the current directory
-// echo "Current Directory: " . $currentDir;
-echo $_SERVER['REQUEST_METHOD'];
-print_r($_SESSION['subjects']);
-
-// Initialize session variable if it doesn't exist
-
 function getSubjectFieldsHTML() {
     ob_start(); // Start output buffering
     foreach ($_SESSION['subjects'] as $index => $subject): ?>
@@ -19,7 +9,7 @@ function getSubjectFieldsHTML() {
             <button type="submit" name="remove-subject" value="<?= $index ?>">Remove</button>
         </div>
     <?php endforeach;
-    return ob_get_clean(); // Return the buffered content
+    return ob_get_clean();
 }
 ?>
 
@@ -37,7 +27,3 @@ function getSubjectFieldsHTML() {
         </form>
     </div>
 </section>
-
-<script>
-
-</script>
