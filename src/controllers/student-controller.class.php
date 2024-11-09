@@ -51,12 +51,13 @@ class StudentController {
 
         if ($action === 'add-subject') {
             $_SESSION['subjects'][] = ['subject-code' => '', 'unit' => '', 'grade' => ''];
-            $this->redirect();
+            // echo json_encode(['success' => true, 'subjects' => $_SESSION['subjects']]);
+            // $this->redirect();
+            // exit;
         }
 
         if ($action === 'save-courses' && isset($_POST['subjects'])) {
             foreach ($_POST['subjects'] as $index => $subject_data) {
-                // Basic validation
                 if (isset($subject_data['subject-code'], $subject_data['unit'], $subject_data['grade'])) {
                     $_SESSION['subjects'][$index] = [
                         'subject-code' => htmlspecialchars($subject_data['subject-code']),
@@ -65,7 +66,9 @@ class StudentController {
                     ];
                 }
             }
-            $this->redirect();
+            // echo json_encode(['success' => true, 'subjects' => $_SESSION['subjects']]);
+            // $this->redirect();
+            // exit;
         }
 
         if (isset($_POST['remove-subject'])) {
@@ -74,10 +77,15 @@ class StudentController {
                 unset($_SESSION['subjects'][$index]);
                 $_SESSION['subjects'] = array_values($_SESSION['subjects']);
             }
-            $this->redirect();
+            // echo json_encode(['success' => true, 'subjects' => $_SESSION['subjects']]);
+            // $this->redirect();
+            // exit;
         }
+    } else {
+        // $this->loadPage($_GET['page']);
     }
 }
+
 
 private function redirect() {
     header('Location: ./index.php');

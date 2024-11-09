@@ -20,10 +20,10 @@ function getSubjectFieldsHTML() {
         </header>
     </div>
     <div class="div-pad" id="calculate-div2">
-        <form action="" method="POST" id="subjectFieldsContainer">
-            <?php echo getSubjectFieldsHTML(); // Render existing fields ?>
-            <button type="submit" name="action" value="add-subject" id="add-subject">Add Subject</button>
-            <button type="submit" name="action" value="save-courses" id="save-courses">Save Courses</button>
-        </form>
+        <div id="subjectContainer">
+            <!-- Subject fields will be rendered here -->
+        </div>
+        <button id="addSubject">Add Subject</button>
+        <button id="saveSubjects">Save to Session</button>
     </div>
 </section>
