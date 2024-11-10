@@ -70,7 +70,7 @@ ini_set('display_errors', 1);
         <div class="password-util">
             <label for="password">Password <span class="error"><?= $required ?></span></label>
             <!-- <a href="./forgot-password.php" class="forgot-password">forgot password?</a> -->
-            <button type="submit" class="forgot-password" name="form-action" value="forgot-password" tabindex="3">forgot password?</button>
+            <button type="submit" class="forgot-password" name="form-action" value="forgot-password" tabindex="5">forgot password?</button>
         </div>
         
         <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>"  tabindex="2" >
@@ -85,8 +85,8 @@ ini_set('display_errors', 1);
             </div>
         </div>
 
-        <button type="submit" class="primary-button" name="form-action" value="attempt-login" tabindex="4">login</button>
-        <button type="submit" class="secondary-button" name="form-action" value="switch-to-register" tabindex="5">or register</button>
+        <button type="submit" class="primary-button" name="form-action" value="attempt-login" tabindex="3">login</button>
+        <button type="submit" class="secondary-button" name="form-action" value="switch-to-register" tabindex="4">or register</button>
     </form>
     <script src="/cssc/resources/js/script.js"></script>
     <script>
