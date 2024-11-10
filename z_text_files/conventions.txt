@@ -44,8 +44,10 @@ E. GIT COMMIT MESSAGE
 - label each commit with the ff: {feat, update, chore, debug}
 a. feat = introduce new feature
 b. update = major changes or quick changes on txt files
-d. chore = minor changes | fixes or code | folder | file arrangements
+c. chore = minor changes | fixes or code | folder | file arrangements
 d. debug = debugged logic problems
+e. add = add certain file or minor related changes
+
 -example:
 feat: finish table search functionality
 - First word of the commit message must be verb present tense (e.g.,(above ex.) finish)
