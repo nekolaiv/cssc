@@ -5,11 +5,7 @@
             <h1>Grade Calculator</h1>
         </header>
     </div>
-    <pre>
-        <?php print_r($_SESSION['course-fields']); ?>
-    </pre>
-    <div class="div-pad" id="calculate-div2">
-        
+    <div class="div-pad" id="calculate-div2">  
         <form id="grading" method="POST">
             <?php if (isset($_SESSION['course-fields'])): ?>
                 <?php for ($i = 0; $i < count($_SESSION['course-fields']['subject-code']); $i++): ?>
