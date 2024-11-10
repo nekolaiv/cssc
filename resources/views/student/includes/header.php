@@ -20,7 +20,7 @@ ini_set('display_errors', 1);
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
     <link rel="stylesheet" href="/cssc/resources/css/student.views.css">
-    
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
 </head>
 <body class="home-body">
     <header>
@@ -43,7 +43,7 @@ ini_set('display_errors', 1);
                     <button class="nav-items" onclick="loadPage('settings.php')">settings</button>
                     <form action="" method="POST">
                         <!-- <input type="hidden" name="action" value="logout"> -->
-                        <button type="submit" name="logout" id="logout-button">Logout</button>
+                        <button type="submit" name="logout" value="logout" id="logout-button">Logout</button>
                     </form>
                 </div>
             </div>
