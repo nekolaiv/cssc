@@ -88,7 +88,7 @@ ini_set('display_errors', 1);
         <button type="submit" class="primary-button" name="form-action" value="attempt-login" tabindex="3">login</button>
         <button type="submit" class="secondary-button" name="form-action" value="switch-to-register" tabindex="4">or register</button>
     </form>
-    <script src="/cssc/resources/js/script.js"></script>
+    <script src="/cssc/resources/js/show-password.js"></script>
     <script>
     document.getElementById('myForm').onsubmit = function() {
         history.pushState(null, '', location.href); // Prevent back navigation
