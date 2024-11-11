@@ -1,4 +1,5 @@
 <?php
+namespace Src\Classes;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -22,19 +23,19 @@ class Student{
     }
 
 
-    public function calculateGPA($grades, $units) {
+    public function calculateGWA() {
         $totalPoints = 0;
         $totalUnits = 0;
 
-        for ($i = 0; $i < count($grades); $i++) {
-            $totalPoints += $grades[$i] * $units[$i];
-            $totalUnits += $units[$i];
+        for ($i = 0; $i < count($_SESSION['course-fields']['subject-code']); $i++) {
+            $totalPoints += $_SESSION['course-fields']['grade'][$i] * $_SESSION['course-fields']['unit'][$i];
+            $totalUnits += $_SESSION['course-fields']['unit'][$i];
         }
 
-        $gpa = $totalUnits > 0 ? $totalPoints / $totalUnits : 0;
-        $honorsMessage = $gpa >= 3.5 ? "Congratulations! You qualify for honors." : "You do not qualify for honors.";
+        $gwa = $totalUnits > 0 ? $totalPoints / $totalUnits : 0;
+        $honorsMessage = $gwa <= 2.0 ? "Congratulations! You qualify for honors." : "You do not qualify for honors.";
 
-        return ['gpa' => $gpa, 'honorsMessage' => $honorsMessage];
+        return ['gwa' => $gwa, 'honorsMessage' => $honorsMessage];
     }
 
     public function handleRequest() {

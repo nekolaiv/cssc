@@ -23,3 +23,7 @@ STUDENT
 16. retrieve controller/
 17. restructure for MVC architecture /
 18. handle enter bug on auth
+19. validate course input fields
+20. cursor to pointer in clickable elements
+21. css course input fields
+22. set logic for calculating GPA/

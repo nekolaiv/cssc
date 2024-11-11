@@ -22,6 +22,12 @@
             <button type="button" onclick="addSubjectRow()">
                 Add Row +
             </button>
+           <form action="" method="POST">
+                <input type="hidden" name="calculate-GWA" value="calculate-GWA">
+                <button type="submit" onclick="loadPage('results.php')">
+                    Calculate
+                </button>
+           </form>
         </div>
     </div>
 </section>
