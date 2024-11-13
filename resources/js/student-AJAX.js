@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Logout functionality
     document.getElementById('logout-button').addEventListener('click', function() {
-        clearLastPage();
+        sessionStorage.removeItem('last-page');
     });
 });
 
