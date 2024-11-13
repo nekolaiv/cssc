@@ -33,9 +33,13 @@ class Student{
         }
 
         $gwa = $totalUnits > 0 ? $totalPoints / $totalUnits : 0;
-        $honorsMessage = $gwa <= 2.0 ? "Congratulations! You qualify for honors." : "You do not qualify for honors.";
+        $result = $gwa <= 2.0 ? true : false;
 
-        return ['gwa' => $gwa, 'honorsMessage' => $honorsMessage];
+        return [$result, $gwa];
+    }
+
+    public function getVerificationStatus(){
+        $sql = "SELECT ";
     }
 
     public function handleRequest() {
