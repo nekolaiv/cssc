@@ -17,9 +17,17 @@ STUDENT
 10. set status variable for successful actions in auth
 11. hash passwords and handle auth logic /
 12. Set auth for admin /
-13. set auth for staff/
-14. change show password/
-15. merge all auth in one/
-16. retrieve controller/
+13. set auth for staff /
+14. change show password /
+15. merge all auth in one /
+16. retrieve controller /
 17. restructure for MVC architecture /
 18. handle enter bug on auth
+19. validate course input fields
+20. cursor to pointer in clickable elements
+21. css course input fields
+22. set logic for calculating GPA /
+23. reset the page to home after logout/
+24. highlight active nav /
+25. turn SPA into index instead of main
+26. set folders for each users in MVC folders

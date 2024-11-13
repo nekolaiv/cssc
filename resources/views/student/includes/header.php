@@ -1,15 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-// require_once "../../helpers/session.function.php";
-
-// if (!isLoggedIn()) {
-//   header("location: ./login.php");
-//   exit;
-// }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +11,7 @@ ini_set('display_errors', 1);
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
     <link rel="stylesheet" href="/cssc/resources/css/student.views.css">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body class="home-body">
     <header>
@@ -43,12 +34,12 @@ ini_set('display_errors', 1);
                     <button class="nav-items" onclick="loadPage('settings.php')">settings</button>
                     <form action="" method="POST">
                         <!-- <input type="hidden" name="action" value="logout"> -->
-                        <button type="submit" name="logout" id="logout-button">Logout</button>
+                        <button type="submit" name="logout" value="logout" id="logout-button">Logout</button>
                     </form>
                 </div>
             </div>
             
         </nav>
     </header>
-    <script src="/cssc/resources/js/hamburger.js"></script>
-    <script src="/cssc/resources/js/student.script.js"></script>
+    <script src="/cssc/resources/js/hamburger-responsive.js"></script>
+    <script src="/cssc/resources/js/profile-dropdown.js"></script>

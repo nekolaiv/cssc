@@ -70,7 +70,7 @@ ini_set('display_errors', 1);
                 <span class="error auth-err"><?= $new_password_err ?></span><br>
             <?php endif; ?>
             <div class="show-password">
-                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()" tabindex="-1">
                 <p>show password</p>
             </div>
         </div>
@@ -83,7 +83,7 @@ ini_set('display_errors', 1);
                 <span class="error auth-err"><?= $confirm_password_err ?></span><br>
             <?php endif; ?>
             <div class="show-password">
-                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()">
+                <input class="showpassword-checkbox togglePassword" type="checkbox" onclick="myFunction()" tabindex="-1">
                 <p>show password</p>
             </div>
         </div>
@@ -92,7 +92,7 @@ ini_set('display_errors', 1);
         <button type="submit" class="primary-button" name="form-action" value="attempt-reset-password">reset password</button>
         <button type="submit" class="secondary-button" name="form-action" value="switch-to-login">cancel</button>
     </form>
-    <script src="/cssc/resources/js/script.js"></script>
+    <script src="/cssc/resources/js/show-password.js"></script>
     <script>
     document.getElementById('myForm').onsubmit = function() {
         history.pushState(null, '', location.href); // Prevent back navigation

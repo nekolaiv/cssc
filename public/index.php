@@ -90,7 +90,7 @@ class FrontController {
         switch ($user_type) {
             case 'student':
                 $this->student_controller->loadPage('main.php');
-                break;
+                return;
 
             case 'staff':
             case 'admin':

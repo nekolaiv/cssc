@@ -7,6 +7,7 @@
 3. =HEADER
 4. =MAIN
 5. =FOOTER
+6. =SCROLLBAR
 
 Note: 
 - ctrl+f and look for keywords with equal sign "=Keyword". 
@@ -34,20 +35,27 @@ Note:
     --color-grey: #36363f;
     --color-white: #f0f0f5;
     --outline-dark: #656565;
+    --element-blue: rgb(27, 147, 228);
+    --element-red: rgb(223, 35, 35);
     --Gfont-size: 10px;
     --Gborder-radius: 7px;
+    --Ginput-width: 50vw;
+    --Ginput-height: 35px;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
+    max-width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--bg-black);
     color: var(--color-white);
     font-size: var(--Gfont-size);
-    /* border: 1px solid red; */
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border: 1px solid white;
 }
 
 .error {
@@ -134,12 +142,13 @@ body {
 
 
 main{
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
-    border: 1px solid red;
+    flex: 1;
+    border: 1px solid blue;
 }
 
 
@@ -151,4 +160,27 @@ footer{
     align-items: center;
     justify-content: center;
     border: 1px solid red;
+}
+
+/* ===SCROLLBAR=== */
+
+body::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    display: none;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 3px solid #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

@@ -1,1 +1,3 @@
-<h1>Profile Component</h1>
+<section class="profile-section">
+    <div class="div-pad" id="profile-div1"></div>
+</section>
