@@ -59,7 +59,7 @@ function addSubjectRow() {
             <input type="text" name="subject-code[]">
             <input type="number" name="unit[]">
             <input type="number" name="grade[]">
-            <button type="button" onclick="removeSubjectRow(${session_length})">X</button>
+            <button type="button" class="subject-remove-button" onclick="removeSubjectRow(${session_length})">remove</button>
         </div>
     `); 
     session_length++;
