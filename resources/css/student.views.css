@@ -177,12 +177,95 @@ header nav ul button {
 }
 
 #home-div1 {
-    height: 25vh;
+    height: 40vh;
+    padding: 25px;
+    display: flex;
+    align-items: end;
+}
+
+#home-div1-innerdiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#home-div1-innerdiv > h1{
+    font-size: calc(var(--Gfont-size) + 20px);
+}
+
+#home-div1-innerdiv > p{
+    font-size: calc(var(--Gfont-size) + 2px);
+}
+
+
+.cta-button{
+    all: unset;
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: calc(var(--Gborder-radius));
+    background-color: var(--color-white);
+    color: var(--color-grey);
+    cursor: pointer;
+}
+
+.cta-button:hover{
+    background-color: var();
 }
 
 #home-div2 {
     flex-grow: 1;
+    width: 99%;
     margin: 10px 0;
+    display: flex;
+    border: 1px solid red;
+}
+
+.home-div2-leftdiv {
+    height: 100%;
+    width: 50%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid red;
+    gap: 10px;
+}
+
+.home-div2-leftdiv-congratulations{
+    text-align: center;
+}
+
+.home-div2-leftdiv > .home-div2-leftdiv-congratulations > h2 {
+    font-size: calc(var(--Gfont-size) + 43px);
+}
+
+.home-div2-leftdiv > .home-div2-leftdiv-congratulations > h4 {
+    font-size: calc(var(--Gfont-size) + 15px);
+}
+
+.home-div2-leftdiv > p {
+    font-size: calc(var(--Gfont-size) + 5px);
+}
+
+.leaderboard-button {
+    all: unset;
+    height: 50px;
+    width: 83%;
+    background-color: white;
+    color: black;
+    text-align: center;
+    font-size: calc(var(--Gfont-size) + 5px);
+    font-weight: bold;
+    border-radius: calc(var(--Gborder-radius));
+}
+
+.home-div2-rightdiv {
+    height: 100%;
+    width: 50%;
+    padding: 30px;
 }
 
 /* === CALCULATE === */
