@@ -15,7 +15,6 @@ Note:
 
 /* ===UNIVERSAL=== */
 :root {
-
   /* DEFINED COLORS */
   --black: #1f1f29;
   --grey-1: #2f2f38;
@@ -38,11 +37,11 @@ Note:
   --text-green: var(--green);
   --text-light-green: var(--light-green-2);
 
-  /* UTILITY ELEMENTS */
-  --main-bg-color-1: var(--green);
-  --main-bg-color-2: var(--light-green);
+  /* COMPONENT COLORS */
+  --bg-color1: var(--green);
+  --bg-color2: var(--light-green-1);
   --primary-text-color: var(--green);
-  --secondary-text-color: var(--light-green);
+  --secondary-text-color: var(--light-green-2);
 
   /* GENERAL SIZES */
   --Gfont-size: 10px;
@@ -50,7 +49,6 @@ Note:
   --Ginput-width: 50vw;
   --Ginput-height: 35px;
 }
-
 /* ===FORM=== */
 form {
   padding: 5%;

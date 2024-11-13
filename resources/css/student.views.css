@@ -16,7 +16,6 @@ Note:
 
 /* ===UNIVERSAL=== */
 :root {
-     
     /* DEFINED COLORS */
     --black: #1f1f29;
     --grey-1: #2f2f38;
@@ -39,11 +38,11 @@ Note:
     --text-green: var(--green);
     --text-light-green: var(--light-green-2);
 
-    /* UTILITY ELEMENTS */
-    --main-bg-color-1: var(--green);
-    --main-bg-color-2: var(--light-green);
+    /* COMPONENT COLORS */
+    --bg-color1: var(--green);
+    --bg-color2: var(--light-green-1);
     --primary-text-color: var(--green);
-    --secondary-text-color: var(--light-green);
+    --secondary-text-color: var(--light-green-2);
 
     /* GENERAL SIZES */
     --Gfont-size: 10px;
@@ -56,9 +55,9 @@ Note:
     width: 99%;
     height: 25vh;
     background: rgba(255, 255, 255, 0.030);
-    /* border: 1px solid rgba(255, 255, 255, 0.3); */
     border-radius: 10px;
     box-shadow: 0px 5px 5px  rgba(0, 0, 0, 0.356);
+    /* border: 1px solid rgba(255, 255, 255, 0.3); */
 }
 
 /* ===HEADER=== */
@@ -70,7 +69,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--bg-white);
+    background-color: var(--color-white);
     color: var(--text-green);
 }
 
@@ -102,9 +101,9 @@ p a {
     left: 0;
     right: 0;
     padding: 10px;
-    border: 1px solid green;
     background-color: none;
     gap: 10px;
+    /* border: 1px solid green; */
 }
 
 .nav-menu.active {
@@ -349,13 +348,14 @@ header nav ul button {
     padding: 10px;
     border: none;
     border-radius: calc(var(--Gborder-radius));
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
 }
 
 .ccs-logo {
     height: 100px;
     width: 100px;
-    /* border: 1px solid red; */
     border-radius: 50%;
+    border: 1px solid red;
 }
 
 #calculate-div2 {
@@ -385,6 +385,7 @@ header nav ul button {
     padding: 10px;
     border: none;
     border-radius: calc(var(--Gborder-radius));
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
 }
 
 #grading-headers {
@@ -430,6 +431,7 @@ header nav ul button {
     padding: 10px;
     border: none;
     border-radius: calc(var(--Gborder-radius));
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
 }
 
 #grading input:first-child {
@@ -448,6 +450,7 @@ header nav ul button {
     color: white;
     border: unset;
     border-radius: calc(var(--Gborder-radius));
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
     cursor: pointer;
 }
 
@@ -464,6 +467,60 @@ header nav ul button {
     height: 40px;
     width: 200px;
     border: unset;
+    border-radius: calc(var(--Gborder-radius));
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
+    cursor: pointer;
+}
+
+/* ===RESULTS=== */
+#result-section {
+    min-height: calc(100vh - 90px);
+    height: 100%;
+    width: 99%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: calc(var(--Gborder-radius));
+    border: 1px solid red;
+}
+
+#result-message-1 {
+    font-size: calc(var(--Gfont-size) + 35px);
+    font-weight: bolder;
+    font-style: italic;
+}
+
+#result-message-2 {
+    font-size: calc(var(--Gfont-size) + 2px);
+}
+
+#result-message-3 {
+    font-size: calc(var(--Gfont-size) + 20px);
+    font-style: italic;
+}
+
+#result-message-3 {
+    font-size: calc(var(--Gfont-size) + 10px);
+}
+
+#result-verification-status {
+    font-size: calc(var(--Gfont-size) + 2px);
+}
+
+#result-action-buttons {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#result-action-buttons button {
+    height: 40px;
+    width: 200px;
+    border: none;
     border-radius: calc(var(--Gborder-radius));
     cursor: pointer;
 }
