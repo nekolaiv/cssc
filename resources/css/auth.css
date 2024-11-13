@@ -15,15 +15,36 @@ Note:
 
 /* ===UNIVERSAL=== */
 :root {
-  --bg-black: #1f1f29;
-  --bg-grey: #2f2f38;
-  --bg-white: #f0f0f5;
-  --color-black: #1f1f29;
-  --color-grey: #36363f;
-  --color-white: #f0f0f5;
-  --outline-dark: #656565;
-  --element-blue: rgb(27, 147, 228);
-  --element-red: rgb(223, 35, 35);
+
+  /* DEFINED COLORS */
+  --black: #1f1f29;
+  --grey-1: #2f2f38;
+  --grey-2: #36363f;
+  --grey-3: #656565;
+  --white: white;
+  --green: #0C380D;
+  --light-green-1: #426E4E;
+  --light-green-2: #89B5A3;
+  --blue: rgb(27, 147, 228);
+  --red: rgb(223, 35, 35);
+
+  /* ELEMENT COLORS */
+  --color-black: var(--black);
+  --color-grey: var(--grey-2);
+  --color-white: var(--white);
+  --outline-dark: var(--grey-3);
+  --element-blue: var(--blue);
+  --element-red: var(--red);
+  --text-green: var(--green);
+  --text-light-green: var(--light-green-2);
+
+  /* UTILITY ELEMENTS */
+  --main-bg-color-1: var(--green);
+  --main-bg-color-2: var(--light-green);
+  --primary-text-color: var(--green);
+  --secondary-text-color: var(--light-green);
+
+  /* GENERAL SIZES */
   --Gfont-size: 10px;
   --Gborder-radius: 7px;
   --Ginput-width: 50vw;
