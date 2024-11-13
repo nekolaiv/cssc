@@ -7,14 +7,14 @@ STAFF
 STUDENT
 1. put clean security in every form /
 2. forgot password: email error handling /
-3. set show password functionality
+3. set show password functionality /
 4. set password minimum length error /
 5. validation with login /
 6. refix css for mobile view /
-7. add success message for reset password
+7. add success message for reset password /
 8. validate register page /
 9. set logics for register page /
-10. set status variable for successful actions in auth
+10. set status variable for successful actions in auth /
 11. hash passwords and handle auth logic /
 12. Set auth for admin /
 13. set auth for staff /
@@ -24,10 +24,11 @@ STUDENT
 17. restructure for MVC architecture /
 18. handle enter bug on auth
 19. validate course input fields
-20. cursor to pointer in clickable elements
-21. css course input fields
+20. cursor to pointer in clickable elements /
+21. css course input fields /
 22. set logic for calculating GPA /
 23. reset the page to home after logout/
 24. highlight active nav /
 25. turn SPA into index instead of main
 26. set folders for each users in MVC folders
+27. fix style for auth

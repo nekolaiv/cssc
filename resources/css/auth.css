@@ -55,7 +55,8 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--bg-grey);
+  background-color: var(--white);
+  color: var(--green);
   border-radius: var(--Gborder-radius);
   border: 1px solid var(--outline-dark);
   /* border: 1px solid green; */
@@ -138,7 +139,7 @@ input {
   font-size: calc(var(--Gfont-size));
   font-weight: 300;
   display: block;
-  background-color: var(--color-black);
+  background-color: var(--light-green-2);
   border: 1px solid var(--outline-dark);
   border-radius: var(--Gborder-radius);
   color: white;
@@ -179,8 +180,8 @@ input:focus {
   height: calc(var(--Ginput-height) - 5px);
   margin-top: 20px;
   font-size: calc(var(--Gfont-size));
-  background-color: var(--color-white);
-  color: var(--color-black);
+  background-color: var(--light-green-2);
+  color: var(--color-white);
   border-radius: var(--Gborder-radius);
   border: none;
   cursor: pointer;
