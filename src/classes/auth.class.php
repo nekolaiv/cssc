@@ -19,6 +19,8 @@ class Auth{
         $this->database = new Database();
     }
 
+	// LOGIN FUNCTIONS
+
 	public function login($email, $password) {
 		if($this->_detectRole($email) == 'student'){
 			$sql = "SELECT user_id, password, role FROM Students WHERE email = :email";
@@ -49,79 +51,7 @@ class Auth{
 			$_SESSION["is-logged-in"] = true;
             return true;
 		}
-        
     }
-
-	
-
-	public function register(string $email, string $password){
-		if($this->emailExists($email, 'student')){
-			return 'email exists';
-		} else {
-			$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-			$query->bindParam(':password', $hashed_password);
-			if($query->execute()){
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
-
-	
-
-	public function resetPassword($email, $new_password){
-		$role = $this->_detectRole($email);
-		if($this->emailExists($email, $role) === false){
-			return ['email does not exists', ' '];
-		} else {
-			if($role === 'student'){ $sql = "UPDATE Students set password = :password WHERE email = :email"; }
-			else if($role === 'staff'){ $sql = "UPDATE Staffs set password = :password WHERE email = :email"; }
-			else if($role === 'admin'){ $sql = "UPDATE Admin set password = :password WHERE email = :email"; }
-		}
-
-		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrievePassword($email, $new_password)){
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$query->bindParam(':password', $new_hashed_password);
-			return $query->execute();
-		} else {
-			return [' ', 'similar to old password'];
-		}
-		
-	}
-
-	private function emailExists($email, $role){
-		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Students WHERE email = :email"; } 
-		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email"; } 
-		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin WHERE email = :email"; }
-		else { return false; }
-
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$query->execute();
-		$count = $query->fetchColumn();
-		return $count > 0;
-	}
-
-	private function _retrievePassword($email, $password){
-		$sql = "SELECT password FROM Students WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$retrieved_password=null;
-		if($query->execute()){
-			$retrieved_password = $query->fetch();
-		}
-		if(password_verify($password, $retrieved_password["password"])){ 
-			return true;
-		} else { 
-			return false; 
-		}
-	}
 
 	private function _detectRole($email){
 		if($this->_isStudent($email)){
@@ -161,6 +91,120 @@ class Auth{
 		$count = $query->fetchColumn();
 		return $count > 0;
 	}
+
+	// REGISTRATION FUNCTIONS
+
+	
+
+	private function emailExists($email, $role){
+		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Students WHERE email = :email"; } 
+		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email"; } 
+		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin WHERE email = :email"; }
+		else { return false; }
+
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+
+	private function _isFromCS($email){
+		$sql = "SELECT COUNT(*) FROM Unregistered_CS_Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _isFromIT($email){
+		$sql = "SELECT COUNT(*) FROM Unregistered_IT_Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+	
+	private function _isFromACT($email){
+		$sql = "SELECT COUNT(*) FROM Unregistered_ACT_Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$query->execute();
+		$count = $query->fetchColumn();
+		return $count > 0;
+	}
+
+	private function _isCCSEmail($email) {
+		if($this->_isFromCS($email) || $this->_isFromIT($email) || $this->_isFromACT($email)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function register(string $email, string $password){
+		if($this->emailExists($email, 'student')){
+			return 'email exists';
+		} else {
+			if($this->_isCCSEmail($email)){
+				$sql = "INSERT INTO Students(email, password) VALUES(:email, :password)";
+				$query = $this->database->connect()->prepare($sql);
+				$query->bindParam(':email', $email);
+				$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+				$query->bindParam(':password', $hashed_password);
+				if($query->execute()){
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return 'email is not from CCS';
+			}
+		}
+	}
+
+	
+
+	public function resetPassword($email, $new_password){
+		$role = $this->_detectRole($email);
+		if($this->emailExists($email, $role) === false){
+			return ['email does not exists', ' '];
+		} else {
+			if($role === 'student'){ $sql = "UPDATE Students set password = :password WHERE email = :email"; }
+			else if($role === 'staff'){ $sql = "UPDATE Staffs set password = :password WHERE email = :email"; }
+			else if($role === 'admin'){ $sql = "UPDATE Admin set password = :password WHERE email = :email"; }
+		}
+
+		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+		if(!$this->_retrievePassword($email, $new_password)){
+			$query = $this->database->connect()->prepare($sql);
+			$query->bindParam(':email', $email);
+			$query->bindParam(':password', $new_hashed_password);
+			return $query->execute();
+		} else {
+			return [' ', 'similar to old password'];
+		}
+		
+	}
+
+	private function _retrievePassword($email, $password){
+		$sql = "SELECT password FROM Students WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$retrieved_password=null;
+		if($query->execute()){
+			$retrieved_password = $query->fetch();
+		}
+		if(password_verify($password, $retrieved_password["password"])){ 
+			return true;
+		} else { 
+			return false; 
+		}
+	}
+
 
 	// =================== DUMPS BUT MIGHT BE USEFUL =================== 
 	// public function register($username, $password) {
