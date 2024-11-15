@@ -7,7 +7,7 @@
         <?php isset($_SESSION['result-verification-status']) ? $status = $_SESSION['result-verification-status'] : $status = "Unverified"; echo $status;?>
     </h2>
     <div id="result-action-buttons">
-        <button class="nav-items" id="result-home-button" onclick="loadPage('home.php')">Back to Home</button>
+        <button class="nav-items" onclick="loadPage('home.php')">Back to Home</button>
         <button class="nav-items" onclick="loadPage('calculate.php')">Edit Inputs</button>
     </div>
 </div>
