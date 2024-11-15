@@ -140,7 +140,8 @@ input {
   font-weight: 300;
   display: block;
   background-color: var(--light-green-2);
-  border: 1px solid var(--outline-dark);
+  border: none;
+  /* border: 1px solid var(--outline-dark); */
   border-radius: var(--Gborder-radius);
   color: white;
 }
@@ -193,20 +194,21 @@ input:focus {
   height: calc(var(--Ginput-height) - 5px);
   margin-top: 10px;
   font-size: calc(var(--Gfont-size));
-  background-color: var(--bg-black);
+  background-color: var(--light-green-2);
   color: var(--color-white);
   border-radius: var(--Gborder-radius);
-  border: 1px solid var(--outline-dark);
+  border: none;
+  /* border: 1px solid var(--outline-dark); */
   cursor: pointer;
   /* font-size: calc(var(--Gfont-size) + 10px); */
 }
 
 .primary-button:hover {
-  background-color: rgb(255, 255, 255, 0.5);
+  background-color: var(--light-green-1);
 }
 
 .secondary-button:hover {
-  background-color: rgba(255, 255, 255, 0.144);
+  background-color: var(--light-green-1);
 }
 
 /* ===MEDIA QUERIES=== */
