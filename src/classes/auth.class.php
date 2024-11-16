@@ -24,10 +24,10 @@ class Auth{
 		if($this->_detectRole($email) === 'student'){
 			$sql = "SELECT * FROM Registered_Students WHERE email = :email";
 		} else if($this->_detectRole($email) === 'staff'){
-			$sql = "SELECT user_id, email, password, role FROM Staffs WHERE email = :email";
+			$sql = "SELECT user_id, email, password, role FROM Staff_Accounts WHERE email = :email";
 			$user_type = 'staff';
 		} else if($this->_detectRole($email) === 'admin'){
-			$sql = "SELECT user_id, email, password, role FROM Admin WHERE email = :email";
+			$sql = "SELECT user_id, email, password, role FROM Admin_Accounts WHERE email = :email";
 			$user_type = 'admin';
 		} else {
 			return ['email does not exist', ' '];
@@ -150,8 +150,8 @@ class Auth{
 
 	private function emailExists($email, $role){
 		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Registered_Students WHERE email = :email"; } 
-		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email"; } 
-		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin WHERE email = :email"; }
+		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staff_Accounts WHERE email = :email"; } 
+		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin_Accounts WHERE email = :email"; }
 		else { return false; }
 
 		$query = $this->database->connect()->prepare($sql);
@@ -227,8 +227,8 @@ class Auth{
 			return ['email does not exists', ' '];
 		} else {
 			if($role === 'student'){ $sql = "UPDATE Registered_Students set password = :password WHERE email = :email"; }
-			else if($role === 'staff'){ $sql = "UPDATE Staffs set password = :password WHERE email = :email"; }
-			else if($role === 'admin'){ $sql = "UPDATE Admin set password = :password WHERE email = :email"; }
+			else if($role === 'staff'){ $sql = "UPDATE Staff_Accounts set password = :password WHERE email = :email"; }
+			else if($role === 'admin'){ $sql = "UPDATE Admin_Accounts set password = :password WHERE email = :email"; }
 		}
 
 		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
