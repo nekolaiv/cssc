@@ -55,7 +55,7 @@ function subjectFieldsSubmission(){
 
 function addSubjectRow() {
     $('#grading').append(`
-        <div id='row-${session_length}'>
+        <div class="subject-fields" id='row-${session_length}'>
             <input type="text" name="subject-code[]">
             <input type="number" name="unit[]">
             <input type="number" name="grade[]">
