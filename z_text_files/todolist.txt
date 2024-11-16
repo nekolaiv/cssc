@@ -31,4 +31,7 @@ STUDENT
 24. highlight active nav /
 25. turn SPA into index instead of main
 26. set folders for each users in MVC folders
-27. fix style for auth
+27. fix style for auth /
+28. update register model with new tables /
+29. update login model with new tables
+30. use exceptions for models
