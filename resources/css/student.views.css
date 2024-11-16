@@ -308,6 +308,11 @@ header nav ul button {
 	/* border: 1px solid yellow; */
 }
 
+.calculate-section label{
+	font-size: calc(var(--Gfont-size) + 2px);
+	margin-right: 5px;
+}
+
 #calculate-div1 {
 	height: 25vh;
 	display: flex;
