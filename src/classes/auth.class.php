@@ -126,7 +126,7 @@ class Auth{
 	}
 
 	private function emailExists($email, $role){
-		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Students WHERE email = :email"; } 
+		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM Registered_Students WHERE email = :email"; } 
 		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email"; } 
 		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM Admin WHERE email = :email"; }
 		else { return false; }
