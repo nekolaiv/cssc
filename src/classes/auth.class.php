@@ -22,7 +22,7 @@ class Auth{
 	// LOGIN FUNCTIONS
 	public function login($email, $password) {
 		if($this->_detectRole($email) === 'student'){
-			$sql = "SELECT user_id, email, password, role FROM Registered_Students WHERE email = :email";
+			$sql = "SELECT * FROM Registered_Students WHERE email = :email";
 		} else if($this->_detectRole($email) === 'staff'){
 			$sql = "SELECT user_id, email, password, role FROM Staffs WHERE email = :email";
 			$user_type = 'staff';
@@ -32,6 +32,8 @@ class Auth{
 		} else {
 			return ['email does not exist', ' '];
 		}
+
+		$academic_term = $this->_getCurrentAcademicTerm();
 		
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -43,13 +45,34 @@ class Auth{
 		if (!password_verify($password, $user['password'])){
 			return [' ', 'incorrect password'];	
         } else {
+			$_SESSION['profile'] = [
+				'fullname' => $user['last_name'] . ', ' . $user['first_name'] . ' ' . $user['middle_name'],
+				'student-id' => $user['student_id'],
+				'email' => $user['email'],
+				'course' => $user['course'],
+				'year-level' => $user['year_level'],
+				'adviser' => $user['adviser_name'],
+				'school-year' => $academic_term['school_year'],
+				'semester' => $academic_term['semester']
+			];
 			$_SESSION["user-id"] = $user["user_id"];
-			$_SESSION["email"] = $user["email"];
 			$_SESSION["user-type"] = $user['role'];
 			$_SESSION["is-logged-in"] = true;
             return true;
 		}
     }
+
+	private function _getCurrentAcademicTerm(){
+		$sql = "SELECT * FROM Current_Academic_Term";
+		$query = $this->database->connect()->prepare($sql);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+	}
 
 	private function _detectRole($email){
 		if($this->_isStudent($email)){

@@ -43,9 +43,7 @@ class AuthController {
                 if ($credentials_status === true) {
                     // Attempt login
                     $login_status = $this->auth->login($email, $password);
-
                     if ($login_status === true) {
-                        $_SESSION['is-logged-in'] = true;
                         unset($_SESSION['email-err']);
                         unset($_SESSION['password-err']);
 						unset($_SESSION['csrf_token']);

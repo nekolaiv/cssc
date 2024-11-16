@@ -6,21 +6,21 @@
             <div class="student-info-left">
                 <div class="calculate-student-name">
                     <label for="calculate-student-name">NAME:</label>
-                    <input type="text" id="calculate-student-name" value="name">
+                    <input type="text" id="calculate-student-name" value="<?php echo $_SESSION['profile']['fullname']?>" readonly>
                 </div>
                 <div class="calculate-student-id">
                     <label for="calculate-student-id">STUDENT ID:</label>
-                    <input type="text" id="calculate-student-id" value="id">
+                    <input type="text" id="calculate-student-id" value="<?php echo $_SESSION['profile']['student-id']?>" readonly>
                 </div>
             </div>
             <div class="student-info-right">
                 <div class="calculate-student-sy">
                     <label for="calculate-student-sy">SY:</label>
-                    <input type="text" id="calculate-student-sy" value="sy">
+                    <input type="text" id="calculate-student-sy" value="<?php echo $_SESSION['profile']['school-year']?>" readonly>
                 </div>
                 <div class="calculate-student-course-year">
                     <label for="calculate-student-course-year">COURSE & YEAR:</label>
-                    <input type="text" id="calculate-student-course-year" value="Course & Year">
+                    <input type="text" id="calculate-student-course-year" value="<?php echo $_SESSION['profile']['course'],' ', $_SESSION['profile']['year-level'] ?>" readonly>
                 </div>
             </div>
 
@@ -30,11 +30,11 @@
         <div id="calculate-sem-adviser">
             <div class="calculate-semester">
                 <label for="calculate-student-semester">SEMESTER:</label>
-                <input type="text" id="calculate-student-semester" value="semester">
+                <input type="text" id="calculate-student-semester" value="<?php echo $_SESSION['profile']['semester']?>" readonly>
             </div>
             <div class="calculate-adviser">
                 <label for="calculate-student-adviser">ADVISER:</label>
-                <input type="text" id="calculate-student-adviser" value="adviser">
+                <input type="text" id="calculate-student-adviser" value="<?php echo $_SESSION['profile']['adviser']?>" readonly>
             </div>
         </div>
 
