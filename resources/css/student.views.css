@@ -308,6 +308,11 @@ header nav ul button {
 	/* border: 1px solid yellow; */
 }
 
+.calculate-section label{
+	font-size: calc(var(--Gfont-size) + 2px);
+	margin-right: 5px;
+}
+
 #calculate-div1 {
 	height: 25vh;
 	display: flex;
@@ -398,7 +403,7 @@ header nav ul button {
 	align-items: center;
 	justify-content: center;
 	/* border: 1px solid red; */
-	gap: 5px;
+	gap: 10px;
 }
 
 #grading-headers h3 {
@@ -424,7 +429,12 @@ header nav ul button {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	gap: 10px;
 	/* border: 1px solid red; */
+}
+
+#grading .subject-fields{
+	display: flex;
 	gap: 10px;
 }
 

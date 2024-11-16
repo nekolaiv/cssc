@@ -47,7 +47,7 @@
         <form id="grading" method="POST">
             <?php if (isset($_SESSION['course-fields'])): ?>
                 <?php for ($i = 0; $i < count($_SESSION['course-fields']['subject-code']); $i++): ?>
-                    <div id="row-<?= $i ?>">
+                    <div class="subject-fields" id="row-<?= $i ?>">
                         <input type="text" name="subject-code[]" value="<?= $_SESSION['course-fields']['subject-code'][$i] ?>">
                         <input type="number" name="unit[]" value="<?= $_SESSION['course-fields']['unit'][$i] ?>">
                         <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?>">
