@@ -23,7 +23,7 @@ STUDENT
 16. retrieve controller /
 17. restructure for MVC architecture /
 18. handle enter bug on auth
-19. validate course input fields
+19. validate subject input fields
 20. cursor to pointer in clickable elements /
 21. css course input fields /
 22. set logic for calculating GPA /
@@ -36,3 +36,7 @@ STUDENT
 29. update login model with new tables
 30. use exceptions for models
 31. set grading input fields and header into root var
+32. work with notifications frontend
+33. add file upload field in input fields
+34. set calculate default fields untypable
+35. add placeholders for typable calculate inputs
