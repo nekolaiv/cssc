@@ -14,6 +14,11 @@ echo '</pre>';
 echo '<br><br>';
 
 
+echo '<pre>';
+print_r($_FILES);
+echo '</pre>';
+echo '<br><br>';
+
 
 // TEMPLATES
 echo '<pre>';

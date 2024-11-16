@@ -11,7 +11,8 @@ ini_set('display_errors', 1);
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
     <link rel="stylesheet" href="/cssc/resources/css/student.views.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../vendor/jquery-3.7.1/jquery-3.7.1.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 </head>
 <body class="home-body">
     <header>
