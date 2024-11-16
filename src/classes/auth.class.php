@@ -221,7 +221,7 @@ class Auth{
 	}
 
 	private function _retrievePassword($email, $password){
-		$sql = "SELECT password FROM Students WHERE email = :email";
+		$sql = "SELECT password FROM Registered_Students WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
 		$retrieved_password=null;
