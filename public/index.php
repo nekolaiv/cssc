@@ -16,7 +16,6 @@ ob_start();
 // print_r($_SESSION);
 // echo 'outside';
 // ================
-
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }

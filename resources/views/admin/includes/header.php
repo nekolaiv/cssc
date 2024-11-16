@@ -19,6 +19,7 @@ ini_set('display_errors', 1);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/cssc/resources/css/global.css">
+    <!-- <script src="../vendor/jquery-3.7.1/jquery-3.7.1.min.js"></script> -->
 </head>
 <body class="home-body">
     <header>

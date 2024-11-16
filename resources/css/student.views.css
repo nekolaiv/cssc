@@ -60,9 +60,9 @@ Note:
 .div-pad {
 	width: 99%;
 	height: 25vh;
-	background: rgba(255, 255, 255, 0.03);
+	background: rgba(255, 255, 255, 0.15);
 	border-radius: 10px;
-	box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.356);
+	box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.356);
 	/* border: 1px solid rgba(255, 255, 255, 0.3); */
 }
 
@@ -484,6 +484,16 @@ header nav ul button {
 	cursor: pointer;
 }
 
+#image-proof {
+	height: 40px;
+	width: 200px;
+	padding: 10px;
+	border: none;
+	border-radius: calc(var(--Gborder-radius));
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
+	cursor: help;
+}
+
 /* ===RESULT=== */
 #result-section {
 	min-height: calc(100vh - 90px);
@@ -546,7 +556,7 @@ header nav ul button {
 	flex-direction: column;
 	align-items: center;
 	gap: 30px;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 #leaderboard-div1 {
@@ -574,7 +584,7 @@ header nav ul button {
 #leaderboard-course-options {
 	height: 100%;
 	width: 99%;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 #leaderboard-courses {
@@ -586,7 +596,7 @@ header nav ul button {
 	justify-content: center;
 	background-color: var(--color-white);
 	border-radius: calc(var(--Gborder-radius));
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 #leaderboard-courses>button {
@@ -613,7 +623,7 @@ header nav ul button {
 	display: flex;
 	align-items: center;
 	gap: 20px;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 #leaderboard-top-notchers .topnotcher-pads {
@@ -626,7 +636,7 @@ header nav ul button {
 	gap: 10px;
 	background-color: var(--bg-color1);
 	border-radius: calc(var(--Gborder-radius));
-	border: 1px solid yellow;
+	/* border: 1px solid yellow; */
 }
 
 #leaderboard-top-notchers .topnotcher-pads>.topnotcher-div-1,
@@ -670,7 +680,7 @@ header nav ul button {
 
 .topnotcher-div-3 {
 	justify-content: space-between;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 .topnotcher-info {
@@ -698,7 +708,7 @@ header nav ul button {
 	font-size: calc(var(--Gfont-size) + 5px);
 	font-weight: bold;
 	border-radius: calc(var(--Gborder-radius));
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 .leaderboard-list-pad {
@@ -741,17 +751,76 @@ header nav ul button {
 
 /* ===PROFILE=== */
 .profile-section {
-	height: 100%;
+	min-height: calc(100vh - 75px);;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: start;
 	/* border: 1px solid blue; */
 }
 
-#profile-div1 {
-	height: 60vh;
+#profile-div {
+	height: 100%;
+	padding: 40px;
+	display: flex;
 }
+
+#profile-left-section {
+	margin-right: 40px;
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	/* border: 1px solid red; */
+}
+
+#profile-right-section {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	/* border: 1px solid red; */
+}
+
+.profile-data-pad {
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	border-radius: calc(var(--Gborder-radius));
+}
+
+.profile-data-pad:nth-child(even) {
+	background-color: rgba(255, 255, 255, 0.07);
+}
+
+.profile-data-pad:nth-child(odd) {
+	background-color: none;
+}
+
+.profile-data-header {
+	height: 40px;
+	width: 25%;
+	padding: 23px;
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	font-size: calc(var(--Gfont-size) + 5px);
+	/* border: 1px solid red; */
+}
+
+.profile-data-body {
+	height: 40px;
+	width: 75%;
+	padding: 23px;
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	font-size: calc(var(--Gfont-size) + 5px);
+	font-weight: bold;
+	/* border: 1px solid red; */
+}
+
+
 
 /* === MEDIA QUERIES === */
 @media (min-width: 768px) {

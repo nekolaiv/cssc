@@ -33,7 +33,7 @@ class StudentController {
                 } else {
                     $_SESSION['GWA'] = ['message-1' => "We're sorry", 'message-2' => 'You not are qualified for:', 'message-3' => "Dean's Lister", 'gwa-score' => $gwa_result[1]];
                 }
-                
+                $this->student->saveEntryToDatabase($_SESSION['profile']['email'], $gwa_result[1]);
             }
             include_once($file_path);
         } else {

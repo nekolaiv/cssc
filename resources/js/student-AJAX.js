@@ -52,6 +52,69 @@ function subjectFieldsSubmission(){
     })
 }
 
+// function subjectFieldsSubmission() {
+//     $('#grading').on('submit', (e) => {
+//         e.preventDefault();
+        
+//         // Create a FormData object to handle file uploads
+//         let formData = new FormData();
+        
+//         // Iterate over each form field and append it to the FormData object
+//         $('#grading').find('input').each(function() {
+//             // For file input fields (image proofs), we need to handle them differently
+//             if ($(this).attr('type') === 'file') {
+//                 // alert('file detected');
+//                 $.each(this.files, function(i, file) {
+//                     formData.append($(this).attr('name'), file);
+//                 });
+//             } else {
+//                 formData.append($(this).attr('name'), $(this).val());
+//             }
+//         });
+
+//         displayFormData(formData);
+        
+//         // Send the form data using AJAX
+//         $.ajax({
+//             url: "../src/utils/save-subject.session.php",  // The PHP script that will handle the request
+//             type: "POST",
+//             data: formData,  // Send the FormData object
+//             contentType: false,  // Let jQuery set content type
+//             processData: false,  // Don't process the data (important for file uploads)
+//             success: function(data) {
+//                 console.log(JSON.parse(data));  // Handle the response from the server
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error("There was an error with the request:", status, error);
+//             }
+//         });
+//     });
+
+    // Trigger form submission on input change
+//     $('input').on('input', (e) => {
+//         $('#grading').submit();
+//     });
+// }
+
+function displayFormData(formData) {
+    let formDataEntries = [];
+    
+    // Loop through all FormData entries
+    formData.forEach(function(value, key) {
+        if (value instanceof File) {
+            // If the value is a file object, show file details
+            formDataEntries.push(key + ": " + value.name + " (size: " + value.size + " bytes, type: " + value.type + ")");
+        } else {
+            // Otherwise, just display the key-value pair
+            formDataEntries.push(key + ": " + value);
+        }
+    });
+    
+    // Show the form data as a string in an alert box
+    // alert(formDataEntries.join("\n"));
+}
+
+
 
 function addSubjectRow() {
     $('#grading').append(`
