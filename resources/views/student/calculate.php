@@ -60,8 +60,9 @@
             <button type="button" id="student-calculate-add-row" onclick="addSubjectRow()">
                 Add Row +
             </button>
-           <form action="" method="POST">
+           <form action="" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="calculate-GWA" value="calculate-GWA">
+                <input type="file" name="image-proof" id="image-proof" accept="image/*" value="<?= $_SESSION['course-fields']['image-proof'][$i] ?? NULL ?>" title="Screenshot of your Complete Portal Grades">
                 <button type="submit" id="student-calculate-calculate" onclick="loadPage('results.php')">
                     Calculate
                 </button>

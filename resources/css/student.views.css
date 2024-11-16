@@ -484,6 +484,16 @@ header nav ul button {
 	cursor: pointer;
 }
 
+#image-proof {
+	height: 40px;
+	width: 200px;
+	padding: 10px;
+	border: none;
+	border-radius: calc(var(--Gborder-radius));
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
+	cursor: help;
+}
+
 /* ===RESULT=== */
 #result-section {
 	min-height: calc(100vh - 90px);
