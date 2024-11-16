@@ -33,10 +33,12 @@ Note:
     --grey-1: #2f2f38;
     --grey-2: #36363f;
     --grey-3: #656565;
+    --grey-4: #999999;
+    --grey-5: #D9D9D9;
     --white: white;
-    --green: #0C380D;
-    --light-green-1: #426E4E;
-    --light-green-2: #89B5A3;
+    --green: #0c380d;
+    --light-green-1: #426e4e;
+    --light-green-2: #89b5a3;
     --blue: rgb(27, 147, 228);
     --red: rgb(223, 35, 35);
 
@@ -55,6 +57,8 @@ Note:
     --bg-color2: var(--light-green-1);
     --primary-text-color: var(--green);
     --secondary-text-color: var(--light-green-2);
+    --button-white: var(--white);
+    --button-white-active: var(--grey-5);
 
     /* GENERAL SIZES */
     --Gfont-size: 10px;

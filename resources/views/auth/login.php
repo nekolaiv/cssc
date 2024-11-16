@@ -64,7 +64,7 @@ ini_set('display_errors', 1);
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'];?>">
         <?php if (!empty($_SESSION['feedback'])): ?><span class="success feedback"><?= $_SESSION['feedback'] ?></span><br><?php unset($_SESSION['feedback']); endif; ?>
         <label for="email">Email <span class="error"><?= $required ?></span></label>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" tabindex="1">
+        <input type="email" name="email" placeholder="email" id="email" value="<?php echo htmlspecialchars($email); ?>" tabindex="1">
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
         
         <div class="password-util">
@@ -73,7 +73,7 @@ ini_set('display_errors', 1);
             <button type="submit" class="forgot-password" name="form-action" value="forgot-password" tabindex="5">forgot password?</button>
         </div>
         
-        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>"  tabindex="2" >
+        <input type="password" name="password" placeholder="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>"  tabindex="2" >
 
         <div class="below-input">
             <?php if (!empty($password_err)): ?>

@@ -63,11 +63,11 @@ ini_set('display_errors', 1);
         <h3>Register Student Account</h3>
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <label for="email">Email <span class="error"><?= $required ?></span></label>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
+        <input type="email" name="email" placeholder="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
 
         <label for="password">Password <span class="error"><?= $required ?></span></label>
-        <input type="password" name="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>">
+        <input type="password" name="password" placeholder="password" id="password" class="password" value="<?php echo htmlspecialchars($password); ?>">
         <div class="below-input">
             <?php if (!empty($password_err)): ?>
                 <span class="error auth-err"><?= $password_err ?></span><br>
@@ -79,7 +79,7 @@ ini_set('display_errors', 1);
         </div>
 
         <label for="confirm-password">Confirm Password <span class="error"><?= $required ?></span></label>
-        <input type="password" name="confirm-password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>">
+        <input type="password" name="confirm-password" placeholder="confirm password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>">
         <div class="below-input">
             <?php if (!empty($confirm_password_err)): ?>
                 <span class="error auth-err"><?= $confirm_password_err ?></span><br>
