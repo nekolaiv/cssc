@@ -60,11 +60,11 @@ ini_set('display_errors', 1);
         <h3>Reset Password</h3>
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <label for="email">Email <span class="error"><?= $required ?></span></label>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
+        <input type="email" name="email" placeholder="email" id="email" value="<?php echo htmlspecialchars($email); ?>">
         <?php if (!empty($email_err)): ?><span class="error auth-err"><?= $email_err ?></span><br><?php endif; ?>
         
         <label for="new-password">New Password <span class="error"><?= $required ?></span></label>
-        <input type="password" name="new-password" id="new-password" class="password" value="<?php echo htmlspecialchars($new_password); ?>">
+        <input type="password" name="new-password" placeholder="new password" id="new-password" class="password" value="<?php echo htmlspecialchars($new_password); ?>">
         <div class="below-input">
             <?php if (!empty($new_password_err)): ?>
                 <span class="error auth-err"><?= $new_password_err ?></span><br>
@@ -77,7 +77,7 @@ ini_set('display_errors', 1);
 
 
         <label for="confirm-password">Confirm Password <span class="error"><?= $required ?></span></label>
-        <input type="password" name="confirm-password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>">
+        <input type="password" name="confirm-password" placeholder="confirm password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>">
         <div class="below-input">
             <?php if (!empty($confirm_password_err)): ?>
                 <span class="error auth-err"><?= $confirm_password_err ?></span><br>

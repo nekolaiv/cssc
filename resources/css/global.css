@@ -24,19 +24,43 @@ Note:
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: monospace;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 :root {
-    --bg-black: #1f1f29;
-    --bg-grey: #2f2f38;
-    --bg-white: #f0f0f5;
-    --color-black: #1f1f29;
-    --color-grey: #36363f;
-    --color-white: #f0f0f5;
-    --outline-dark: #656565;
-    --element-blue: rgb(27, 147, 228);
-    --element-red: rgb(223, 35, 35);
+    /* DEFINED COLORS */
+    --black: #1f1f29;
+    --grey-1: #2f2f38;
+    --grey-2: #36363f;
+    --grey-3: #656565;
+    --grey-4: #999999;
+    --grey-5: #D9D9D9;
+    --white: white;
+    --green: #0c380d;
+    --light-green-1: #426e4e;
+    --light-green-2: #89b5a3;
+    --blue: rgb(27, 147, 228);
+    --red: rgb(223, 35, 35);
+
+    /* ELEMENT COLORS */
+    --color-black: var(--black);
+    --color-grey: var(--grey-2);
+    --color-white: var(--white);
+    --outline-dark: var(--grey-3);
+    --element-blue: var(--blue);
+    --element-red: var(--red);
+    --text-green: var(--green);
+    --text-light-green: var(--light-green-2);
+
+    /* COMPONENT COLORS */
+    --bg-color1: var(--green);
+    --bg-color2: var(--light-green-1);
+    --primary-text-color: var(--green);
+    --secondary-text-color: var(--light-green-2);
+    --button-white: var(--white);
+    --button-white-active: var(--grey-5);
+
+    /* GENERAL SIZES */
     --Gfont-size: 10px;
     --Gborder-radius: 7px;
     --Ginput-width: 50vw;
@@ -50,12 +74,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-black);
+    background: linear-gradient(to bottom, var(--bg-color1), var(--bg-color2));
+    /* background: linear-gradient(to bottom, var(--green), var(--light-green-1));  */
+    /* background: linear-gradient(to bottom, var(--element-blue), var(--element-red));  */
     color: var(--color-white);
     font-size: var(--Gfont-size);
     overflow-x: hidden;
     overflow-y: scroll;
-    border: 1px solid white;
+    /* border: 1px solid white; */
 }
 
 .error {
@@ -141,6 +167,7 @@ body {
 }
 
 
+/* ===MAIN=== */
 main{
     height: 100%;
     width: 100%;
@@ -148,7 +175,7 @@ main{
     align-items: center;
     justify-content: center;
     flex: 1;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
 }
 
 
@@ -159,7 +186,7 @@ footer{
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 /* ===SCROLLBAR=== */

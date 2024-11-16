@@ -27,7 +27,13 @@ class StudentController {
             } 
             
             if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['calculate-GWA']) && $_POST['calculate-GWA'] === 'calculate-GWA'){
-                $_SESSION['GWA'] = $this->student->calculateGWA();
+                $gwa_result = $this->student->calculateGWA();
+                if ($gwa_result[0] === true){
+                    $_SESSION['GWA'] = ['message-1' => 'Congratulations!', 'message-2' => 'You are qualified for:', 'message-3' => "Dean's Lister", 'gwa-score' => $gwa_result[1]];
+                } else {
+                    $_SESSION['GWA'] = ['message-1' => "We're sorry", 'message-2' => 'You not are qualified for:', 'message-3' => "Dean's Lister", 'gwa-score' => $gwa_result[1]];
+                }
+                
             }
             include_once($file_path);
         } else {
