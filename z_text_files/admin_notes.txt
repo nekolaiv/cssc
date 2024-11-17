@@ -1,0 +1,37 @@
+ADMIN:
+
+1. CRUD Operations on Students and Staff Accounts
+   - Create Student Profiles:
+     - Implement a form to add new students (HTML form, PHP handling, MySQL insertion) with real-time validation using AJAX.
+   - Create Staff Accounts:
+     - Create a form specifically for adding staff accounts by the admin (no self-registration).
+   - Read/View All Profiles:
+     - Build a page listing all students and staff, with options to search, filter, and view details.
+   - Update Profiles:
+     - Enable editing of student and staff information, with AJAX for smooth saving and feedback.
+   - Delete Profiles:
+     - Implement deletion options with confirmation prompts for both students and staff profiles.
+
+2. Review and Approve/Decline Student Grade Submissions
+   - Grade Review by Staff:
+     - Design a grade submissions page for staff to view, review, approve, or decline submissions.
+     - Include options for filtering and sorting based on status (e.g., pending, approved, declined).
+   - Admin Management:
+     - Allow the admin to access, edit, delete, or override any grade submission.
+   - Automatic Updates:
+     - Ensure that the list of qualifying students (2.0 GPA or higher) automatically updates once a submission is approved.
+
+3. Automatic Generation and Display of Qualifying Students List
+   - List Generation Logic:
+     - Create a method to dynamically generate and display a list of students who meet the 2.0 GPA requirement, automatically updating upon approval.
+   - Public Visibility Control:
+     - Allow the admin to control the visibility of the list, determining whether it’s published or private.
+   - Export Option:
+     - Include export functionality (e.g., to PDF or CSV) for the qualifying list for administrative use.
+
+4. Comprehensive Database Views for Admin
+   - Admin Dashboard:
+     - Develop an admin dashboard displaying all relevant database tables (e.g., students, staff, grade submissions, qualifying lists).
+     - Enable easy navigation to manage or update each table as needed.
+   - Dynamic Updates:
+     - Use AJAX to ensure that data displayed on the dashboard is dynamically updated without needing page reloads.
