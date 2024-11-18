@@ -111,32 +111,32 @@ class FrontController {
         
     }
 
-    private function handleAjaxRequest1() {
-        $action = $_GET['action'] ?? null;
-        if (empty($_SESSION['is-logged-in'])) {
-            echo json_encode(['error' => 'Unauthorized']);
-            http_response_code(401);
-            return;
-        }
+    // private function handleAjaxRequest1() {
+    //     $action = $_GET['action'] ?? null;
+    //     if (empty($_SESSION['is-logged-in'])) {
+    //         echo json_encode(['error' => 'Unauthorized']);
+    //         http_response_code(401);
+    //         return;
+    //     }
 
-        // Handle AJAX actions based on user type
-        $user_type = $_SESSION['user-type'];
-        switch ($user_type) {
-            case 'student':
-                // Call the appropriate method in StudentController
-                if ($action === 'getProfile') {
-                    $this->student_controller->getProfile();
-                }
-                break;
-            case 'staff':
-            case 'admin':
-                // Handle staff/admin AJAX requests here
-                break;
-            default:
-                echo json_encode(['error' => 'Invalid user type']);
-                http_response_code(403);
-        }
-    }
+    //     // Handle AJAX actions based on user type
+    //     $user_type = $_SESSION['user-type'];
+    //     switch ($user_type) {
+    //         case 'student':
+    //             // Call the appropriate method in StudentController
+    //             if ($action === 'getProfile') {
+    //                 $this->student_controller->getProfile();
+    //             }
+    //             break;
+    //         case 'staff':
+    //         case 'admin':
+    //             // Handle staff/admin AJAX requests here
+    //             break;
+    //         default:
+    //             echo json_encode(['error' => 'Invalid user type']);
+    //             http_response_code(403);
+    //     }
+    // }
 }
 
 $frontController = new FrontController();

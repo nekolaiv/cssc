@@ -108,10 +108,10 @@ class AuthMiddleware {
             $confirm_password_err = 'passwords do not match';
         }
         
-        if($email_err === ' ' && $password_err === ' ' && $confirm_password_err === ' '){
+        if($email_err === ' ' && $new_password_err === ' ' && $confirm_password_err === ' '){
             return true;
         } else {
-            return [$email_err, $password_err, $confirm_password_err];
+            return [$email_err, $new_password_err, $confirm_password_err];
         }
     }
 

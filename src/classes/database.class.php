@@ -1,6 +1,7 @@
 <?php
 namespace Src\Classes;
 use PDO;
+use PDOException;
 class Database{
     private $host = 'localhost';
     private $username = 'root';
