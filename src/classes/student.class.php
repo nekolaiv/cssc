@@ -14,28 +14,30 @@ use Src\Classes\Database;
 use PDO;
 
 
-class Student{
+class Student
+{
 
     protected $database;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->database = new Database();
     }
 
 
-    public function calculateGWA() {
+    public function calculateGWA($subject_codes, $grades, $units)
+    {
         $totalPoints = 0;
         $totalUnits = 0;
 
-        for ($i = 0; $i < count($_SESSION['course-fields']['subject-code']); $i++) {
-            $totalPoints += $_SESSION['course-fields']['grade'][$i] * $_SESSION['course-fields']['unit'][$i];
-            $totalUnits += $_SESSION['course-fields']['unit'][$i];
+        for ($i = 0; $i < count($subject_codes); $i++) {
+            $totalPoints += $grades[$i] * $units[$i];
+            $totalUnits += $units[$i];
         }
 
         $gwa = $totalUnits > 0 ? $totalPoints / $totalUnits : 0;
-        $result = $gwa <= 2.0 ? true : false;
 
-        return [$result, $gwa];
+        return $gwa;
     }
 
     // private function _getEntryForDatabase() {
@@ -51,24 +53,26 @@ class Student{
     //     $query->bindParam(':adviser_name', $adviser_name);
     // }
 
-    private function _getStudentData($email) {
+    private function _getStudentData($email)
+    {
         $sql = "SELECT * FROM Registered_Students WHERE email = :email LIMIT 1;";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$student=NULL;
-		if($query->execute()){
-			$student = $query->fetch(PDO::FETCH_ASSOC);
-			return $student;
-		} else {
-			return false;
-		}
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':email', $email);
+        $student = NULL;
+        if ($query->execute()) {
+            $student = $query->fetch(PDO::FETCH_ASSOC);
+            return $student;
+        } else {
+            return false;
+        }
     }
 
-    private function _entryExists($email) {
+    private function _entryExists($email)
+    {
         $sql = "SELECT COUNT(*) FROM Students_Unverified_Entries WHERE email = :email";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
-        if($query->execute()){
+        if ($query->execute()) {
             $count = $query->fetchColumn();
             return $count > 0;
         } else {
@@ -76,11 +80,14 @@ class Student{
         }
     }
 
-    public function saveEntryToDatabase($email, $gwa) {
-        if($this->_entryExists($email)) {
-            $sql = "UPDATE Students_Unverified_Entries SET gwa = :gwa WHERE email = :email";
+    public function saveEntryToDatabase($email, $gwa)
+    {
+        if ($this->_entryExists($email)) {
+            $status = 'pending'; // Reset back the entry to pending
+            $sql = "UPDATE Students_Unverified_Entries SET gwa = :gwa, status = :status WHERE email = :email";
             $query = $this->database->connect()->prepare($sql);
             $query->bindParam(':gwa', $gwa);
+            $query->bindParam(':status', $status);
             $query->bindParam(':email', $email);
         } else {
             $sql = "INSERT INTO Students_Unverified_Entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa)
@@ -97,14 +104,15 @@ class Student{
             $query->bindParam(':adviser_name', $student['adviser_name']);
             $query->bindParam(':gwa', $gwa);
         }
-        if($query->execute()){
+        if ($query->execute()) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function getVerificationStatus(){
+    public function getVerificationStatus()
+    {
         $sql = "SELECT ";
     }
 
@@ -149,5 +157,3 @@ class Student{
 
 
 ?>
-
-
