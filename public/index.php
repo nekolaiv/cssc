@@ -41,8 +41,8 @@ class FrontController {
     }
 
     public function run() {
-        if ($this->isAjaxRequest()) {
-            $this->handleAjaxRequest();
+        if ($this->isRouteAjaxRequest()) {
+            $this->handleRouteAjaxRequest();
             return; // Exit after handling AJAX
         }
 
@@ -98,11 +98,11 @@ class FrontController {
         }
     }
 
-    private function isAjaxRequest() {
+    private function isRouteAjaxRequest() {
         return isset($_GET['page']);
     }
 
-    private function handleAjaxRequest(){
+    private function handleRouteAjaxRequest(){
         // $_SESSION['current-page'] = isset($_GET['page']) ? $_GET['page'] : '';
         // $page = $_GET['page'] ?? 'home';
         if (isset($_GET['page'])) {
