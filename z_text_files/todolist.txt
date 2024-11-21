@@ -23,7 +23,7 @@ STUDENT
 16. retrieve controller /
 17. restructure for MVC architecture /
 18. handle enter bug on auth
-19. validate subject input fields
+19. validate subject input fields /
 20. cursor to pointer in clickable elements /
 21. css course input fields /
 22. set logic for calculating GPA /
@@ -33,14 +33,19 @@ STUDENT
 26. set folders for each users in MVC folders
 27. fix style for auth /
 28. update register model with new tables /
-29. update login model with new tables
+29. update login model with new tables /
 30. use exceptions for models
 31. set grading input fields and header into root var
 32. work with notifications frontend
-33. add file upload field in input fields
-34. set calculate default fields untypable
+33. add file upload field in input fields /
+34. set calculate default fields untypable /
 35. add placeholders for typable calculate inputs
 36. lessen the auth placeholders opacity
 37. enlarge the auth input paddings
 38. edit background of transparent pads according to figma
 39. change order of adviser name 
+40. add submit final result for validatio feature in result page
+41. finalize file upload submission make it workable
+42. work with leaderboard
+43. fetch profile data from database /
+44. change cursor leaderboard button in home

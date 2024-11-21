@@ -54,6 +54,7 @@ class StudentController {
                 }
 
                 $gwa_result = $this->student->calculateGWA($subject_codes, $grades, $units);
+                $student_entry = $this->student->getStudentEntry($_SESSION['profile']['email']);
 
                 if ($gwa_result >= 1 && $gwa_result <= 2){
                     $_SESSION['GWA'] = ['message-1' => 'Congratulations!', 'message-2' => 'You are qualified for:', 'message-3' => "Dean's Lister", 'gwa-score' => $gwa_result];
@@ -71,4 +72,7 @@ class StudentController {
         }
     }
 }
+
+$Controller = new StudentController();
+
 ?>
