@@ -26,7 +26,7 @@
             </div>
             <div class="profile-data-pad">
                 <div class="profile-data-header">Status:</div>
-                <div class="profile-data-body">Submitted and Unverified</div>
+                <div class="profile-data-body"><?php echo $_SESSION['profile']['status']?></div>
             </div>
         </div>
     </div>
