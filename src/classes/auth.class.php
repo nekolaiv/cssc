@@ -53,7 +53,8 @@ class Auth{
 				'year-level' => $user['year_level'],
 				'adviser' => $user['adviser_name'],
 				'school-year' => $academic_term['school_year'],
-				'semester' => $academic_term['semester']
+				'semester' => $academic_term['semester'],
+				'status' => $user['status']
 			];
 			$_SESSION["user-id"] = $user["user_id"];
 			$_SESSION["user-type"] = $user['role'];
