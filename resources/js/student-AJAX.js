@@ -52,6 +52,46 @@ function subjectFieldsSubmission(){
     })
 }
 
+function displayFormData(formData) {
+    let formDataEntries = [];
+    
+    // Loop through all FormData entries
+    formData.forEach(function(value, key) {
+        if (value instanceof File) {
+            // If the value is a file object, show file details
+            formDataEntries.push(key + ": " + value.name + " (size: " + value.size + " bytes, type: " + value.type + ")");
+        } else {
+            // Otherwise, just display the key-value pair
+            formDataEntries.push(key + ": " + value);
+        }
+    });
+    
+    // Show the form data as a string in an alert box
+    // alert(formDataEntries.join("\n"));
+}
+
+function addSubjectRow() {
+    $('#grading').append(`
+        <div class="subject-fields" id='row-${session_length}'>
+            <input type="text" name="subject-code[]">
+            <input type="number" name="unit[]">
+            <input type="number" name="grade[]">
+            <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(${session_length})">remove</button>
+        </div>
+    `); 
+    session_length++;
+    $('input').on('input', (e) => {
+        $('#grading').submit();
+    })
+    $('#grading').submit();
+}
+
+function removeSubjectRow(i) {
+    $(`#row-${i}`).remove();
+    $('#grading').submit();
+}
+
+
 // function subjectFieldsSubmission() {
 //     $('#grading').on('submit', (e) => {
 //         e.preventDefault();
@@ -95,59 +135,6 @@ function subjectFieldsSubmission(){
 //         $('#grading').submit();
 //     });
 // }
-
-function displayFormData(formData) {
-    let formDataEntries = [];
-    
-    // Loop through all FormData entries
-    formData.forEach(function(value, key) {
-        if (value instanceof File) {
-            // If the value is a file object, show file details
-            formDataEntries.push(key + ": " + value.name + " (size: " + value.size + " bytes, type: " + value.type + ")");
-        } else {
-            // Otherwise, just display the key-value pair
-            formDataEntries.push(key + ": " + value);
-        }
-    });
-    
-    // Show the form data as a string in an alert box
-    // alert(formDataEntries.join("\n"));
-}
-
-
-
-function addSubjectRow() {
-    $('#grading').append(`
-        <div class="subject-fields" id='row-${session_length}'>
-            <input type="text" name="subject-code[]">
-            <input type="number" name="unit[]">
-            <input type="number" name="grade[]">
-            <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(${session_length})">remove</button>
-        </div>
-    `); 
-    session_length++;
-    $('input').on('input', (e) => {
-        $('#grading').submit();
-    })
-    $('#grading').submit();
-}
-
-function removeSubjectRow(i) {
-    $(`#row-${i}`).remove();
-    $('#grading').submit();
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
     // Initialize subject management functionality
 // function initializeSubjectManagement() {
