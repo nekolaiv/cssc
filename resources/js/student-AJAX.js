@@ -8,7 +8,13 @@ function loadPage(page) {
             document.getElementById('content').innerHTML = xhr.responseText;
             sessionStorage.setItem('last-page', page);
             history.replaceState({ page: page }, '', '');
-            subjectFieldsSubmission();
+            if(page === 'leaderboard.php'){
+                
+            } else if(page === 'calculate.php'){
+                subjectFieldsSubmission();
+            } else if(page === 'results.php'){
+                validateEntry();
+            }
         } else {
             console.error("Error loading page:", xhr.statusText);
             document.getElementById('content').innerHTML = "<p>Error loading page.</p>";
@@ -16,6 +22,7 @@ function loadPage(page) {
     };
     xhr.send();
 }
+
 
 // Load the last visited page or home page by default
 document.addEventListener("DOMContentLoaded", function() {
@@ -27,6 +34,13 @@ document.addEventListener("DOMContentLoaded", function() {
         sessionStorage.removeItem('last-page');
     });
 });
+
+function validateEntry(){
+    $('#submit-calculation-entry').on('click', (e) => {
+        let action = {'submit-entry': 'submit-calculation'};
+        $.post("../src/controllers/student-controller.class.php", action);
+    });
+}
 
 // Grading form submission
 function subjectFieldsSubmission(){
@@ -44,6 +58,7 @@ function subjectFieldsSubmission(){
 
         $.post("../src/utils/save-subject.session.php", form).done((data) => {
             console.log(JSON.parse(data));
+            alert('sent');
         });
     });
 
