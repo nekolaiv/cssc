@@ -106,7 +106,12 @@ class FrontController {
         // $_SESSION['current-page'] = isset($_GET['page']) ? $_GET['page'] : '';
         // $page = $_GET['page'] ?? 'home';
         if (isset($_GET['page'])) {
-            $this->student_controller->loadPage($_GET['page']);
+            if($_GET['page'] === 'leaderboard.php'){
+                $this->student_controller->loadPage($_GET['page'], "show-leaderboard");
+            } else {
+                $this->student_controller->loadPage($_GET['page']);
+            }
+            
         }
         
     }
