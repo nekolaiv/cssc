@@ -97,7 +97,7 @@ class Auth{
 	}
 
 	private function _isStaff($email){
-		$sql = "SELECT COUNT(*) FROM Staffs WHERE email = :email";
+		$sql = "SELECT COUNT(*) FROM Staff_Accounts WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
 		$query->execute();
@@ -106,7 +106,7 @@ class Auth{
 	}
 
 	private function _isAdmin($email){
-		$sql = "SELECT COUNT(*) FROM Admin WHERE email = :email";
+		$sql = "SELECT COUNT(*) FROM Admin_Accounts WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
 		$query->execute();
