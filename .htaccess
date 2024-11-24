@@ -1,22 +1,11 @@
-# Enable the rewrite engine
+# Enable mod_rewrite
 RewriteEngine On
 
-# Base directory (adjust as necessary)
-RewriteBase /cssc/public/
+# Remove .php extension from URLs
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
 
-# Allow direct access to assets (CSS, JS, images)
+# Redirect requests to non-php URLs
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Rewrite all other requests to index.php, passing any query parameters
-RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]
-
-# Disable directory browsing
-Options -Indexes
-
-# Set caching headers (optional)
-<IfModule mod_headers.c>
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires "0"
-</IfModule>
+RewriteRule ^([^\.]+)$ $1.php [L,QSA]
