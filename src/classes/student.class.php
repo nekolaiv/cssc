@@ -119,6 +119,83 @@ class Student
         }
     }
 
+    // LEADERBOARD MODELS
+
+
+    public function getCSTopNotcher(){
+        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Computer Science" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetch(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getITTopNotcher(){
+        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Information Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetch(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getACTTopNotcher(){
+        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetch(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getCSLeaderboardData(){
+        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Computer Science" ORDER BY gwa, fullname ASC';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getITLeaderboardData(){
+        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Information Technology" ORDER BY gwa, fullname ASC';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getACTLeaderboardData(){
+        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, fullname ASC';
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+
+
     // private function _getEntryForDatabase() {
     //     $query->bindParam(':student_id', $student['student_id']);
     //     $query->bindParam(':email', $email);
