@@ -55,6 +55,7 @@ Note:
 	--Gborder-radius: 7px;
 	--Ginput-width: 50vw;
 	--Ginput-height: 35px;
+	
 }
 
 .div-pad {
@@ -287,6 +288,7 @@ header nav ul button {
 	font-size: calc(var(--Gfont-size) + 10px);
 	font-weight: bold;
 	border-radius: calc(var(--Gborder-radius));
+	cursor: pointer;
 }
 
 .home-div2-rightdiv {
@@ -699,7 +701,7 @@ header nav ul button {
 #leaderboard-list .course-header-pad {
 	height: 50px;
 	width: 99vw;
-	margin-bottom: 15px;
+	margin: 15px 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
