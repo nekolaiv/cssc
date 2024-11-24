@@ -16,11 +16,11 @@
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
-            <div class="topnotcher-div-2"><h2>YAHIYA, AHMAD FEYAZ</h2></div>
+            <div class="topnotcher-div-2"><h2><?php echo $cs_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3>1.0</h3></div>
+                    <div><h3><?php echo $cs_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy">
@@ -30,11 +30,11 @@
         </div>
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
-            <div class="topnotcher-div-2"><h2>YAHIYA, AHMAD FEYAZ</h2></div>
+            <div class="topnotcher-div-2"><h2><?php echo $it_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3>1.0</h3></div>
+                    <div><h3><?php echo $it_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy">
@@ -44,11 +44,11 @@
         </div>
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
-            <div class="topnotcher-div-2"><h2>YAHIYA, AHMAD FEYAZ</h2></div>
+            <div class="topnotcher-div-2"><h2><?php echo $act_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3>1.0</h3></div>
+                    <div><h3><?php echo $act_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy">
@@ -69,14 +69,20 @@
                         <p class="list-header-rating">RATING:</p>
                     </div>
                 </div>
-                <div class="leaderboard-list-pad list-body">
-                    <div class="leaderboard-list-pad-div1">
-                        <p class="student-name">NIKOLAI</p>
-                    </div>
-                    <div class="leaderboard-list-pad-div2">
-                        <p class="student-rating">1.0</p>
-                    </div>
-                </div>
+                <?php 
+                    $csi = 1;
+                    foreach ($cs_leaderboard as $csl){ ?>
+                        <div class="leaderboard-list-pad list-body">
+                            <div class="leaderboard-list-pad-div1">
+                                <p class="student-name"><?php echo $csl['fullname']; ?></p>
+                            </div>
+                            <div class="leaderboard-list-pad-div2">
+                                <p class="student-rating"><?php echo $csl['gwa']; ?></p>
+                            </div>
+                        </div>
+                <?php 
+                $csi++;
+                }?>
             </div>
         </div>
         <div class="bsit-list">
@@ -90,14 +96,20 @@
                         <p class="list-header-rating">RATING:</p>
                     </div>
                 </div>
-                <div class="leaderboard-list-pad list-body">
-                    <div class="leaderboard-list-pad-div1">
-                        <p class="student-name">NIKOLAI</p>
-                    </div>
-                    <div class="leaderboard-list-pad-div2">
-                        <p class="student-rating">1.0</p>
-                    </div>
-                </div>
+                <?php 
+                    $iti = 1;
+                    foreach ($it_leaderboard as $itl){ ?>
+                        <div class="leaderboard-list-pad list-body">
+                            <div class="leaderboard-list-pad-div1">
+                                <p class="student-name"><?php echo $itl['fullname']; ?></p>
+                            </div>
+                            <div class="leaderboard-list-pad-div2">
+                                <p class="student-rating"><?php echo $itl['gwa']; ?></p>
+                            </div>
+                        </div>
+                <?php 
+                $iti++;
+                }?>
             </div>
         </div>
         <div class="bsact-list">
@@ -111,14 +123,20 @@
                         <p class="list-header-rating">RATING:</p>
                     </div>
                 </div>
-                <div class="leaderboard-list-pad list-body">
-                    <div class="leaderboard-list-pad-div1">
-                        <p class="student-name">NIKOLAI</p>
-                    </div>
-                    <div class="leaderboard-list-pad-div2">
-                        <p class="student-rating">1.0</p>
-                    </div>
-                </div>
+                <?php 
+                    $acti = 1;
+                    foreach ($act_leaderboard as $actl){ ?>
+                        <div class="leaderboard-list-pad list-body">
+                            <div class="leaderboard-list-pad-div1">
+                                <p class="student-name"><?php echo $actl['fullname']; ?></p>
+                            </div>
+                            <div class="leaderboard-list-pad-div2">
+                                <p class="student-rating"><?php echo $actl['gwa']; ?></p>
+                            </div>
+                        </div>
+                <?php 
+                $acti++;
+                }?>
             </div>
         </div>
         
