@@ -33,8 +33,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($email_err == ' ' && $password_err == ' '){
         $login_status = $auth->login($email, $password);
         if($login_status === true){
-            header("Location: ../views/student/index.php");
-            exit;
+            header("Location: ../views/student/home.php");
         } else {
             $email_err = $login_status[0];
             $password_err = $login_status[1];
@@ -56,8 +55,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
-    <link rel="stylesheet" href="/cssc/resources/css/global.css">
-    <link rel="stylesheet" href="/cssc/resources/css/auth.css">
+    <link rel="stylesheet" href="/cssc/css/global.css">
+    <link rel="stylesheet" href="/cssc/css/auth.css">
 </head>
 <body>
     <form id="myForm" action="" method="POST">
@@ -89,6 +88,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <button type="submit" class="primary-button" name="form-action" value="attempt-login" tabindex="3">login</button>
         <a href="register.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-register" tabindex="4">or register</button></a>
     </form>
-    <script src="/csrs/js/auth_show-password.js"></script>
+    <script src="/cssc/js/auth_show-password.js"></script>
 </body>
 </html>

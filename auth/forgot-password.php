@@ -43,7 +43,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($reset_status === true){
             $_SESSION['feedback'] = 'reset password successful';
             header("Location: login.php");
-            exit;
         } else {
             $email_err = $reset_status[0];
             $new_password_err = $reset_status[1];
@@ -58,8 +57,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password Form</title>
-    <link rel="stylesheet" href="/cssc/resources/css/global.css">
-    <link rel="stylesheet" href="/cssc/resources/css/auth.css">
+    <link rel="stylesheet" href="/cssc/css/global.css">
+    <link rel="stylesheet" href="/cssc/css/auth.css">
 </head>
 <body>
     <form id="myForm" action="" method="POST">
@@ -98,6 +97,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <button type="submit" class="primary-button" name="form-action" value="attempt-reset-password">reset password</button>
         <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">cancel</button></a>
     </form>
-    <script src="/csrs/js/auth_show-password.js"></script>
+    <script src="/cssc/js/auth_show-password.js"></script>
 </body>
 </html>

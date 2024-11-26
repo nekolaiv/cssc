@@ -41,7 +41,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($register_status === true){
             $_SESSION['feedback'] = 'account successfully registered';
             header("Location: login.php");
-            exit;
         } else {
             $email_err = $register_status[0];
             $new_password_err = $register_status[1];
@@ -56,8 +55,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Form</title>
-    <link rel="stylesheet" href="/cssc/resources/css/global.css">
-    <link rel="stylesheet" href="/cssc/resources/css/auth.css">
+    <link rel="stylesheet" href="/cssc/css/global.css">
+    <link rel="stylesheet" href="/cssc/css/auth.css">
 </head>
 <body>
     <form id="myForm" action="" method="POST">
@@ -95,10 +94,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">login instead</button></a>
     </form>
     <script src="/cssc/resources/js/show-password.js"></script>
-    <script>
-    document.getElementById('myForm').onsubmit = function() {
-        history.pushState(null, '', location.href); // Prevent back navigation
-    };
-    </script>
 </body>
 </html>
