@@ -320,6 +320,13 @@ class Student
         $query = "DELETE FROM Registered_Students WHERE user_id = :user_id";
         return $this->database->execute($query, ['user_id' => $user_id]);
     }
+
+    public function getStudentById($user_id) {
+        $query = "SELECT * FROM Registered_Students WHERE user_id = :user_id LIMIT 1";
+    
+        // Execute the query with the user_id as a parameter
+        return $this->database->fetchOne($query, ['user_id' => $user_id]);
+    }
 }
 
 

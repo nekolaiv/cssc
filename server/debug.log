@@ -1,0 +1,198 @@
+    Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => g
+    [action] => update
+)
+2024-11-26 09:29:45 - Update Action Data:
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => g
+    [action] => update
+)
+
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => g
+    [action] => update
+)
+2024-11-26 09:29:49 - Update Action Data:
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => g
+    [action] => update
+)
+
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => f
+    [action] => update
+)
+2024-11-26 09:30:07 - Update Action Data:
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => f
+    [action] => update
+)
+
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => f
+    [action] => update
+)
+2024-11-26 09:31:43 - Update Action Data:
+Array
+(
+    [user_id] => 1
+    [student_id] => 202300001
+    [first_name] => ahmad
+    [last_name] => yahiya
+    [email] => yahiya@yahoo.com
+    [course] => bscs
+    [year_level] => 5
+    [section] => f
+    [action] => update
+)
+
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 32
+)
+Array
+(
+    [user_id] => 32
+    [student_id] => 23424324
+    [first_name] => sandara
+    [last_name] => asdfasfsa
+    [email] => yah@yahoo.com
+    [course] => bscs
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+2024-11-26 09:31:59 - Update Action Data:
+Array
+(
+    [user_id] => 32
+    [student_id] => 23424324
+    [first_name] => sandara
+    [last_name] => asdfasfsa
+    [email] => yah@yahoo.com
+    [course] => bscs
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)
+Array
+(
+    [action] => get
+    [user_id] => 1
+)

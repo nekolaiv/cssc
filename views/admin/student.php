@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    
     <script src="/cssc/js/student.js"></script>
 </head>
 <body>
-    <h1>Student Management</h1>
-    <button id="addStudentBtn">Add Student</button>
-    <table id="studentsTable">
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Course</th>
-                <th>Year Level</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated dynamically via AJAX -->
-        </tbody>
-    </table>
+    <div class="container mt-4">
+        <h1>Student Management</h1>
+
+        <!-- Button to trigger the "Add Student" modal -->
+        <button class="btn btn-primary mb-3" id="addStudentBtn">Create Student</button>
+
+        <!-- Table to display all students -->
+        <table class="table table-bordered" id="studentsTable">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Year Level</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated dynamically via AJAX -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Modals -->
+    <?php include 'student_modal.php'; ?>
 </body>
 </html>
