@@ -14,7 +14,12 @@
 
         <!-- Button to trigger the "Add Student" modal -->
         <button class="btn btn-primary mb-3" id="addStudentBtn">Create Student</button>
-
+        
+        <!-- Search Bar -->
+        <div class="mb-3">
+            <input type="text" id="searchStudent" class="form-control" placeholder="Search by Student ID or Name">
+        </div>
+        
         <!-- Table to display all students -->
         <table class="table table-bordered" id="studentsTable">
             <thead>

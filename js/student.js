@@ -11,7 +11,7 @@ $(document).ready(function () {
       }
       studentForm.classList.add('was-validated'); // Add validation classes
   });
-  
+
   // Load all students into the table
   function loadStudents() {
     $.ajax({
@@ -48,6 +48,17 @@ $(document).ready(function () {
       },
     });
   }
+
+  // Search functionality
+  $("#searchStudent").on("keyup", function () {
+    let value = $(this).val().toLowerCase();
+    $("#studentsTable tbody tr").filter(function () {
+        $(this).toggle(
+            $(this).find("td:nth-child(1)").text().toLowerCase().indexOf(value) > -1 || // Search by student_id
+            $(this).find("td:nth-child(2)").text().toLowerCase().indexOf(value) > -1   // Search by name
+        );
+    });
+});
 
   // Open "Add Student" modal
   $("#addStudentBtn").click(function () {
