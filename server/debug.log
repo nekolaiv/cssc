@@ -196,3 +196,321 @@ Array
     [action] => get
     [user_id] => 1
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => sandara
+    [last_name] => pasa
+    [email] => pasa@yahoo.com
+    [course] => bscs
+    [year_level] => 2
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 77
+)
+Array
+(
+    [user_id] => 77
+    [student_id] => 243324
+    [first_name] => yay
+    [last_name] => pasa
+    [email] => pasaps@yahoo.com
+    [course] => bs
+    [year_level] => 2
+    [section] => g
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 20230585382
+    [first_name] => AHMAD
+    [middle_name] => HAMAD
+    [last_name] => AHMAD
+    [email] => AHMAD@YAHOO.COM
+    [password] => AHMADPASSWORD
+    [course] => COMPSCI
+    [year_level] => 2
+    [section] => G
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 2
+)
+Array
+(
+    [action] => get
+    [user_id] => 79
+)
+Array
+(
+    [user_id] => 79
+    [student_id] => 20230585382
+    [first_name] => AHMAD EDIT
+    [middle_name] => EDIT
+    [last_name] => EDIT
+    [email] => AHMAD@YAHOO.COM
+    [password] => AHMADPASSWORD
+    [course] => COMPSCI
+    [year_level] => 2
+    [section] => G
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 79
+)
+Array
+(
+    [action] => get
+    [user_id] => 69
+)
+Array
+(
+    [user_id] => 69
+    [student_id] => 20230320
+    [first_name] => AYEN
+    [middle_name] => JAY
+    [last_name] => ALMONTE
+    [email] => asdffas@yahoo.com
+    [password] => AHMADPASSWORD
+    [course] => bscs
+    [year_level] => 2
+    [section] => g
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202300002
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202300002
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202300002
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202300002
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202300002
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2023000025
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 85
+)
+Array
+(
+    [user_id] => 85
+    [student_id] => 20230585382
+    [first_name] => asdfasfsa
+    [middle_name] => fadsfdasf
+    [last_name] => sadfdsaf
+    [email] => sadfdasdas@yahoo.com
+    [password] => fsafasf
+    [course] => asdfsafasd
+    [year_level] => 2
+    [section] => asdf
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)

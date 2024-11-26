@@ -18,13 +18,15 @@
         <!-- Table to display all students -->
         <table class="table table-bordered" id="studentsTable">
             <thead>
-                <tr>
-                    <th>Student ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Course</th>
-                    <th>Year Level</th>
-                    <th>Actions</th>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Course</th>
+                <th>Year Level</th>
+                <th>Section</th>
+                <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

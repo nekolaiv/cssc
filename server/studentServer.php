@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'student_id' => cleanInput($_POST['student_id']),
                 'email' => cleanInput($_POST['email']),
-                'password' => password_hash($_POST['password'] ?? 'default_password', PASSWORD_BCRYPT),
+                'password' => password_hash(cleanInput($_POST['password']), PASSWORD_BCRYPT),
                 'first_name' => cleanInput($_POST['first_name']),
+                'middle_name' => cleanInput($_POST['middle_name']),
                 'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'] ?? ' '),
                 'course' => cleanInput($_POST['course']),
                 'year_level' => intval(cleanInput($_POST['year_level'])),
-                'section' => cleanInput($_POST['section'])
+                'section' => cleanInput($_POST['section']),
             ];
             $response = $student->createStudent($data);
             echo json_encode(['success' => $response]);

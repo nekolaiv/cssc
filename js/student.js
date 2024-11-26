@@ -14,17 +14,22 @@ $(document).ready(function () {
 
         students.forEach((student) => {
           tableBody.append(`
-                        <tr>
-                            <td>${student.student_id}</td>
-                            <td>${student.first_name} ${student.last_name}</td>
-                            <td>${student.email}</td>
-                            <td>${student.course}</td>
-                            <td>${student.year_level}</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning edit-btn" data-id="${student.user_id}">Edit</button>
-                                <button class="btn btn-sm btn-danger delete-btn" data-id="${student.user_id}">Delete</button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>${student.student_id}</td>
+                        <td>${student.first_name} ${student.middle_name ?? ''} ${student.last_name}</td>
+                        <td>${student.email}</td>
+                        <td>
+                            <span class="masked-password">••••••••</span>
+                            <button class="btn btn-sm btn-secondary reveal-password" data-password="${student.password}">Reveal</button>
+                        </td>
+                        <td>${student.course}</td>
+                        <td>${student.year_level}</td>
+                        <td>${student.section}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning edit-btn" data-id="${student.user_id}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${student.user_id}">Delete</button>
+                        </td>
+                    </tr>
                     `);
         });
 
@@ -65,6 +70,19 @@ $(document).ready(function () {
     });
   });
 
+      // Toggle password visibility
+      $("#togglePassword").click(function () {
+        const passwordField = $("#password");
+        const type = passwordField.attr("type") === "password" ? "text" : "password";
+        passwordField.attr("type", type);
+        $(this).text(type === "password" ? "Show" : "Hide");
+    });
+
+    $(document).on("click", ".reveal-password", function () {
+        const password = $(this).data("password");
+        alert(`Password: ${password}`);
+    });
+    
   // Attach event listeners for Edit and Delete buttons
   function attachEventListeners() {
     $(".edit-btn").click(function () {
