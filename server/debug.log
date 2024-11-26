@@ -514,3 +514,130 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 20230002
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => get
+    [user_id] => 2
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 1
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 5
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 5
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 5
+    [section] => 
+    [action] => create
+)

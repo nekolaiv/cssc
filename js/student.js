@@ -1,6 +1,17 @@
 $(document).ready(function () {
   loadStudents();
 
+  const studentForm = document.getElementById('studentForm');
+
+  // Bootstrap validation styles
+  studentForm.addEventListener('submit', function (e) {
+      if (!studentForm.checkValidity()) {
+          e.preventDefault(); // Prevent form submission
+          e.stopPropagation(); // Stop event bubbling
+      }
+      studentForm.classList.add('was-validated'); // Add validation classes
+  });
+  
   // Load all students into the table
   function loadStudents() {
     $.ajax({
