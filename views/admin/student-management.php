@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     
-    <script src="/cssc/js/student.js"></script>
+    <script src="/cssc/js/student-management.js"></script>
 </head>
 <body>
     <div class="container mt-4">
@@ -44,6 +44,6 @@
     </div>
 
     <!-- Include Modals -->
-    <?php include 'student_modal.php'; ?>
+    <?php include 'addedit-student-modal.php'; ?>
 </body>
 </html>

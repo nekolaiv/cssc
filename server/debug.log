@@ -980,3 +980,291 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 128
+)
+Array
+(
+    [action] => get
+    [user_id] => 128
+)
+Array
+(
+    [action] => get
+    [user_id] => 129
+)
+Array
+(
+    [user_id] => 129
+    [student_id] => 23423434242
+    [first_name] => 342432424
+    [middle_name] => 
+    [last_name] => 423432
+    [email] => 4234234@yahoo.com
+    [password] => 
+    [course] => 2342
+    [year_level] => 432432
+    [section] => 2
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 128
+)
+Array
+(
+    [user_id] => 128
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => yahiya_ahmad@yahoo.com
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
