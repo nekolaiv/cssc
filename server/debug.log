@@ -657,3 +657,326 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => Adoh
+    [last_name] => Yahiya
+    [email] => yahiya_ahmad@yahoo.com
+    [password] => mama
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 23423434242
+    [first_name] => 342432424
+    [middle_name] => 423432
+    [last_name] => 423432
+    [email] => 4234234@yahoo.com
+    [password] => 234324
+    [course] => 2342
+    [year_level] => 432432
+    [section] => 2
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 234
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 234
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 234
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 234
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2343243
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2343243
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2343243
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 4234234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234
+    [first_name] => 42342
+    [middle_name] => 
+    [last_name] => 23424
+    [email] => 423s4234@yahoo.com
+    [password] => 2342
+    [course] => 324234
+    [year_level] => 2
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2342432
+    [first_name] => 4242
+    [middle_name] => 
+    [last_name] => 234324
+    [email] => 234324@yahoo.com
+    [password] => 234
+    [course] => 234
+    [year_level] => 
+    [section] => 234
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2343242
+    [first_name] => 4234324
+    [middle_name] => 23432423
+    [last_name] => 423423432
+    [email] => 432432432432@yahoo.com
+    [password] => 234242234
+    [course] => 23424
+    [year_level] => 23424
+    [section] => 2342423
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 143
+)
+Array
+(
+    [user_id] => 143
+    [student_id] => 2348824324Y32
+    [first_name] => AHMAD
+    [middle_name] => YAHIYA
+    [last_name] => YAHIYA
+    [email] => 432432432432@yahoo.com
+    [password] => 234242234
+    [course] => 23424
+    [year_level] => 2
+    [section] => 2342423
+    [action] => update
+)
+Array
+(
+    [action] => read
+)

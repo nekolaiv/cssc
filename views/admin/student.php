@@ -38,6 +38,9 @@
                 <!-- Populated dynamically via AJAX -->
             </tbody>
         </table>
+        <nav id="pagination" aria-label="Page navigation">
+        <ul class="pagination justify-content-center"></ul>
+        </nav>
     </div>
 
     <!-- Include Modals -->

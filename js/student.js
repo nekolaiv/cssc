@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    let students = []; // Store all students
+    let allStudents = []; // Store original data for search reset
+    const rowsPerPage = 5; // Rows per page
+    let currentPage = 1; // Current page
+
   loadStudents();
 
   const studentForm = document.getElementById('studentForm');
@@ -19,46 +24,93 @@ $(document).ready(function () {
       type: "POST",
       data: { action: "read" },
       success: function (response) {
-        let students = JSON.parse(response);
-        let tableBody = $("#studentsTable tbody");
-        tableBody.empty();
-
-        students.forEach((student) => {
-          tableBody.append(`
-                    <tr>
-                        <td>${student.student_id}</td>
-                        <td>${student.first_name} ${student.middle_name ?? ''} ${student.last_name}</td>
-                        <td>${student.email}</td>
-                        <td>
-                            <span class="masked-password">••••••••</span>
-                            <button class="btn btn-sm btn-secondary reveal-password" data-password="${student.password}">Reveal</button>
-                        </td>
-                        <td>${student.course}</td>
-                        <td>${student.year_level}</td>
-                        <td>${student.section}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning edit-btn" data-id="${student.user_id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${student.user_id}">Delete</button>
-                        </td>
-                    </tr>
-                    `);
-        });
-
-        attachEventListeners();
+        students = JSON.parse(response);
+        allStudents = [...students]; // Keep original data
+        displayTable(currentPage); // Display the first page
+        setupPagination(); // Set up pagination
       },
     });
   }
 
+  function displayTable(page) {
+    const startIndex = (page - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const visibleStudents = students.slice(startIndex, endIndex);
+  
+    const tableBody = $("#studentsTable tbody");
+    tableBody.empty();
+  
+    visibleStudents.forEach((student) => {
+      tableBody.append(`
+        <tr>
+          <td>${student.student_id}</td>
+          <td>${student.first_name} ${student.middle_name ?? ''} ${student.last_name}</td>
+          <td>${student.email}</td>
+          <td>
+            <span class="masked-password">••••••••</span>
+            <button class="btn btn-sm btn-secondary reveal-password" data-password="${student.password}">Reveal</button>
+          </td>
+          <td>${student.course}</td>
+          <td>${student.year_level}</td>
+          <td>${student.section}</td>
+          <td>
+            <button class="btn btn-sm btn-warning edit-btn" data-id="${student.user_id}">Edit</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${student.user_id}">Delete</button>
+          </td>
+        </tr>
+      `);
+    });
+  
+    attachEventListeners(); // Reattach event listeners
+  }
+  
+  function setupPagination() {
+    const pageCount = Math.ceil(students.length / rowsPerPage);
+    const pagination = $("#pagination ul");
+    pagination.empty();
+  
+    for (let i = 1; i <= pageCount; i++) {
+      const activeClass = i === currentPage ? "active" : "";
+      pagination.append(`
+        <li class="page-item ${activeClass}">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>
+      `);
+    }
+  
+    $(".page-link").on("click", function (e) {
+      e.preventDefault();
+      currentPage = parseInt($(this).data("page"));
+      displayTable(currentPage);
+  
+      $(".page-item").removeClass("active");
+      $(this).parent().addClass("active");
+    });
+  }
+  
+
   // Search functionality
   $("#searchStudent").on("keyup", function () {
-    let value = $(this).val().toLowerCase();
-    $("#studentsTable tbody tr").filter(function () {
-        $(this).toggle(
-            $(this).find("td:nth-child(1)").text().toLowerCase().indexOf(value) > -1 || // Search by student_id
-            $(this).find("td:nth-child(2)").text().toLowerCase().indexOf(value) > -1   // Search by name
+    const value = $(this).val().toLowerCase();
+  
+    if (value === "") {
+      students = [...allStudents]; // Reset to original data
+      currentPage = 1; // Reset to first page
+      displayTable(currentPage);
+      setupPagination();
+    } else {
+      students = allStudents.filter((student) => {
+        return (
+          student.student_id.toLowerCase().includes(value) ||
+          `${student.first_name} ${student.middle_name ?? ''} ${student.last_name}`.toLowerCase().includes(value)
         );
-    });
-});
+      });
+      currentPage = 1; // Reset to first page
+      displayTable(currentPage);
+      setupPagination();
+    }
+  });
+  
 
   // Open "Add Student" modal
   $("#addStudentBtn").click(function () {
