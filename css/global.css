@@ -162,13 +162,19 @@ body {
 } */
 
 /* ===HEADER=== */
-.home-body{
+.wrapper {
+    display: flex;
     flex-direction: column;
+    justify-content: start;
+    border: 1px solid red;
+    min-height: 100vh;
+    height: 100%;
+    width: 100vw;
 }
 
 
 /* ===MAIN=== */
-main{
+main {
     height: 100%;
     width: 100%;
     display: flex;
@@ -180,7 +186,7 @@ main{
 
 
 /* ===FOOTER=== */
-footer{
+footer {
     width: 100vw;
     padding: 16px;
     display: flex;
