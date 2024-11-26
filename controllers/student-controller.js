@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-	const last_page = sessionStorage.getItem('last-page') || 'home.php';
-    loadPage(last_page);
+	// const last_page = sessionStorage.getItem('last-page') || 'home.php';
+    // loadPage(last_page);
 
   	// Event listener for navigation links
 	$(".nav-items").on("click", function (e) {
@@ -9,90 +9,110 @@ $(document).ready(function () {
 		$(".nav-items").removeClass("nav-active"); // Remove active class from all links
 		$(this).addClass("nav-active"); // Add active class to the clicked link
 
-		// let url = $(this).attr("href"); // Get the URL from the href attribute
-		// console.log(url);
-		// window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
+		let url = $(this).attr("href"); // Get the URL from the href attribute
+		console.log(url);
+		window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
 	});
 
 	// Event listener for the dashboard link
 	$("#home-link").on("click", function (e) {
+		alert('main');
 		e.preventDefault(); // Prevent default behavior
-		loadPage('home.php'); // Call the function to load analytics
+		// history.pushState({ page: 'index.php' }, '', 'index.php');
+		loadPage('home-main.php'); // Call the function to load analytics
+	})
+
+	$("#calculate-link").on("click", function (e) {
+		alert('calculate');
+		e.preventDefault(); // Prevent default behavior
+		// history.pushState({ page: 'index.php' }, '', 'index.php');
+		loadPage('calculate-main.php'); // Call the function to load analytics
 	})
 
 	// Event listener for the products link
 	$("#leaderboard-link").on("click", function (e) {
+		alert('leaderboard');
 		e.preventDefault(); // Prevent default behavior
-		loadPage('leaderboard.php'); // Call the function to load products
+		// history.pushState({ page: 'index.php' }, '', 'index.php');
+		loadPage('leaderboard-main.php'); // Call the function to load products
 	});
 
 	// Event listener for the products link
 	$("#about-link").on("click", function (e) {
+		alert('about');
 		e.preventDefault(); // Prevent default behavior
-		loadPage('about.php'); // Call the function to load products
+		// history.pushState({ page: 'index.php' }, '', 'index.php');
+		loadPage('about-main.php'); // Call the function to load products
 	});
 
 	// Determine which page to load based on the current URL
-	let url = window.location.href;
 	// if (url.endsWith("views/student/index.php")) {
 	// 	$("#home-link").trigger("click");
 	// }
+	let url = window.location.href;
+	
+	if (url.endsWith("home")) {
+		$("#home-link").trigger("click"); // Trigger the dashboard click event
+	} else if (url.endsWith("leaderboard")) {
+		$("#leaderboard-link").trigger("click"); // Trigger the products click event
+	} else if (url.endsWith("about")) {
+		alert('about url detected');
+		$("#about-link").trigger("click"); // Trigger the products click event
+	} else if (url.endsWith("calculate")) {
+		alert('calculate url detected');
+		$("#calculate-link").trigger("click"); // Trigger the products click event
+	} else if (url.endsWith("profile")) {
+		$("#calculate-link").trigger("click"); // Trigger the products click event
+	} else {
+		$("#home-link").trigger("click"); // Default to dashboard if no specific page
+	}
 
+
+	// TODO find a better solution on how to handle back and forward navigations
 	$(window).on('popstate', function(event) {
-		if (event.originalEvent.state) {
-			var page = event.originalEvent.state.page;
-			console.log('Navigated to page: ' + page);
-			// Optionally, update the page content or UI based on the page value
-			loadPage(page);
+		let url = window.location.href;
+		if (url.endsWith("home")) {
+			$("#home-link").trigger("click"); // Trigger the dashboard click event
+		} else if (url.endsWith("leaderboard")) {
+			$("#leaderboard-link").trigger("click"); // Trigger the products click event
+		} else if (url.endsWith("about")) {
+			$("#about-link").trigger("click"); // Trigger the products click event
+		} else if (url.endsWith("calculate")) {
+			$("#calculate-link").trigger("click"); // Trigger the products click event
+		} else if (url.endsWith("calculate")) {
+			$("#result-link").trigger("click"); // Trigger the products click event
+		} else if (url.endsWith("calculate")) {
+			$("#calculate-link").trigger("click"); // Trigger the products click event
+		} else {
+			$("#home-link").trigger("click"); // Default to dashboard if no specific page
 		}
 	});
+
+	// $(window).on('popstate', function(event) {
+	// 	if (event.originalEvent.state) {
+	// 		var page = event.originalEvent.state.page;
+	// 		console.log('Navigated to page: ' + page);
+	// 		// Optionally, update the page content or UI based on the page value
+	// 		loadPage(page);
+	// 	}
+	// });
 
 
 	// Function to load products view
 	function loadPage(page) {
 		$.ajax({
-			type: "GET", // Use GET request
-			url: `../student/${page}`, // URL for products view
-			dataType: "html", // Expect HTML response
+			type: "GET",
+			url: `${page}`,
+			dataType: "html",
 			success: function (response) {
-				$("#content").html(response); // Load the response into the content area
-				sessionStorage.setItem('last-page', page);
-            	history.pushState({ page: page }, '', page);
-				// // Initialize DataTable for product table
-				// var table = $("#table-products").DataTable({
-				// 	dom: "rtp", // Set DataTable options
-				// 	pageLength: 10, // Default page length
-				// 	ordering: false, // Disable ordering
-				// });
-
-				// // Bind custom input to DataTable search
-				// $("#custom-search").on("keyup", function () {
-				// 	table.search(this.value).draw(); // Search products based on input
-				// });
-
-				// // Bind change event for category filter
-				// $("#category-filter").on("change", function () {
-				// if (this.value !== "choose") {
-				// 	table.column(3).search(this.value).draw(); // Filter products by selected category
-				// }
-				// });
-
-				// // Event listener for adding a product
-				// $("#add-product").on("click", function (e) {
-				// 	e.preventDefault(); // Prevent default behavior
-				// 	addProduct(); // Call function to add product
-				// });
-
-				// // Event listener for adding a product
-				// $(".edit-product").on("click", function (e) {
-				// 	e.preventDefault(); // Prevent default behavior
-				// 	editProduct(this.dataset.id); // Call function to add product
-				// });
+				alert(response);
+				$(".content").html(response);
 			},
+			error: function (xhr, status, error) {
+				console.error("Error saving php room:", error, status);
+			}
 		});
 	}
-
-
 
 	// Function to show the add product modal
 	function editProduct(productId) {
@@ -278,4 +298,48 @@ $(document).ready(function () {
 			},
 		});
 	}
+
+	// ========== DUMPS ==========
+	// function loadHomePage() {
+	// 	$.ajax({
+	// 		type: "GET", // Use GET request
+	// 		url: `home-main.php`, // URL for products view
+	// 		dataType: "html", // Expect HTML response
+	// 		success: function (response) {
+	// 			$(".content").html(response);
+	// 		},
+	// 	});
+	// }
+
+	// function loadLeaderboardPage() {
+	// 	$.ajax({
+	// 		type: "GET", // Use GET request
+	// 		url: `leaderboard-main.php`, // URL for products view
+	// 		dataType: "html", // Expect HTML response
+	// 		success: function (response) {
+	// 			$(".content").html(response);
+	// 		},
+	// 	});
+	// }
+
+	// function loadAboutPage() {
+	// 	$.ajax({
+	// 		type: "GET", // Use GET request
+	// 		url: `about-main.php`, // URL for products view
+	// 		dataType: "html", // Expect HTML response
+	// 		success: function (response) {
+	// 			$(".content").html(response);
+	// 		},
+	// 	});
+	// }
 });
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     const last_page = sessionStorage.getItem('last-page') || 'home.php';
+//     loadPage(last_page);
+
+//     // Logout functionality
+//     document.getElementById('logout-button').addEventListener('click', function() {
+//         sessionStorage.removeItem('last-page');
+//     });
+// });
