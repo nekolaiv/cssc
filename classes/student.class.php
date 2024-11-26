@@ -297,36 +297,6 @@ class Student
     //     ];
     // }
 
-    public function createStudent($data) {
-        $query = "INSERT INTO Registered_Students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
-                  VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, 'student')";
-        return $this->database->execute($query, $data);
-    }
-
-    public function getAllStudents() {
-        $query = "SELECT * FROM Registered_Students";
-        return $this->database->fetchAll($query);
-    }
-
-    public function updateStudent($data) {
-        $query = "UPDATE Registered_Students 
-                  SET email = :email, first_name = :first_name, last_name = :last_name, middle_name = :middle_name, 
-                      course = :course, year_level = :year_level, section = :section
-                  WHERE user_id = :user_id";
-        return $this->database->execute($query, $data);
-    }
-
-    public function deleteStudent($user_id) {
-        $query = "DELETE FROM Registered_Students WHERE user_id = :user_id";
-        return $this->database->execute($query, ['user_id' => $user_id]);
-    }
-
-    public function getStudentById($user_id) {
-        $query = "SELECT * FROM Registered_Students WHERE user_id = :user_id LIMIT 1";
-    
-        // Execute the query with the user_id as a parameter
-        return $this->database->fetchOne($query, ['user_id' => $user_id]);
-    }
 }
 
 

@@ -1268,3 +1268,74 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 234234
+    [first_name] => asjdfhkjafh
+    [middle_name] => jhdsakfhdajfhj
+    [last_name] => hhdsjahfjasfjh
+    [email] => sddhasf@yaohocom
+    [password] => sdjfhadsfh
+    [course] => CUM
+    [year_level] => 2
+    [section] => g
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 145
+)
+Array
+(
+    [user_id] => 145
+    [student_id] => 69
+    [first_name] => CUM
+    [middle_name] => jhdsakfhdajfhj
+    [last_name] => hhdsjahfjasfjh
+    [email] => sddhasf@yaohocom
+    [password] => sdjfhadsfh
+    [course] => CUM
+    [year_level] => 2
+    [section] => g
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
