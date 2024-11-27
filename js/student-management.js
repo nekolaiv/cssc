@@ -128,15 +128,10 @@ $("#studentForm").submit(function (e) {
   const action = $("#user_id").val() ? "update" : "create";
   const formData = $(this).serialize() + `&action=${action}`;
 
-<<<<<<< HEAD
-  $.ajax({
-      url: "/cssc/server/admin_student_server.php",
-=======
     console.log("Submitting Form Data:", formData);
 
     $.ajax({
       url: "/cssc/server/studentServer.php",
->>>>>>> parent of be348a1 (changed files)
       type: "POST",
       data: formData,
       success: function (response) {
