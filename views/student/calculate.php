@@ -9,9 +9,9 @@
         </div>
     </main>
 
-<script>
-    let session_length = <?= count($_SESSION["course-fields"]["subject_code"] ?? []) ?>
-</script>
+<!-- <script>
+    let session_length = <?php //count($_SESSION["course-fields"]["subject_code"] ?? []) ?>
+</script> -->
 <!-- <script src="/csrs/js/student_ajax.js"></script> -->
 <script src="/cssc/controllers/student-controller.js"></script>
 
