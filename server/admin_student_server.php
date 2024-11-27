@@ -10,17 +10,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     switch ($action) {
         case 'create':
+            $errors = [];
             $data = [
                 'student_id' => cleanInput($_POST['student_id']),
                 'email' => cleanInput($_POST['email']),
-                'password' => password_hash(cleanInput($_POST['password']), PASSWORD_BCRYPT),
+                'password' => cleanInput($_POST['password']),
                 'first_name' => cleanInput($_POST['first_name']),
-                'middle_name' => cleanInput($_POST['middle_name']),
+                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
                 'last_name' => cleanInput($_POST['last_name']),
                 'course' => cleanInput($_POST['course']),
                 'year_level' => intval(cleanInput($_POST['year_level'])),
                 'section' => cleanInput($_POST['section']),
             ];
+        
+            // Validation for each field
+            if (empty($data['student_id'])) {
+                $errors['student_id'] = 'Student ID is required.';
+            } elseif (!ctype_digit($data['student_id'])) {
+                $errors['student_id'] = 'Student ID must be numeric.';
+            } elseif ($student->studentIdExists($data['student_id'])) {
+                $errors['student_id'] = 'Student ID already exists.';
+            }
+        
+            if (empty($data['first_name'])) {
+                $errors['first_name'] = 'First name is required.';
+            }
+        
+            if (empty($data['last_name'])) {
+                $errors['last_name'] = 'Last name is required.';
+            }
+        
+            if (empty($data['email'])) {
+                $errors['email'] = 'Email is required.';
+            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Invalid email format.';
+            }
+        
+            if (empty($data['password'])) {
+                $errors['password'] = 'Password is required.';
+            }
+        
+            if (empty($data['course'])) {
+                $errors['course'] = 'Course is required.';
+            }
+        
+            if (empty($data['year_level'])) {
+                $errors['year_level'] = 'Year level is required.';
+            } elseif (!ctype_digit((string)$data['year_level'])) {
+                $errors['year_level'] = 'Year level must be numeric.';
+            }
+        
+            if (empty($data['section'])) {
+                $errors['section'] = 'Section is required.';
+            }
+        
+            // Return errors if any
+            if (!empty($errors)) {
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                exit;
+            }
+        
+            // Proceed with creating the student
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $response = $student->createStudent($data);
             echo json_encode(['success' => $response]);
             break;

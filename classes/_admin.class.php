@@ -131,5 +131,31 @@ class Admin {
         // Execute the query with the user_id as a parameter
         return $this->database->fetchOne($query, ['user_id' => $user_id]);
     }
+
+    public function studentIdExists($student_id) {
+        try {
+            $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id";
+            $stmt = $this->database->connect()->prepare($query);
+            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+            return $count > 0; // Returns true if a duplicate exists
+        } catch (PDOException $e) {
+            error_log("Error checking student ID existence: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function studentIdExistsForOther($student_id, $user_id)
+{
+    $query = "SELECT COUNT(*) FROM Registered_Students WHERE student_id = :student_id AND user_id != :user_id";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchColumn() > 0;
+}
+
 }
 ?>

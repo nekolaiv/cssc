@@ -1607,3 +1607,1659 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => delete
+    [user_id] => 152
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => delete
+    [user_id] => 147
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => delete
+    [user_id] => 153
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => Adoh
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => PASSWORD
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => Adoh
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => PASSWORD
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => sadfadsf
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => sadfadsf
+    [email] => sadfas@yahoo.com
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => sadfadsf
+    [email] => sadfas@yahoo.com
+    [password] => dasf
+    [course] => bs
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => fasdfasf
+    [middle_name] => 
+    [last_name] => sadfadsf
+    [email] => sadfas@yahoo.com
+    [password] => dasf
+    [course] => csfdasfd
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 2
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856g
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2023058563
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => jdsahfkjaskfjh
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => sadfasdfas
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 2023058563
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => feyaz
+    [last_name] => yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => password
+    [course] => computer science
+    [year_level] => 2
+    [section] => A
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => delete
+    [user_id] => 176
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2023058562
+    [first_name] => ahmad
+    [middle_name] => yaaisfoi
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => kjdafkjdasf
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => get
+    [user_id] => 182
+)
+Array
+(
+    [user_id] => 182
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => 
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => 
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 182
+)
+Array
+(
+    [user_id] => 182
+    [student_id] => 202305856
+    [first_name] => ahmad
+    [middle_name] => 
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => 
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 2023058563
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 2023058563
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 2023058563
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2023058563
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 2023058563
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => safdadsf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => safdadsf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => safdadsf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => sadfdasf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => sadfdasf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => sadfdasf
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [user_id] => 
+    [student_id] => 202305856
+    [first_name] => 
+    [middle_name] => 
+    [last_name] => 
+    [email] => 
+    [password] => 
+    [course] => 
+    [year_level] => 
+    [section] => 
+    [action] => create
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 154
+)
+Array
+(
+    [user_id] => 154
+    [student_id] => 202305856
+    [first_name] => Ahmad Feyaz
+    [middle_name] => 
+    [last_name] => Yahiya
+    [email] => hz202305856@wmsu.edu.ph
+    [password] => 
+    [course] => Computer Science
+    [year_level] => 2
+    [section] => A
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 162
+)
+Array
+(
+    [user_id] => 162
+    [student_id] => 2023058563
+    [first_name] => jkadsfhdsafjahsdfkj
+    [middle_name] => 
+    [last_name] => jkdashfkjadshfklasfad
+    [email] => sadfdiafskja@yahoo.com
+    [password] => 
+    [course] => computer science
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [user_id] => 182
+)
+Array
+(
+    [user_id] => 182
+    [student_id] => 2023058562
+    [first_name] => ahmad
+    [middle_name] => 
+    [last_name] => efidasfkjadsfk
+    [email] => dsjafokadfjk@yahoo.com
+    [password] => 
+    [course] => cs
+    [year_level] => 2
+    [section] => a
+    [action] => update
+)
+Array
+(
+    [action] => read
+)

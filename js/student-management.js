@@ -121,28 +121,46 @@ $(document).ready(function () {
     $("#studentModal").modal("show");
   });
 
-  // Handle form submission for Add/Edit
-  $("#studentForm").submit(function (e) {
-    e.preventDefault();
+// Handle form submission for Add/Edit
+$("#studentForm").submit(function (e) {
+  e.preventDefault();
 
-    const action = $("#user_id").val() ? "update" : "create";
-    const formData = $(this).serialize() + `&action=${action}`;
+  const action = $("#user_id").val() ? "update" : "create";
+  const formData = $(this).serialize() + `&action=${action}`;
 
-    console.log("Submitting Form Data:", formData);
-
-    $.ajax({
+  $.ajax({
       url: "/cssc/server/admin_student_server.php",
       type: "POST",
       data: formData,
       success: function (response) {
-        console.log("Raw Response:", response); // Debugging log
-        const result = JSON.parse(response);
-        alert(result.success ? "Success!" : "Failed.");
-        $("#studentModal").modal("hide");
-        loadStudents();
+          const result = JSON.parse(response);
+
+          // Clear previous error messages
+          $(".form-control").removeClass("is-invalid");
+          $(".invalid-feedback").text("");
+
+          if (result.success) {
+              alert("Student saved successfully!");
+              $("#studentModal").modal("hide");
+              loadStudents();
+          } else if (result.errors) {
+              // Display error messages
+              Object.keys(result.errors).forEach(function (field) {
+                  const errorMessage = result.errors[field];
+                  const fieldElement = $(`[name="${field}"]`);
+                  fieldElement.addClass("is-invalid");
+                  fieldElement
+                      .next(".invalid-feedback")
+                      .text(errorMessage)
+                      .show();
+              });
+          } else {
+              alert("An unexpected error occurred.");
+          }
       },
-    });
   });
+});
+
 
       // Toggle password visibility
       $("#togglePassword").click(function () {
