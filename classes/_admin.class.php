@@ -112,34 +112,46 @@ class Admin {
         return $this->database->fetchAll($query);
     }
 
-    public function updateStudent($data) {
-        $query = "UPDATE registered_students 
-                  SET student_id = :student_id, 
-                      email = :email, 
-                      first_name = :first_name, 
-                      middle_name = :middle_name, 
-                      last_name = :last_name, 
-                      course = :course, 
-                      year_level = :year_level, 
-                      section = :section 
-                  WHERE user_id = :user_id";
+    public function updateStudent($data)
+    {
+        $query = "UPDATE registered_students SET 
+            student_id = :student_id, 
+            email = :email, 
+            first_name = :first_name, 
+            middle_name = :middle_name, 
+            last_name = :last_name, 
+            course = :course, 
+            year_level = :year_level, 
+            section = :section";
+    
+        // Include password update only if provided
+        if (!empty($data['password'])) {
+            $query .= ", password = :password";
+        }
+    
+        $query .= " WHERE user_id = :user_id";
     
         $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindValue(':student_id', $data['student_id'], PDO::PARAM_STR);
-        $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
-        $stmt->bindValue(':first_name', $data['first_name'], PDO::PARAM_STR);
-        $stmt->bindValue(':middle_name', $data['middle_name'], PDO::PARAM_STR);
-        $stmt->bindValue(':last_name', $data['last_name'], PDO::PARAM_STR);
-        $stmt->bindValue(':course', $data['course'], PDO::PARAM_STR);
-        $stmt->bindValue(':year_level', $data['year_level'], PDO::PARAM_INT);
-        $stmt->bindValue(':section', $data['section'], PDO::PARAM_STR);
-        $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
     
-        // **Log the query and parameters here**
-        file_put_contents('debug.log', $query . "\n" . print_r($data, true), FILE_APPEND);
+        // Bind parameters
+        $stmt->bindParam(':student_id', $data['student_id']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':first_name', $data['first_name']);
+        $stmt->bindParam(':middle_name', $data['middle_name']);
+        $stmt->bindParam(':last_name', $data['last_name']);
+        $stmt->bindParam(':course', $data['course']);
+        $stmt->bindParam(':year_level', $data['year_level']);
+        $stmt->bindParam(':section', $data['section']);
+        $stmt->bindParam(':user_id', $data['user_id']);
+    
+        // Bind password if provided
+        if (!empty($data['password'])) {
+            $stmt->bindParam(':password', $data['password']);
+        }
     
         return $stmt->execute();
     }
+    
     
 
     public function deleteStudent($user_id) {

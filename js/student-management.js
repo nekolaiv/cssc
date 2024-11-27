@@ -126,7 +126,13 @@ $("#studentForm").submit(function (e) {
   e.preventDefault();
 
   const action = $("#user_id").val() ? "update" : "create";
-  const formData = $(this).serialize() + `&action=${action}`;
+  let formData = $(this).serialize();
+
+  if (!$("#password").val()) {
+      formData = formData.replace(/&password=[^&]*/, ""); // Remove password if empty
+  }
+
+  formData += `&action=${action}`;
   console.log("Submitting Form Data:", formData);
 
   $.ajax({
@@ -170,6 +176,7 @@ $("#studentForm").submit(function (e) {
 
 
 
+
       // Toggle password visibility
       $("#togglePassword").click(function () {
         const passwordField = $("#password");
@@ -210,7 +217,7 @@ $("#studentForm").submit(function (e) {
               $("#middle_name").val(student.middle_name ?? "");
               $("#last_name").val(student.last_name);
               $("#email").val(student.email);
-              $("#password").val(""); // Do not display the hashed password
+              $("#password").val(""); // Leave password blank
               $("#course").val(student.course);
               $("#year_level").val(student.year_level);
               $("#section").val(student.section);
@@ -228,6 +235,7 @@ $("#studentForm").submit(function (e) {
           }
       });
   });
+  
   
 
     $(".delete-btn").click(function () {

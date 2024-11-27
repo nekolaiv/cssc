@@ -103,12 +103,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'last_name' => cleanInput($_POST['last_name']),
                     'course' => cleanInput($_POST['course']),
                     'year_level' => intval(cleanInput($_POST['year_level'])),
-                    'section' => cleanInput($_POST['section'])
+                    'section' => cleanInput($_POST['section']),
                 ];
+            
+                // Handle password update
+                if (!empty($_POST['password'])) {
+                    $data['password'] = password_hash(cleanInput($_POST['password']), PASSWORD_BCRYPT);
+                }
             
                 $response = $student->updateStudent($data);
                 echo json_encode(['success' => $response]);
                 break;
+            
             
 
         case 'delete':
