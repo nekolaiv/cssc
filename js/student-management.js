@@ -39,6 +39,15 @@ $(document).ready(function () {
   
     const tableBody = $("#studentsTable tbody");
     tableBody.empty();
+
+    if (visibleStudents.length === 0) {
+      tableBody.append(`
+          <tr>
+              <td colspan="8" class="text-center">No data found.</td>
+          </tr>
+      `);
+      return; // Exit the function early since there's no data to process
+  }
   
     visibleStudents.forEach((student) => {
       tableBody.append(`
