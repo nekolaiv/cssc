@@ -17,10 +17,10 @@ class Auth{
 		if($this->_detectRole($email) === 'student'){
 			$sql = "SELECT * FROM Registered_Students WHERE email = :email";
 		} else if($this->_detectRole($email) === 'staff'){
-			$sql = "SELECT user_id, email, password, role FROM Staff_Accounts WHERE email = :email";
+			$sql = "SELECT * FROM Staff_Accounts WHERE email = :email";
 			$user_type = 'staff';
 		} else if($this->_detectRole($email) === 'admin'){
-			$sql = "SELECT user_id, email, password, role FROM Admin_Accounts WHERE email = :email";
+			$sql = "SELECT * FROM Admin_Accounts WHERE email = :email";
 			$user_type = 'admin';
 		} else {
 			return ['email does not exist', ' '];
