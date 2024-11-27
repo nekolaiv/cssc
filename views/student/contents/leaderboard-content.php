@@ -7,9 +7,9 @@
     </div>
     <div id="leaderboard-course-options">
         <div id="leaderboard-courses">
-            <a href="leaderboard" id="leaderboard-link" class="nav-items"><button class="leaderboard-course">ALL</button></a>
+            <a href="leaderboard" id="leaderboard-link" class="nav-items"><button class="leaderboard-course active">ALL</button></a>
             <a href="leaderboard-cs" id="leaderboard-cs-link" class="nav-items"><button class="leaderboard-course">CS</button></a>
-            <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course active">IT</button></a>
+            <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
             <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
         </div>
     </div>
