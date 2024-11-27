@@ -81,20 +81,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode($students);
             break;
 
-        case 'update':
-            $data = [
-                'user_id' => intval(cleanInput($_POST['user_id'])),
-                'email' => cleanInput($_POST['email']),
-                'first_name' => cleanInput($_POST['first_name']),
-                'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
-                'course' => cleanInput($_POST['course']),
-                'year_level' => intval(cleanInput($_POST['year_level'])),
-                'section' => cleanInput($_POST['section'])
-            ];
-            $response = $student->updateStudent($data);
-            echo json_encode(['success' => $response]);
-            break;
+            case 'update':
+                $user_id = intval(cleanInput($_POST['user_id']));
+                $student_id = cleanInput($_POST['student_id']);
+            
+                // Check if student_id exists for another user
+                if ($student->studentIdExists($student_id, $user_id)) {
+                    echo json_encode([
+                        'success' => false,
+                        'errors' => ['student_id' => 'This Student ID is already taken by another user.']
+                    ]);
+                    exit;
+                }
+            
+                $data = [
+                    'user_id' => $user_id,
+                    'student_id' => $student_id,
+                    'email' => cleanInput($_POST['email']),
+                    'first_name' => cleanInput($_POST['first_name']),
+                    'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
+                    'last_name' => cleanInput($_POST['last_name']),
+                    'course' => cleanInput($_POST['course']),
+                    'year_level' => intval(cleanInput($_POST['year_level'])),
+                    'section' => cleanInput($_POST['section'])
+                ];
+            
+                $response = $student->updateStudent($data);
+                echo json_encode(['success' => $response]);
+                break;
+            
 
         case 'delete':
             $user_id = intval(cleanInput($_POST['user_id']));

@@ -127,19 +127,20 @@ $("#studentForm").submit(function (e) {
 
   const action = $("#user_id").val() ? "update" : "create";
   const formData = $(this).serialize() + `&action=${action}`;
+  console.log("Submitting Form Data:", formData);
 
-    console.log("Submitting Form Data:", formData);
-
-    $.ajax({
+  $.ajax({
       url: "/cssc/server/studentServer.php",
       type: "POST",
       data: formData,
       success: function (response) {
+          console.log("Raw Response:", response);
           const result = JSON.parse(response);
 
           // Clear previous error messages
           $(".form-control").removeClass("is-invalid");
           $(".invalid-feedback").text("");
+          $("#studentModal .modal-content").removeClass("border-danger");
 
           if (result.success) {
               alert("Student saved successfully!");
@@ -147,6 +148,7 @@ $("#studentForm").submit(function (e) {
               loadStudents();
           } else if (result.errors) {
               // Display error messages
+              $("#studentModal .modal-content").addClass("border-danger");
               Object.keys(result.errors).forEach(function (field) {
                   const errorMessage = result.errors[field];
                   const fieldElement = $(`[name="${field}"]`);
@@ -160,8 +162,12 @@ $("#studentForm").submit(function (e) {
               alert("An unexpected error occurred.");
           }
       },
+      error: function (xhr, status, error) {
+          console.error("Failed to submit form:", error);
+      }
   });
 });
+
 
 
       // Toggle password visibility
@@ -180,40 +186,49 @@ $("#studentForm").submit(function (e) {
   // Attach event listeners for Edit and Delete buttons
   function attachEventListeners() {
     $(".edit-btn").click(function () {
-        const user_id = $(this).data("id");
-        console.log("Triggering edit for User ID:", user_id); // Confirm this is outputting correctly
-    
-        $.ajax({
-            url: "/cssc/server/studentServer.php",
-            type: "POST",
-            data: { action: "get", user_id: user_id },
-            success: function (response) {
-                console.log("Edit response:", response);
-                const student = JSON.parse(response);
-                if(student.error) {
-                    console.error("Error fetching student:", student.error);
-                    alert("Error: " + student.error);
-                    return;
-                }
-    
-                // Populate the modal with data
-                $("#user_id").val(student.user_id);
-                $("#student_id").val(student.student_id);
-                $("#first_name").val(student.first_name);
-                $("#last_name").val(student.last_name);
-                $("#email").val(student.email);
-                $("#course").val(student.course);
-                $("#year_level").val(student.year_level);
-                $("#section").val(student.section);
-    
-                $("#studentModalLabel").text("Edit Student");
-                $("#studentModal").modal("show");
-            },
-            error: function (xhr, status, error) {
-                console.error("Failed to fetch student data:", error);
-            }
-        });
-    });
+      const user_id = $(this).data("id");
+      console.log("Triggering edit for User ID:", user_id);
+  
+      $.ajax({
+          url: "/cssc/server/studentServer.php",
+          type: "POST",
+          data: { action: "get", user_id: user_id },
+          success: function (response) {
+              console.log("Edit response:", response);
+              const student = JSON.parse(response);
+  
+              if (student.error) {
+                  console.error("Error fetching student:", student.error);
+                  alert("Error: " + student.error);
+                  return;
+              }
+  
+              // Populate the modal with data
+              $("#user_id").val(student.user_id);
+              $("#student_id").val(student.student_id);
+              $("#first_name").val(student.first_name);
+              $("#middle_name").val(student.middle_name ?? "");
+              $("#last_name").val(student.last_name);
+              $("#email").val(student.email);
+              $("#password").val(""); // Do not display the hashed password
+              $("#course").val(student.course);
+              $("#year_level").val(student.year_level);
+              $("#section").val(student.section);
+  
+              // Reset error messages and modal styles
+              $(".form-control").removeClass("is-invalid");
+              $(".invalid-feedback").text("");
+              $("#studentModal .modal-content").removeClass("border-danger");
+  
+              $("#studentModalLabel").text("Edit Student");
+              $("#studentModal").modal("show");
+          },
+          error: function (xhr, status, error) {
+              console.error("Failed to fetch student data:", error);
+          }
+      });
+  });
+  
 
     $(".delete-btn").click(function () {
       const user_id = $(this).data("id");

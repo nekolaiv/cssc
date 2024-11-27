@@ -113,12 +113,34 @@ class Admin {
     }
 
     public function updateStudent($data) {
-        $query = "UPDATE Registered_Students 
-                  SET email = :email, first_name = :first_name, last_name = :last_name, middle_name = :middle_name, 
-                      course = :course, year_level = :year_level, section = :section
+        $query = "UPDATE registered_students 
+                  SET student_id = :student_id, 
+                      email = :email, 
+                      first_name = :first_name, 
+                      middle_name = :middle_name, 
+                      last_name = :last_name, 
+                      course = :course, 
+                      year_level = :year_level, 
+                      section = :section 
                   WHERE user_id = :user_id";
-        return $this->database->execute($query, $data);
+    
+        $stmt = $this->database->connect()->prepare($query);
+        $stmt->bindValue(':student_id', $data['student_id'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':first_name', $data['first_name'], PDO::PARAM_STR);
+        $stmt->bindValue(':middle_name', $data['middle_name'], PDO::PARAM_STR);
+        $stmt->bindValue(':last_name', $data['last_name'], PDO::PARAM_STR);
+        $stmt->bindValue(':course', $data['course'], PDO::PARAM_STR);
+        $stmt->bindValue(':year_level', $data['year_level'], PDO::PARAM_INT);
+        $stmt->bindValue(':section', $data['section'], PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+    
+        // **Log the query and parameters here**
+        file_put_contents('debug.log', $query . "\n" . print_r($data, true), FILE_APPEND);
+    
+        return $stmt->execute();
     }
+    
 
     public function deleteStudent($user_id) {
         $query = "DELETE FROM Registered_Students WHERE user_id = :user_id";
@@ -132,19 +154,22 @@ class Admin {
         return $this->database->fetchOne($query, ['user_id' => $user_id]);
     }
 
-    public function studentIdExists($student_id) {
-        try {
-            $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id";
-            $stmt = $this->database->connect()->prepare($query);
-            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
-            $stmt->execute();
-            $count = $stmt->fetchColumn();
-            return $count > 0; // Returns true if a duplicate exists
-        } catch (PDOException $e) {
-            error_log("Error checking student ID existence: " . $e->getMessage());
-            return false;
+    public function studentIdExists($student_id, $exclude_user_id = null) {
+        $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id";
+        if ($exclude_user_id) {
+            $query .= " AND user_id != :exclude_user_id";
         }
+    
+        $stmt = $this->database->connect()->prepare($query);
+        $stmt->bindValue(':student_id', $student_id, PDO::PARAM_STR);
+        if ($exclude_user_id) {
+            $stmt->bindValue(':exclude_user_id', $exclude_user_id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+    
+        return $stmt->fetchColumn() > 0;
     }
+    
 
     public function studentIdExistsForOther($student_id, $user_id)
 {
