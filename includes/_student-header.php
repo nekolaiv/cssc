@@ -7,6 +7,7 @@
         <ul>
             <a href="home" id="home-link" class="nav-items"><button >Home</button></a>
             <a href="leaderboard" id="leaderboard-link" class="nav-items" ><button >Leaderboard</button></a>
+            <a href="calculate" id="calculate-link" class="nav-items"><button>Calculate</button></a>
             <a href="about" id="about-link" class="nav-items" ><button >About</button></a>
         </ul>
         <div class="notification-bell">
@@ -14,8 +15,9 @@
         </div>
         <div class="profile-icon" id="profile-icon">
             <div class="dropdown" id="profile-dropdown">
-                <button class="nav-items">profile</button>
-                <button class="nav-items">settings</button>
+                <a href="profile" id="profile-link" class="nav-items"><button>profile</button></a>
+                <a href="settings" id="settings-link" class="nav-items"><button>settings</button></a>
+                
                 <form action="" method="POST">
                     <!-- <input type="hidden" name="action" value="logout"> -->
                     <button type="submit" name="logout" value="logout" id="logout-button">Logout</button>

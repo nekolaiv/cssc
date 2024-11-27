@@ -3,46 +3,46 @@ $(document).ready(function () {
 	// const last_page = sessionStorage.getItem('last-page') || 'home.php';
     // loadPage(last_page);
 
-  	// Event listener for navigation links
 	$(".nav-items").on("click", function (e) {
-		e.preventDefault(); // Prevent default anchor click behavior
-		$(".nav-items").removeClass("nav-active"); // Remove active class from all links
-		$(this).addClass("nav-active"); // Add active class to the clicked link
+		e.preventDefault();
+		$(".nav-items").removeClass("nav-active");
+		$(this).addClass("nav-active");
 
-		let url = $(this).attr("href"); // Get the URL from the href attribute
-		console.log(url);
-		window.history.pushState({ path: url }, "", url); // Update the browser's URL without reloading
+		let url = $(this).attr("href");
+		// console.log(url);
+		window.history.pushState({ path: url }, "", url);
 	});
 
-	// Event listener for the dashboard link
 	$("#home-link").on("click", function (e) {
 		alert('main');
-		e.preventDefault(); // Prevent default behavior
-		// history.pushState({ page: 'index.php' }, '', 'index.php');
-		loadPage('home-main.php'); // Call the function to load analytics
-	})
-
-	$("#calculate-link").on("click", function (e) {
-		alert('calculate');
-		e.preventDefault(); // Prevent default behavior
-		// history.pushState({ page: 'index.php' }, '', 'index.php');
-		loadPage('calculate-main.php'); // Call the function to load analytics
-	})
-
-	// Event listener for the products link
-	$("#leaderboard-link").on("click", function (e) {
-		alert('leaderboard');
-		e.preventDefault(); // Prevent default behavior
-		// history.pushState({ page: 'index.php' }, '', 'index.php');
-		loadPage('leaderboard-main.php'); // Call the function to load products
+		e.preventDefault();
+		loadPage('home-main.php');
 	});
 
-	// Event listener for the products link
+	$("#leaderboard-link").on("click", function (e) {
+		alert('leaderboard');
+		e.preventDefault();
+		loadPage('leaderboard-main.php');
+	});
+
 	$("#about-link").on("click", function (e) {
-		alert('about');
-		e.preventDefault(); // Prevent default behavior
-		// history.pushState({ page: 'index.php' }, '', 'index.php');
-		loadPage('about-main.php'); // Call the function to load products
+		e.preventDefault();
+		loadPage('about-main.php');
+	});
+
+	$("#results-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('results-main.php');
+	});
+
+	$("#profile-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('profile-main.php');
+	});
+
+	$("#calculate-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('calculate-main.php');
 	});
 
 	// Determine which page to load based on the current URL
@@ -52,19 +52,22 @@ $(document).ready(function () {
 	let url = window.location.href;
 	
 	if (url.endsWith("home")) {
-		$("#home-link").trigger("click"); // Trigger the dashboard click event
+		$("#home-link").trigger("click").done(alert("home triggered"));
 	} else if (url.endsWith("leaderboard")) {
-		$("#leaderboard-link").trigger("click"); // Trigger the products click event
+		$("#leaderboard-link").trigger("click");
 	} else if (url.endsWith("about")) {
-		alert('about url detected');
-		$("#about-link").trigger("click"); // Trigger the products click event
-	} else if (url.endsWith("calculate")) {
-		alert('calculate url detected');
-		$("#calculate-link").trigger("click"); // Trigger the products click event
+		$("#about-link").trigger("click");
+	} else if (url.endsWith("results")) {
+		$("#results-link").trigger("click");
 	} else if (url.endsWith("profile")) {
-		$("#calculate-link").trigger("click"); // Trigger the products click event
+		$("#profile-link").trigger("click");
+	} else if (url.endsWith("settings")) {
+		$("#settings-link").trigger("click");
+	} else if (url.endsWith("calculate")) {
+		alert('calculate link detected');
+		$("#calculate-link").trigger("click");
 	} else {
-		$("#home-link").trigger("click"); // Default to dashboard if no specific page
+		$("#home-link").trigger("click");
 	}
 
 
@@ -72,54 +75,51 @@ $(document).ready(function () {
 	$(window).on('popstate', function(event) {
 		let url = window.location.href;
 		if (url.endsWith("home")) {
-			$("#home-link").trigger("click"); // Trigger the dashboard click event
+			$("#home-link").trigger("click");
 		} else if (url.endsWith("leaderboard")) {
-			$("#leaderboard-link").trigger("click"); // Trigger the products click event
+			$("#leaderboard-link").trigger("click");
 		} else if (url.endsWith("about")) {
-			$("#about-link").trigger("click"); // Trigger the products click event
+			$("#about-link").trigger("click");
+		} else if (url.endsWith("results")) {
+			$("#results-link").trigger("click");
+		} else if (url.endsWith("profile")) {
+			$("#profile-link").trigger("click");
+		} else if (url.endsWith("settings")) {
+			$("#settings-link").trigger("click");
 		} else if (url.endsWith("calculate")) {
-			$("#calculate-link").trigger("click"); // Trigger the products click event
-		} else if (url.endsWith("calculate")) {
-			$("#result-link").trigger("click"); // Trigger the products click event
-		} else if (url.endsWith("calculate")) {
-			$("#calculate-link").trigger("click"); // Trigger the products click event
+			$("#calculate-link").trigger("click");
 		} else {
-			$("#home-link").trigger("click"); // Default to dashboard if no specific page
+			$("#home-link").trigger("click");
 		}
 	});
 
-	// $(window).on('popstate', function(event) {
-	// 	if (event.originalEvent.state) {
-	// 		var page = event.originalEvent.state.page;
-	// 		console.log('Navigated to page: ' + page);
-	// 		// Optionally, update the page content or UI based on the page value
-	// 		loadPage(page);
-	// 	}
-	// });
+	$(window).on('popstate', function(event) {
+		if (event.originalEvent.state) {
+			var page = event.originalEvent.state.page;
+			console.log('Navigated to page: ' + page);
+			loadPage(page);
+		}
+	});
 
-
-	// Function to load products view
 	function loadPage(page) {
 		$.ajax({
 			type: "GET",
 			url: `${page}`,
 			dataType: "html",
 			success: function (response) {
-				alert(response);
 				$(".content").html(response);
 			},
 			error: function (xhr, status, error) {
-				console.error("Error saving php room:", error, status);
+				console.error("Error loading the page: ", error);
 			}
 		});
 	}
 
-	// Function to show the add product modal
 	function editProduct(productId) {
 		$.ajax({
-			type: "GET", // Use GET request
-			url: "../products/edit-product.html", // URL to get product data
-			dataType: "html", // Expect JSON response
+			type: "GET",
+			url: "../products/edit-product.html",
+			dataType: "html",
 			success: function (view) {
 				alert(productId);
 				fetchCategories(); // Load categories for the select input
