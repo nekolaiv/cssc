@@ -23,6 +23,11 @@ $(document).ready(function () {
 		loadPage('leaderboard-main.php');
 	});
 
+	$("#calculate-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('calculate-main.php');
+	});
+
 	$("#about-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('about-main.php');
@@ -37,12 +42,6 @@ $(document).ready(function () {
 		e.preventDefault();
 		loadPage('profile-main.php');
 	});
-
-	$("#calculate-link").on("click", function (e) {
-		e.preventDefault();
-		loadPage('calculate-main.php');
-	});
-
 	// Determine which page to load based on the current URL
 	// if (url.endsWith("views/student/index.php")) {
 	// 	$("#home-link").trigger("click");
@@ -53,6 +52,12 @@ $(document).ready(function () {
 		$("#home-link").trigger("click");
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
+	} else if (url.endsWith("leaderboard-cs")) {
+		$("#leaderboard-cs-link").trigger("click");
+	} else if (url.endsWith("leaderboard-it")) {
+		$("#leaderboard-it-link").trigger("click");
+	} else if (url.endsWith("leaderboard-act")) {
+		$("#leaderboard-act-link").trigger("click");
 	} else if (url.endsWith("about")) {
 		$("#about-link").trigger("click");
 	} else if (url.endsWith("results")) {
@@ -75,6 +80,12 @@ $(document).ready(function () {
 			$("#home-link").trigger("click");
 		} else if (url.endsWith("leaderboard")) {
 			$("#leaderboard-link").trigger("click");
+		} else if (url.endsWith("leaderboard-cs")) {
+			$("#leaderboard-cs-link").trigger("click");
+		} else if (url.endsWith("leaderboard-it")) {
+			$("#leaderboard-it-link").trigger("click");
+		} else if (url.endsWith("leaderboard-act")) {
+			$("#leaderboard-act-link").trigger("click");
 		} else if (url.endsWith("about")) {
 			$("#about-link").trigger("click");
 		} else if (url.endsWith("results")) {
