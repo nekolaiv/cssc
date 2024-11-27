@@ -49,3 +49,5 @@ STUDENT
 42. work with leaderboard
 43. fetch profile data from database /
 44. change cursor leaderboard button in home
+45. restructure project structure /
+46. change head title to variable or manually add each
