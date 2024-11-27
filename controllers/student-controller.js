@@ -15,32 +15,47 @@ $(document).ready(function () {
 
 	$("#home-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('home-main.php');
+		loadPage('home-content.php');
 	});
 
 	$("#leaderboard-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('leaderboard-main.php');
+		loadPage('leaderboard-content.php');
+	});
+
+	$("#leaderboard-cs-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('leaderboard-content.php');
+	});
+
+	$("#leaderboard-it-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('leaderboard-content.php');
+	});
+
+	$("#leaderboard-act-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('leaderboard-content.php');
 	});
 
 	$("#calculate-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('calculate-main.php');
+		loadPage('calculate-content.php');
 	});
 
 	$("#about-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('about-main.php');
+		loadPage('about-content.php');
 	});
 
 	$("#results-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('results-main.php');
+		loadPage('results-content.php');
 	});
 
 	$("#profile-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('profile-main.php');
+		loadPage('profile-content.php');
 	});
 	// Determine which page to load based on the current URL
 	// if (url.endsWith("views/student/index.php")) {
