@@ -85,6 +85,16 @@ $(document).ready(function () {
         $("#staffModal").modal("show");
     });
 
+    $(document).on("click", "#togglePassword", function () {
+        const passwordField = $("#password");
+        const type = passwordField.attr("type") === "password" ? "text" : "password";
+        passwordField.attr("type", type);
+    
+        // Update button text based on visibility
+        $(this).text(type === "password" ? "Show" : "Hide");
+    });
+    
+
     $("#staffForm").submit(function (e) {
         e.preventDefault();
 
