@@ -25,17 +25,17 @@ $(document).ready(function () {
 
 	$("#leaderboard-cs-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('leaderboard-content.php');
+		loadPage('leaderboard-cs-content.php');
 	});
 
 	$("#leaderboard-it-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('leaderboard-content.php');
+		loadPage('leaderboard-it-content.php');
 	});
 
 	$("#leaderboard-act-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('leaderboard-content.php');
+		loadPage('leaderboard-act-content.php');
 	});
 
 	$("#calculate-link").on("click", function (e) {
