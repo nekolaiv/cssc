@@ -7,10 +7,10 @@
     </div>
     <div id="leaderboard-course-options">
         <div id="leaderboard-courses">
-            <button onclick="loadPage('leaderboard.php')" class="leaderboard-course active">ALL</button>
-            <button onclick="loadPage('leaderboard-cs.php')" class="leaderboard-course">CS</button>
-            <button onclick="loadPage('leaderboard-it.php')" class="leaderboard-course">IT</button>
-            <button onclick="loadPage('leaderboard-act.php')" class="leaderboard-course">ACT</button>
+            <a href="leaderboard" id="leaderboard-link" class="nav-items"><button class="leaderboard-course">ALL</button></a>
+            <a href="leaderboard-cs" id="leaderboard-cs-link" class="nav-items"><button class="leaderboard-course">CS</button></a>
+            <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course active">IT</button></a>
+            <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
         </div>
     </div>
     <div id="leaderboard-top-notchers">

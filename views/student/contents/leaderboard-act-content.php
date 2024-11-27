@@ -7,15 +7,15 @@
     </div>
     <div id="leaderboard-course-options">
         <div id="leaderboard-courses">
-            <button onclick="loadPage('leaderboard.php')" class="leaderboard-course">ALL</button>
-            <button onclick="loadPage('leaderboard-cs.php')" class="leaderboard-course">CS</button>
-            <button onclick="loadPage('leaderboard-it.php')" class="leaderboard-course active">IT</button>
-            <button onclick="loadPage('leaderboard-act.php')" class="leaderboard-course">ACT</button>
+            <a href="leaderboard" id="leaderboard-link" class="nav-items"><button class="leaderboard-course">ALL</button></a>
+            <a href="leaderboard-cs" id="leaderboard-cs-link" class="nav-items"><button class="leaderboard-course">CS</button></a>
+            <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
+            <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course active">ACT</button></a>
         </div>
     </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
-            <div class="topnotcher-div-1"><p class="topnotcher-course">BS INFORMATION TECHNOLOGY</p></div>
+            <div class="topnotcher-div-1"><p class="topnotcher-course">ASSOCIATE IN COMPUTER TECHNOLOGY</p></div>
             <div class="topnotcher-div-2"><h2 class="topnotcher-name">YAHIYA, AHMAD FEYAZ</h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
@@ -31,7 +31,7 @@
     </div>
     <div id="leaderboard-list">
         <div class="bsit-list">
-            <div class="course-header-pad">BS INFORMATION TECHNOLOGY</div>
+            <div class="course-header-pad">ASSOCIATE IN COMPUTER TECHNOLOGY</div>
             <div class="list-table">
                 <div class="leaderboard-list-pad list-header">
                     <div class="leaderboard-list-pad-div1">
