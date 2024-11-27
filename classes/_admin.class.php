@@ -18,47 +18,77 @@ class Admin {
     }
 
     // Create a new admin account
-    public function createAdmin($email, $password) {
-        $query = "INSERT INTO Admin_Accounts (email, password) VALUES (:email, :password)";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
-        return $stmt->execute();
+  // Create Admin
+  public function createAdmin($data) {
+    $sql = "INSERT INTO admin_accounts (email, password) VALUES (:email, :password)";
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+    $stmt->bindValue(':password', $data['password'], PDO::PARAM_STR);
+
+    return $stmt->execute();
+}
+
+// Get All Admins
+public function getAllAdmins() {
+    $sql = "SELECT admin_id, email, password FROM admin_accounts";
+    return $this->database->fetchAll($sql);
+}
+
+// Get Admin By ID
+public function getAdminById($admin_id) {
+    $sql = "SELECT admin_id, email FROM admin_accounts WHERE admin_id = :admin_id";
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->bindValue(':admin_id', $admin_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Update Admin
+public function updateAdmin($data) {
+    $query = "UPDATE admin_accounts SET email = :email";
+    
+    if (!empty($data['password'])) {
+        $query .= ", password = :password";
+    }
+    
+    $query .= " WHERE admin_id = :admin_id";
+
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindValue(':email', $data['email']);
+    if (!empty($data['password'])) {
+        $stmt->bindValue(':password', $data['password']);
+    }
+    $stmt->bindValue(':admin_id', $data['admin_id']);
+    return $stmt->execute();
+}
+
+
+// Delete Admin
+public function deleteAdmin($admin_id) {
+    $sql = "DELETE FROM admin_accounts WHERE admin_id = :admin_id";
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->bindValue(':admin_id', $admin_id, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+
+// Check if Email Exists
+public function emailExists($email, $exclude_admin_id = null) {
+    $sql = "SELECT admin_id FROM admin_accounts WHERE email = :email";
+    if ($exclude_admin_id) {
+        $sql .= " AND admin_id != :admin_id";
     }
 
-    // Read all admins
-    public function getAllAdmins() {
-        $query = "SELECT * FROM Admin_Accounts";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    if ($exclude_admin_id) {
+        $stmt->bindValue(':admin_id', $exclude_admin_id, PDO::PARAM_INT);
     }
+    $stmt->execute();
 
-    // Get admin by ID
-    public function getAdminById($id) {
-        $query = "SELECT * FROM Admin_Accounts WHERE admin_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // Update admin profile
-    public function updateAdmin($id, $email) {
-        $query = "UPDATE Admin_Accounts SET email = :email WHERE admin_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':email', $email);
-        return $stmt->execute();
-    }
-
-    // Delete an admin account
-    public function deleteAdmin($id) {
-        $query = "DELETE FROM Admin_Accounts WHERE admin_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    }
+    return $stmt->fetchColumn() ? true : false;
+}
 
  // Check if staff email exists (for both create and update)
  public function staffEmailExists($email, $excludeId = null) {
