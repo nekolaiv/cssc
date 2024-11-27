@@ -7,7 +7,6 @@
         <ul>
             <a href="home" id="home-link" class="nav-items"><button>Home</button></a>
             <a href="leaderboard" id="leaderboard-link" class="nav-items"><button>Leaderboard</button></a>
-            <a href="calculate" id="calculate-link" class="nav-items"><button>Calculate</button></a>
             <a href="about" id="about-link" class="nav-items"><button>About</button></a>
         </ul>
         <div class="notification-bell">
@@ -24,7 +23,11 @@
                 </form>
             </div>
         </div>
-    </nav>  
+    </nav> 
+    <input type="hidden" id="calculate-link"> 
+    <input type="hidden" id="leaderboard-cs-link">
+    <input type="hidden" id="leaderboard-it-link">
+    <input type="hidden" id="leaderboard-act-link">
 </header>
 <script src="/cssc/js/student_hamburger-menu.js"></script>
 <script src="/cssc/js/student_profile-dropdown.js"></script>
