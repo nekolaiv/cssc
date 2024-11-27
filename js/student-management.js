@@ -20,7 +20,7 @@ $(document).ready(function () {
   // Load all students into the table
   function loadStudents() {
     $.ajax({
-      url: "/cssc/server/admin_student_server.php",
+      url: "/cssc/server/studentServer.php",
       type: "POST",
       data: { action: "read" },
       success: function (response) {
@@ -128,8 +128,15 @@ $("#studentForm").submit(function (e) {
   const action = $("#user_id").val() ? "update" : "create";
   const formData = $(this).serialize() + `&action=${action}`;
 
+<<<<<<< HEAD
   $.ajax({
       url: "/cssc/server/admin_student_server.php",
+=======
+    console.log("Submitting Form Data:", formData);
+
+    $.ajax({
+      url: "/cssc/server/studentServer.php",
+>>>>>>> parent of be348a1 (changed files)
       type: "POST",
       data: formData,
       success: function (response) {
@@ -182,7 +189,7 @@ $("#studentForm").submit(function (e) {
         console.log("Triggering edit for User ID:", user_id); // Confirm this is outputting correctly
     
         $.ajax({
-            url: "/cssc/server/admin_student_server.php",
+            url: "/cssc/server/studentServer.php",
             type: "POST",
             data: { action: "get", user_id: user_id },
             success: function (response) {
@@ -217,7 +224,7 @@ $("#studentForm").submit(function (e) {
       const user_id = $(this).data("id");
       if (confirm("Are you sure you want to delete this student?")) {
         $.ajax({
-          url: "/cssc/server/admin_student_server.php",
+          url: "/cssc/server/studentServer.php",
           type: "POST",
           data: { action: "delete", user_id },
           success: function (response) {
