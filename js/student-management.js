@@ -20,7 +20,7 @@ $(document).ready(function () {
   // Load all students into the table
   function loadStudents() {
     $.ajax({
-      url: "/cssc/server/studentServer.php",
+      url: "/cssc/server/admin_student_server.php",
       type: "POST",
       data: { action: "read" },
       success: function (response) {
@@ -131,7 +131,7 @@ $(document).ready(function () {
     console.log("Submitting Form Data:", formData);
 
     $.ajax({
-      url: "/cssc/server/studentServer.php",
+      url: "/cssc/server/admin_student_server.php",
       type: "POST",
       data: formData,
       success: function (response) {
@@ -164,7 +164,7 @@ $(document).ready(function () {
         console.log("Triggering edit for User ID:", user_id); // Confirm this is outputting correctly
     
         $.ajax({
-            url: "/cssc/server/studentServer.php",
+            url: "/cssc/server/admin_student_server.php",
             type: "POST",
             data: { action: "get", user_id: user_id },
             success: function (response) {
@@ -199,7 +199,7 @@ $(document).ready(function () {
       const user_id = $(this).data("id");
       if (confirm("Are you sure you want to delete this student?")) {
         $.ajax({
-          url: "/cssc/server/studentServer.php",
+          url: "/cssc/server/admin_student_server.php",
           type: "POST",
           data: { action: "delete", user_id },
           success: function (response) {
