@@ -595,15 +595,13 @@ header nav ul button {
 	height: 50px;
 	width: fit-content;
 	padding: 5px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	
 	background-color: var(--color-white);
 	border-radius: calc(var(--Gborder-radius));
 	/* border: 1px solid red; */
 }
 
-#leaderboard-courses>button {
+#leaderboard-courses>a>button {
 	all: unset;
 	height: 100%;
 	width: 70px;
@@ -616,7 +614,7 @@ header nav ul button {
 	cursor: pointer;
 }
 
-#leaderboard-courses>button.active {
+#leaderboard-courses>a>button.active {
 	background-color: var(--button-white-active);
 	color: var(--text-green);
 }
