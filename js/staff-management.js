@@ -80,20 +80,12 @@ $(document).ready(function () {
 
     $("#addStaffBtn").click(function () {
         $("#staffForm")[0].reset();
+        $(".form-control").removeClass("is-invalid");
+        $(".invalid-feedback").text("");
         $("#staff_id").val("");
         $("#staffModalLabel").text("Add Staff");
         $("#staffModal").modal("show");
     });
-
-    $(document).on("click", "#togglePassword", function () {
-        const passwordField = $("#password");
-        const type = passwordField.attr("type") === "password" ? "text" : "password";
-        passwordField.attr("type", type);
-    
-        // Update button text based on visibility
-        $(this).text(type === "password" ? "Show" : "Hide");
-    });
-    
 
     $("#staffForm").submit(function (e) {
         e.preventDefault();
@@ -108,12 +100,21 @@ $(document).ready(function () {
             success: function (response) {
                 const result = JSON.parse(response);
 
+                $(".form-control").removeClass("is-invalid");
+                $(".invalid-feedback").text("");
+                $("#staffModal .modal-content").removeClass("border-danger");
+
                 if (result.success) {
                     alert("Staff saved successfully!");
                     $("#staffModal").modal("hide");
                     loadStaff();
                 } else if (result.errors) {
-                    alert("Error: " + JSON.stringify(result.errors));
+                    $("#staffModal .modal-content").addClass("border-danger");
+                    Object.keys(result.errors).forEach((field) => {
+                        const fieldElement = $(`[name="${field}"]`);
+                        fieldElement.addClass("is-invalid");
+                        fieldElement.next(".invalid-feedback").text(result.errors[field]);
+                    });
                 } else {
                     alert("An unexpected error occurred.");
                 }
@@ -140,6 +141,10 @@ $(document).ready(function () {
                     $("#staff_id").val(staffMember.staff_id);
                     $("#email").val(staffMember.email);
                     $("#password").val("");
+
+                    $(".form-control").removeClass("is-invalid");
+                    $(".invalid-feedback").text("");
+                    $("#staffModal .modal-content").removeClass("border-danger");
 
                     $("#staffModalLabel").text("Edit Staff");
                     $("#staffModal").modal("show");
