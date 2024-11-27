@@ -14,13 +14,11 @@ $(document).ready(function () {
 	});
 
 	$("#home-link").on("click", function (e) {
-		alert('main');
 		e.preventDefault();
 		loadPage('home-main.php');
 	});
 
 	$("#leaderboard-link").on("click", function (e) {
-		alert('leaderboard');
 		e.preventDefault();
 		loadPage('leaderboard-main.php');
 	});
@@ -52,7 +50,7 @@ $(document).ready(function () {
 	let url = window.location.href;
 	
 	if (url.endsWith("home")) {
-		$("#home-link").trigger("click").done(alert("home triggered"));
+		$("#home-link").trigger("click");
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
 	} else if (url.endsWith("about")) {
