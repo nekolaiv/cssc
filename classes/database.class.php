@@ -62,6 +62,20 @@ class Database{
             return false; // Return false on failure
         }
     }
+
+    public function fetchColumn($query, $params = [])
+{
+    try {
+        $stmt = $this->connect()->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        // Log the error and handle it appropriately
+        file_put_contents('debug.log', "Error in fetchColumn: " . $e->getMessage() . "\n", FILE_APPEND);
+        throw new Exception("Database query failed.");
+    }
+}
+
     
 }
 

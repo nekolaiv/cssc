@@ -60,46 +60,68 @@ class Admin {
         return $stmt->execute();
     }
 
-    public function createStaff($email, $password) {
-        $query = "INSERT INTO Staff_Accounts (email, password) VALUES (:email, :password)";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
-        return $stmt->execute();
+ // Check if staff email exists (for both create and update)
+ public function staffEmailExists($email, $excludeId = null) {
+    $query = "SELECT COUNT(*) FROM staff_accounts WHERE email = :email";
+    $params = [':email' => $email];
+
+    if ($excludeId !== null) {
+        $query .= " AND staff_id != :staff_id";
+        $params[':staff_id'] = $excludeId;
     }
 
-    // Read all staff accounts
-    public function getAllStaff() {
-        $query = "SELECT * FROM Staff_Accounts";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $this->database->fetchColumn($query, $params) > 0;
+}
+
+// Create a new staff account
+public function createStaff($data) {
+    $query = "INSERT INTO staff_accounts (email, password) VALUES (:email, :password)";
+    $params = [
+        ':email' => $data['email'],
+        ':password' => $data['password']
+    ];
+
+    return $this->database->execute($query, $params);
+}
+
+// Get all staff accounts
+public function getAllStaff() {
+    $query = "SELECT staff_id, email, password FROM staff_accounts";
+    return $this->database->fetchAll($query);
+}
+
+// Get a specific staff account by ID
+public function getStaffById($staff_id) {
+    $query = "SELECT staff_id, email, password FROM staff_accounts WHERE staff_id = :staff_id";
+    $params = [':staff_id' => $staff_id];
+    return $this->database->fetch($query, $params);
+}
+
+// Update an existing staff account
+public function updateStaff($data) {
+    $query = "UPDATE staff_accounts SET email = :email";
+
+    $params = [
+        ':email' => $data['email'],
+        ':staff_id' => $data['staff_id']
+    ];
+
+    if (isset($data['password']) && !empty($data['password'])) {
+        $query .= ", password = :password";
+        $params[':password'] = $data['password'];
     }
 
-    // Get staff details by ID
-    public function getStaffById($id) {
-        $query = "SELECT * FROM Staff_Accounts WHERE staff_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+    $query .= " WHERE staff_id = :staff_id";
 
-    // Update a staff profile
-    public function updateStaff($id, $data) {
-        $query = "UPDATE Staff_Accounts SET email = :email, role = :role WHERE staff_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $data['id'] = $id;
-        return $stmt->execute($data);
-    }
+    return $this->database->execute($query, $params);
+}
 
-    // Delete a staff account
-    public function deleteStaff($id) {
-        $query = "DELETE FROM Staff_Accounts WHERE staff_id = :id";
-        $stmt = $this->database->connect()->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    }
+// Delete a staff account
+public function deleteStaff($staff_id) {
+    $query = "DELETE FROM staff_accounts WHERE staff_id = :staff_id";
+    $params = [':staff_id' => $staff_id];
+    return $this->database->execute($query, $params);
+}
 
     public function createStudent($data) {
         $query = "INSERT INTO Registered_Students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
