@@ -69,4 +69,5 @@
         </div>
     </div>
 </section>
+<script src="/cssc/controllers/student-controller.js"></script>
 
