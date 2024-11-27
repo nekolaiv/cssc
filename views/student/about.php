@@ -1,5 +1,8 @@
+<?php 
+$page_title = "about";
+include_once "../../includes/_student-head.php";
+?>
 
-<?php include_once "../../includes/_student-head.php"?>
 
 <body class="home-body">
     <main class="wrapper">
