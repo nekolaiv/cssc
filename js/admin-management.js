@@ -113,6 +113,27 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on("click", ".reveal-password", function () {
+        const button = $(this);
+        const actualPassword = button.data("password");
+    
+        if (actualPassword) {
+            alert(`Password: ${actualPassword}`);
+        } else {
+            alert("Password could not be retrieved.");
+        }
+    });
+
+    $(document).on("click", "#togglePassword", function () {
+        const passwordField = $("#password");
+        const type = passwordField.attr("type") === "password" ? "text" : "password";
+        passwordField.attr("type", type);
+    
+        // Update button text based on visibility
+        $(this).text(type === "password" ? "Show" : "Hide");
+    });
+    
+    
     // Handle form submission for Add/Edit
     $("#adminForm").submit(function (e) {
         e.preventDefault();

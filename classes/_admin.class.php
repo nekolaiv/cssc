@@ -246,5 +246,10 @@ public function deleteStaff($staff_id) {
     return $stmt->fetchColumn() > 0;
 }
 
+public function verifyPassword($plainPassword, $hashedPassword) {
+    return password_verify($plainPassword, $hashedPassword);
+}
+
+
 }
 ?>

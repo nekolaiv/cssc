@@ -13,10 +13,9 @@
                         <input type="email" class="form-control" id="email" name="email" >
                         <div class="invalid-feedback">Please provide a valid email.</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                        <div class="invalid-feedback">Password is required.</div>
+                    <div class="input-group mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">Show</button>
                     </div>
                 </div>
                 <div class="modal-footer">
