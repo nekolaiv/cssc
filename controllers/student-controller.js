@@ -62,7 +62,6 @@ $(document).ready(function () {
 	} else if (url.endsWith("settings")) {
 		$("#settings-link").trigger("click");
 	} else if (url.endsWith("calculate")) {
-		alert('calculate link detected');
 		$("#calculate-link").trigger("click");
 	} else {
 		$("#home-link").trigger("click");
@@ -102,7 +101,7 @@ $(document).ready(function () {
 	function loadPage(page) {
 		$.ajax({
 			type: "GET",
-			url: `${page}`,
+			url: `contents/${page}`,
 			dataType: "html",
 			success: function (response) {
 				$(".content").html(response);
