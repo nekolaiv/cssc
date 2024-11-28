@@ -100,6 +100,7 @@ a.sidebar-link {
 a.sidebar-link:hover {
     background-color: rgba(255, 255, 255, .075);
     border-left: 3px solid #03b306;
+}
 
 .sidebar-item {
     position: relative;
