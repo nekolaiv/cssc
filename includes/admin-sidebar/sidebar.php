@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar With Bootstrap</title>
+    <title>navbar</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -21,20 +21,14 @@
                     <i class="lni lni-grid-alt"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">CodzSword</a>
+                    <a href="#">CSSC</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
                     <a href="#" data-url="dashboard.html" class="sidebar-link menu-link">
-                        <i class="lni lni-user"></i>
+                        <i class="lni lni-dashboard"></i>
                         <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" data-url="profile.html" class="sidebar-link menu-link">
-                        <i class="lni lni-user"></i>
-                        <span>Profile</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -56,9 +50,9 @@
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" data-url="notifications.html" class="sidebar-link menu-link">
-                        <i class="lni lni-popup"></i>
-                        <span>Notification</span>
+                    <a href="#" data-url="profile.html" class="sidebar-link menu-link">
+                        <i class="lni lni-user"></i>
+                        <span>Profile</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -76,7 +70,7 @@
             </div>
         </aside>
         <div class="main p-3">
-            <div id="content" class="text-center">
+            <div id="content">
                 <h1>
                     Sidebar Bootstrap 5
                 </h1>
@@ -118,6 +112,12 @@
                         // Dynamically load the student-management.js script if it's student management page
                         if (url.includes("student-management.php")) {
                             $.getScript("/cssc/js/student-management.js");
+                        }
+                        if (url.includes("staff-management.php")) {
+                            $.getScript("/cssc/js/staff-management.js");
+                        }
+                        if (url.includes("admin-management.php")) {
+                            $.getScript("/cssc/js/admin-management.js");
                         }
                     })
                     .catch(() => {
