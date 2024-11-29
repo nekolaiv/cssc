@@ -29,15 +29,19 @@ body {
 }
 
 .main {
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    transition: all 0.35s ease-in-out;
+    margin-left: 70px; /* Adjust this value to match the collapsed width of the sidebar */
+    transition: margin-left 0.25s ease-in-out;
+    width: calc(100% - 70px); /* Adjust the width to fill the rest of the screen */
     background-color: #fafbfe;
+    overflow: hidden;
 }
 
 #sidebar {
     width: 70px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
@@ -139,4 +143,9 @@ a.sidebar-link:hover {
 #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
+}
+
+#sidebar.expand ~ .main {
+    margin-left: 260px; /* Adjust this value to match the expanded width of the sidebar */
+    width: calc(100% - 260px); /* Adjust the width to fill the rest of the screen */
 }
