@@ -8,6 +8,32 @@
             closeAllSubMenus(); // Close submenus when toggling the sidebar
         });
 
+        
+            document.addEventListener("DOMContentLoaded", function () {
+            const content = document.getElementById("content");
+
+            // Fetch the dashboard view
+            fetch("/cssc/views/admin/dashboard.php")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch dashboard content. Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then((data) => {
+                    content.innerHTML = data;
+                    
+                    // Initialize any dashboard-specific scripts (like charts)
+                    if (typeof initializeCharts === "function") {
+                        initializeCharts();
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    content.innerHTML = `<p class="text-danger">Error loading dashboard content. Please try again later.</p>`;
+                });
+        });
+
         // Dynamic content loading with AJAX
         document.addEventListener("click", function (e) {
             if (e.target.classList.contains("menu-link")) {
