@@ -94,68 +94,74 @@ class Admin {
         return $stmt->fetchColumn() ? true : false;
     }
 
- // Check if staff email exists (for both create and update)
- public function staffEmailExists($email, $excludeId = null) {
-    $query = "SELECT COUNT(*) FROM staff_accounts WHERE email = :email";
-    $params = [':email' => $email];
-
-    if ($excludeId !== null) {
-        $query .= " AND staff_id != :staff_id";
-        $params[':staff_id'] = $excludeId;
+        // Create a new staff account
+        public function createStaff($data) {
+            $query = "INSERT INTO staff_accounts (email, password, first_name, last_name, middle_name) VALUES (:email, :password, :first_name, :last_name, :middle_name)";
+            $params = [
+                ':email' => $data['email'],
+                ':password' => $data['password'],
+                ':first_name' => $data['first_name'],
+                ':last_name' => $data['last_name'],
+                ':middle_name' => $data['middle_name']
+            ];
+    
+            return $this->database->execute($query, $params);
+        }
+        
+    // Get all staff accounts
+    public function getAllStaff() {
+        $query = "SELECT staff_id, email, password, first_name, last_name, middle_name FROM staff_accounts";
+        return $this->database->fetchAll($query);
     }
 
-    return $this->database->fetchColumn($query, $params) > 0;
-}
-
-// Create a new staff account
-public function createStaff($data) {
-    $query = "INSERT INTO staff_accounts (email, password) VALUES (:email, :password)";
-    $params = [
-        ':email' => $data['email'],
-        ':password' => $data['password']
-    ];
-
-    return $this->database->execute($query, $params);
-}
-
-// Get all staff accounts
-public function getAllStaff() {
-    $query = "SELECT staff_id, email, password FROM staff_accounts";
-    return $this->database->fetchAll($query);
-}
-
-// Get a specific staff account by ID
-public function getStaffById($staff_id) {
-    $query = "SELECT staff_id, email, password FROM staff_accounts WHERE staff_id = :staff_id";
-    $params = [':staff_id' => $staff_id];
-    return $this->database->fetch($query, $params);
-}
-
-// Update an existing staff account
-public function updateStaff($data) {
-    $query = "UPDATE staff_accounts SET email = :email";
-
-    $params = [
-        ':email' => $data['email'],
-        ':staff_id' => $data['staff_id']
-    ];
-
-    if (isset($data['password']) && !empty($data['password'])) {
-        $query .= ", password = :password";
-        $params[':password'] = $data['password'];
+    // Get a specific staff account by ID
+    public function getStaffById($staff_id) {
+        $query = "SELECT staff_id, email, password, first_name, last_name, middle_name FROM staff_accounts WHERE staff_id = :staff_id";
+        $params = [':staff_id' => $staff_id];
+        return $this->database->fetch($query, $params);
     }
 
-    $query .= " WHERE staff_id = :staff_id";
+    // Update an existing staff account
+    public function updateStaff($data) {
+        $query = "UPDATE staff_accounts SET email = :email, first_name = :first_name, last_name = :last_name, middle_name = :middle_name";
 
-    return $this->database->execute($query, $params);
-}
+        $params = [
+            ':email' => $data['email'],
+            ':first_name' => $data['first_name'],
+            ':last_name' => $data['last_name'],
+            ':middle_name' => $data['middle_name'],
+            ':staff_id' => $data['staff_id']
+        ];
 
-// Delete a staff account
-public function deleteStaff($staff_id) {
-    $query = "DELETE FROM staff_accounts WHERE staff_id = :staff_id";
-    $params = [':staff_id' => $staff_id];
-    return $this->database->execute($query, $params);
-}
+        if (isset($data['password']) && !empty($data['password'])) {
+            $query .= ", password = :password";
+            $params[':password'] = $data['password'];
+        }
+
+        $query .= " WHERE staff_id = :staff_id";
+
+        return $this->database->execute($query, $params);
+    }
+
+    // Delete a staff account
+    public function deleteStaff($staff_id) {
+        $query = "DELETE FROM staff_accounts WHERE staff_id = :staff_id";
+        $params = [':staff_id' => $staff_id];
+        return $this->database->execute($query, $params);
+    }
+
+    // Check if staff email exists (for both create and update)
+    public function staffEmailExists($email, $excludeId = null) {
+        $query = "SELECT COUNT(*) FROM staff_accounts WHERE email = :email";
+        $params = [':email' => $email];
+
+        if ($excludeId !== null) {
+            $query .= " AND staff_id != :staff_id";
+            $params[':staff_id'] = $excludeId;
+        }
+
+        return $this->database->fetchColumn($query, $params) > 0;
+    }
 
     public function createStudent($data) {
         $query = "INSERT INTO Registered_Students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)

@@ -13,6 +13,8 @@
                     <p><strong>Name:</strong> John Doe</p>
                     <p><strong>Email:</strong> admin@example.com</p>
                     <p><strong>Phone:</strong> +123456789</p>
+                    <p><strong>Password:</strong> idk</p>
+
                     <button class="btn btn-primary">Edit</button>
                 </div>
             </div>
@@ -24,7 +26,6 @@
         <div class="card-body">
             <h5 class="card-title">Security Settings</h5>
             <button class="btn btn-secondary">Change Password</button>
-            <button class="btn btn-secondary">Enable 2FA</button>
         </div>
     </div>
 
