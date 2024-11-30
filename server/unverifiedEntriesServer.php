@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($response) {
                 echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to verify the entry.']);
+                echo json_encode(['success' => false, 'error' => 'Failed to verify the entry for ' . $entry_id]);
             }
             break;
 

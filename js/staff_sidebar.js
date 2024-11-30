@@ -1,130 +1,74 @@
-// Select the sidebar and hamburger toggle button
-const sidebar = document.querySelector("#sidebar");
-const hamBurger = document.querySelector(".toggle-btn");
+$(document).ready(function () {
+    const sidebar = $("#sidebar");
+    const hamBurger = $(".toggle-btn");
 
-// Toggle sidebar with hamburger
-hamBurger.addEventListener("click", function () {
-    sidebar.classList.toggle("expand");
-    closeAllSubMenus(); // Close submenus when toggling the sidebar
-});
+    // Toggle sidebar with hamburger button
+    hamBurger.on("click", function () {
+        sidebar.toggleClass("expand");
+        closeAllSubMenus(); // Close all submenus when toggling the sidebar
+    });
 
-// Fetch and update entries counts
-function updateEntriesCounts() {
-    fetch("/cssc/server/staffDashboardServer.php")
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch entries counts. Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // Ensure the elements exist before updating their values
-            const unverifiedEntriesCountElement = document.getElementById("unverifiedEntriesCount");
-            const verifiedEntriesCountElement = document.getElementById("verifiedEntriesCount");
+    // Load initial content (dashboard) when the document is ready
+    loadContent("/cssc/views/staff/dashboard.php");
 
-            if (unverifiedEntriesCountElement && verifiedEntriesCountElement) {
-                unverifiedEntriesCountElement.innerText = data.unverified ?? 0;
-                verifiedEntriesCountElement.innerText = data.verified ?? 0;
-            } else {
-                console.error("Entries count elements are missing in the DOM.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching entries counts:", error);
-        });
-}
-
-// Load dashboard content on page load
-document.addEventListener("DOMContentLoaded", function () {
-    const content = document.getElementById("content");
-
-    // Fetch the dashboard view for the staff
-    fetch("/cssc/views/staff/dashboard.php")
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch staff dashboard content. Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then((data) => {
-            content.innerHTML = data;
-
-            // Update entries counts after loading the dashboard
-            updateEntriesCounts();
-
-            // Initialize any dashboard-specific scripts (like charts)
-            if (typeof initializeCharts === "function") {
-                initializeCharts();
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            content.innerHTML = `<p class="text-danger">Error loading dashboard content. Please try again later.</p>`;
-        });
-});
-
-// Dynamic content loading with AJAX
-document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("menu-link")) {
+    // Handle menu link clicks to dynamically load content
+    $(document).on("click", ".menu-link", function (e) {
         e.preventDefault();
-        const url = e.target.getAttribute("data-url");
+        const url = $(this).data("url");
+        loadContent(url);
 
-        // Fetch content dynamically
-        fetch(url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.text();
-            })
-            .then((data) => {
-                document.getElementById("content").innerHTML = data;
+        // Highlight the clicked menu item
+        $(".menu-link").parent().removeClass("active");
+        $(this).parent().addClass("active");
+    });
 
-                // Dynamically load specific scripts for different pages
-                if (url.includes("unverified-entries.php")) {
+    // Submenu toggle handling
+    $(document).on("click", ".has-dropdown", function (e) {
+        e.preventDefault();
+        const button = $(this);
+        const dropdown = button.next(".sidebar-dropdown");
+
+        if (!dropdown.hasClass("show")) {
+            closeAllSubMenus(); // Close other submenus before toggling the clicked one
+        }
+        dropdown.toggleClass("show");
+        button.toggleClass("rotate");
+    });
+
+    // Function to close all submenus
+    function closeAllSubMenus() {
+        $(".sidebar-dropdown").removeClass("show");
+        $(".has-dropdown").removeClass("rotate");
+    }
+
+    // Function to dynamically load content into the main container
+    function loadContent(url) {
+        const content = $("#content");
+
+        // Fetch content via AJAX
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (data) {
+                content.html(data);
+
+                // Dynamically load specific JavaScript for each page
+                if (url.includes("unverified_entries.php")) {
                     $.getScript("/cssc/js/unverified-entries.js");
                 }
-                if (url.includes("verified-entries.php")) {
+                if (url.includes("verified_entries.php")) {
                     $.getScript("/cssc/js/verified-entries.js");
                 }
-
-                // Update entries counts if the dashboard is loaded
-                if (url.includes("dashboard.php")) {
-                    updateEntriesCounts();
+                if (url.includes("profile.php")) {
+                    $.getScript("/cssc/js/profile.js");
                 }
-            })
-            .catch(() => {
-                document.getElementById("content").innerHTML = "<p>Error loading content.</p>";
-            });
-
-        // Highlight active menu item
-        document.querySelectorAll(".menu-link").forEach((link) => {
-            link.parentElement.classList.remove("active");
+                // if (url.includes("settings.php")) {
+                //     $.getScript("/cssc/js/settings.js");
+                // }
+            },
+            error: function () {
+                content.html("<p>Error loading content. Please try again later.</p>");
+            },
         });
-        e.target.parentElement.classList.add("active");
     }
 });
-
-// Handle submenu toggle
-function toggleSubMenu(button) {
-    if (!button.nextElementSibling.classList.contains("show")) {
-        closeAllSubMenus();
-    }
-    button.nextElementSibling.classList.toggle("show");
-    button.classList.toggle("rotate");
-
-    // Ensure the sidebar is fully visible when expanding a submenu
-    if (sidebar.classList.contains("expand")) {
-        sidebar.classList.remove("expand");
-    }
-}
-
-// Close all submenus
-function closeAllSubMenus() {
-    document.querySelectorAll(".sidebar-dropdown").forEach((dropdown) => {
-        dropdown.classList.remove("show");
-    });
-    document.querySelectorAll(".sidebar-item .rotate").forEach((button) => {
-        button.classList.remove("rotate");
-    });
-}
