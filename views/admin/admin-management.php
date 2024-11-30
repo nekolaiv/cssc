@@ -21,10 +21,11 @@
         <thead>
             <tr>
                 <th>Admin ID</th>
+                <th>Name</th>
                 <th>Email</th>
-                <th>First Name</th>
+                <!-- <th>First Name</th>
                 <th>Last Name</th>
-                <th>Middle Name</th>
+                <th>Middle Name</th> -->
                 <th>Password</th>
                 <th>Actions</th>
             </tr>

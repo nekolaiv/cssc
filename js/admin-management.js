@@ -20,13 +20,12 @@ $(document).ready(function () {
                     `);
                 } else {
                     admins.forEach((admin) => {
+                        const fullName = `${admin.first_name} ${admin.middle_name ? admin.middle_name + ' ' : ''}${admin.last_name}`;
                         tableBody.append(`
                             <tr>
                                 <td>${admin.admin_id}</td>
+                                <td>${fullName}</td>
                                 <td>${admin.email}</td>
-                                <td>${admin.first_name}</td>
-                                <td>${admin.last_name}</td>
-                                <td>${admin.middle_name}</td>
                                 <td>
                                     <span class="masked-password">••••••••</span>
                                     <button class="btn btn-sm btn-secondary reveal-password" data-password="${admin.password}">Reveal</button>
