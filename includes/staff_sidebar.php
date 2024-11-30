@@ -10,7 +10,7 @@
     <ul class="sidebar-nav">
         <!-- Dashboard -->
         <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/dashboard.php" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/staff/dashboard.php" class="sidebar-link menu-link">
                 <i class="lni lni-dashboard"></i>
                 <span>Dashboard</span>
             </a>
@@ -28,7 +28,7 @@
                     <a href="#" data-url="/cssc/views/staff/unverified_entries.php" class="sidebar-link menu-link">Unverified Entries</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/staff/verified-entries.php" class="sidebar-link menu-link">Verified Entries</a>
+                    <a href="#" data-url="/cssc/views/staff/verified_entries.php" class="sidebar-link menu-link">Verified Entries</a>
                 </li>
             </ul>
         </li>

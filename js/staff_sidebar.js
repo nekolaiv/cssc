@@ -1,4 +1,3 @@
-// Sidebar toggle and submenu handling for staff page
 $(document).ready(function () {
     const sidebar = $("#sidebar");
     const hamBurger = $(".toggle-btn");
@@ -24,24 +23,17 @@ $(document).ready(function () {
     });
 
     // Submenu toggle handling
-    $(document).on("click", ".has-dropdown", function () {
-        toggleSubMenu($(this));
-    });
-
-    // Function to toggle submenu
-    function toggleSubMenu(button) {
+    $(document).on("click", ".has-dropdown", function (e) {
+        e.preventDefault();
+        const button = $(this);
         const dropdown = button.next(".sidebar-dropdown");
+
         if (!dropdown.hasClass("show")) {
-            closeAllSubMenus();
+            closeAllSubMenus(); // Close other submenus before toggling the clicked one
         }
         dropdown.toggleClass("show");
         button.toggleClass("rotate");
-
-        // Ensure the sidebar is fully visible when expanding a submenu
-        if (sidebar.hasClass("expand")) {
-            sidebar.removeClass("expand");
-        }
-    }
+    });
 
     // Function to close all submenus
     function closeAllSubMenus() {
@@ -70,9 +62,9 @@ $(document).ready(function () {
                 if (url.includes("profile.php")) {
                     $.getScript("/cssc/js/profile.js");
                 }
-                if (url.includes("settings.php")) {
-                    $.getScript("/cssc/js/settings.js");
-                }
+                // if (url.includes("settings.php")) {
+                //     $.getScript("/cssc/js/settings.js");
+                // }
             },
             error: function () {
                 content.html("<p>Error loading content. Please try again later.</p>");
