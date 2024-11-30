@@ -25,9 +25,10 @@ class CourseFormHandler
                 $_SESSION[$this->sessionKey][$key] = [$value]; // Ensure it's an array if it's not already
             }
         }
+        return true;
     }
 
-    // Method to handle image uploads and save them as BLOB in the database
+    // Method to handle image uploads anxd save them as BLOB in the database
     public function handleImageUpload($fileData){
         if (isset($fileData['image-proof']) && !empty($fileData['image-proof']['name'][0])) {
             $imageFiles = $fileData['image-proof'];
@@ -68,13 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $courseFormHandler = new CourseFormHandler();
 
     // Save form data
-    $courseFormHandler->saveFormData($_POST);
+    if($courseFormHandler->saveFormData($_POST)){
+        echo json_encode(["success" => "Data saved successfully."]);
+    }
 
     // Handle image upload (store in session or database as BLOB)
     // $courseFormHandler->handleImageUpload($_FILES);
 
     // Output session data as JSON (for debugging or further use)
-    echo json_encode(["success" => "Data saved successfully."]);
+    
 } else {
     // If it's not a POST request, return an error
     echo json_encode(["error" => "Invalid request method."]);
