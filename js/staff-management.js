@@ -29,14 +29,16 @@ $(document).ready(function () {
         if (visibleStaff.length === 0) {
             tableBody.append(`
                 <tr>
-                    <td colspan="4" class="text-center">No data found.</td>
+                    <td colspan="5" class="text-center">No data found.</td>
                 </tr>
             `);
         } else {
             visibleStaff.forEach((staffMember) => {
+                const fullName = `${staffMember.first_name} ${staffMember.middle_name ? staffMember.middle_name + ' ' : ''}${staffMember.last_name}`;
                 tableBody.append(`
                     <tr>
                         <td>${staffMember.staff_id}</td>
+                        <td>${fullName}</td>
                         <td>${staffMember.email}</td>
                         <td>
                             <span class="masked-password">••••••••</span>
@@ -140,6 +142,9 @@ $(document).ready(function () {
 
                     $("#staff_id").val(staffMember.staff_id);
                     $("#email").val(staffMember.email);
+                    $("#first_name").val(staffMember.first_name);
+                    $("#last_name").val(staffMember.last_name);
+                    $("#middle_name").val(staffMember.middle_name);
                     $("#password").val("");
 
                     $(".form-control").removeClass("is-invalid");

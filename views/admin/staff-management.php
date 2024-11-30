@@ -21,6 +21,7 @@
             <thead>
                 <tr>
                     <th>Staff ID</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Password</th>
                     <th>Actions</th>
@@ -33,7 +34,7 @@
 
         <!-- Pagination -->
         <nav id="pagination" aria-label="Page navigation">
-        <ul class="pagination justify-content-center"></ul>
+            <ul class="pagination justify-content-center"></ul>
         </nav>
     </div>
 

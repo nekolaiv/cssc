@@ -1,0 +1,124 @@
+$(document).ready(function () {
+    loadUnverifiedEntries();
+
+    // Function to load unverified entries via AJAX
+    function loadUnverifiedEntries() {
+        $.ajax({
+            url: "/cssc/server/unverifiedEntriesServer.php", // URL of your backend script to fetch entries
+            type: "POST",
+            data: { action: "read" },
+            success: function (response) {
+                const entries = JSON.parse(response);
+                const tableBody = $("#unverifiedEntriesTable tbody");
+                tableBody.empty();
+
+                if (entries.length === 0) {
+                    tableBody.append(`
+                        <tr>
+                            <td colspan="5" class="text-center">No unverified entries found.</td>
+                        </tr>
+                    `);
+                } else {
+                    entries.forEach((entry) => {
+                        const courseDetails = `${entry.course_details}`;
+                        tableBody.append(`
+                            <tr>
+                                <td>${entry.student_id}</td>
+                                <td>${entry.fullname}</td>
+                                <td>${courseDetails}</td>
+                                <td>${entry.created_at}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm view-details-btn" data-id="${entry.id}">View Details</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                attachEventListeners();
+            },
+            error: function () {
+                alert("Failed to load unverified entries.");
+            },
+        });
+    }
+
+    // Function to handle the View Details button
+    function attachEventListeners() {
+        $(".view-details-btn").click(function () {
+            const entryId = $(this).data("id");
+            // Fetch the specific entry details via AJAX
+            $.ajax({
+                url: "/cssc/server/unverifiedEntriesServer.php",
+                type: "POST",
+                data: { action: "get", id: entryId },
+                success: function (response) {
+                    const entry = JSON.parse(response);
+
+                    // Populate modal with entry details
+                    $("#modalStudentId").text(entry.student_id);
+                    $("#modalFullName").text(entry.fullname);
+                    $("#modalEmail").text(entry.email);
+                    $("#modalCourse").text(entry.course);
+                    $("#modalYearLevel").text(entry.year_level);
+                    $("#modalSection").text(entry.section);
+                    $("#modalAdviserName").text(entry.adviser_name);
+                    $("#modalGWA").text(entry.gwa);
+                    if (entry.image_proof) {
+                        $("#modalImageProof").attr("src", "data:image/jpeg;base64," + entry.image_proof).show();
+                    } else {
+                        $("#modalImageProof").hide();
+                    }
+
+                    // Set approve and reject button actions
+                    $("#approveBtn").data("id", entry.id);
+                    $("#rejectBtn").data("id", entry.id);
+
+                    // Show the modal
+                    $("#detailsModal").modal("show");
+                },
+                error: function () {
+                    alert("Failed to fetch entry details.");
+                },
+            });
+        });
+
+        $("#approveBtn").click(function () {
+            const entryId = $(this).data("id");
+            if (confirm("Are you sure you want to approve this entry?")) {
+                $.ajax({
+                    url: "/cssc/server/unverifiedEntriesServer.php",
+                    type: "POST",
+                    data: { action: "verify", id: entryId },
+                    success: function () {
+                        alert("Entry approved successfully!");
+                        $("#detailsModal").modal("hide");
+                        loadUnverifiedEntries();
+                    },
+                    error: function () {
+                        alert("Failed to approve the entry.");
+                    },
+                });
+            }
+        });
+
+        $("#rejectBtn").click(function () {
+            const entryId = $(this).data("id");
+            if (confirm("Are you sure you want to reject this entry?")) {
+                $.ajax({
+                    url: "/cssc/server/unverifiedEntriesServer.php",
+                    type: "POST",
+                    data: { action: "reject", id: entryId },
+                    success: function () {
+                        alert("Entry rejected successfully!");
+                        $("#detailsModal").modal("hide");
+                        loadUnverifiedEntries();
+                    },
+                    error: function () {
+                        alert("Failed to reject the entry.");
+                    },
+                });
+            }
+        });
+    }
+});

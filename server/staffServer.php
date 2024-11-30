@@ -13,7 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors = [];
             $data = [
                 'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password'])
+                'password' => cleanInput($_POST['password']),
+                'first_name' => cleanInput($_POST['first_name']),
+                'last_name' => cleanInput($_POST['last_name']),
+                'middle_name' => cleanInput($_POST['middle_name'])
             ];
 
             // Validation
@@ -29,6 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['password'] = 'Password is required.';
             }
 
+            if (empty($data['first_name'])) {
+                $errors['first_name'] = 'First name is required.';
+            }
+
+            if (empty($data['last_name'])) {
+                $errors['last_name'] = 'Last name is required.';
+            }
+
+            // If errors exist, return them
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
@@ -50,12 +62,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'staff_id' => $staff_id,
                 'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']) // Optional
+                'password' => cleanInput($_POST['password']), // Optional
+                'first_name' => cleanInput($_POST['first_name']),
+                'last_name' => cleanInput($_POST['last_name']),
+                'middle_name' => cleanInput($_POST['middle_name'])
             ];
 
-            // Check if email already exists for another staff
-            if ($admin->staffEmailExists($data['email'], $staff_id)) {
-                echo json_encode(['success' => false, 'errors' => ['email' => 'This email is already taken by another staff.']]);
+            // Validation
+            $errors = [];
+            if (empty($data['email'])) {
+                $errors['email'] = 'Email is required.';
+            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Invalid email format.';
+            } elseif ($admin->staffEmailExists($data['email'], $staff_id)) {
+                $errors['email'] = 'This email is already taken by another staff.';
+            }
+
+            if (empty($data['first_name'])) {
+                $errors['first_name'] = 'First name is required.';
+            }
+
+            if (empty($data['last_name'])) {
+                $errors['last_name'] = 'Last name is required.';
+            }
+
+            if (!empty($errors)) {
+                echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
