@@ -1,3 +1,4 @@
+
 <section class="calculate-section">
     <div class="div-pad" id="calculate-div1">
         <div class="ccs-logo"></div>
@@ -5,7 +6,7 @@
             <div class="student-info-left">
                 <div class="calculate-student-name">
                     <label for="calculate-student-name">NAME:</label>
-                    <input type="text" id="calculate-student-name" value="<?php echo $_SESSION['profile']['fullname']?>" readonly>
+                    <input type="text" id="calculate-student-name" value="<?= print $_SESSION['profile']['fullname']?>" readonly>
                 </div>
                 <div class="calculate-student-id">
                     <label for="calculate-student-id">STUDENT ID:</label>
@@ -69,5 +70,6 @@
         </div>
     </div>
 </section>
-<script src="/cssc/controllers/student-controller.js"></script>
+
+<script src="/cssc/controllers/subject-process.js"></script>
 
