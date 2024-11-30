@@ -25,7 +25,7 @@
             </a>
             <ul id="entries" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                 <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/staff/unverified-entries.php" class="sidebar-link menu-link">Unverified Entries</a>
+                    <a href="#" data-url="/cssc/views/staff/unverified_entries.php" class="sidebar-link menu-link">Unverified Entries</a>
                 </li>
                 <li class="sidebar-item">
                     <a href="#" data-url="/cssc/views/staff/verified-entries.php" class="sidebar-link menu-link">Verified Entries</a>
