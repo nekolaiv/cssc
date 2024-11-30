@@ -11,6 +11,7 @@ $(document).ready(function () {
 		let url = $(this).attr("href");
 		// console.log(url);
 		window.history.pushState({ path: url }, "", url);
+
 	});
 
 	$("#home-link").on("click", function (e) {
@@ -40,6 +41,7 @@ $(document).ready(function () {
 
 	$("#calculate-link").on("click", function (e) {
 		e.preventDefault();
+		alert("detected");
 		loadPage('calculate.php');
 	});
 
@@ -54,7 +56,6 @@ $(document).ready(function () {
 	});
 
 	$("#calculate-gwa").on("click", function (e) {
-		alert("gwabutton");
 		e.preventDefault();
 		calculateGWA();
 	});
@@ -90,7 +91,7 @@ $(document).ready(function () {
 	} else if (url.endsWith("calculate")) {
 		$("#calculate-link").trigger("click");
 	} else {
-		$("#calculate-link").trigger("click");
+		$("#home-link").trigger("click");
 	}
 
 
@@ -122,13 +123,13 @@ $(document).ready(function () {
 		}
 	});
 
-	$(window).on('popstate', function(event) {
-		if (event.originalEvent.state) {
-			var page = event.originalEvent.state.page;
-			console.log('Navigated to page: ' + page);
-			loadPage(page);
-		}
-	});
+	// $(window).on('popstate', function(event) {
+	// 	if (event.originalEvent.state) {
+	// 		var page = event.originalEvent.state.page;
+	// 		console.log('Navigated to page: ' + page);
+	// 		loadPage(page);
+	// 	}
+	// });
 
 	function loadPage(page) {
 		// if(page === 'calculate.php'){
@@ -156,7 +157,6 @@ $(document).ready(function () {
 			type: "POST", // Use GET request
 			dataType: "json",
 			success: function (data) {
-				alert("success calculating")
 				window.history.pushState({ path: "results" }, "", "results");
 				$("#results-link").trigger("click");
 				location.reload();

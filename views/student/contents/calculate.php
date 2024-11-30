@@ -100,9 +100,8 @@ require_once('../../classes/student.class.php');
                         <button type="button" id="student-calculate-add-row" onclick="addSubjectRow()">
                             Add Row +
                         </button>
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="" method="POST" enctype="">
                         <input type="hidden" name="calculate-GWA" value="calculate-GWA">
-                        <input type="file" name="image-proof" id="image-proof" accept="image/*" value="<?= $_SESSION['course-fields']['image-proof'][$i] ?? NULL ?>" title="Screenshot of your Complete Portal Grades">
                         <a id="calculate-gwa"><button type="submit" id="student-calculate-calculate">Calculate</button></a>
                     </form>
                     </div>

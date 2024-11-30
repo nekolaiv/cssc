@@ -7,8 +7,11 @@
         <?php echo $_SESSION['profile']['status'];?>
     </h2>
     <div id="result-action-buttons">
-        <button class="nav-items" onclick="loadPage('home.php')">Back to Home</button>
-        <button class="nav-items" onclick="loadPage('calculate.php')">Edit Inputs</button>
-        <button type="submit" class="nav-items" id="submit-calculation-entry"> <?php echo $validate_button ?? "Validate Entry 1" ?></button>
+        <a href="home" id="home-link" class="nav-items"><button>Home</button></a>
+        <a href="calculate" id="calculate-link" class="nav-items"><button>Edit Inputs</button></a>
+        <form id="validation-buttons" action="" method="POST" enctype="multipart/form-data">
+            <button type="submit" id="validate-button" id="submit-calculation-entry"> <?php echo $validate_button ?? "Validate Entry" ?></button>
+            <input type="file" name="image-proof" id="image-proof" accept="image/*" value="<?= $_SESSION['course-fields']['image-proof'][$i] ?? NULL ?>" title="Screenshot of your Complete Portal Grades" required>
+        </form>
     </div>
 </div>

@@ -551,6 +551,14 @@ header nav ul button {
 	cursor: pointer;
 }
 
+#validation-buttons {
+	display: flex;
+}
+
+#validate-button {
+	
+}
+
 /* ===LEADERBOARD=== */
 #leaderboard-section {
 	min-height: calc(100vh - 75px);

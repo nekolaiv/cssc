@@ -201,15 +201,16 @@ class Student
     // }
 
     // RESULT MODELS
-    public function saveEntryToDatabase($email, $gwa){
+    public function saveEntryToDatabase($email, $gwa, $image_proof){
         if ($this->_entryExists($email)) {
-            $sql = "UPDATE Students_Unverified_Entries SET gwa = :gwa WHERE email = :email";
+            $sql = "UPDATE Students_Unverified_Entries SET gwa = :gwa, image_proof = :image_proof WHERE email = :email";
             $query = $this->database->connect()->prepare($sql);
             $query->bindParam(':gwa', $gwa);
             $query->bindParam(':email', $email);
+            $query->bindParam(':image_proof', $image_proof);
         } else {
-            $sql = "INSERT INTO Students_Unverified_Entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa)
-            VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa)";
+            $sql = "INSERT INTO Students_Unverified_Entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof)
+            VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof)";
             $student = $this->_getStudentData($email);
             $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
             $query = $this->database->connect()->prepare($sql);
@@ -221,6 +222,7 @@ class Student
             $query->bindParam(':section', $student['section']);
             $query->bindParam(':adviser_name', $student['adviser_name']);
             $query->bindParam(':gwa', $gwa);
+            $query->bindParam(':image_proof', $image_proof);
         }
         if ($query->execute()) {
             return true;
@@ -257,6 +259,30 @@ class Student
 
     public function getVerificationStatus(){
         $sql = "SELECT ";
+    }
+
+    public function setScreenshotFile($student_id, $image){
+        if($this->screenshotFileExists($student_id)){
+            $sql = "UPDATE Image_Proofs SET image = :image WHERE student_id = :student_id";
+        } else {
+            $sql = "INSERT INTO Image_Proofs(student_id, image) VALUES(:student_id, :image);";
+        }
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(":student_id", $student_id);
+        $query->bindParam(":image", $image);
+        return $query->execute();
+    }
+
+    public function screenshotFileExists($student_id){
+        $sql = "SELECT COUNT(*) FROM Image_Proofs WHERE student_id = :student_id;";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(":student_id", $student_id);
+        if($query->execute()){
+            $row_count = $query->fetchColumn();
+            return $row_count > 0;
+        } else {
+            return false;
+        }
     }
 
     // public function handleRequest() {

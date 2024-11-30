@@ -4,7 +4,7 @@
             <h1>Apply For Dean's Lister</h1>
             <p>Stand out for your academic excellence! The Dean's Lister award recognizes students with<br>
             outstanding grades and deidcation. Apply now to join the ranks of top achievers!</p>
-            <a href="calculate" id="compute-link" class="nav-items"><button class="cta-button">CALCULATE NOW</button></a>
+            <a href="calculate" id="calculate-link" class="nav-items"><button class="cta-button">CALCULATE NOW</button></a>
         </div>
     </div>
     <div class="" id="home-div2">
