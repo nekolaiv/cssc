@@ -33,7 +33,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($email_err == ' ' && $password_err == ' '){
         $login_status = $auth->login($email, $password);
         if($login_status === true){
-            header("Location: ../views/student/home.php");
+            if($_SESSION['user-type'] === 'student'){
+                echo '<script type="text/javascript">window.location.href = "../views/student/home";</script>';
+            } else if($_SESSION['user-type'] === 'staff'){
+                // echo the path or use header location depending on the structure of the code
+            } else if($_SESSION['user-type'] === 'admin'){
+                // echo the path or use header location depending on the structure of the code
+            }
         } else {
             $email_err = $login_status[0];
             $password_err = $login_status[1];
