@@ -40,7 +40,7 @@ $(document).ready(function () {
 
 	$("#calculate-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('calculate-content.php');
+		loadPage('calculate.php');
 	});
 
 	$("#about-link").on("click", function (e) {
@@ -51,6 +51,12 @@ $(document).ready(function () {
 	$("#results-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('results-content.php');
+	});
+
+	$("#calculate-gwa").on("click", function (e) {
+		alert("gwabutton");
+		e.preventDefault();
+		calculateGWA();
 	});
 
 	$("#profile-link").on("click", function (e) {
@@ -84,7 +90,7 @@ $(document).ready(function () {
 	} else if (url.endsWith("calculate")) {
 		$("#calculate-link").trigger("click");
 	} else {
-		$("#home-link").trigger("click");
+		$("#calculate-link").trigger("click");
 	}
 
 
@@ -125,6 +131,11 @@ $(document).ready(function () {
 	});
 
 	function loadPage(page) {
+		// if(page === 'calculate.php'){
+		// 	page_url = page
+		// } else {
+		// 	page_url = `contents/${page}`;
+		// }
 		$.ajax({
 			type: "GET",
 			url: `contents/${page}`,
@@ -138,63 +149,37 @@ $(document).ready(function () {
 		});
 	}
 
-	function subjectFieldsSubmission() {
-		$('#grading').on('submit', function(e) {
-			e.preventDefault();
-			const data = $(e.currentTarget).serializeArray();
-			let form = {
-				"subject-code[]": [],
-				"unit[]": [],
-				"grade[]": [],
-			};
-
-			// Populate form object
-			data.forEach((data, index) => {
-				form[data.name].push(data.value);
-			});
-
-			$.ajax({
-				type: "POST",
-				url: "../server/student_save-subject.php",
-				data: form,
-				dataType: "json",
-				success: function(response) {
-					console.log(response);
-					alert('Sent');
-				},
-				error: function(xhr, status, error) {
-					console.error("Error submitting subject fields: ", error);
-				}
-			});
-		});
-		$('input').on('input', function() {
-			$('#grading').submit();
+	// Function to fetch product categories
+	function calculateGWA() {
+		$.ajax({
+			url: "../../server/student_calculate.php", // URL for fetching categories
+			type: "POST", // Use GET request
+			dataType: "json",
+			success: function (data) {
+				alert("success calculating")
+				window.history.pushState({ path: "results" }, "", "results");
+				$("#results-link").trigger("click");
+				location.reload();
+			},
+			error: function (xhr, status, error) {
+				console.error("Error calculating: ", error);
+			}
 		});
 	}
 
-	function addSubjectRow() {
-		$('#grading').append(`
-			<div class="subject-fields" id='row-${session_length}'>
-				<input type="text" name="subject-code[]">
-				<input type="number" name="unit[]">
-				<input type="number" name="grade[]">
-				<button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(${session_length})">remove</button>
-			</div>
-		`);
-
-		session_length++;
-
-		$('input').on('input', function() {
-			$('#grading').submit();
+	function loadCalculatePage(page) {
+		$.ajax({
+			type: "GET",
+			url: `${page}`,
+			dataType: "html",
+			success: function (response) {
+				$(".content").html(response);
+			},
+			error: function (xhr, status, error) {
+				console.error("Error loading the page: ", error);
+			}
 		});
-		$('#grading').submit();
 	}
-
-	function removeSubjectRow(i) {
-		$(`#row-${i}`).remove();
-		$('#grading').submit();
-	}
-
 
 	function editProduct(productId) {
 		$.ajax({
@@ -219,28 +204,7 @@ $(document).ready(function () {
 		});
 	}
 
-	// Function to fetch product categories
-	function fetchCategories() {
-		$.ajax({
-			url: "../products/fetch-categories.php", // URL for fetching categories
-			type: "GET", // Use GET request
-			dataType: "json", // Expect JSON response
-			success: function (data) {
-				// Clear existing options and add a default "Select" option
-				$("#category").empty().append('<option value="">--Select--</option>');
-
-				// Append each category to the select dropdown
-				$.each(data, function (index, category) {
-				$("#category").append(
-					$("<option>", {
-					value: category.id, // Value attribute
-					text: category.name, // Displayed text
-					})
-				);
-				});
-			},
-		});
-	}
+	
 
 	function fetchRecord(productId) {
 		$.ajax({
