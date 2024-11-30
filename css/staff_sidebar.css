@@ -2,11 +2,11 @@
 
 /* Color Variables */
 :root {
-    --sidebar-bg-color: #0C380D;
-    --sidebar-expanded-bg-color: #0e2238;
+    --sidebar-bg-color: #ffffff;
+    --sidebar-expanded-bg-color: #d3d3d3;
     --sidebar-link-hover-bg-color: rgba(255, 255, 255, .075);
     --sidebar-link-hover-border-color: #03b306;
-    --sidebar-text-color: #FFF;
+    --sidebar-text-color: #000000;
     --main-bg-color: #fafbfe;
 }
 
