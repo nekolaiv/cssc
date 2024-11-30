@@ -19,7 +19,17 @@ $(document).ready(function () {
 		loadPage('home-content.php');
 	});
 
+	$("#result-home-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('home-content.php');
+	});
+
 	$("#leaderboard-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('leaderboard-content.php');
+	});
+
+	$("#home-leaderboard-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-content.php');
 	});
@@ -41,8 +51,13 @@ $(document).ready(function () {
 
 	$("#calculate-link").on("click", function (e) {
 		e.preventDefault();
-		alert("detected");
 		loadPage('calculate.php');
+	});
+
+	$("#result-calculate-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('calculate.php');
+		location.reload();
 	});
 
 	$("#about-link").on("click", function (e) {
@@ -69,11 +84,13 @@ $(document).ready(function () {
 	// 	$("#home-link").trigger("click");
 	// }
 	let url = window.location.href;
-	
+
 	if (url.endsWith("home")) {
 		$("#home-link").trigger("click");
+		$("#result-home-link").trigger("click");
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
+		$("#home-leaderboard-link").trigger("click");
 	} else if (url.endsWith("leaderboard-cs")) {
 		$("#leaderboard-cs-link").trigger("click");
 	} else if (url.endsWith("leaderboard-it")) {
@@ -90,9 +107,12 @@ $(document).ready(function () {
 		$("#settings-link").trigger("click");
 	} else if (url.endsWith("calculate")) {
 		$("#calculate-link").trigger("click");
+		$("#result-calculate-link").trigger("click");
 	} else {
 		$("#home-link").trigger("click");
 	}
+	
+	
 
 
 	// TODO find a better solution on how to handle back and forward navigations
@@ -100,8 +120,11 @@ $(document).ready(function () {
 		let url = window.location.href;
 		if (url.endsWith("home")) {
 			$("#home-link").trigger("click");
+			$("#result-home-link").trigger("click");
 		} else if (url.endsWith("leaderboard")) {
+			alert("leaderboard detected");
 			$("#leaderboard-link").trigger("click");
+			$("#home-leaderboard-link").trigger("click");
 		} else if (url.endsWith("leaderboard-cs")) {
 			$("#leaderboard-cs-link").trigger("click");
 		} else if (url.endsWith("leaderboard-it")) {
@@ -118,6 +141,7 @@ $(document).ready(function () {
 			$("#settings-link").trigger("click");
 		} else if (url.endsWith("calculate")) {
 			$("#calculate-link").trigger("click");
+			$("#result-calculate-link").trigger("click");
 		} else {
 			$("#home-link").trigger("click");
 		}

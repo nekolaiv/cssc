@@ -57,7 +57,7 @@ class Student
         return false;
     }
 
-    public function getStudentEntry($email){
+    private function getStudentEntry($email){
         if($this->_studentUnverifiedEntryExists($email)){
             $sql = "SELECT * FROM Students_Unverified_Entries WHERE email = :email LIMIT 1;";
         } else if ($this->_studentVerifiedEntryExists($email)){
@@ -72,6 +72,11 @@ class Student
         } else {
             return false;
         }
+    }
+
+    public function getStudentImageProof( $email ){
+        $data = $this->getStudentEntry($email);
+        return $data['image_proof'];
     }
 
     private function _isEntryPending($email){
@@ -222,7 +227,7 @@ class Student
             $query->bindParam(':section', $student['section']);
             $query->bindParam(':adviser_name', $student['adviser_name']);
             $query->bindParam(':gwa', $gwa);
-            $query->bindParam(':image_proof', $image_proof);
+            $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
         }
         if ($query->execute()) {
             return true;
@@ -261,6 +266,10 @@ class Student
         $sql = "SELECT ";
     }
 
+    public function getScreenShotFile($email){
+        
+    }
+
     public function setScreenshotFile($student_id, $image){
         if($this->screenshotFileExists($student_id)){
             $sql = "UPDATE Image_Proofs SET image = :image WHERE student_id = :student_id";
@@ -273,7 +282,7 @@ class Student
         return $query->execute();
     }
 
-    public function screenshotFileExists($student_id){
+    private function screenshotFileExists($student_id){
         $sql = "SELECT COUNT(*) FROM Image_Proofs WHERE student_id = :student_id;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(":student_id", $student_id);

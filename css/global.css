@@ -79,8 +79,8 @@ body {
     /* background: linear-gradient(to bottom, var(--element-blue), var(--element-red));  */
     color: var(--color-white);
     font-size: var(--Gfont-size);
-    overflow-x: hidden;
-    overflow-y: scroll;
+    /* overflow-x: hidden; */
+    /* overflow-y: scroll; */
     /* border: 1px solid white; */
 }
 

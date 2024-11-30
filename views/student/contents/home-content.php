@@ -18,7 +18,7 @@
             excellence sets a high standard and inspires others in<br>
             the academic community. Keep reaching for success—<br>
             you’ve earned it!</p>
-            <a href="leaderboard" id="leaderboard-link" class="nav-items" ><button class="leaderboard-button">LEADERBOARD</button></a>
+            <a href="leaderboard" id="home-leaderboard-link" class="nav-items" ><button class="leaderboard-button">LEADERBOARD</button></a>
         </div>
         <div class="div-pad home-div2-rightdiv">
 
