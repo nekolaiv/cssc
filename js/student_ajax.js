@@ -58,7 +58,6 @@ function subjectFieldsSubmission(){
 
         $.post("../src/utils/save-subject.session.php", form).done((data) => {
             console.log(JSON.parse(data));
-            alert('sent');
         });
     });
 
