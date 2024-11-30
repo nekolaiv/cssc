@@ -34,7 +34,7 @@
             </ul>
         </li>
         <li class="sidebar-item">
-            <a href="#" data-url="profile.html" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/admin/admin-profile.php" class="sidebar-link menu-link">
                 <i class="lni lni-user"></i>
                 <span>Profile</span>
             </a>
