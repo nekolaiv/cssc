@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once("database.class.php");
 
-class Entries {
+class Staff {
     private $database;
 
     public function __construct() {

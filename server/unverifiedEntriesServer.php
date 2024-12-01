@@ -5,7 +5,7 @@ require_once '../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = isset($_POST['action']) ? cleanInput($_POST['action']) : '';
-    $entries = new Entries();
+    $entries = new Staff();
 
     switch ($action) {
         case 'read':
