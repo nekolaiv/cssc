@@ -509,7 +509,7 @@ header nav ul button {
 	justify-content: center;
 	gap: 5px;
 	border-radius: calc(var(--Gborder-radius));
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 #result-message-1 {
@@ -763,13 +763,12 @@ header nav ul button {
 /* ===PROFILE=== */
 .profile-section {
 	min-height: calc(100vh - 75px);
-	;
-	width: 100%;
+	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
-	/* border: 1px solid blue; */
+	border: 1px solid blue;
 }
 
 #profile-div {

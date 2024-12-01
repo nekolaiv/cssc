@@ -1,3 +1,8 @@
+<?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
+?>
 <section class="profile-section">
     <div class="div-pad" id="profile-div">
         <div id="profile-left-section">
