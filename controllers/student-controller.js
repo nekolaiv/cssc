@@ -51,14 +51,13 @@ $(document).ready(function () {
 
 	$("#calculate-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('calculate.php');
+		loadPage('calculate-content.php');
 	});
 
-	$("#result-calculate-link").on("click", function (e) {
-		e.preventDefault();
-		loadPage('calculate.php');
-		location.reload();
-	});
+	// $("#result-calculate-link").on("click", function (e) {
+	// 	e.preventDefault();
+	// 	loadPage('calculate-content.php');
+	// });
 
 	$("#about-link").on("click", function (e) {
 		e.preventDefault();
@@ -67,13 +66,16 @@ $(document).ready(function () {
 
 	$("#results-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('results-content.php');
+		if(calculateGWA()){
+			loadPage('results-content.php');
+		}
 	});
 
-	$("#calculate-gwa").on("click", function (e) {
-		e.preventDefault();
-		calculateGWA();
-	});
+	// $("#calculate-gwa").on("click", function (e) {
+	// 	e.preventDefault();
+	// 	alert("Clicked-calculate-gwa");
+		
+	// });
 
 	$("#profile-link").on("click", function (e) {
 		e.preventDefault();
@@ -107,7 +109,7 @@ $(document).ready(function () {
 		$("#settings-link").trigger("click");
 	} else if (url.endsWith("calculate")) {
 		$("#calculate-link").trigger("click");
-		$("#result-calculate-link").trigger("click");
+		// $("#result-calculate-link").trigger("click");
 	} else {
 		$("#home-link").trigger("click");
 	}
@@ -122,7 +124,6 @@ $(document).ready(function () {
 			$("#home-link").trigger("click");
 			$("#result-home-link").trigger("click");
 		} else if (url.endsWith("leaderboard")) {
-			alert("leaderboard detected");
 			$("#leaderboard-link").trigger("click");
 			$("#home-leaderboard-link").trigger("click");
 		} else if (url.endsWith("leaderboard-cs")) {
@@ -141,7 +142,7 @@ $(document).ready(function () {
 			$("#settings-link").trigger("click");
 		} else if (url.endsWith("calculate")) {
 			$("#calculate-link").trigger("click");
-			$("#result-calculate-link").trigger("click");
+			// $("#result-calculate-link").trigger("click");
 		} else {
 			$("#home-link").trigger("click");
 		}
@@ -181,12 +182,11 @@ $(document).ready(function () {
 			type: "POST", // Use GET request
 			dataType: "json",
 			success: function (data) {
-				window.history.pushState({ path: "results" }, "", "results");
-				$("#results-link").trigger("click");
-				location.reload();
+				return true;
 			},
 			error: function (xhr, status, error) {
 				console.error("Error calculating: ", error);
+				return false;
 			}
 		});
 	}

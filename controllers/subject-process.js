@@ -32,7 +32,6 @@ $('input').on('input', function() {
     $('#grading').submit();
 });
 
-
 function addSubjectRow() {
     $('#grading').append(`
         <div class="subject-fields" id='row-${session_length}'>
