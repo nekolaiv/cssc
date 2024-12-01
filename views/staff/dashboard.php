@@ -15,7 +15,7 @@
         <!-- Greeting Section -->
         <div class="row my-4">
             <div class="col-12">
-                <h4 class="text-muted">Hello, Staff Member</h4>
+                <h4 class="text-muted">Hello, Staff</h4>
                 <p class="text-secondary" id="currentDate">Loading date...</p>
             </div>
         </div>
