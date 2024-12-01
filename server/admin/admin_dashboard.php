@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/database.class.php';
+require_once '../../classes/database.class.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';

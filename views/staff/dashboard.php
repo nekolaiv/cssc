@@ -7,7 +7,7 @@
     <title>Staff Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/cssc/js/staff-dashboard.js"></script>
+    <script src="/cssc/js/staff/staff_dashboard.js"></script>
 </head>
 
 <body>

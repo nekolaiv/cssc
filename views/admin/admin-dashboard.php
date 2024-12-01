@@ -132,7 +132,7 @@
             </div>
         </div>
     </div>
-    <script src="/cssc/js/admin-dashboard.js"></script>
+    <script src="/cssc/js/admin/admin_dashboard.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <?php
-require_once '../classes/database.class.php';
-require_once '../classes/_admin.class.php';
-require_once '../tools/clean.function.php';
+require_once '../../classes/database.class.php';
+require_once '../../classes/_admin.class.php';
+require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);

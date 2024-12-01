@@ -1,2 +1,0 @@
-Use this folder for all the PHP logic where AJAX will send to process necessary 
-PHP data from database and encode in json. 

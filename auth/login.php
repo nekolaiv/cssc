@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 
 require_once('../classes/auth.class.php');
 require_once('../tools/session.function.php');
-require_once('../tools/clean.function.php');
+require_once('../../tools/clean.function.php');
 
 generateCSRF();
 regenerateSession();

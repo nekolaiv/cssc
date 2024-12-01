@@ -1,0 +1,195 @@
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [staff_id] => 2
+)
+Array
+(
+    [staff_id] => 2
+    [first_name] => Ahmad
+    [last_name] => Yahiya
+    [middle_name] => Feyaz
+    [email] => staff2@wmsu.edu.ph
+    [password] => 
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [staff_id] => 2
+)
+Array
+(
+    [staff_id] => 2
+    [first_name] => Ahmad
+    [last_name] => Yahiya
+    [middle_name] => Feyaz
+    [email] => staff1@wmsu.edu.ph
+    [password] => 
+    [action] => update
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => 
+    [last_name] => 
+    [middle_name] => 
+    [email] => 
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => mama
+    [last_name] => mama
+    [middle_name] => mama
+    [email] => ffasfdsafas@yahoo.com
+    [password] => staff
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [staff_id] => 4
+)
+Array
+(
+    [staff_id] => 4
+    [first_name] => mama
+    [last_name] => mama
+    [middle_name] => mama
+    [email] => ffasfdsafas@yahoo.com
+    [password] => mama123
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => 
+    [last_name] => 
+    [middle_name] => 
+    [email] => 
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => sadfdsafsa
+    [last_name] => 
+    [middle_name] => 
+    [email] => 
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => sadfdsafsa
+    [last_name] => fasdfdsaf
+    [middle_name] => 
+    [email] => 
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => sadfdsafsa
+    [last_name] => fasdfdsaf
+    [middle_name] => 
+    [email] => asfdfa@aoho.com
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => sadfdsafsa
+    [last_name] => fasdfdsaf
+    [middle_name] => 
+    [email] => asfdfa@aoho.com
+    [password] => asdfsadfsaf
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => 
+    [last_name] => 
+    [middle_name] => 
+    [email] => 
+    [password] => 
+    [action] => create
+)
+Array
+(
+    [staff_id] => 
+    [first_name] => asdfdsafdf
+    [last_name] => asfadsfasfs
+    [middle_name] => asdfdasf
+    [email] => adfdas@adf.com
+    [password] => adsfasdf
+    [action] => create
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)

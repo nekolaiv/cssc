@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/database.class.php'; // Include the Database class
+require_once '../../classes/database.class.php'; // Include the Database class
 
 // Initialize the Database class
 $db = new Database();

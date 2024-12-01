@@ -1,7 +1,7 @@
 <?php
-require_once '../classes/database.class.php';
-require_once '../classes/_admin.class.php';
-require_once '../tools/clean.function.php';
+require_once '../../classes/database.class.php';
+require_once '../../classes/_admin.class.php';
+require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = isset($_POST['action']) ? cleanInput($_POST['action']) : '';

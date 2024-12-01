@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 $page_title = "results";
 include_once("../../includes/_student-head.php");
 require_once("../../classes/student.class.php");
-require_once('../../tools/clean.function.php');
+require_once('../../../tools/clean.function.php');
 
 $student = new Student();
 $validate_button = "Validate";
