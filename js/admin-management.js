@@ -1,6 +1,12 @@
 $(document).ready(function () {
     loadAdmins();
 
+    // Event delegation for Reveal Password
+    $(document).off("click.reveal", ".reveal-password").on("click.reveal", ".reveal-password", function () {
+        const actualPassword = $(this).data("password");
+        alert(`Password: ${actualPassword || "Password could not be retrieved."}`);
+    });
+
     // Load admins into the table
     function loadAdmins() {
         $.ajax({
@@ -39,7 +45,7 @@ $(document).ready(function () {
                     });
                 }
 
-                attachEventListeners();
+                attachEventListeners(); // Attach Edit/Delete listeners
             },
         });
     }
@@ -48,19 +54,20 @@ $(document).ready(function () {
         $("#adminForm")[0].reset();
         $("#admin_id").val(""); // Clear the hidden admin_id field
         $("#adminModalLabel").text("Add Admin"); // Update the modal title
-    
+
         // Reset form validation and errors
         $(".form-control").removeClass("is-invalid");
         $(".invalid-feedback").text("");
         $("#adminModal .modal-content").removeClass("border-danger");
-    
+
         // Show the modal
         $("#adminModal").modal("show");
     });
 
     // Add event listeners for Edit and Delete buttons
     function attachEventListeners() {
-        $(".edit-btn").click(function () {
+        // Edit button listener
+        $(".edit-btn").off("click").on("click", function () {
             const admin_id = $(this).data("id");
 
             $.ajax({
@@ -100,7 +107,8 @@ $(document).ready(function () {
             });
         });
 
-        $(".delete-btn").click(function () {
+        // Delete button listener
+        $(".delete-btn").off("click").on("click", function () {
             const admin_id = $(this).data("id");
             if (confirm("Are you sure you want to delete this admin?")) {
                 $.ajax({
@@ -114,17 +122,6 @@ $(document).ready(function () {
             }
         });
     }
-
-    $("#adminsTable").on("click", ".reveal-password", function () {
-        const button = $(this);
-        const actualPassword = button.data("password");
-    
-        if (actualPassword) {
-            alert(`Password: ${actualPassword}`);
-        } else {
-            alert("Password could not be retrieved.");
-        }
-    });    
 
     $(document).on("click", "#togglePassword", function () {
         const passwordField = $("#password");

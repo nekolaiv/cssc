@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    // Set Current Date
+    $("#currentDate").text(new Date().toLocaleDateString());
+    
     // Fetch and display counts
     function loadCounts() {
         $.ajax({
