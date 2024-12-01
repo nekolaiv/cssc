@@ -28,8 +28,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
             if (in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
 
                 // Set target dimensions for resizing (for example, 800x600)
-                $maxWidth = 800;
-                $maxHeight = 600;
+                $maxWidth = 400;
+                $maxHeight = 400;
 
                 // Create image resource based on the type
                 switch ($imageType) {
@@ -62,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
                 }
 
                 // Create a new image resource with the new dimensions
-                $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+                $resizedImage = imagecreatetruecolor((int)$newWidth, (int)$newHeight);
 
                 // Preserve transparency for PNG and GIF
                 if ($imageType == IMAGETYPE_PNG) {
@@ -70,9 +70,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
                     imagesavealpha($resizedImage, true);
                 }
 
-                // Resize the image
-                imagecopyresampled($resizedImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
-
+               imagecopyresampled(
+                    $resizedImage, 
+                    $image, 
+                    0, 0, 0, 0, 
+                    (int)$newWidth, 
+                    (int)$newHeight, 
+                    (int)$originalWidth, 
+                    (int)$originalHeight
+                );
                 // Compress the image to fit within a target file size (e.g., 100 KB)
                 $targetFileSize = 100 * 1024; // 100 KB in bytes
                 $quality = 90;  // Initial quality (for JPEG)
@@ -110,7 +116,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
                 }
 
 
-                echo "Resized image inserted successfully.";
+                echo ("<script>console.log('Resized image inserted successfully')</script>;");
             } else {
                 echo "Invalid image format.";
             }
@@ -138,9 +144,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
     }
 
     $image_proof = $student->getStudentImageProof($email);
-    if($image_proof){
-        echo '<img src="data:image/jpeg;base64,' . base64_encode($image_proof) . '" />';
-    }
+    
     // $_SESSION['image-proof'] = $student->getStudentImageProof($email);
     // if(@move_uploaded_file($_FILES['image-proof']['tmp_name'], $target_path)){
     //     $validate_button = "Validated";
@@ -226,6 +230,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
                         <button type="submit" name="validate-button" id="validate-button"> <?php echo $validate_button ?? "Validate Entry" ?></button>
                         <input type="file" name="image-proof" id="image-proof" accept="image/*" value="<?= $_SESSION['image-proof'] ?? NULL ?>" title="Screenshot of your Complete Portal Grades" required>
                     </form>
+                    <?php if(isset($image_proof)){
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($image_proof) . '" />';
+                    } ?>
                 </div>
             </div>
         </div>
