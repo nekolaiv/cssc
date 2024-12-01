@@ -18,9 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $entry = $entries->getEntryById($entry_id);
 
             if ($entry) {
+                $query = "SELECT status FROM registered_students WHERE student_id = :student_id";
+                $db = new Database();
+                $status = $db->fetchOne($query, [':student_id' => $entry['student_id']]);
+
+                $entry['status'] = $status['status'] ?? 'Not Submitted';
                 echo json_encode($entry);
             } else {
-                echo json_encode(['error' => 'Entry not found']);
+                echo json_encode(['error' => 'Entry not found.']);
             }
             break;
 
@@ -29,21 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $response = $entries->verifyEntry($entry_id);
 
             if ($response) {
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'message' => 'Entry verified successfully.']);
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to verify the entry for ' . $entry_id]);
+                echo json_encode(['success' => false, 'error' => 'Failed to verify the entry.']);
             }
             break;
 
         case 'reject':
             $entry_id = intval(cleanInput($_POST['id']));
-            // Add logic for rejecting the entry here.
-            // For example, you could delete or mark the entry as rejected in a different table.
-            // This placeholder simply deletes the entry from the unverified table.
+            $response = $entries->rejectEntry($entry_id);
 
-            $response = $entries->removeVerifiedEntry($entry_id);
             if ($response) {
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'message' => 'Entry rejected successfully.']);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Failed to reject the entry.']);
             }
@@ -54,3 +56,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
     }
 }
+?>

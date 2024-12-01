@@ -17,8 +17,18 @@ class Entries {
 
     // Fetch all unverified entries
     public function getAllUnverifiedEntries() {
-        $query = "SELECT id, student_id, fullname, CONCAT(course, '-', year_level, section) AS course_details, created_at
-                  FROM students_unverified_entries";
+        $query = "
+            SELECT 
+                e.id,
+                e.student_id,
+                e.fullname,
+                CONCAT(e.course, '-', e.year_level, e.section) AS course_details,
+                e.created_at,
+                rs.status
+            FROM students_unverified_entries e
+            LEFT JOIN registered_students rs ON e.student_id = rs.student_id
+        ";
+    
         return $this->database->fetchAll($query);
     }
 
@@ -32,64 +42,73 @@ class Entries {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Move an unverified entry to verified entries
-    public function verifyEntry($entry_id) {
-        // Use the same database connection for all operations
-        $connection = $this->database->connect();
-    
-        try {
-            // Start a transaction
-            $connection->beginTransaction();
-    
-            // Fetch the unverified entry data
-            $entry = $this->getEntryById($entry_id);
-            if (!$entry) {
-                throw new Exception("Entry with ID $entry_id not found.");
-            }
-    
-            // Insert the entry into the verified_entries table
-            $query = "INSERT INTO students_verified_entries (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
-                      VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof, :created_at)";
-            $stmt = $connection->prepare($query);
-    
-            // Bind values
-            $stmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
-            $stmt->bindValue(':email', $entry['email'], PDO::PARAM_STR);
-            $stmt->bindValue(':fullname', $entry['fullname'], PDO::PARAM_STR);
-            $stmt->bindValue(':course', $entry['course'], PDO::PARAM_STR);
-            $stmt->bindValue(':year_level', $entry['year_level'], PDO::PARAM_INT);
-            $stmt->bindValue(':section', $entry['section'], PDO::PARAM_STR);
-            $stmt->bindValue(':adviser_name', $entry['adviser_name'], PDO::PARAM_STR);
-            $stmt->bindValue(':gwa', $entry['gwa'], PDO::PARAM_STR);
-            $stmt->bindValue(':image_proof', $entry['image_proof'], PDO::PARAM_LOB);
-            $stmt->bindValue(':created_at', $entry['created_at'], PDO::PARAM_STR);
-    
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to insert the entry into the verified entries table.");
-            }
-    
-            // Delete the entry from the students_unverified_entries table
-            $deleteQuery = "DELETE FROM students_unverified_entries WHERE id = :entry_id";
-            $deleteStmt = $connection->prepare($deleteQuery);
-            $deleteStmt->bindValue(':entry_id', $entry_id, PDO::PARAM_INT);
-            if (!$deleteStmt->execute()) {
-                throw new Exception("Failed to delete the entry from unverified entries.");
-            }
-    
-            // Commit the transaction
-            $connection->commit();
-            return "Entry with ID $entry_id successfully verified.";
-    
-        } catch (Exception $e) {
-            // Roll back the transaction in case of error
-            if ($connection->inTransaction()) {
-                $connection->rollBack();
-            }
-    
-            // Return the error message for debugging
-            return "Error in verifyEntry: " . $e->getMessage();
+    // Verify Entry
+public function verifyEntry($entry_id) {
+    $connection = $this->database->connect();
+
+    try {
+        $connection->beginTransaction();
+
+        $entry = $this->getEntryById($entry_id);
+        if (!$entry) {
+            throw new Exception("Entry with ID $entry_id not found.");
         }
+
+        $query = "INSERT INTO students_verified_entries (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
+                  VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof, :created_at)";
+        $stmt = $connection->prepare($query);
+
+        $stmt->execute([
+            ':student_id' => $entry['student_id'],
+            ':email' => $entry['email'],
+            ':fullname' => $entry['fullname'],
+            ':course' => $entry['course'],
+            ':year_level' => $entry['year_level'],
+            ':section' => $entry['section'],
+            ':adviser_name' => $entry['adviser_name'],
+            ':gwa' => $entry['gwa'],
+            ':image_proof' => $entry['image_proof'],
+            ':created_at' => $entry['created_at'],
+        ]);
+
+        $deleteQuery = "DELETE FROM students_unverified_entries WHERE id = :entry_id";
+        $deleteStmt = $connection->prepare($deleteQuery);
+        $deleteStmt->execute([':entry_id' => $entry_id]);
+
+        // Update student status
+        $updateStatusQuery = "UPDATE registered_students SET status = 'Verified' WHERE student_id = :student_id";
+        $statusStmt = $connection->prepare($updateStatusQuery);
+        $statusStmt->execute([':student_id' => $entry['student_id']]);
+
+        $connection->commit();
+        return true;
+
+    } catch (Exception $e) {
+        $connection->rollBack();
+        error_log("Error in verifyEntry: " . $e->getMessage());
+        return false;
     }
+}
+
+// Reject Entry
+public function rejectEntry($entry_id) {
+    try {
+        $entry = $this->getEntryById($entry_id);
+        if (!$entry) {
+            throw new Exception("Entry with ID $entry_id not found.");
+        }
+
+        $updateStatusQuery = "UPDATE registered_students SET status = 'Need Revision' WHERE student_id = :student_id";
+        $this->database->execute($updateStatusQuery, [':student_id' => $entry['student_id']]);
+
+        return true;
+
+    } catch (Exception $e) {
+        error_log("Error in rejectEntry: " . $e->getMessage());
+        return false;
+    }
+}
+
 
     // Fetch all verified entries
 public function getAllVerifiedEntries() {
