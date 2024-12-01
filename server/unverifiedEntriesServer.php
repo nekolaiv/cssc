@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // For example, you could delete or mark the entry as rejected in a different table.
             // This placeholder simply deletes the entry from the unverified table.
 
-            $response = $entries->deleteEntry($entry_id);
+            $response = $entries->removeVerifiedEntry($entry_id);
             if ($response) {
                 echo json_encode(['success' => true]);
             } else {
