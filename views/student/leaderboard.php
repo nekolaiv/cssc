@@ -36,7 +36,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                 </div>
                 <div id="leaderboard-top-notchers">
                     <div class="topnotcher-pads">
-                        <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
+                        <div class="topnotcher-div-1"><p>BS INFORMATION TECHNOLOGY</p></div>
                         <div class="topnotcher-div-2"><h2><?php echo $cs_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
                         <div class="topnotcher-div-3">
                             <div class="topnotcher-info">
@@ -50,7 +50,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                         </div>
                     </div>
                     <div class="topnotcher-pads">
-                        <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
+                        <div class="topnotcher-div-1"><p>ASSOCIATE IN COMPUTER TECHNOLOGY</p></div>
                         <div class="topnotcher-div-2"><h2><?php echo $it_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
                         <div class="topnotcher-div-3">
                             <div class="topnotcher-info">
