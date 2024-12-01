@@ -80,11 +80,11 @@ class Student
     }
 
     private function _isEntryPending($email){
-        $sql = 'SELECT COUNT(*) FROM students_unverified_untries WHERE email = :email LIMIT 1;';
+        $sql = 'SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if($query->execute()){
-            $row_count = $query->fetchColumn(PDO::FETCH_ASSOC);
+            $row_count = $query->fetchColumn();
             return $row_count > 0;
         } else {
             return false;
@@ -96,7 +96,7 @@ class Student
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if($query->execute()){
-            $row_count = $query->fetchColumn(PDO::FETCH_ASSOC);
+            $row_count = $query->fetchColumn();
             return $row_count > 0;
         } else {
             return false;
