@@ -2,9 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $page_title = "leaderboard";
-include_once "../../includes/_student-head.php";
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
 
-require_once("../../classes/student.class.php");
 $student = new Student();
 $cs_top1 = $student->getCSTopNotcher();
 $it_top1 = $student->getITTopNotcher();
