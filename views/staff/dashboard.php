@@ -7,7 +7,7 @@
     <title>Staff Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/cssc/js/staff-dashboard.js"></script>
+    <script src="/cssc/js/staff/staff_dashboard.js"></script>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
         <!-- Greeting Section -->
         <div class="row my-4">
             <div class="col-12">
-                <h4 class="text-muted">Hello, Staff Member</h4>
+                <h4 class="text-muted">Hello, Staff</h4>
                 <p class="text-secondary" id="currentDate">Loading date...</p>
             </div>
         </div>

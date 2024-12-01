@@ -43,7 +43,7 @@
 
         <!-- Settings -->
         <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/settings.php" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/staff/staff-settings.php" class="sidebar-link menu-link">
                 <i class="lni lni-cog"></i>
                 <span>Settings</span>
             </a>

@@ -40,7 +40,7 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="#" data-url="settings.html" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/admin/admin-settings.php" class="sidebar-link menu-link">
                 <i class="lni lni-cog"></i>
                 <span>Setting</span>
             </a>
