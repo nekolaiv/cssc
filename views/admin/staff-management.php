@@ -10,33 +10,33 @@
     <!-- <script src="/cssc/js/admin/staff_management.js"></script> -->
 </head>
 <body>
-<div class="container mt-4">
-    <h2>Staff Management</h2>
-    <button id="addStaffBtn" class="btn btn-primary mb-3">Add Staff</button>
-    <!-- Search Bar -->
-    <div class="mb-3">
-        <input type="text" id="searchStaff" class="form-control" placeholder="Search by Student ID or Name">
+    <div class="container mt-4">
+        <h1>Staff Management</h1>
+        
+        <!-- Button to trigger the "Add Staff" modal -->
+        <button class="btn btn-primary mb-3" id="addStaffBtn">Add Staff</button>
+        
+        <!-- Table to display staff -->
+        <table class="table table-bordered" id="staffTable">
+            <thead>
+                <tr>
+                    <th>Staff ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populated dynamically via AJAX -->
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav id="pagination" aria-label="Page navigation">
+            <ul class="pagination justify-content-center"></ul>
+        </nav>
     </div>
-    <table id="staffTable" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Populated by JavaScript -->
-        </tbody>
-    </table>
-    <nav>
-        <ul id="pagination" class="pagination justify-content-center">
-            <!-- Populated by JavaScript -->
-        </ul>
-    </nav>
-</div>
 
     <!-- Include Add/Edit Modal -->
     <?php include 'addedit-staff-modal.php'; ?>
