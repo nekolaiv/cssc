@@ -9,6 +9,7 @@ require_once("../tools/session.function.php");
 $required = '*';
 $email = $password = $confirm_password = '';
 $email_err = $password_err = $confirm_password_err = ' ';
+echo $email_err;
 $auth = new Auth();
 
 
@@ -25,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if(empty($password)){
         $password_err = "password is required";
-    } else if(strlen($_POST['new-password']) < 8){
+    } else if(strlen($password) < 8){
         $password_err = "minimum 8 characters";
     }
 
@@ -42,8 +43,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_SESSION['feedback'] = 'account successfully registered';
             header("Location: login.php");
         } else {
-            $email_err = $register_status[0];
-            $new_password_err = $register_status[1];
+            $email_err = $register_status;
         }
     }    
 }
@@ -93,6 +93,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         <button type="submit" class="primary-button" name="form-action" value="attempt-register">register</button>
         <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">login instead</button></a>
     </form>
-    <script src="/cssc/resources/js/show-password.js"></script>
+    <script src="/cssc/js/auth_show-password.js"></script>
 </body>
 </html>

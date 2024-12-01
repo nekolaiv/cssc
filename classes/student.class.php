@@ -35,7 +35,7 @@ class Student
     }
 
     private function _studentUnverifiedEntryExists($email){
-        $sql = "SELECT COUNT(*) FROM Students_Unverified_Entries WHERE email = :email LIMIT 1;";
+        $sql = "SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if ($query->execute()) {
@@ -47,7 +47,7 @@ class Student
     }
 
     private function _studentVerifiedEntryExists($email){
-        $sql = "SELECT COUNT(*) FROM Students_Verified_Entries WHERE email = :email LIMIT 1;";
+        $sql = "SELECT COUNT(*) FROM students_verified_entries WHERE email = :email LIMIT 1;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if ($query->execute()) {
@@ -59,9 +59,9 @@ class Student
 
     private function getStudentEntry($email){
         if($this->_studentUnverifiedEntryExists($email)){
-            $sql = "SELECT * FROM Students_Unverified_Entries WHERE email = :email LIMIT 1;";
+            $sql = "SELECT * FROM students_unverified_entries WHERE email = :email LIMIT 1;";
         } else if ($this->_studentVerifiedEntryExists($email)){
-            $sql = "SELECT * FROM Students_Verified_Entries WHERE email = :email LIMIT 1;";
+            $sql = "SELECT * FROM students_verified_entries WHERE email = :email LIMIT 1;";
         }
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -80,7 +80,7 @@ class Student
     }
 
     private function _isEntryPending($email){
-        $sql = 'SELECT COUNT(*) FROM Students_Unverified_Entries WHERE email = :email LIMIT 1;';
+        $sql = 'SELECT COUNT(*) FROM students_unverified_untries WHERE email = :email LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if($query->execute()){
@@ -92,7 +92,7 @@ class Student
     }
 
     private function _isEntryVerified($email){
-        $sql = 'SELECT COUNT(*) FROM Students_Verified_Entries WHERE email = :email LIMIT 1;';
+        $sql = 'SELECT COUNT(*) FROM students_verified_entries WHERE email = :email LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if($query->execute()){
@@ -105,11 +105,11 @@ class Student
 
     private function _updateStudentStatus($email){
         if($this->_isEntryPending($email)){
-            $sql = 'UPDATE Registered_Students SET status = "Pending" WHERE email = :email;';
+            $sql = 'UPDATE registered_students SET status = "Pending" WHERE email = :email;';
         } else if($this->_isEntryVerified($email)){
-            $sql = 'UPDATE Registered_Students SET status = "Verified" WHERE email = :email;';
+            $sql = 'UPDATE registered_students SET status = "Verified" WHERE email = :email;';
         } else {
-            $sql = 'UPDATE Registered_Students SET status = "Not Submitted" WHERE email = :email;';
+            $sql = 'UPDATE registered_students SET status = "Not Submitted" WHERE email = :email;';
         }
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -122,7 +122,7 @@ class Student
 
     // LEADERBOARD MODELS
     public function getCSTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Computer Science" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Computer Science" ORDER BY gwa, created_at ASC LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -134,7 +134,7 @@ class Student
     }
 
     public function getITTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Information Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Information Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -146,7 +146,7 @@ class Student
     }
 
     public function getACTTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM Students_Verified_Entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -158,7 +158,7 @@ class Student
     }
 
     public function getCSLeaderboardData(){
-        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Computer Science" ORDER BY gwa, fullname ASC';
+        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Computer Science" ORDER BY gwa, fullname ASC';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -170,7 +170,7 @@ class Student
     }
 
     public function getITLeaderboardData(){
-        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Information Technology" ORDER BY gwa, fullname ASC';
+        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Information Technology" ORDER BY gwa, fullname ASC';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -182,7 +182,7 @@ class Student
     }
 
     public function getACTLeaderboardData(){
-        $sql = 'SELECT * FROM Students_Verified_Entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, fullname ASC';
+        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, fullname ASC';
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -208,13 +208,13 @@ class Student
     // RESULT MODELS
     public function saveEntryToDatabase($email, $gwa, $image_proof){
         if ($this->_entryExists($email)) {
-            $sql = "UPDATE Students_Unverified_Entries SET gwa = :gwa, image_proof = :image_proof WHERE email = :email";
+            $sql = "UPDATE students_unverified_entries SET gwa = :gwa, image_proof = :image_proof WHERE email = :email";
             $query = $this->database->connect()->prepare($sql);
             $query->bindParam(':gwa', $gwa);
             $query->bindParam(':email', $email);
             $query->bindParam(':image_proof', $image_proof);
         } else {
-            $sql = "INSERT INTO Students_Unverified_Entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof)
+            $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof)
             VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof)";
             $student = $this->_getStudentData($email);
             $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
@@ -237,7 +237,7 @@ class Student
     }
 
     private function _entryExists($email){
-        $sql = "SELECT COUNT(*) FROM Students_Unverified_Entries WHERE email = :email";
+        $sql = "SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         if ($query->execute()) {
@@ -250,7 +250,7 @@ class Student
 
     private function _getStudentData($email){
         $this->_updateStudentStatus($email);
-        $sql = "SELECT * FROM Registered_Students WHERE email = :email LIMIT 1;";
+        $sql = "SELECT * FROM registered_students WHERE email = :email LIMIT 1;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         $student = NULL;

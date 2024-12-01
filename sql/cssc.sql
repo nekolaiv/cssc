@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 24, 2024 at 06:12 AM
+-- Generation Time: Dec 01, 2024 at 02:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,32 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Admin_Accounts`
+-- Table structure for table `admin_accounts`
 --
 
-CREATE TABLE `Admin_Accounts` (
+CREATE TABLE `admin_accounts` (
   `admin_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(10) NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Admin_Accounts`
+-- Dumping data for table `admin_accounts`
 --
 
-INSERT INTO `Admin_Accounts` (`admin_id`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'admin1@wmsu.edu.ph', '$2y$10$PryNK6ZXjpzbPEC4/VRojudk68PV5QgtJ0/ZoTa/Az4XTLNsgAyYG', 'admin', '2024-10-18 05:57:37', '2024-10-18 05:57:37');
+INSERT INTO `admin_accounts` (`admin_id`, `email`, `password`, `role`, `created_at`, `updated_at`, `first_name`, `last_name`, `middle_name`) VALUES
+(1, 'admin1@wmsu.edu.ph', '$2y$10$..H1Ak/R7PtbvOtl19mecOCmGdOPaMFSD3q0IahJlsNySRMWtmsT2', 'admin', '2024-12-01 01:17:07', '2024-12-01 01:17:07', 'Emman Nicholas Blabe', 'Idulsa', 'Bautista'),
+(2, 'admin2@wmsu.edu.ph', '$2y$10$UIe/wwQbsK83g95e9LmR8O4a8Up52021NiasOpEr5afVy9ojmLvym', 'admin', '2024-12-01 01:25:39', '2024-12-01 01:25:39', 'Ahmad', 'Yahiya', 'Feyaz');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Advisers`
+-- Table structure for table `advisers`
 --
 
-CREATE TABLE `Advisers` (
+CREATE TABLE `advisers` (
   `id` int(11) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
@@ -62,38 +66,40 @@ CREATE TABLE `Advisers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Advisers`
+-- Dumping data for table `advisers`
 --
 
-INSERT INTO `Advisers` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `course`, `year_level`, `created_at`, `updated_at`) VALUES
-(1, 'Salimar', 'Tahil', '', 'salimar_tahil@wmsu.edu.ph', 'Computer Science', 1, '2024-11-15 23:41:27', '2024-11-15 23:41:27');
+INSERT INTO `advisers` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `course`, `year_level`, `created_at`, `updated_at`) VALUES
+(1, 'Salimar', 'Tahil', 'Bendanillo', 'salimar_tahil@wmsu.edu.ph', 'Computer Science', 1, '2024-11-15 23:41:27', '2024-12-01 01:32:15'),
+(2, 'Rhamirl', 'Jaafar', 'Balang', 'rhamirl_jaafar@wmsu.edu.ph', 'Information Technology', 3, '2024-12-01 01:34:05', '2024-12-01 01:35:29'),
+(3, 'Jaydee', 'Ballaho', '', 'jaydee_ballaho@wmsu.edu.ph', 'Associate in Computer Technology', 2, '2024-12-01 01:35:12', '2024-12-01 01:35:12');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Current_Academic_Term`
+-- Table structure for table `current_academic_term`
 --
 
-CREATE TABLE `Current_Academic_Term` (
+CREATE TABLE `current_academic_term` (
   `id` int(11) NOT NULL,
   `school_year` varchar(9) NOT NULL,
   `semester` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Current_Academic_Term`
+-- Dumping data for table `current_academic_term`
 --
 
-INSERT INTO `Current_Academic_Term` (`id`, `school_year`, `semester`) VALUES
+INSERT INTO `current_academic_term` (`id`, `school_year`, `semester`) VALUES
 (1, '2023-2024', 'First');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Registered_Students`
+-- Table structure for table `registered_students`
 --
 
-CREATE TABLE `Registered_Students` (
+CREATE TABLE `registered_students` (
   `user_id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -112,35 +118,47 @@ CREATE TABLE `Registered_Students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Registered_Students`
+-- Dumping data for table `registered_students`
 --
 
-INSERT INTO `Registered_Students` (`user_id`, `student_id`, `email`, `password`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `role`, `adviser_name`, `status`, `created_at`, `updated_at`) VALUES
-(1, '202300001', 'hz202300001@wmsu.edu.ph', '$2y$10$9q2ry8UU3Kamlb701RQc/eE1cX1TXrvAl1TkTy3Q8O31TFlg9ak.C', 'John', 'Doe', 'Michael', 'Computer Science', 1, 'A', 'student', 'Salimar Tahil', 'Not Submitted', '2024-11-15 23:50:57', '2024-11-19 00:36:47'),
-(2, '202300002', 'hz202300002@wmsu.edu.ph', '$2y$10$Y3.xh.E1fqoYtBwJEih0BeWCTXmpnUCCvP/xBm.h.6ZB0gw4B3Ep6', 'Jane', 'Smith', 'Elizabeth', 'Computer Science', 2, 'B', 'student', ' ', 'Not Submitted', '2024-11-21 02:08:50', '2024-11-21 02:08:50');
+INSERT INTO `registered_students` (`user_id`, `student_id`, `email`, `password`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `role`, `adviser_name`, `status`, `created_at`, `updated_at`) VALUES
+(1, '202300001', 'hz202300001@wmsu.edu.ph', '$2y$10$cYsXuMVdmyw21xY0hzALM.6pY0V5Z4LRefXvd9ZwBP3Av332gG4j.', 'John', 'Doe', 'Michael', 'Computer Science', 1, 'A', 'student', 'Tahil, Salimar Bendanillo', 'Not Submitted', '2024-12-01 01:37:59', '2024-12-01 01:37:59'),
+(2, '202300013', 'hz202300013@wmsu.edu.ph', '$2y$10$Auk9ddjtFfMa3KWna6IK.OJPNOeu8sEtGmNIo8EFDYLCwkb8JPbZ2', 'Robert', 'Johnson', 'William', 'Information Technology', 3, 'C', 'student', 'Jaafar, Rhamirl Balang', 'Not Submitted', '2024-12-01 01:38:48', '2024-12-01 01:38:48'),
+(3, '202300022', 'hz202300022@wmsu.edu.ph', '$2y$10$n52fyKth8WXJZ79dYeEMee4FdlLHIi9kHeTRhdatKYDzElYymk2bi', 'Jane', 'Smith', 'Elizabeth', 'Associate in Computer Technology', 2, 'B', 'student', 'Ballaho, Jaydee ', 'Not Submitted', '2024-12-01 01:39:07', '2024-12-01 01:39:07');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Staff_Accounts`
+-- Table structure for table `staff_accounts`
 --
 
-CREATE TABLE `Staff_Accounts` (
+CREATE TABLE `staff_accounts` (
   `staff_id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(10) NOT NULL DEFAULT 'staff',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `middle_name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `staff_accounts`
+--
+
+INSERT INTO `staff_accounts` (`staff_id`, `email`, `password`, `role`, `created_at`, `updated_at`, `first_name`, `last_name`, `middle_name`) VALUES
+(1, 'staff1@wmsu.edu.ph', '$2y$10$tR0ZU0Z9ap//gqbggxRAA.kVQji4u.qqc.9oCee8AvrH8CWEonAku', 'staff', '2024-12-01 01:29:50', '2024-12-01 01:29:50', 'Emman Nicholas Blabe', 'Idulsa', 'Bautista'),
+(2, 'staff2@wmsu.edu.ph', '$2y$10$YrF2JCr9ifhvDWH.8VOzleHu9168AK1kiUZoN2kY0GMfWYyCw8ISq', 'staff', '2024-12-01 01:30:25', '2024-12-01 01:30:25', 'Ahmad', 'Yahiya', 'Feyaz');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Students_Unverified_Entries`
+-- Table structure for table `students_unverified_entries`
 --
 
-CREATE TABLE `Students_Unverified_Entries` (
+CREATE TABLE `students_unverified_entries` (
   `id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -155,20 +173,13 @@ CREATE TABLE `Students_Unverified_Entries` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `Students_Unverified_Entries`
---
-
-INSERT INTO `Students_Unverified_Entries` (`id`, `student_id`, `email`, `fullname`, `course`, `year_level`, `section`, `adviser_name`, `gwa`, `image_proof`, `created_at`, `updated_at`) VALUES
-(1, '202300001', 'hz202300001@wmsu.edu.ph', 'Doe, John Michael', 'Computer Science', 1, 'A', 'Salimar Tahil', 2.00, NULL, '2024-11-16 14:19:55', '2024-11-22 05:11:12');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Students_Verified_Entries`
+-- Table structure for table `students_verified_entries`
 --
 
-CREATE TABLE `Students_Verified_Entries` (
+CREATE TABLE `students_verified_entries` (
   `id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -183,21 +194,13 @@ CREATE TABLE `Students_Verified_Entries` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `Students_Verified_Entries`
---
-
-INSERT INTO `Students_Verified_Entries` (`id`, `student_id`, `email`, `fullname`, `course`, `year_level`, `section`, `adviser_name`, `gwa`, `image_proof`, `created_at`, `updated_at`) VALUES
-(1, '202300001', 'student1@wmsu.edu.ph', 'Doe, John Michael', 'Computer Science', 1, 'BSCS1A', 'Tahil, Salimar', 1.20, NULL, '2024-11-21 06:43:56', '2024-11-21 06:43:56'),
-(2, '202300002', 'student2@wmsu.edu.ph', 'Doe, Jane Michelle', 'Computer Science', 1, 'BSCS1A', 'Tahil, Salimar', 1.00, NULL, '2024-11-21 06:44:55', '2024-11-21 06:44:55');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Unregistered_Students`
+-- Table structure for table `unregistered_students`
 --
 
-CREATE TABLE `Unregistered_Students` (
+CREATE TABLE `unregistered_students` (
   `id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -212,10 +215,10 @@ CREATE TABLE `Unregistered_Students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `Unregistered_Students`
+-- Dumping data for table `unregistered_students`
 --
 
-INSERT INTO `Unregistered_Students` (`id`, `student_id`, `email`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `created_at`, `updated_at`) VALUES
+INSERT INTO `unregistered_students` (`id`, `student_id`, `email`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `created_at`, `updated_at`) VALUES
 (1, '202300001', 'hz202300001@wmsu.edu.ph', 'John', 'Doe', 'Michael', 'Computer Science', 1, 'A', '2024-11-15 08:16:04', '2024-11-16 02:59:33'),
 (2, '202300002', 'hz202300002@wmsu.edu.ph', 'Jane', 'Smith', 'Elizabeth', 'Computer Science', 2, 'B', '2024-11-15 08:16:04', '2024-11-16 02:59:37'),
 (3, '202300003', 'hz202300003@wmsu.edu.ph', 'Robert', 'Johnson', 'William', 'Computer Science', 3, 'C', '2024-11-15 08:16:04', '2024-11-16 02:59:41'),
@@ -252,56 +255,56 @@ INSERT INTO `Unregistered_Students` (`id`, `student_id`, `email`, `first_name`, 
 --
 
 --
--- Indexes for table `Admin_Accounts`
+-- Indexes for table `admin_accounts`
 --
-ALTER TABLE `Admin_Accounts`
+ALTER TABLE `admin_accounts`
   ADD PRIMARY KEY (`admin_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `Advisers`
+-- Indexes for table `advisers`
 --
-ALTER TABLE `Advisers`
+ALTER TABLE `advisers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `Current_Academic_Term`
+-- Indexes for table `current_academic_term`
 --
-ALTER TABLE `Current_Academic_Term`
+ALTER TABLE `current_academic_term`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Registered_Students`
+-- Indexes for table `registered_students`
 --
-ALTER TABLE `Registered_Students`
+ALTER TABLE `registered_students`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `student_id` (`student_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `Staff_Accounts`
+-- Indexes for table `staff_accounts`
 --
-ALTER TABLE `Staff_Accounts`
+ALTER TABLE `staff_accounts`
   ADD PRIMARY KEY (`staff_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indexes for table `Students_Unverified_Entries`
+-- Indexes for table `students_unverified_entries`
 --
-ALTER TABLE `Students_Unverified_Entries`
+ALTER TABLE `students_unverified_entries`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Students_Verified_Entries`
+-- Indexes for table `students_verified_entries`
 --
-ALTER TABLE `Students_Verified_Entries`
+ALTER TABLE `students_verified_entries`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `Unregistered_Students`
+-- Indexes for table `unregistered_students`
 --
-ALTER TABLE `Unregistered_Students`
+ALTER TABLE `unregistered_students`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -309,51 +312,51 @@ ALTER TABLE `Unregistered_Students`
 --
 
 --
--- AUTO_INCREMENT for table `Admin_Accounts`
+-- AUTO_INCREMENT for table `admin_accounts`
 --
-ALTER TABLE `Admin_Accounts`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `admin_accounts`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `Advisers`
+-- AUTO_INCREMENT for table `advisers`
 --
-ALTER TABLE `Advisers`
+ALTER TABLE `advisers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `current_academic_term`
+--
+ALTER TABLE `current_academic_term`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `Current_Academic_Term`
+-- AUTO_INCREMENT for table `registered_students`
 --
-ALTER TABLE `Current_Academic_Term`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `registered_students`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `Registered_Students`
+-- AUTO_INCREMENT for table `staff_accounts`
 --
-ALTER TABLE `Registered_Students`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `staff_accounts`
+  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `Staff_Accounts`
+-- AUTO_INCREMENT for table `students_unverified_entries`
 --
-ALTER TABLE `Staff_Accounts`
-  MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `students_unverified_entries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Students_Unverified_Entries`
+-- AUTO_INCREMENT for table `students_verified_entries`
 --
-ALTER TABLE `Students_Unverified_Entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `students_verified_entries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT for table `Students_Verified_Entries`
+-- AUTO_INCREMENT for table `unregistered_students`
 --
-ALTER TABLE `Students_Verified_Entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `Unregistered_Students`
---
-ALTER TABLE `Unregistered_Students`
+ALTER TABLE `unregistered_students`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 COMMIT;
 
