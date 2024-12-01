@@ -79,6 +79,24 @@ class Student
         return $data['image_proof'];
     }
 
+    // UPDATING STUDENT STATUS
+    private function _updateStudentStatus($email){
+        if($this->_isEntryPending($email)){
+            $sql = 'UPDATE registered_students SET status = "Pending" WHERE email = :email;';
+        } else if($this->_isEntryVerified($email)){
+            $sql = 'UPDATE registered_students SET status = "Verified" WHERE email = :email;';
+        } else {
+            $sql = 'UPDATE registered_students SET status = "Not Submitted" WHERE email = :email;';
+        }
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':email', $email);
+        if($query->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function _isEntryPending($email){
         $sql = 'SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;';
         $query = $this->database->connect()->prepare($sql);
@@ -98,23 +116,6 @@ class Student
         if($query->execute()){
             $row_count = $query->fetchColumn();
             return $row_count > 0;
-        } else {
-            return false;
-        }
-    }
-
-    private function _updateStudentStatus($email){
-        if($this->_isEntryPending($email)){
-            $sql = 'UPDATE registered_students SET status = "Pending" WHERE email = :email;';
-        } else if($this->_isEntryVerified($email)){
-            $sql = 'UPDATE registered_students SET status = "Verified" WHERE email = :email;';
-        } else {
-            $sql = 'UPDATE registered_students SET status = "Not Submitted" WHERE email = :email;';
-        }
-        $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
-        if($query->execute()){
-            return true;
         } else {
             return false;
         }
@@ -260,14 +261,6 @@ class Student
         } else {
             return false;
         }
-    }
-
-    public function getVerificationStatus(){
-        $sql = "SELECT ";
-    }
-
-    public function getScreenShotFile($email){
-        
     }
 
     public function setScreenshotFile($student_id, $image){
