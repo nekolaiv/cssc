@@ -1,7 +1,4 @@
 <!-- index.php -->
-<?php
- require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
- ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

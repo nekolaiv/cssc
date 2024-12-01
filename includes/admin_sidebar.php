@@ -47,7 +47,7 @@
         </li>
     </ul>
     <div class="sidebar-footer">
-        <a href="#" class="sidebar-link log-out">
+        <a href="#" class="sidebar-link">
             <i class="lni lni-exit"></i>
             <span>Logout</span>
         </a>

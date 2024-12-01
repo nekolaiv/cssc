@@ -648,13 +648,12 @@ header nav ul button {
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: start;
 	gap: 10px;
 	background-color: var(--bg-color1);
 	border-radius: calc(var(--Gborder-radius));
 	/* border: 1px solid yellow; */
 }
-
 
 #leaderboard-top-notchers .topnotcher-pads>.topnotcher-div-1,
 .topnotcher-div-2,

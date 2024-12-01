@@ -1,26 +1,6 @@
 $(document).ready(function () {
   const sidebar = $("#sidebar");
   const hamBurger = $(".toggle-btn");
-  const logout = $(".log-out");
-
-  logout.on("click", function () {
-    logOut(); // Close all submenus when toggling the sidebar
-  });
-
-
-  function logOut(){
-    $.ajax({
-        url: '/cssc/server/logout.php',    // The PHP file handling the logout
-        type: 'POST',         // POST request method
-             // Expecting a JSON response
-        success: function(response) {
-            location.reload();
-        },
-        error: function() {
-            alert('Error occurred while logging out');
-        }
-    });
-  }
 
   // Toggle sidebar with hamburger button
   hamBurger.on("click", function () {
