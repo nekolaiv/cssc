@@ -10,7 +10,7 @@
     </div>
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/dashboard.php" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/admin/admin-dashboard.php" class="sidebar-link menu-link">
                 <i class="lni lni-dashboard"></i>
                 <span>Dashboard</span>
             </a>

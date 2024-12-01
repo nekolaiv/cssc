@@ -16,6 +16,13 @@ class Admin {
     public function __construct() {
         $this->database = new Database();
     }
+    
+    public function getAdvisers() {
+        $query = "SELECT id, CONCAT(first_name, ' ', last_name) AS full_name, email, course, year_level 
+                  FROM adviser";
+        return $this->database->fetchAll($query);
+    }
+    
 
     // Create a new admin account
     public function createAdmin($data) {

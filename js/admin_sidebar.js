@@ -1,88 +1,61 @@
-// Select the sidebar and hamburger toggle button
-const sidebar = document.querySelector("#sidebar");
-const hamBurger = document.querySelector(".toggle-btn");
+$(document).ready(function () {
+    const sidebar = $("#sidebar");
+    const hamBurger = $(".toggle-btn");
 
-// Toggle sidebar with hamburger
-hamBurger.addEventListener("click", function () {
-    sidebar.classList.toggle("expand");
-    closeAllSubMenus(); // Close submenus when toggling the sidebar
-});
+    // Toggle sidebar with hamburger button
+    hamBurger.on("click", function () {
+        sidebar.toggleClass("expand");
+        closeAllSubMenus(); // Close all submenus when toggling the sidebar
+    });
 
-// Fetch and update account counts
-function updateAccountCounts() {
-    fetch("/cssc/server/dashboardServer.php")
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch account counts. Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // Ensure the elements exist before updating their values
-            const studentCountElement = document.getElementById("studentCount");
-            const staffCountElement = document.getElementById("staffCount");
-            const adminCountElement = document.getElementById("adminCount");
+    // Load initial content (dashboard) when the document is ready
+    loadContent("/cssc/views/admin/admin-dashboard.php");
 
-            if (studentCountElement && staffCountElement && adminCountElement) {
-                studentCountElement.innerText = data.students ?? 0;
-                staffCountElement.innerText = data.staff ?? 0;
-                adminCountElement.innerText = data.admins ?? 0;
-            } else {
-                console.error("Account count elements are missing in the DOM.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching account counts:", error);
-        });
-}
-
-// Load dashboard content on page load
-document.addEventListener("DOMContentLoaded", function () {
-    const content = document.getElementById("content");
-
-    // Fetch the dashboard view
-    fetch("/cssc/views/admin/dashboard.php")
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch dashboard content. Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then((data) => {
-            content.innerHTML = data;
-
-            // Update account counts after loading the dashboard
-            updateAccountCounts();
-
-            // Initialize any dashboard-specific scripts (like charts)
-            if (typeof initializeCharts === "function") {
-                initializeCharts();
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            content.innerHTML = `<p class="text-danger">Error loading dashboard content. Please try again later.</p>`;
-        });
-});
-
-// Dynamic content loading with AJAX
-document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("menu-link")) {
+    // Handle menu link clicks to dynamically load content
+    $(document).on("click", ".menu-link", function (e) {
         e.preventDefault();
-        const url = e.target.getAttribute("data-url");
+        const url = $(this).data("url");
+        loadContent(url);
 
-        // Fetch content dynamically
-        fetch(url)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
+        // Highlight the clicked menu item
+        $(".menu-link").parent().removeClass("active");
+        $(this).parent().addClass("active");
+    });
+
+    // Submenu toggle handling
+    $(document).on("click", ".has-dropdown", function (e) {
+        e.preventDefault();
+        const button = $(this);
+        const dropdown = button.next(".sidebar-dropdown");
+
+        if (!dropdown.hasClass("show")) {
+            closeAllSubMenus(); // Close other submenus before toggling the clicked one
+        }
+        dropdown.toggleClass("show");
+        button.toggleClass("rotate");
+    });
+
+    // Function to close all submenus
+    function closeAllSubMenus() {
+        $(".sidebar-dropdown").removeClass("show");
+        $(".has-dropdown").removeClass("rotate");
+    }
+
+    // Function to dynamically load content into the main container
+    function loadContent(url) {
+        const content = $("#content");
+
+        // Fetch content via AJAX
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (data) {
+                content.html(data);
+
+                // Dynamically load specific JavaScript for each page
+                if (url.includes("admin-dashboard.php")) {
+                    $.getScript("/cssc/js/admin-dashboard.js");
                 }
-                return response.text();
-            })
-            .then((data) => {
-                document.getElementById("content").innerHTML = data;
-
-                // Dynamically load specific scripts for different pages
                 if (url.includes("student-management.php")) {
                     $.getScript("/cssc/js/student-management.js");
                 }
@@ -92,44 +65,10 @@ document.addEventListener("click", function (e) {
                 if (url.includes("admin-management.php")) {
                     $.getScript("/cssc/js/admin-management.js");
                 }
-
-                // Update account counts if the dashboard is loaded
-                if (url.includes("dashboard.php")) {
-                    updateAccountCounts();
-                }
-            })
-            .catch(() => {
-                document.getElementById("content").innerHTML = "<p>Error loading content.</p>";
-            });
-
-        // Highlight active menu item
-        document.querySelectorAll(".menu-link").forEach((link) => {
-            link.parentElement.classList.remove("active");
+            },
+            error: function () {
+                content.html("<p>Error loading content. Please try again later.</p>");
+            },
         });
-        e.target.parentElement.classList.add("active");
     }
 });
-
-// Handle submenu toggle
-function toggleSubMenu(button) {
-    if (!button.nextElementSibling.classList.contains("show")) {
-        closeAllSubMenus();
-    }
-    button.nextElementSibling.classList.toggle("show");
-    button.classList.toggle("rotate");
-
-    // Ensure the sidebar is fully visible when expanding a submenu
-    if (sidebar.classList.contains("expand")) {
-        sidebar.classList.remove("expand");
-    }
-}
-
-// Close all submenus
-function closeAllSubMenus() {
-    document.querySelectorAll(".sidebar-dropdown").forEach((dropdown) => {
-        dropdown.classList.remove("show");
-    });
-    document.querySelectorAll(".sidebar-item .rotate").forEach((button) => {
-        button.classList.remove("rotate");
-    });
-}

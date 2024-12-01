@@ -3,7 +3,15 @@ $(document).ready(function () {
     const rowsPerPage = 5; // Rows per page
     let currentPage = 1;
 
+    // Load staff data on page load
     loadStaff();
+
+    // Event delegation for password reveal to avoid multiple bindings
+    $(document).off("click.reveal", ".reveal-password").on("click.reveal", ".reveal-password", function () {
+        const password = $(this).data("password");
+        console.log("Reveal Password clicked:", password); // Debugging
+        alert(`Password: ${password}`);
+    });
 
     function loadStaff() {
         $.ajax({
@@ -24,7 +32,7 @@ $(document).ready(function () {
         const visibleStaff = staff.slice(startIndex, endIndex);
 
         const tableBody = $("#staffTable tbody");
-        tableBody.empty();
+        tableBody.empty(); // Clear the table before appending new rows
 
         if (visibleStaff.length === 0) {
             tableBody.append(`
@@ -53,6 +61,7 @@ $(document).ready(function () {
             });
         }
 
+        // Attach event listeners for dynamically loaded elements
         attachEventListeners();
     }
 
@@ -125,6 +134,7 @@ $(document).ready(function () {
     });
 
     function attachEventListeners() {
+        // Edit button event listener
         $(".edit-btn").click(function () {
             const staff_id = $(this).data("id");
 
@@ -157,6 +167,7 @@ $(document).ready(function () {
             });
         });
 
+        // Delete button event listener
         $(".delete-btn").click(function () {
             const staff_id = $(this).data("id");
 
@@ -172,11 +183,6 @@ $(document).ready(function () {
                     },
                 });
             }
-        });
-
-        $(".reveal-password").click(function () {
-            const password = $(this).data("password");
-            alert(`Password: ${password}`);
         });
     }
 });
