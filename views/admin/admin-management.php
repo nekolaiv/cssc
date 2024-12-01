@@ -16,10 +16,6 @@
     <!-- Button to trigger the "Add Admin" modal -->
     <button class="btn btn-primary mb-3" id="addAdminBtn">Create Admin</button>
 
-    <div class="mb-3">
-        <input type="text" id="searchAdmin" class="form-control" placeholder="Search by Student ID or Name">
-    </div>
-
     <!-- Table to display all admins -->
     <table class="table table-bordered" id="adminsTable">
         <thead>
@@ -38,11 +34,6 @@
             <!-- Populated dynamically via AJAX -->
         </tbody>
     </table>
-    <nav>
-        <ul id="pagination" class="pagination justify-content-center">
-            <!-- Populated by JavaScript -->
-        </ul>
-    </nav>
 
     <!-- Include Modals -->
     <?php include 'addedit-admin-modal.php'; ?>
