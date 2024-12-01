@@ -140,8 +140,9 @@ public function removeVerifiedEntry($entry_id) {
             throw new Exception("Verified entry with ID $entry_id not found.");
         }
 
-        // Insert back into unverified entries if needed
-        $query = "INSERT INTO students_unverified_entries (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
+        // Insert back into unverified entries
+        $query = "INSERT INTO students_unverified_entries 
+                  (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
                   VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof, :created_at)";
         $stmt = $connection->prepare($query);
 
@@ -159,6 +160,12 @@ public function removeVerifiedEntry($entry_id) {
 
         $stmt->execute();
 
+        // Update the student's status to Pending
+        $updateStatusQuery = "UPDATE registered_students SET status = 'Pending' WHERE student_id = :student_id";
+        $updateStatusStmt = $connection->prepare($updateStatusQuery);
+        $updateStatusStmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
+        $updateStatusStmt->execute();
+
         // Delete the entry from verified entries
         $deleteQuery = "DELETE FROM students_verified_entries WHERE id = :entry_id";
         $deleteStmt = $connection->prepare($deleteQuery);
@@ -171,11 +178,14 @@ public function removeVerifiedEntry($entry_id) {
 
     } catch (Exception $e) {
         // Rollback in case of error
-        $connection->rollBack();
+        if ($connection->inTransaction()) {
+            $connection->rollBack();
+        }
         error_log("Error in removeVerifiedEntry: " . $e->getMessage());
         return false;
     }
 }
+
 
     
     

@@ -44,14 +44,17 @@ $(document).ready(function () {
     // Function to dynamically load content into the main container
     function loadContent(url) {
         const content = $("#content");
-
+    
         // Fetch content via AJAX
         $.ajax({
             url: url,
             method: "GET",
             success: function (data) {
                 content.html(data);
-
+    
+                // Remove all delegated event handlers to avoid duplication
+                content.off();
+    
                 // Dynamically load specific JavaScript for each page
                 if (url.includes("unverified_entries.php")) {
                     $.getScript("/cssc/js/unverified-entries.js");
@@ -62,13 +65,10 @@ $(document).ready(function () {
                 if (url.includes("profile.php")) {
                     $.getScript("/cssc/js/profile.js");
                 }
-                // if (url.includes("settings.php")) {
-                //     $.getScript("/cssc/js/settings.js");
-                // }
             },
             error: function () {
                 content.html("<p>Error loading content. Please try again later.</p>");
             },
         });
-    }
+    }    
 });
