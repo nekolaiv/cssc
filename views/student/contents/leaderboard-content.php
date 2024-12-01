@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once("../../../classes/student.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 $student = new Student();
 $cs_top1 = $student->getCSTopNotcher();
 $it_top1 = $student->getITTopNotcher();
@@ -108,21 +108,20 @@ $act_leaderboard = $student->getACTLeaderboardData();
                         <p class="list-header-rating">RATING:</p>
                     </div>
                 </div>
-                <?php 
+                <?php  
                     $iti = 1;
                     foreach ($it_leaderboard as $itl){ ?>
                         <div class="leaderboard-list-pad list-body">
                             <div class="leaderboard-list-pad-div1">
-                                <p class="student-name"><?php echo $itl['fullname']; ?></p>
+                                <p class="student-name"><?php echo $itl['fullname'] ?? "None"; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $itl['gwa']; ?></p>
+                                <p class="student-rating"><?php echo $itl['gwa'] ?? "None"; ?></p>
                             </div>
                         </div>
                 <?php 
-                $iti++;
-                }?>
-            </div>
+                        $iti++;
+                    }?>
         </div>
         <div class="bsact-list">
             <div class="course-header-pad">ASSOCIATE IN COMPUTER TECHNOLOGY</div>

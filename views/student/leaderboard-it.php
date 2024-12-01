@@ -1,7 +1,6 @@
 <?php 
 $page_title = "leaderboard - it";
 include_once "../../includes/_student-head.php";
-require_once("../../server/student_leaderboard-data.php");
 ?>
 
 <body class="home-body">
