@@ -15,7 +15,7 @@
                     <p><strong>Section:</strong> <span id="modalSection"></span></p>
                     <p><strong>Adviser Name:</strong> <span id="modalAdviserName"></span></p>
                     <p><strong>GWA:</strong> <span id="modalGWA"></span></p>
-                    <p><strong>Image Proof:</strong> <img id="modalImageProof" src="" alt="Image Proof" style="width: 100%; max-height: 200px;"></p>
+                    <p><strong>Image Proof:</strong> <img id="modalImageProof" src="" alt="Image Proof" style="width: 100%; height: 100%; "></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="approveBtn">Approve</button>

@@ -16,7 +16,7 @@ $('#grading').on('submit', function(e) {
 
     $.ajax({
         type: "POST",
-        url: "/cssc/server/student_save-subject.php",
+        url: "../../server/student_save-subject.php",
         data: form, 
         dataType: "json",
         success: function(response) {

@@ -21,7 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $query = "SELECT status FROM registered_students WHERE student_id = :student_id";
                 $db = new Database();
                 $status = $db->fetchOne($query, [':student_id' => $entry['student_id']]);
-
+            // If there's an image, encode it properly
+            if (!empty($entry['image_proof'])) {
+                $entry['image_proof'] = base64_encode($entry['image_proof']);
+            }
                 $entry['status'] = $status['status'] ?? 'Not Submitted';
                 echo json_encode($entry);
             } else {

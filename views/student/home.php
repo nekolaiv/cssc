@@ -1,6 +1,6 @@
 <?php 
 $page_title = "home";
-require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
+include_once "../../includes/_student-head.php";
 ?>
 
 <body class="home-body">

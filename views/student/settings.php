@@ -1,5 +1,5 @@
 <?php 
-$page_title = "leaderboard - it";
+$page_title = "settings";
 include_once "../../includes/_student-head.php";
 ?>
 
@@ -18,3 +18,6 @@ include_once "../../includes/_student-head.php";
 <script src="/cssc/controllers/student-controller.js"></script>
 
 <?php include_once "../../includes/_student-footer.php"?>
+
+
+
