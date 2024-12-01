@@ -1,13 +1,16 @@
 <?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $page_title = "leaderboard - cs";
 include_once "../../includes/_student-head.php";
+
 ?>
 
 <body class="home-body">
     <main class="wrapper">
         <?php include_once "../../includes/_student-header.php"?>
         <div class="content">
-            <!-- content dynamic load -->
+            
         </div>
     </main>
 

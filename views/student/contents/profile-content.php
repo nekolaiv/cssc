@@ -1,3 +1,8 @@
+<?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
+?>
 <section class="profile-section">
     <div class="div-pad" id="profile-div">
         <div id="profile-left-section">
@@ -19,10 +24,6 @@
             <div class="profile-data-pad">
                 <div class="profile-data-header">Course & Year:</div>
                 <div class="profile-data-body"><?php echo $_SESSION['profile']['course'],' ', $_SESSION['profile']['year-level'] ?></div>
-            </div>
-            <div class="profile-data-pad">
-                <div class="profile-data-header">Contact:</div>
-                <div class="profile-data-body">09123456789</div>
             </div>
             <div class="profile-data-pad">
                 <div class="profile-data-header">Status:</div>

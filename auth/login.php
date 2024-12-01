@@ -35,8 +35,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if($login_status === true){
             if($_SESSION['user-type'] === 'student'){
                 echo '<script type="text/javascript">window.location.href = "../views/student/home";</script>';
+                exit;
             } else if($_SESSION['user-type'] === 'staff'){
-                
+                header('Location: /cssc/views/staff/index.php');
+                exit;
                 // echo the path or use header location depending on the structure of the code
             } else if($_SESSION['user-type'] === 'admin'){
                 header("Location: ../views/admin/index.php");

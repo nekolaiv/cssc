@@ -2,7 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once('../../tools/session.function.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout']) && $_POST['logout'] === 'logout'){
     logOut();

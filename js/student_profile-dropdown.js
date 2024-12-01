@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
         profileDropdown.classList.toggle('active');
     });
 
-    // window.addEventListener('click', function(event) {
-    //     if (!profileIcon.contains(event.target)) {
-    //         profileDropdown.classList.toggle('active');
-    //     }
-    // });
+    window.addEventListener('click', function(event) {
+        if (!profileIcon.contains(event.target)) {
+            profileDropdown.classList.remove('active');
+        }
+    });
 
     // navItems.forEach(item => {
     //     item.addEventListener('click', function() {
