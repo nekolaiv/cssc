@@ -1,15 +1,11 @@
 $(document).ready(function () {
-
-	// const last_page = sessionStorage.getItem('last-page') || 'home.php';
-    // loadPage(last_page);
-
 	$(".nav-items").on("click", function (e) {
 		e.preventDefault();
 		$(".nav-items").removeClass("nav-active");
 		$(this).addClass("nav-active");
 
 		let url = $(this).attr("href");
-		// console.log(url);
+		console.log(url);
 		window.history.pushState({ path: url }, "", url);
 
 	});
@@ -54,11 +50,6 @@ $(document).ready(function () {
 		loadPage('calculate-content.php');
 	});
 
-	// $("#result-calculate-link").on("click", function (e) {
-	// 	e.preventDefault();
-	// 	loadPage('calculate-content.php');
-	// });
-
 	$("#about-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('about-content.php');
@@ -70,20 +61,13 @@ $(document).ready(function () {
 		loadPage('results-content.php');
 	});
 
-	// $("#calculate-gwa").on("click", function (e) {
-	// 	e.preventDefault();
-	// 	alert("Clicked-calculate-gwa");
-		
-	// });
 
 	$("#profile-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('profile-content.php');
 	});
-	// Determine which page to load based on the current URL
-	// if (url.endsWith("views/student/index.php")) {
-	// 	$("#home-link").trigger("click");
-	// }
+	
+
 	let url = window.location.href;
 
 	if (url.endsWith("home")) {
@@ -113,10 +97,6 @@ $(document).ready(function () {
 		$("#home-link").trigger("click");
 	}
 	
-	
-
-
-	// TODO find a better solution on how to handle back and forward navigations
 	$(window).on('popstate', function(event) {
 		let url = window.location.href;
 		if (url.endsWith("home")) {
@@ -146,20 +126,8 @@ $(document).ready(function () {
 		}
 	});
 
-	// $(window).on('popstate', function(event) {
-	// 	if (event.originalEvent.state) {
-	// 		var page = event.originalEvent.state.page;
-	// 		console.log('Navigated to page: ' + page);
-	// 		loadPage(page);
-	// 	}
-	// });
 
 	function loadPage(page) {
-		// if(page === 'calculate.php'){
-		// 	page_url = page
-		// } else {
-		// 	page_url = `contents/${page}`;
-		// }
 		$.ajax({
 			type: "GET",
 			url: `contents/${page}`,
@@ -189,184 +157,206 @@ $(document).ready(function () {
 		});
 	}
 
-	function loadCalculatePage(page) {
-		$.ajax({
-			type: "GET",
-			url: `${page}`,
-			dataType: "html",
-			success: function (response) {
-				$(".content").html(response);
-			},
-			error: function (xhr, status, error) {
-				console.error("Error loading the page: ", error);
-			}
-		});
-	}
+	
 
-	function editProduct(productId) {
-		$.ajax({
-			type: "GET",
-			url: "../products/edit-product.html",
-			dataType: "html",
-			success: function (view) {
-				alert(productId);
-				fetchCategories(); // Load categories for the select input
-				fetchRecord(productId);
-				// Assuming 'view' contains the new content you want to display
-				$(".modal-container").empty().html(view); // Load the modal view
-				$("#staticBackdropedit").modal("show"); // Show the modal
-				$("#staticBackdropedit").attr("data-id", productId);
+	// ========== DUMPS ==========
 
-				// Event listener for the add product form submission
-				$("#form-edit-product ").on("submit", function (e) {
-				e.preventDefault(); // Prevent default form submission
-				updateProduct(productId); // Call function to save product
-				});
-			},
-		});
-	}
+	// $("#result-calculate-link").on("click", function (e) {
+	// 	e.preventDefault();
+	// 	loadPage('calculate-content.php');
+	// });
+
+	// $("#calculate-gwa").on("click", function (e) {
+	// 	e.preventDefault();
+	// 	alert("Clicked-calculate-gwa");
+		
+	// });
+
+	// function loadCalculatePage(page) {
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: `${page}`,
+	// 		dataType: "html",
+	// 		success: function (response) {
+	// 			$(".content").html(response);
+	// 		},
+	// 		error: function (xhr, status, error) {
+	// 			console.error("Error loading the page: ", error);
+	// 		}
+	// 	});
+	// }
+
+	// function editProduct(productId) {
+	// 	$.ajax({
+	// 		type: "GET",
+	// 		url: "../products/edit-product.html",
+	// 		dataType: "html",
+	// 		success: function (view) {
+	// 			alert(productId);
+	// 			fetchCategories(); // Load categories for the select input
+	// 			fetchRecord(productId);
+	// 			// Assuming 'view' contains the new content you want to display
+	// 			$(".modal-container").empty().html(view); // Load the modal view
+	// 			$("#staticBackdropedit").modal("show"); // Show the modal
+	// 			$("#staticBackdropedit").attr("data-id", productId);
+
+	// 			// Event listener for the add product form submission
+	// 			$("#form-edit-product ").on("submit", function (e) {
+	// 			e.preventDefault(); // Prevent default form submission
+	// 			updateProduct(productId); // Call function to save product
+	// 			});
+	// 		},
+	// 	});
+	// }
 
 	
 
-	function fetchRecord(productId) {
-		$.ajax({
-		url: `../products/fetch-product.php?id=${productId}`, // URL for fetching categories
-		type: "POST", // Use GET request
-		dataType: "json", // Expect JSON response
-		success: function (product) {
-			alert('success edit fetch');
-			$("#code").val(product.code);
-			$("#name").val(product.name);
-			$("#category").val(product.category_id).trigger("change"); // Set the selected category
-			$("#price").val(product.price);
-		},
-		});
-	}
+	// function fetchRecord(productId) {
+	// 	$.ajax({
+	// 	url: `../products/fetch-product.php?id=${productId}`, // URL for fetching categories
+	// 	type: "POST", // Use GET request
+	// 	dataType: "json", // Expect JSON response
+	// 	success: function (product) {
+	// 		alert('success edit fetch');
+	// 		$("#code").val(product.code);
+	// 		$("#name").val(product.name);
+	// 		$("#category").val(product.category_id).trigger("change"); // Set the selected category
+	// 		$("#price").val(product.price);
+	// 	},
+	// 	});
+	// }
 
-	// Function to show the add product modal
-	function addProduct() {
-		$.ajax({
-			type: "GET", // Use GET request
-			url: "../products/add-product.html", // URL for add product view
-			dataType: "html", // Expect HTML response
-			success: function (view) {
-				$(".modal-container").html(view); // Load the modal view
-				$("#staticBackdrop").modal("show"); // Show the modal
+	// // Function to show the add product modal
+	// function addProduct() {
+	// 	$.ajax({
+	// 		type: "GET", // Use GET request
+	// 		url: "../products/add-product.html", // URL for add product view
+	// 		dataType: "html", // Expect HTML response
+	// 		success: function (view) {
+	// 			$(".modal-container").html(view); // Load the modal view
+	// 			$("#staticBackdrop").modal("show"); // Show the modal
 
-				fetchCategories(); // Load categories for the select input
+	// 			fetchCategories(); // Load categories for the select input
 
-				// Event listener for the add product form submission
-				$("#form-add-product").on("submit", function (e) {
-					e.preventDefault(); // Prevent default form submission
-					saveProduct(); // Call function to save product
-				});
-			},
-		});
-	}
+	// 			// Event listener for the add product form submission
+	// 			$("#form-add-product").on("submit", function (e) {
+	// 				e.preventDefault(); // Prevent default form submission
+	// 				saveProduct(); // Call function to save product
+	// 			});
+	// 		},
+	// 	});
+	// }
 
-	// Function to save a new product
-	function saveProduct() {
-		$.ajax({
-			type: "POST", // Use POST request
-			url: "../products/add-product.php", // URL for saving product
-			data: $("form").serialize(), // Serialize the form data for submission
-			dataType: "json", // Expect JSON response
-			success: function (response) {
-				if (response.status === "error") {
-				// Handle validation errors
-				if (response.codeErr) {
-					$("#code").addClass("is-invalid"); // Mark field as invalid
-					$("#code").next(".invalid-feedback").text(response.codeErr).show(); // Show error message
-				} else {
-					$("#code").removeClass("is-invalid"); // Remove invalid class if no error
-				}
-				if (response.nameErr) {
-					$("#name").addClass("is-invalid");
-					$("#name").next(".invalid-feedback").text(response.nameErr).show();
-				} else {
-					$("#name").removeClass("is-invalid");
-				}
-				if (response.categoryErr) {
-					$("#category").addClass("is-invalid");
-					$("#category")
-					.next(".invalid-feedback")
-					.text(response.categoryErr)
-					.show();
-				} else {
-					$("#category").removeClass("is-invalid");
-				}
-				if (response.priceErr) {
-					$("#price").addClass("is-invalid");
-					$("#price")
-					.next(".invalid-feedback")
-					.text(response.priceErr)
-					.show();
-				} else {
-					$("#price").removeClass("is-invalid");
-				}
-				} else if (response.status === "success") {
-					// On success, hide modal and reset form
-					$("#staticBackdrop").modal("hide");
-					$("form")[0].reset(); // Reset the form
-					// Optionally, reload products to show new entry
-					viewProducts();
-				}
-			},
-		});
-	}
+	// // Function to save a new product
+	// function saveProduct() {
+	// 	$.ajax({
+	// 		type: "POST", // Use POST request
+	// 		url: "../products/add-product.php", // URL for saving product
+	// 		data: $("form").serialize(), // Serialize the form data for submission
+	// 		dataType: "json", // Expect JSON response
+	// 		success: function (response) {
+	// 			if (response.status === "error") {
+	// 			// Handle validation errors
+	// 			if (response.codeErr) {
+	// 				$("#code").addClass("is-invalid"); // Mark field as invalid
+	// 				$("#code").next(".invalid-feedback").text(response.codeErr).show(); // Show error message
+	// 			} else {
+	// 				$("#code").removeClass("is-invalid"); // Remove invalid class if no error
+	// 			}
+	// 			if (response.nameErr) {
+	// 				$("#name").addClass("is-invalid");
+	// 				$("#name").next(".invalid-feedback").text(response.nameErr).show();
+	// 			} else {
+	// 				$("#name").removeClass("is-invalid");
+	// 			}
+	// 			if (response.categoryErr) {
+	// 				$("#category").addClass("is-invalid");
+	// 				$("#category")
+	// 				.next(".invalid-feedback")
+	// 				.text(response.categoryErr)
+	// 				.show();
+	// 			} else {
+	// 				$("#category").removeClass("is-invalid");
+	// 			}
+	// 			if (response.priceErr) {
+	// 				$("#price").addClass("is-invalid");
+	// 				$("#price")
+	// 				.next(".invalid-feedback")
+	// 				.text(response.priceErr)
+	// 				.show();
+	// 			} else {
+	// 				$("#price").removeClass("is-invalid");
+	// 			}
+	// 			} else if (response.status === "success") {
+	// 				// On success, hide modal and reset form
+	// 				$("#staticBackdrop").modal("hide");
+	// 				$("form")[0].reset(); // Reset the form
+	// 				// Optionally, reload products to show new entry
+	// 				viewProducts();
+	// 			}
+	// 		},
+	// 	});
+	// }
 
-	// Function to save a new product
-	function updateProduct(productId) {
-		$.ajax({
-			type: "POST", // Use POST request
-			url: `../products/update-product.php?id=${productId}`, // URL for saving product
-			data: $("form").serialize(), // Serialize the form data for submission
-			dataType: "json", // Expect JSON response
-			success: function (response) {
-				if (response.status === "error") {
-				// Handle validation errors
-				if (response.codeErr) {
-					$("#code").addClass("is-invalid"); // Mark field as invalid
-					$("#code").next(".invalid-feedback").text(response.codeErr).show(); // Show error message
-				} else {
-					$("#code").removeClass("is-invalid"); // Remove invalid class if no error
-				}
-				if (response.nameErr) {
-					$("#name").addClass("is-invalid");
-					$("#name").next(".invalid-feedback").text(response.nameErr).show();
-				} else {
-					$("#name").removeClass("is-invalid");
-				}
-				if (response.categoryErr) {
-					$("#category").addClass("is-invalid");
-					$("#category")
-					.next(".invalid-feedback")
-					.text(response.categoryErr)
-					.show();
-				} else {
-					$("#category").removeClass("is-invalid");
-				}
-				if (response.priceErr) {
-					$("#price").addClass("is-invalid");
-					$("#price")
-					.next(".invalid-feedback")
-					.text(response.priceErr)
-					.show();
-				} else {
-					$("#price").removeClass("is-invalid");
-				}
-				} else if (response.status === "success") {
-					// On success, hide modal and reset form
-					$("#staticBackdropedit").modal("hide");
-					$("form")[0].reset(); // Reset the form
-					// Optionally, reload products to show new entry
-					viewProducts();
-				}
-			},
-		});
-	}
+	// // Function to save a new product
+	// function updateProduct(productId) {
+	// 	$.ajax({
+	// 		type: "POST", // Use POST request
+	// 		url: `../products/update-product.php?id=${productId}`, // URL for saving product
+	// 		data: $("form").serialize(), // Serialize the form data for submission
+	// 		dataType: "json", // Expect JSON response
+	// 		success: function (response) {
+	// 			if (response.status === "error") {
+	// 			// Handle validation errors
+	// 			if (response.codeErr) {
+	// 				$("#code").addClass("is-invalid"); // Mark field as invalid
+	// 				$("#code").next(".invalid-feedback").text(response.codeErr).show(); // Show error message
+	// 			} else {
+	// 				$("#code").removeClass("is-invalid"); // Remove invalid class if no error
+	// 			}
+	// 			if (response.nameErr) {
+	// 				$("#name").addClass("is-invalid");
+	// 				$("#name").next(".invalid-feedback").text(response.nameErr).show();
+	// 			} else {
+	// 				$("#name").removeClass("is-invalid");
+	// 			}
+	// 			if (response.categoryErr) {
+	// 				$("#category").addClass("is-invalid");
+	// 				$("#category")
+	// 				.next(".invalid-feedback")
+	// 				.text(response.categoryErr)
+	// 				.show();
+	// 			} else {
+	// 				$("#category").removeClass("is-invalid");
+	// 			}
+	// 			if (response.priceErr) {
+	// 				$("#price").addClass("is-invalid");
+	// 				$("#price")
+	// 				.next(".invalid-feedback")
+	// 				.text(response.priceErr)
+	// 				.show();
+	// 			} else {
+	// 				$("#price").removeClass("is-invalid");
+	// 			}
+	// 			} else if (response.status === "success") {
+	// 				// On success, hide modal and reset form
+	// 				$("#staticBackdropedit").modal("hide");
+	// 				$("form")[0].reset(); // Reset the form
+	// 				// Optionally, reload products to show new entry
+	// 				viewProducts();
+	// 			}
+	// 		},
+	// 	});
+	// }
 
-	// ========== DUMPS ==========
+	// $(window).on('popstate', function(event) {
+	// 	if (event.originalEvent.state) {
+	// 		var page = event.originalEvent.state.page;
+	// 		console.log('Navigated to page: ' + page);
+	// 		loadPage(page);
+	// 	}
+	// });
+
 	// function loadHomePage() {
 	// 	$.ajax({
 	// 		type: "GET", // Use GET request

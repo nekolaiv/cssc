@@ -35,9 +35,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                     <div><h3><?php echo $cs_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
-                <div class="topnotcher-trophy">
-                    trophy
-                </div>
+                <div class="topnotcher-trophy"></div>
             </div>
         </div>
         <div class="topnotcher-pads">
@@ -49,9 +47,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                     <div><h3><?php echo $it_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
-                <div class="topnotcher-trophy">
-                    trophy
-                </div>
+                <div class="topnotcher-trophy"></div>
             </div>
         </div>
         <div class="topnotcher-pads">
@@ -63,9 +59,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                     <div><h3><?php echo $act_top1['gwa'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
-                <div class="topnotcher-trophy">
-                    trophy
-                </div>
+                <div class="topnotcher-trophy"></div>
             </div>
         </div>
     </div>

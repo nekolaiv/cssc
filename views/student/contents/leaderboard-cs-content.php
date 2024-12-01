@@ -35,9 +35,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                     <div class="topnotcher-rating-score"><h3 class="topnotcher-rating"><?php echo $cs_top1['gwa'] . " CONGRATULATIONS!" ?? 'None'; ?></h3></div>
                     <p class="topnotcher-word-rating">RATING</p>
                 </div>
-                <div class="topnotcher-trophy">
-                    trophy
-                </div>
+                <div class="topnotcher-trophy"></div>
             </div>
         </div>
     </div>

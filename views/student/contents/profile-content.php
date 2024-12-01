@@ -26,10 +26,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
                 <div class="profile-data-body"><?php echo $_SESSION['profile']['course'],' ', $_SESSION['profile']['year-level'] ?></div>
             </div>
             <div class="profile-data-pad">
-                <div class="profile-data-header">Contact:</div>
-                <div class="profile-data-body">09123456789</div>
-            </div>
-            <div class="profile-data-pad">
                 <div class="profile-data-header">Status:</div>
                 <div class="profile-data-body"><?php echo $_SESSION['profile']['status']?></div>
             </div>
