@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
 <section id="leaderboard-section">
     <div class="div-pad" id="leaderboard-div1">
         <div id="leaderboard-div1-innerdiv">
@@ -69,4 +73,4 @@
 
         </div>
     </div> -->
-</section>
+</sectio>
