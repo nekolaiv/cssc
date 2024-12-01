@@ -71,7 +71,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
             <button type="button" id="student-calculate-add-row" onclick="addSubjectRow()">
                 Add Row +
             </button>
-            <a href="results" id="calculate-gwa"><button id="student-calculate-calculate">Calculate</button></a>   
+            <a href="results" id="results-link"><button id="student-calculate-calculate">Calculate</button></a>   
         </div>
     </div>
 </section>

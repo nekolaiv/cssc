@@ -16,7 +16,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
 
 <!-- <script src="/csrs/js/student_ajax.js"></script> -->
 <script src="/cssc/controllers/student-controller.js"></script>
-
 <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-footer.php');?>
 
 

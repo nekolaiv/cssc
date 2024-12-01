@@ -66,9 +66,8 @@ $(document).ready(function () {
 
 	$("#results-link").on("click", function (e) {
 		e.preventDefault();
-		if(calculateGWA()){
-			loadPage('results-content.php');
-		}
+		calculateGWA()
+		loadPage('results-content.php');
 	});
 
 	// $("#calculate-gwa").on("click", function (e) {
@@ -142,7 +141,6 @@ $(document).ready(function () {
 			$("#settings-link").trigger("click");
 		} else if (url.endsWith("calculate")) {
 			$("#calculate-link").trigger("click");
-			// $("#result-calculate-link").trigger("click");
 		} else {
 			$("#home-link").trigger("click");
 		}
@@ -182,7 +180,7 @@ $(document).ready(function () {
 			type: "POST", // Use GET request
 			dataType: "json",
 			success: function (data) {
-				return true;
+				console.log("Success: ", data);
 			},
 			error: function (xhr, status, error) {
 				console.error("Error calculating: ", error);

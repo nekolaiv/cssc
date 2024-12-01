@@ -1,7 +1,9 @@
 <?php
-    require_once('../tools/session.function.php');
-    require_once('../tools/clean.function.php');
-    require_once('../classes/student.class.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 
     $student = new Student();
 
@@ -30,5 +32,5 @@
     }
 
     header('Content-Type: application/json');
-    echo json_encode(["success" => "success calcualting"]);
+    echo json_encode(["success" => "success calculating"]);
 ?>
