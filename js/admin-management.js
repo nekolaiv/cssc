@@ -115,16 +115,16 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on("click", ".reveal-password", function () {
+    $("#adminsTable").on("click", ".reveal-password", function () {
         const button = $(this);
         const actualPassword = button.data("password");
-
+    
         if (actualPassword) {
             alert(`Password: ${actualPassword}`);
         } else {
             alert("Password could not be retrieved.");
         }
-    });
+    });    
 
     $(document).on("click", "#togglePassword", function () {
         const passwordField = $("#password");
