@@ -43,8 +43,8 @@ $(document).ready(function () {
         });
     }
 
-    // Event delegation for View Details button
-    $(document).on("click", ".view-details", function () {
+    // Delegate event handling for dynamic content using a static parent
+    $("#verifiedEntriesTable").on("click", ".view-details", function () {
         const id = $(this).data("id");
 
         // Fetch entry details
@@ -96,12 +96,11 @@ $(document).ready(function () {
         });
     });
 
-    // Event delegation for Remove button in the table
-    $(document).on("click", ".remove-entry", function () {
+    // Delegate event handling for Remove button in the table
+    $("#verifiedEntriesTable").on("click", ".remove-entry", function () {
         const id = $(this).data("id");
 
         if (confirm("Are you sure you want to remove this entry from verified entries?")) {
-            // Remove entry from verified entries
             removeVerifiedEntry(id);
         }
     });
@@ -111,7 +110,6 @@ $(document).ready(function () {
         const id = $(this).data("id");
 
         if (confirm("Are you sure you want to remove this entry?")) {
-            // Remove entry from verified entries
             removeVerifiedEntry(id);
         }
     });

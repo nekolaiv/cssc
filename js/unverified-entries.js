@@ -1,45 +1,41 @@
 $(document).ready(function () {
     loadUnverifiedEntries();
 
-    // Function to load unverified entries via AJAX
-    function loadUnverifiedEntries() {
-        $.ajax({
-            url: "/cssc/server/unverifiedEntriesServer.php", // URL of your backend script to fetch entries
-            type: "POST",
-            data: { action: "read" },
-            success: function (response) {
-                const entries = JSON.parse(response);
-                const tableBody = $("#unverifiedEntriesTable tbody");
-                tableBody.empty();
+    // Populate the unverified entries table
+function loadUnverifiedEntries() {
+    $.ajax({
+        url: "/cssc/server/unverifiedEntriesServer.php",
+        type: "POST",
+        data: { action: "read" },
+        success: function (response) {
+            const entries = JSON.parse(response);
+            const tableBody = $("#unverifiedEntriesTable tbody");
+            tableBody.empty();
 
-                if (entries.length === 0) {
+            if (entries.length === 0) {
+                tableBody.append(`<tr><td colspan="6" class="text-center">No unverified entries found.</td></tr>`);
+            } else {
+                entries.forEach((entry) => {
                     tableBody.append(`
                         <tr>
-                            <td colspan="5" class="text-center">No unverified entries found.</td>
+                            <td>${entry.student_id}</td>
+                            <td>${entry.fullname}</td>
+                            <td>${entry.course_details}</td>
+                            <td>${entry.created_at}</td>
+                            <td>${entry.status}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm view-details-btn" data-id="${entry.id}">View Details</button>
+                            </td>
                         </tr>
                     `);
-                } else {
-                    entries.forEach((entry) => {
-                        const courseDetails = `${entry.course_details}`;
-                        tableBody.append(`
-                            <tr>
-                                <td>${entry.student_id}</td>
-                                <td>${entry.fullname}</td>
-                                <td>${courseDetails}</td>
-                                <td>${entry.created_at}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm view-details-btn" data-id="${entry.id}">View Details</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                }
-            },
-            error: function () {
-                alert("Failed to load unverified entries.");
-            },
-        });
-    }
+                });
+            }
+        },
+        error: function () {
+            alert("Failed to load unverified entries.");
+        },
+    });
+}
 
     // Event delegation for View Details button
     $(document).on("click", ".view-details-btn", function () {
@@ -53,6 +49,7 @@ $(document).ready(function () {
                 const entry = JSON.parse(response);
 
                 // Populate modal with entry details
+                $("#modalStatus").text(entry.status);
                 $("#modalStudentId").text(entry.student_id);
                 $("#modalFullName").text(entry.fullname);
                 $("#modalEmail").text(entry.email);

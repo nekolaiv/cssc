@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="/cssc/js/unverified-entries.js"></script> -->
+    <script src="/cssc/js/unverified-entries.js"></script>
 </head>
 <body>
     <div class="container mt-4">
@@ -15,21 +15,21 @@
 
         <!-- Table to display unverified entries -->
         <table class="table table-bordered" id="unverifiedEntriesTable">
-            <thead>
-                <tr>
-                    <th>Student ID</th>
-                    <th>Full Name</th>
-                    <th>Course</th>
-                    <th>Submission Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Entries will be dynamically populated here by unverified-entries.js -->
-                <tr>
-                    <td colspan="5" class="text-center">No unverified entries found.</td>
-                </tr>
-            </tbody>
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>Course</th>
+                <th>Submission Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="6" class="text-center">No unverified entries found.</td>
+            </tr>
+        </tbody>
         </table>
     </div>
 
@@ -42,6 +42,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>   
                     <p><strong>Student ID:</strong> <span id="modalStudentId"></span></p>
                     <p><strong>Full Name:</strong> <span id="modalFullName"></span></p>
                     <p><strong>Email:</strong> <span id="modalEmail"></span></p>
