@@ -88,14 +88,10 @@ $(document).ready(function () {
 		$("#leaderboard-it-link").trigger("click");
 	} else if (url.endsWith("leaderboard-act")) {
 		$("#leaderboard-act-link").trigger("click");
-	} else if (url.endsWith("about")) {
-		$("#about-link").trigger("click");
 	} else if (url.endsWith("results")) {
 		$("#results-link").trigger("click");
 	} else if (url.endsWith("profile")) {
 		$("#profile-link").trigger("click");
-	} else if (url.endsWith("settings")) {
-		$("#settings-link").trigger("click");
 	} else if (url.endsWith("calculate")) {
 		$("#calculate-link").trigger("click");
 		// $("#result-calculate-link").trigger("click");
@@ -106,29 +102,36 @@ $(document).ready(function () {
 	$(window).on('popstate', function(event) {
 		let url = window.location.href;
 		if (url.endsWith("home")) {
-			$("#home-link").trigger("click");
-			$("#result-home-link").trigger("click");
+			// $("#home-link").trigger("click");
+			// $("#result-home-link").trigger("click");
+			// $("#home-logo-link").trigger("click");
+			loadPage('home-content.php');
 		} else if (url.endsWith("leaderboard")) {
-			$("#leaderboard-link").trigger("click");
-			$("#home-leaderboard-link").trigger("click");
+			// $("#leaderboard-link").trigger("click");
+			// $("#home-leaderboard-link").trigger("click");
+			loadPage('leaderboard-content.php');
 		} else if (url.endsWith("leaderboard-cs")) {
-			$("#leaderboard-cs-link").trigger("click");
+			// $("#leaderboard-cs-link").trigger("click");
+			loadPage('leaderboard-cs-content.php');
 		} else if (url.endsWith("leaderboard-it")) {
-			$("#leaderboard-it-link").trigger("click");
+			// $("#leaderboard-it-link").trigger("click");
+			loadPage('leaderboard-it-content.php');
 		} else if (url.endsWith("leaderboard-act")) {
-			$("#leaderboard-act-link").trigger("click");
-		} else if (url.endsWith("about")) {
-			$("#about-link").trigger("click");
+			// $("#leaderboard-act-link").trigger("click");
+			loadPage('leaderboard-act-content.php');
 		} else if (url.endsWith("results")) {
-			$("#results-link").trigger("click");
+			// $("#results-link").trigger("click");
+			loadPage('results-content.php');
 		} else if (url.endsWith("profile")) {
-			$("#profile-link").trigger("click");
-		} else if (url.endsWith("settings")) {
-			$("#settings-link").trigger("click");
+			// $("#profile-link").trigger("click");
+			loadPage('profile-content.php');
 		} else if (url.endsWith("calculate")) {
-			$("#calculate-link").trigger("click");
+			// $("#calculate-link").trigger("click");
+			// $("#result-calculate-link").trigger("click");
+			loadPage('calculate-content.php');
 		} else {
-			$("#home-link").trigger("click");
+			// $("#home-link").trigger("click");
+			loadPage('home-content.php');
 		}
 	});
 

@@ -20,6 +20,8 @@ echo '</pre>';
 echo '<br><br>';
 
 
+echo 'getcwd' . getcwd();
+
 // TEMPLATES
 echo '<pre>';
 
