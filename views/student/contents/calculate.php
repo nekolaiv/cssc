@@ -1,7 +1,7 @@
 <?php 
 $page_title = "calculate";
 require_once('../../tools/session.function.php');
-require_once ("../../includes/_student-head.php");
+require_once("../../includes/_student-head.php");
 require_once('../../classes/student.class.php');
 
 // $student = new Student();

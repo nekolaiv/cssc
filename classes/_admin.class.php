@@ -164,13 +164,13 @@ class Admin {
     }
 
     public function createStudent($data) {
-        $query = "INSERT INTO Registered_Students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
+        $query = "INSERT INTO registered_students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
                   VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, 'student')";
         return $this->database->execute($query, $data);
     }
 
     public function getAllStudents() {
-        $query = "SELECT * FROM Registered_Students";
+        $query = "SELECT * FROM registered_students";
         return $this->database->fetchAll($query);
     }
 
@@ -217,12 +217,12 @@ class Admin {
     
 
     public function deleteStudent($user_id) {
-        $query = "DELETE FROM Registered_Students WHERE user_id = :user_id";
+        $query = "DELETE FROM registered_students WHERE user_id = :user_id";
         return $this->database->execute($query, ['user_id' => $user_id]);
     }
 
     public function getStudentById($user_id) {
-        $query = "SELECT * FROM Registered_Students WHERE user_id = :user_id LIMIT 1";
+        $query = "SELECT * FROM registered_students WHERE user_id = :user_id LIMIT 1";
     
         // Execute the query with the user_id as a parameter
         return $this->database->fetchOne($query, ['user_id' => $user_id]);
@@ -247,7 +247,7 @@ class Admin {
 
     public function studentIdExistsForOther($student_id, $user_id)
 {
-    $query = "SELECT COUNT(*) FROM Registered_Students WHERE student_id = :student_id AND user_id != :user_id";
+    $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id AND user_id != :user_id";
     $stmt = $this->database->connect()->prepare($query);
     $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
