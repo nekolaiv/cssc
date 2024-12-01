@@ -1,5 +1,5 @@
 <header>
-    <p class="logo"><a onclick="loadPage('home.php')">CSRS</a></p>
+    <p class="logo"><a href="home" id="home-logo-link" class="nav-items">CSRS</a></p>
     <button class="menu-toggle" id="menu-toggle">
         <span class="menu-icon"></span>
     </button>
@@ -11,7 +11,7 @@
         </ul>
         <div class="profile-icon" id="profile-icon">
             <div class="dropdown" id="profile-dropdown">
-                <a href="profile" id="profile-link" class="nav-items"><button>profile</button></a>
+                <a href="profile" id="profile-link" class="nav-items"><button>Profile</button></a>
                 
                 <form action="" method="POST">
                     <!-- <input type="hidden" name="action" value="logout"> -->

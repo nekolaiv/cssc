@@ -20,6 +20,11 @@ $(document).ready(function () {
 		loadPage('home-content.php');
 	});
 
+	$("#home-logo-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('home-content.php');
+	});
+
 	$("#leaderboard-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-content.php');
@@ -73,6 +78,7 @@ $(document).ready(function () {
 	if (url.endsWith("home")) {
 		$("#home-link").trigger("click");
 		$("#result-home-link").trigger("click");
+		$("#home-logo-link").trigger("click");
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
 		$("#home-leaderboard-link").trigger("click");

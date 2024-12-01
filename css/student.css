@@ -175,7 +175,6 @@ header nav ul button {
 	flex-direction: column;
 	align-items: end;
 	position: static;
-	gap: 10px;
 }
 
 .dropdown button {
@@ -184,14 +183,14 @@ header nav ul button {
 
 #logout-button {
 	height: 25px;
-	width: 85px;
-	background-color: #121212;
+	width: 130px;
+	background-color: var(--green);
 	color: white;
 	/* border: 1px solid white */
 }
 
 #logout-button:hover {
-	filter: invert(100%);
+	background-color: var(--light-green-1);
 }
 
 #logout-button a {
@@ -934,17 +933,22 @@ header nav ul button {
 		z-index: 1;
 		margin-top: 10px;
 		width: 150px;
+		
 	}
 
 	.dropdown.active {
-		display: block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		
 	}
 
 	.dropdown button {
-		display: block;
+		width: 130px;
 		padding: 10px;
 		text-decoration: none;
-		color: black;
+		color: var(--text-green);
+		text-align: center;
 	}
 
 	.dropdown button:hover {
@@ -952,8 +956,16 @@ header nav ul button {
 	}
 
 	/* #logout-button {
-		margin-left: 40px;
+		background-color: var(--green);
+		color: var(--white);
+	}
+
+	#logout-button:hover::after {
+		background-color: #f0f0f0;
+		color: white;
 	} */
+
+
 
 	/* #call-to-action-button {
         margin: 10px 0px 10px 15px;
