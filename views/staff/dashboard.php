@@ -77,7 +77,44 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="5" class="text-center">Loading...</td>
+                            <td>20235411</td>
+                            <td>John Doe</td>
+                            <td>BSCS</td>
+                            <td>1.75</td>
+                            <td>STAFF - Emily</td>
+                            <td>2024-11-21</td>
+                        </tr>
+                        <tr>
+                            <td>20238287</td>
+                            <td>Jane Smith</td>
+                            <td>BSIT</td>
+                            <td>1.80</td>
+                            <td>STAFF - Liam</td>
+                            <td>2024-11-23</td>
+                        </tr>
+                        <tr>
+                            <td>20236789</td>
+                            <td>Emily Clark</td>
+                            <td>BSEE</td>
+                            <td>1.85</td>
+                            <td>STAFF - Oliver</td>
+                            <td>2024-11-25</td>
+                        </tr>
+                        <tr>
+                            <td>20230075</td>
+                            <td>Michael Brown</td>
+                            <td>BSCE</td>
+                            <td>1.90</td>
+                            <td>STAFF - Sarah</td>
+                            <td>2024-11-27</td>
+                        </tr>
+                        <tr>
+                            <td>20234123</td>
+                            <td>Sarah Johnson</td>
+                            <td>BSBA</td>
+                            <td>1.70</td>
+                            <td>STAFF - Noah</td>
+                            <td>2024-11-30</td>
                         </tr>
                     </tbody>
                 </table>
@@ -98,7 +135,34 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="3" class="text-center">Loading...</td>
+                            <td>2024-11-20 | 09:30 AM</td>
+                            <td>STAFF - Emily</td>
+                            <td>Verified Application</td>
+                            <td>Verified application for Student ID: 20235412.</td>
+                        </tr>
+                        <tr>
+                            <td>2024-11-22 | 02:45 PM</td>
+                            <td>ADMIN - Jason</td>
+                            <td>Updated Eligibility Rules</td>
+                            <td>Set minimum GPA to 1.85.</td>
+                        </tr>
+                        <tr>
+                            <td>2024-11-23 | 11:15 AM</td>
+                            <td>STAFF - Oliver</td>
+                            <td>Rejected Application</td>
+                            <td>Rejected Student ID: 20231234.</td>
+                        </tr>
+                        <tr>
+                            <td>2024-11-25 | 05:00 PM</td>
+                            <td>ADMIN - Sophia</td>
+                            <td>Assigned Tasks</td>
+                            <td>Assigned 10 applications to Staff - Liam.</td>
+                        </tr>
+                        <tr>
+                            <td>2024-11-26 | 08:20 AM</td>
+                            <td>STAFF - Noah</td>
+                            <td>Verified Application</td>
+                            <td>Verified application for Student ID: 20234123.</td>
                         </tr>
                     </tbody>
                 </table>
