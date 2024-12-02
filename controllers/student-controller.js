@@ -153,7 +153,7 @@ $(document).ready(function () {
 	// Function to fetch product categories
 	function calculateGWA() {
 		$.ajax({
-			url: "../../server/student_calculate.php", // URL for fetching categories
+			url: "/cssc/server/student_calculate.php", // URL for fetching categories
 			type: "POST", // Use GET request
 			dataType: "json",
 			success: function (data) {

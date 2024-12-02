@@ -58,7 +58,6 @@ class Database{
             return $stmt->fetch(PDO::FETCH_ASSOC); // Fetch a single row as an associative array
         } catch (PDOException $e) {
             // Log the error for debugging
-            file_put_contents('debug.log', date('Y-m-d H:i:s') . " - Database Error: " . $e->getMessage() . "\n", FILE_APPEND);
             return false; // Return false on failure
         }
     }
@@ -71,7 +70,6 @@ class Database{
         return $stmt->fetchColumn();
     } catch (PDOException $e) {
         // Log the error and handle it appropriately
-        file_put_contents('debug.log', "Error in fetchColumn: " . $e->getMessage() . "\n", FILE_APPEND);
         throw new Exception("Database query failed.");
     }
 }

@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $page_title = "results";
 
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');

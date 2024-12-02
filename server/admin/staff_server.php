@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'password' => cleanInput($_POST['password']),
                 'first_name' => cleanInput($_POST['first_name']),
                 'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name']),
+                'middle_name' => cleanInput($_POST['middle_name'])
             ];
 
             // Validation
@@ -40,12 +40,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['last_name'] = 'Last name is required.';
             }
 
+            // If errors exist, return them
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Hash the password
+            // Hash password and create staff
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $response = $admin->createStaff($data);
             echo json_encode(['success' => $response]);
@@ -61,12 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'staff_id' => $staff_id,
                 'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']),
+                'password' => cleanInput($_POST['password']), // Optional
                 'first_name' => cleanInput($_POST['first_name']),
                 'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name']),
+                'middle_name' => cleanInput($_POST['middle_name'])
             ];
 
+            // Validation
             $errors = [];
             if (empty($data['email'])) {
                 $errors['email'] = 'Email is required.';
@@ -89,10 +91,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
 
+            // Hash new password if provided
             if (!empty($data['password'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             } else {
-                unset($data['password']);
+                unset($data['password']); // Keep existing password
             }
 
             $response = $admin->updateStaff($data);
@@ -106,9 +109,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
 
         case 'get':
+            if (empty($_POST['staff_id'])) {
+                echo json_encode(['error' => 'Missing staff_id']);
+                break;
+            }
+
             $staff_id = intval(cleanInput($_POST['staff_id']));
-            $staff = $admin->getStaffById($staff_id);
-            echo json_encode($staff ? $staff : ['error' => 'Staff not found']);
+            $staffData = $admin->getStaffById($staff_id);
+
+            if ($staffData) {
+                echo json_encode($staffData);
+            } else {
+                echo json_encode(['error' => 'Staff not found']);
+            }
             break;
 
         default:

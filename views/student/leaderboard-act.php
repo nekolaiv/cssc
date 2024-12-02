@@ -1,6 +1,6 @@
 <?php 
 $page_title = "leaderboard - act";
-include_once "../../includes/_student-head.php";
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
 ?>
 
 <body class="home-body">
