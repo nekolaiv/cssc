@@ -25,6 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $entry_id = intval(cleanInput($_POST['id']));
                 $entry = $entries->getVerifiedEntryById($entry_id);
 
+                if (!empty($entry['image_proof'])) {
+                    $entry['image_proof'] = base64_encode($entry['image_proof']);
+                }
+
                 if ($entry) {
                     echo json_encode(['success' => true, 'entry' => $entry]);
                 } else {
