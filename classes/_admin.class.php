@@ -287,7 +287,21 @@ public function getAuditLogs() {
     }
 }
 
-
-
+// Log an audit event
+public function logAudit($action, $details) {
+    if (isset($_SESSION['profile']) && isset($_SESSION['user-type'])) {
+        $role = strtoupper($_SESSION['user-type']);
+        $name = $_SESSION['profile']['fullname'];
+        $sql = "INSERT INTO audit_logs (timestamp, role, name, action, details) 
+                VALUES (NOW(), :role, :name, :action, :details)";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->bindValue(':action', $action, PDO::PARAM_STR);
+        $stmt->bindValue(':details', $details, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+    return false;
+}
 }
 ?>
