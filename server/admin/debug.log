@@ -10,3 +10,67 @@ Array
 (
     [action] => read
 )
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => get
+    [staff_id] => 2
+)
+Array
+(
+    [action] => get
+    [staff_id] => 2
+)
+Array
+(
+    [staff_id] => 2
+    [first_name] => Ahmad
+    [last_name] => Yahiya
+    [middle_name] => Feyaz
+    [email] => staff2@wmsu.edu.ph
+    [password] => staff12345
+    [action] => update
+)
+Array
+(
+    [action] => read
+)
+Array
+(
+    [action] => read
+)

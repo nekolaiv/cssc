@@ -1,19 +1,26 @@
 $(document).ready(function () {
   let staff = [];
+  let filteredStaff = [];
   const rowsPerPage = 5; // Rows per page
   let currentPage = 1;
 
   // Load staff data on page load
   loadStaff();
 
-  // Event delegation for password reveal to avoid multiple bindings
-  $(document)
-    .off("click.reveal", ".reveal-password")
-    .on("click.reveal", ".reveal-password", function () {
-      const password = $(this).data("password");
-      console.log("Reveal Password clicked:", password); // Debugging
-      alert(`Password: ${password}`);
-    });
+  // Search functionality
+  $("#searchStaff").on("input", function () {
+    const query = $(this).val().toLowerCase();
+    filteredStaff = staff.filter(
+      (s) =>
+        s.staff_id.toString().toLowerCase().includes(query) || // Convert to string
+        `${s.first_name} ${s.middle_name || ""} ${s.last_name}`
+          .toLowerCase()
+          .includes(query)
+    );
+    currentPage = 1; // Reset to the first page when searching
+    displayTable(currentPage);
+    setupPagination(filteredStaff); // Pass filtered data for pagination
+  });
 
   function loadStaff() {
     $.ajax({
@@ -22,8 +29,9 @@ $(document).ready(function () {
       data: { action: "read" },
       success: function (response) {
         staff = JSON.parse(response);
+        filteredStaff = staff; // Initially show all staff
         displayTable(currentPage);
-        setupPagination();
+        setupPagination(filteredStaff); // Pass all data initially
       },
     });
   }
@@ -31,56 +39,55 @@ $(document).ready(function () {
   function displayTable(page) {
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const visibleStaff = staff.slice(startIndex, endIndex);
+    const visibleStaff = filteredStaff.slice(startIndex, endIndex);
 
     const tableBody = $("#staffTable tbody");
     tableBody.empty(); // Clear the table before appending new rows
 
     if (visibleStaff.length === 0) {
       tableBody.append(`
-                <tr>
-                    <td colspan="5" class="text-center">No data found.</td>
-                </tr>
-            `);
+        <tr>
+          <td colspan="5" class="text-center">No data found.</td>
+        </tr>
+      `);
     } else {
       visibleStaff.forEach((staffMember) => {
         const fullName = `${staffMember.first_name} ${
           staffMember.middle_name ? staffMember.middle_name + " " : ""
         }${staffMember.last_name}`;
         tableBody.append(`
-                    <tr>
-                        <td>${staffMember.staff_id}</td>
-                        <td>${fullName}</td>
-                        <td>${staffMember.email}</td>
-                        <td>
-                            <span class="masked-password">••••••••</span>
-                            <button class="btn btn-sm btn-secondary reveal-password" data-password="${staffMember.password}">Reveal</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-warning edit-btn" data-id="${staffMember.staff_id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${staffMember.staff_id}">Delete</button>
-                        </td>
-                    </tr>
-                `);
+          <tr>
+            <td>${staffMember.staff_id}</td>
+            <td>${fullName}</td>
+            <td>${staffMember.email}</td>
+            <td>
+              <span class="masked-password">••••••••</span>
+              <button class="btn btn-sm btn-secondary reveal-password" data-password="${staffMember.password}">Reveal</button>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-warning edit-btn" data-id="${staffMember.staff_id}">Edit</button>
+              <button class="btn btn-sm btn-danger delete-btn" data-id="${staffMember.staff_id}">Delete</button>
+            </td>
+          </tr>
+        `);
       });
     }
 
-    // Attach event listeners for dynamically loaded elements
     attachEventListeners();
   }
 
-  function setupPagination() {
-    const pageCount = Math.ceil(staff.length / rowsPerPage);
-    const pagination = $("#pagination ul");
+  function setupPagination(data) {
+    const pageCount = Math.ceil(data.length / rowsPerPage);
+    const pagination = $("#pagination");
     pagination.empty();
 
     for (let i = 1; i <= pageCount; i++) {
       const activeClass = i === currentPage ? "active" : "";
       pagination.append(`
-                <li class="page-item ${activeClass}">
-                    <a class="page-link" href="#" data-page="${i}">${i}</a>
-                </li>
-            `);
+        <li class="page-item ${activeClass}">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>
+      `);
     }
 
     $(".page-link").on("click", function (e) {
@@ -138,7 +145,6 @@ $(document).ready(function () {
   });
 
   function attachEventListeners() {
-    // Edit button event listener
     $(".edit-btn").click(function () {
       const staff_id = $(this).data("id");
 
@@ -171,7 +177,6 @@ $(document).ready(function () {
       });
     });
 
-    // Delete button event listener
     $(".delete-btn").click(function () {
       const staff_id = $(this).data("id");
 
