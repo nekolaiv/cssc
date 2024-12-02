@@ -75,7 +75,7 @@
         <div class="row my-4">
             <div class="col-12">
                 <h6 class="text-muted">AUDIT LOGS</h6>
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped" id="auditLogsTable">
                     <thead>
                         <tr class="text-muted">
                             <th>Date/Time</th>
@@ -85,54 +85,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>2024-11-20 | 09:30 AM</td>
-                        <td>STAFF - EMILY</td>
-                        <td>Verified Application</td>
-                        <td>Verified application for Student ID: 20235412.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-22 | 02:45 PM</td>
-                        <td>ADMIN - JASON</td>
-                        <td>Updated Eligibility Rules</td>
-                        <td>Set minimum GPA to 1.85.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-23 | 11:15 AM</td>
-                        <td>STAFF - OLIVER</td>
-                        <td>Rejected Application</td>
-                        <td>Rejected Student ID: 20231234.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-25 | 05:00 PM</td>
-                        <td>ADMIN - SOPHIA</td>
-                        <td>Assigned Tasks</td>
-                        <td>Assigned 10 applications to Staff - Liam.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-26 | 08:20 AM</td>
-                        <td>STAFF - LIAM</td>
-                        <td>Verified Application</td>
-                        <td>Verified application for Student ID: 20234123.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-28 | 03:10 PM</td>
-                        <td>ADMIN - ISABELLA</td>
-                        <td>Updated Eligibility Rules</td>
-                        <td>Set maximum allowed absences to 5.</td>
-                    </tr>
-                    <tr>
-                        <td>2024-11-29 | 01:45 PM</td>
-                        <td>STAFF - NOAH</td>
-                        <td>Rejected Application</td>
-                        <td>Rejected Student ID: 20232256.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="4" class="text-center">Loading...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
     <script src="/cssc/js/admin/admin_dashboard.js"></script>
 </body>
-
 </html>
