@@ -129,6 +129,7 @@
                     <thead>
                         <tr class="text-muted">
                             <th>Date/Time</th>
+                            <th>Role</th>
                             <th>Action</th>
                             <th>Details</th>
                         </tr>
