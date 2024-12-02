@@ -127,7 +127,7 @@ $(document).ready(function () {
         $("#staffModal .modal-content").removeClass("border-danger");
 
         if (result.success) {
-          alert("Staff saved successfully!");
+          alert(`Staff ${action === "create" ? "created" : "updated"} successfully!`);
           $("#staffModal").modal("hide");
           loadStaff();
         } else if (result.errors) {
