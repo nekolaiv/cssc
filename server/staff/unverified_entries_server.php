@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (!empty($entry['image_proof'])) {
                     $entry['image_proof'] = base64_encode($entry['image_proof']);
                 }
-                
+
                 $entry['status'] = $status['status'] ?? 'Not Submitted';
                 echo json_encode($entry);
             } else {
@@ -34,22 +34,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             break;
 
-        case 'verify':
-            $entry_id = intval(cleanInput($_POST['id']));
-            $response = $entries->verifyEntry($entry_id);
-
-            if ($response) {
-                echo json_encode(['success' => true, 'message' => 'Entry verified successfully.']);
-            } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to verify the entry.']);
-            }
-            break;
+            case 'verify':
+                $entry_id = intval(cleanInput($_POST['id']));
+            
+                // Fetch the student ID before moving the entry
+                $entryDetails = $entries->getEntryById($entry_id);
+                if (!$entryDetails) {
+                    echo json_encode(['success' => false, 'error' => 'Entry not found or invalid.']);
+                    exit;
+                }
+            
+                $studentId = $entryDetails['student_id'] ?? 'Unknown';
+            
+                // Perform the verification (move to verified entries table)
+                $response = $entries->verifyEntry($entry_id);
+            
+                if ($response) {
+                    // Log the audit event after successful verification
+                    $entries->logAudit(
+                        'Verify Entry',
+                        "Verified entry for Student ID: $studentId"
+                    );
+            
+                    echo json_encode(['success' => true, 'message' => 'Entry verified successfully.']);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to verify the entry.']);
+                }
+                break;
+            
 
         case 'reject':
             $entry_id = intval(cleanInput($_POST['id']));
             $response = $entries->rejectEntry($entry_id);
 
             if ($response) {
+                $entryDetails = $entries->getEntryById($entry_id);
+                $studentId = $entryDetails['student_id'] ?? 'Unknown';
+                $entries->logAudit(
+                    'Reject Entry',
+                    "Rejected entry for Student ID: $studentId"
+                );
+
                 echo json_encode(['success' => true, 'message' => 'Entry rejected successfully.']);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Failed to reject the entry.']);
