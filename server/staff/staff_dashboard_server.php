@@ -1,9 +1,11 @@
 <?php
 require_once '../../classes/database.class.php';
+require_once '../../classes/_admin.class.php'; // Include the Admin class
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $db = new Database();
+    $admin = new Admin(); // New Admin object for fetching audit logs
 
     switch ($action) {
         case 'getCounts':
@@ -25,26 +27,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => true, 'entries' => $entries]);
             break;
 
-        case 'recently_verified':
-            $query = "SELECT student_id, fullname, course, gwa, updated_at AS date_verified 
-                        FROM students_verified_entries 
-                        ORDER BY updated_at DESC LIMIT 5";
-            $entries = $db->fetchAll($query);
-        
-            // Add error handling
-            if (!$entries) {
-                echo json_encode(['success' => false, 'message' => 'No recent verified entries found.']);
-            } else {
-                echo json_encode(['success' => true, 'entries' => $entries]);
+        case 'auditLog':
+            try {
+                $logs = $admin->fetchAuditLogs(); // Fetch audit logs from Admin class
+
+                // Combine role and name into the `role` column for display
+                foreach ($logs as &$log) {
+                    $log['role'] = strtoupper($log['role']) . " - " . ucfirst($log['name']);
+                    unset($log['name']); // Remove the separate `name` column
+                }
+
+                echo json_encode(['success' => true, 'logs' => $logs]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'error' => $e->getMessage()]);
             }
             break;
-            
-        case 'auditLog':
-            // Fetch recent audit log actions
-            // $query = "SELECT action_date, action, details FROM staff_audit_log ORDER BY action_date DESC LIMIT 5";
-            // $log = $db->fetchAll($query);
-            // echo json_encode(['success' => true, 'log' => $log]);
-            // break;
 
         default:
             echo json_encode(['success' => false, 'error' => 'Invalid action']);
