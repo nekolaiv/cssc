@@ -267,6 +267,41 @@ public function verifyPassword($plainPassword, $hashedPassword) {
     return password_verify($plainPassword, $hashedPassword);
 }
 
+// Fetch audit logs from the database
+public function fetchAuditLogs() {
+    try {
+        $query = "SELECT timestamp, role, name, action, details FROM audit_logs ORDER BY timestamp DESC";
+        return $this->database->fetchAll($query);
+    } catch (Exception $e) {
+        return ['error' => 'Failed to fetch audit logs: ' . $e->getMessage()];
+    }
+}
 
+// Format logs for AJAX response
+public function getAuditLogs() {
+    $logs = $this->fetchAuditLogs();
+    if (is_array($logs) && !isset($logs['error'])) {
+        return ['success' => true, 'logs' => $logs];
+    } else {
+        return ['success' => false, 'error' => $logs['error'] ?? 'Unable to fetch logs.'];
+    }
+}
+
+// Log an audit event
+public function logAudit($action, $details) {
+    if (isset($_SESSION['profile']) && isset($_SESSION['user-type'])) {
+        $role = strtoupper($_SESSION['user-type']);
+        $name = $_SESSION['profile']['fullname'];
+        $sql = "INSERT INTO audit_logs (timestamp, role, name, action, details) 
+                VALUES (NOW(), :role, :name, :action, :details)";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->bindValue(':action', $action, PDO::PARAM_STR);
+        $stmt->bindValue(':details', $details, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+    return false;
+}
 }
 ?>

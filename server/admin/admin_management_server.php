@@ -57,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'middle_name' => $middle_name
             ]);
 
+            if ($result) {
+                $admin->logAudit('Create Admin', "Created admin account for email: $email");
+            }
+
             echo json_encode(['success' => $result]);
             break;
 
@@ -117,12 +121,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
 
             $response = $admin->updateAdmin($data);
+
+            if ($response) {
+                $admin->logAudit('Update Admin', "Updated admin account for ID: $admin_id");
+            }
+
             echo json_encode(['success' => $response]);
             break;
 
         case 'delete':
             $admin_id = intval(cleanInput($_POST['admin_id']));
             $response = $admin->deleteAdmin($admin_id);
+
+            if ($response) {
+                $admin->logAudit('Delete Admin', "Deleted admin account with ID: $admin_id");
+            }
+
             echo json_encode(['success' => $response]);
             break;
 

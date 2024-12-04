@@ -48,6 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Hash password and create staff
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             $response = $admin->createStaff($data);
+
+            if ($response) {
+                $admin->logAudit('Create Staff', "Created staff account for email: {$data['email']}");
+            }
+
             echo json_encode(['success' => $response]);
             break;
 
@@ -98,12 +103,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $response = $admin->updateStaff($data);
+
+            if ($response) {
+                $admin->logAudit('Update Staff', "Updated staff account for ID: $staff_id");
+            }
+
             echo json_encode(['success' => $response]);
             break;
 
         case 'delete':
             $staff_id = intval(cleanInput($_POST['staff_id']));
             $response = $admin->deleteStaff($staff_id);
+
+            if ($response) {
+                $admin->logAudit('Delete Staff', "Deleted staff account with ID: $staff_id");
+            }
+
             echo json_encode(['success' => $response]);
             break;
 
@@ -128,3 +143,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
     }
 }
+?>

@@ -168,8 +168,14 @@ $(document).ready(function () {
           url: "/cssc/server/admin/admin_management_server.php",
           type: "POST",
           data: { action: "delete", admin_id },
-          success: function () {
-            loadAdmins();
+          success: function (response) {
+            const result = JSON.parse(response);
+            if (result.success) {
+              alert("Admin deleted successfully!");
+              loadAdmins(); // Refresh the admin list
+            } else {
+              alert("Error deleting admin: " + result.error);
+            }
           },
         });
       }

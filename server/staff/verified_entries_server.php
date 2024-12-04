@@ -44,9 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 $entry_id = intval(cleanInput($_POST['id']));
+
+                // Fetch entry details before removing
+                $entryDetails = $entries->getVerifiedEntryById($entry_id);
+                if (!$entryDetails) {
+                    echo json_encode(['success' => false, 'error' => 'Entry not found or invalid.']);
+                    break;
+                }
+
+                $studentId = $entryDetails['student_id'] ?? 'Unknown';
+
+                // Remove the entry
                 $response = $entries->removeVerifiedEntry($entry_id);
 
                 if ($response) {
+                    // Log the audit event
+                    $entries->logAudit(
+                        'Remove Verified Entry',
+                        "Removed verified entry for Student ID: $studentId"
+                    );
+
                     echo json_encode(['success' => true, 'message' => 'Entry removed successfully.']);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Failed to remove the entry.']);
