@@ -27,7 +27,6 @@
                     <div class="mb-3">
                         <label for="middle_name" class="form-label">Middle Name</label>
                         <input type="text" class="form-control" id="middle_name" name="middle_name">
-                        <div class="invalid-feedback">Middle Name is required.</div>
                     </div>
 
                     <!-- Last Name -->
@@ -45,13 +44,13 @@
                     </div>
 
                     <!-- Password -->
-                    <div class="mb-3">
+                    <div class="mb-3" id="passwordField">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password">
                             <button class="btn btn-outline-secondary" type="button" id="togglePassword">Show</button>
                         </div>
-                        <div class="invalid-feedback">Password is required.</div>
+                        <div class="invalid-feedback">Password is required for new students.</div>
                     </div>
 
                     <!-- Course -->

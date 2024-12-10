@@ -8,6 +8,7 @@ $(document).ready(function () {
   loadStudents();
 
   const studentForm = document.getElementById("studentForm");
+  const passwordField = $("#passwordField"); // Password field container
 
   // Bootstrap validation styles
   studentForm.addEventListener("submit", function (e) {
@@ -17,15 +18,6 @@ $(document).ready(function () {
     }
     studentForm.classList.add("was-validated"); // Add validation classes
   });
-
-  // Event delegation for Reveal Password
-  $(document)
-    .off("click.reveal", ".reveal-password")
-    .on("click.reveal", ".reveal-password", function () {
-      const password = $(this).data("password");
-      console.log("Reveal Password clicked:", password); // Debugging
-      alert(`Password: ${password}`);
-    });
 
   // Load all students into the table
   function loadStudents() {
@@ -52,40 +44,28 @@ $(document).ready(function () {
 
     if (visibleStudents.length === 0) {
       tableBody.append(`
-              <tr>
-                  <td colspan="8" class="text-center">No data found.</td>
-              </tr>
-          `);
+        <tr>
+            <td colspan="7" class="text-center">No data found.</td>
+        </tr>
+      `);
       return; // Exit the function early since there's no data to process
     }
 
     visibleStudents.forEach((student) => {
       tableBody.append(`
-              <tr>
-                  <td>${student.student_id}</td>
-                  <td>${student.first_name} ${student.middle_name ?? ""} ${
-        student.last_name
-      }</td>
-                  <td>${student.email}</td>
-                  <td>
-                      <span class="masked-password">••••••••</span>
-                      <button class="btn btn-sm btn-secondary reveal-password" data-password="${
-                        student.password
-                      }">Reveal</button>
-                  </td>
-                  <td>${student.course}</td>
-                  <td>${student.year_level}</td>
-                  <td>${student.section}</td>
-                  <td>
-                      <button class="btn btn-sm btn-warning edit-btn" data-id="${
-                        student.user_id
-                      }">Edit</button>
-                      <button class="btn btn-sm btn-danger delete-btn" data-id="${
-                        student.user_id
-                      }">Delete</button>
-                  </td>
-              </tr>
-          `);
+        <tr>
+            <td>${student.student_id}</td>
+            <td>${student.first_name} ${student.middle_name ?? ""} ${student.last_name}</td>
+            <td>${student.email}</td>
+            <td>${student.course}</td>
+            <td>${student.year_level}</td>
+            <td>${student.section}</td>
+            <td>
+                <button class="btn btn-sm btn-warning edit-btn" data-id="${student.user_id}">Edit</button>
+                <button class="btn btn-sm btn-danger delete-btn" data-id="${student.user_id}">Delete</button>
+            </td>
+        </tr>
+      `);
     });
 
     attachEventListeners();
@@ -99,10 +79,10 @@ $(document).ready(function () {
     for (let i = 1; i <= pageCount; i++) {
       const activeClass = i === currentPage ? "active" : "";
       pagination.append(`
-              <li class="page-item ${activeClass}">
-                  <a class="page-link" href="#" data-page="${i}">${i}</a>
-              </li>
-          `);
+        <li class="page-item ${activeClass}">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>
+      `);
     }
 
     $(".page-link").on("click", function (e) {
@@ -128,9 +108,7 @@ $(document).ready(function () {
       students = allStudents.filter((student) => {
         return (
           student.student_id.toLowerCase().includes(value) ||
-          `${student.first_name} ${student.middle_name ?? ""} ${
-            student.last_name
-          }`
+          `${student.first_name} ${student.middle_name ?? ""} ${student.last_name}`
             .toLowerCase()
             .includes(value)
         );
@@ -147,6 +125,7 @@ $(document).ready(function () {
     $("#studentForm")[0].reset();
     $("#user_id").val(""); // Clear hidden user_id field
     $("#studentModalLabel").text("Add Student");
+    passwordField.show(); // Show password field for adding a student
     $("#studentModal").modal("show");
   });
 
@@ -237,6 +216,7 @@ $(document).ready(function () {
           $(".invalid-feedback").text("");
           $("#studentModal .modal-content").removeClass("border-danger");
 
+          passwordField.hide(); // Hide password field for editing
           $("#studentModalLabel").text("Edit Student");
           $("#studentModal").modal("show");
         },

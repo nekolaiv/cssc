@@ -91,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'user_id' => $user_id,
                 'student_id' => cleanInput($_POST['student_id']),
                 'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']), // Optional
                 'first_name' => cleanInput($_POST['first_name']),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
                 'last_name' => cleanInput($_POST['last_name']),
@@ -121,13 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
-            }
-
-            // Hash password if provided
-            if (!empty($data['password'])) {
-                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-            } else {
-                unset($data['password']); // Keep existing password
             }
 
             $response = $student->updateStudent($data);
