@@ -72,7 +72,7 @@
                     <input type="hidden" id="editStudentId" name="student_id">
                     <div class="mb-3">
                         <label for="editFirstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="editFirstName" name="first_name" >
+                        <input type="text" class="form-control" id="editFirstName" name="first_name" required>
                     </div>
                     <div class="mb-3">
                         <label for="editMiddleName" class="form-label">Middle Name</label>
@@ -80,27 +80,29 @@
                     </div>
                     <div class="mb-3">
                         <label for="editLastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="editLastName" name="last_name" >
+                        <input type="text" class="form-control" id="editLastName" name="last_name" required>
                     </div>
                     <div class="mb-3">
                         <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" >
+                        <input type="email" class="form-control" id="editEmail" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="editPassword" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="editCourseId" class="form-label">Course ID</label>
-                        <input type="number" class="form-control" id="editCourseId" name="course_id" >
+                        <label for="editCourseId" class="form-label">Course</label>
+                        <select class="form-select" id="editCourseId" name="course_id" required>
+                            <!-- Options will be populated dynamically -->
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="editYearLevelId" class="form-label">Year Level</label>
-                        <input type="number" class="form-control" id="editYearLevelId" name="year_level_id" >
+                        <select class="form-select" id="editYearLevelId" name="year_level_id" required>
+                            <!-- Options will be populated dynamically -->
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="editSectionId" class="form-label">Section</label>
-                        <input type="number" class="form-control" id="editSectionId" name="section_id" >
+                        <select class="form-select" id="editSectionId" name="section_id" required>
+                            <!-- Options will be populated dynamically -->
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

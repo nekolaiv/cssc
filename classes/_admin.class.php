@@ -181,6 +181,30 @@ class Admin {
             throw new Exception("Error fetching students: " . $e->getMessage());
         }
     }
+
+    /**
+ * Get dropdown options for courses, year levels, and sections
+ */
+public function getDropdownData() {
+    try {
+        $sqlCourses = "SELECT course_id, course_code FROM courses";
+        $sqlYearLevels = "SELECT year_level_id, year_level_name FROM year_levels";
+        $sqlSections = "SELECT section_id, section_code FROM sections";
+
+        $courses = $this->database->connect()->query($sqlCourses)->fetchAll(PDO::FETCH_ASSOC);
+        $yearLevels = $this->database->connect()->query($sqlYearLevels)->fetchAll(PDO::FETCH_ASSOC);
+        $sections = $this->database->connect()->query($sqlSections)->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            "courses" => $courses,
+            "year_levels" => $yearLevels,
+            "sections" => $sections
+        ];
+    } catch (PDOException $e) {
+        throw new Exception("Error fetching dropdown data: " . $e->getMessage());
+    }
+}
+
     
 }
 ?>

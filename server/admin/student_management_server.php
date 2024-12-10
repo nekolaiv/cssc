@@ -84,6 +84,18 @@ if (isset($_POST['action'])) {
                 $response["data"] = $students;
                 $response["message"] = "Students retrieved successfully.";
                 break;
+            
+                case 'getDropdownData':
+                    try {
+                        $dropdownData = $admin->getDropdownData();
+                        $response["success"] = true;
+                        $response["data"] = $dropdownData;
+                        $response["message"] = "Dropdown data retrieved successfully.";
+                    } catch (Exception $e) {
+                        $response["message"] = "Error fetching dropdown data: " . $e->getMessage();
+                    }
+                    break;
+                
                 
 
             default:
