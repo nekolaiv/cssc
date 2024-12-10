@@ -132,7 +132,7 @@ class Admin {
     /**
      * Retrieve students with filters
      */
-    public function getStudents($filter = []) {
+    public function getStudents($filter = [], $limit = 10, $offset = 0) {
         try {
             $sql = "
                 SELECT 
@@ -160,8 +160,38 @@ class Admin {
             if (isset($filter['name'])) {
                 $conditions[] = "(si.first_name LIKE :name OR si.last_name LIKE :name)";
             }
-            if (isset($filter['course_id'])) {
-                $conditions[] = "sa.course_id = :course_id";
+            if ($conditions) {
+                $sql .= " WHERE " . implode(" AND ", $conditions);
+            }
+            $sql .= " LIMIT :limit OFFSET :offset";
+    
+            $stmt = $this->database->connect()->prepare($sql);
+            if (isset($filter['name'])) {
+                $name = "%" . $filter['name'] . "%";
+                $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            }
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error fetching students: " . $e->getMessage());
+        }
+    }
+
+    public function countStudents($filter = []) {
+        try {
+            $sql = "
+                SELECT COUNT(*) AS total
+                FROM 
+                    students_info si
+                INNER JOIN 
+                    student_accounts sa ON si.student_id = sa.student_id
+            ";
+    
+            $conditions = [];
+            if (isset($filter['name'])) {
+                $conditions[] = "(si.first_name LIKE :name OR si.last_name LIKE :name)";
             }
             if ($conditions) {
                 $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -172,15 +202,14 @@ class Admin {
                 $name = "%" . $filter['name'] . "%";
                 $stmt->bindParam(':name', $name, PDO::PARAM_STR);
             }
-            if (isset($filter['course_id'])) {
-                $stmt->bindParam(':course_id', $filter['course_id'], PDO::PARAM_INT);
-            }
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
         } catch (PDOException $e) {
-            throw new Exception("Error fetching students: " . $e->getMessage());
+            throw new Exception("Error counting students: " . $e->getMessage());
         }
     }
+    
+    
 
     /**
  * Get dropdown options for courses, year levels, and sections

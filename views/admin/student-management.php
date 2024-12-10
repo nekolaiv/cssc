@@ -32,6 +32,12 @@
                 <!-- Table rows will be dynamically populated via AJAX -->
             </tbody>
         </table>
+        <nav aria-label="Student Table Pagination">
+    <ul class="pagination justify-content-center" id="pagination">
+        <!-- Pagination links will be dynamically generated -->
+    </ul>
+</nav>
+
     </div>
 
     <!-- Include modals for add/edit -->

@@ -70,20 +70,36 @@ if (isset($_POST['action'])) {
                 }
                 break;
 
-            case 'fetch':
-                // Fetch students
-                $filters = [];
-                if (isset($_POST['name'])) {
-                    $filters['name'] = cleanInput($_POST['name']);
-                }
-                if (isset($_POST['course_id'])) {
-                    $filters['course_id'] = cleanNumericInput($_POST['course_id']);
-                }
-                $students = $admin->getStudents($filters);
-                $response["success"] = true;
-                $response["data"] = $students;
-                $response["message"] = "Students retrieved successfully.";
-                break;
+                case 'fetch':
+                    // Fetch students with pagination
+                    $filters = [];
+                    if (isset($_POST['name'])) {
+                        $filters['name'] = cleanInput($_POST['name']);
+                    }
+                    if (isset($_POST['course_id'])) {
+                        $filters['course_id'] = cleanNumericInput($_POST['course_id']);
+                    }
+                
+                    $page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
+                    $limit = isset($_POST['limit']) ? (int) $_POST['limit'] : 10; // Default 10 items per page
+                    $offset = ($page - 1) * $limit;
+                
+                    try {
+                        $students = $admin->getStudents($filters, $limit, $offset); // Adjust method to accept $limit and $offset
+                        $totalStudents = $admin->countStudents($filters); // Method to count total students
+                        $response["success"] = true;
+                        $response["data"] = [
+                            "students" => $students,
+                            "total" => $totalStudents,
+                            "page" => $page,
+                            "limit" => $limit,
+                            "totalPages" => ceil($totalStudents / $limit)
+                        ];
+                        $response["message"] = "Students retrieved successfully.";
+                    } catch (Exception $e) {
+                        $response["message"] = "Error fetching students: " . $e->getMessage();
+                    }
+                    break;                
             
                 case 'getDropdownData':
                     try {

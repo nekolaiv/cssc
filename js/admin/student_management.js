@@ -10,17 +10,17 @@ $(document).ready(function () {
   });
 
   // Function to fetch and display students
-  function fetchStudents(filters = {}) {
-      console.log("Fetching students with filters:", filters);
+  function fetchStudents(filters = {}, page = 1, limit = 10) {
+      console.log("Fetching students with filters:", filters, "Page:", page, "Limit:", limit);
       $.ajax({
           url: "../../server/admin/student_management_server.php",
           type: "POST",
-          data: { action: "fetch", ...filters },
+          data: { action: "fetch", page, limit, ...filters },
           dataType: "json",
           success: function (response) {
               console.log("Fetch Students Response:", response);
               if (response.success) {
-                  const students = response.data;
+                  const { students, total, totalPages } = response.data; // Extract pagination details
                   let tableRows = "";
 
                   students.forEach(student => {
@@ -29,9 +29,9 @@ $(document).ready(function () {
                               <td>${student.student_id}</td>
                               <td>${student.first_name} ${student.middle_name ? student.middle_name : ""} ${student.last_name}</td>
                               <td>${student.email}</td>
-                              <td>${student.course_code}</td> <!-- Use course_code -->
-                              <td>${student.year_level_name}</td> <!-- Use year_level_name -->
-                              <td>${student.section_code}</td> <!-- Use section_code -->
+                              <td>${student.course_code}</td>
+                              <td>${student.year_level_name}</td>
+                              <td>${student.section_code}</td>
                               <td>
                                   <button class="btn btn-primary btn-sm edit-student" data-id="${student.student_id}">Edit</button>
                                   <button class="btn btn-danger btn-sm delete-student" data-id="${student.student_id}">Delete</button>
@@ -41,6 +41,7 @@ $(document).ready(function () {
                   });
 
                   $("#studentTable tbody").html(tableRows);
+                  renderPagination(page, totalPages);
               } else {
                   console.error("Error Message:", response.message);
                   alert(response.message);
@@ -53,7 +54,40 @@ $(document).ready(function () {
       });
   }
 
-  // Function to populate dropdowns in edit modal
+  // Render pagination controls
+  function renderPagination(currentPage, totalPages) {
+      let paginationHTML = `
+          <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
+              <button class="page-link" data-page="${currentPage - 1}">Previous</button>
+          </li>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+          paginationHTML += `
+              <li class="page-item ${currentPage === i ? "active" : ""}">
+                  <button class="page-link" data-page="${i}">${i}</button>
+              </li>
+          `;
+      }
+
+      paginationHTML += `
+          <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
+              <button class="page-link" data-page="${currentPage + 1}">Next</button>
+          </li>
+      `;
+
+      $("#pagination").html(paginationHTML);
+  }
+
+  // Handle pagination click events
+  $(document).on("click", ".page-link", function () {
+      const page = $(this).data("page");
+      if (page) {
+          fetchStudents({}, page); // Fetch the selected page
+      }
+  });
+
+  // Populate dropdowns in edit modal
   function populateDropdowns(selectedCourseId, selectedYearLevelId, selectedSectionId) {
       console.log("Populating dropdowns for edit modal.");
       $.ajax({
@@ -66,7 +100,6 @@ $(document).ready(function () {
               if (response.success) {
                   const { courses, year_levels, sections } = response.data;
 
-                  // Populate courses dropdown
                   const courseDropdown = $("#editCourseId");
                   courseDropdown.empty();
                   courses.forEach(course => {
@@ -74,7 +107,6 @@ $(document).ready(function () {
                       courseDropdown.append(`<option value="${course.course_id}" ${selected}>${course.course_code}</option>`);
                   });
 
-                  // Populate year levels dropdown
                   const yearLevelDropdown = $("#editYearLevelId");
                   yearLevelDropdown.empty();
                   year_levels.forEach(yearLevel => {
@@ -82,7 +114,6 @@ $(document).ready(function () {
                       yearLevelDropdown.append(`<option value="${yearLevel.year_level_id}" ${selected}>${yearLevel.year_level_name}</option>`);
                   });
 
-                  // Populate sections dropdown
                   const sectionDropdown = $("#editSectionId");
                   sectionDropdown.empty();
                   sections.forEach(section => {
@@ -101,7 +132,7 @@ $(document).ready(function () {
       });
   }
 
-  // Function to pre-fill and show student data for editing
+  // Pre-fill edit modal data
   $(document).on("click", ".edit-student", function () {
       const studentId = $(this).data("id");
 
@@ -115,7 +146,7 @@ $(document).ready(function () {
           success: function (response) {
               console.log("Edit Fetch Response:", response);
               if (response.success) {
-                  const student = response.data[0]; // Assuming single student data
+                  const student = response.data[0];
 
                   $("#editStudentId").val(student.student_id);
                   $("#editFirstName").val(student.first_name);
@@ -123,7 +154,6 @@ $(document).ready(function () {
                   $("#editLastName").val(student.last_name);
                   $("#editEmail").val(student.email);
 
-                  // Populate dropdowns with selected values
                   populateDropdowns(student.course_id, student.year_level_id, student.section_id);
 
                   $("#editStudentModal").modal("show");
@@ -139,7 +169,7 @@ $(document).ready(function () {
       });
   });
 
-  // Function to update a student's information
+  // Update student information
   $("#editStudentForm").submit(function (e) {
       e.preventDefault();
 
