@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'password' => cleanInput($_POST['password']),
                 'first_name' => cleanInput($_POST['first_name']),
                 'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'])
+                'middle_name' => cleanInput($_POST['middle_name'] ?? '') // Optional
             ];
 
             // Validation
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['last_name'] = 'Last name is required.';
             }
 
-            // If errors exist, return them
+            // Return errors if any
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
@@ -66,10 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'staff_id' => $staff_id,
                 'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']), // Optional
+                'password' => isset($_POST['password']) ? cleanInput($_POST['password']) : '',
                 'first_name' => cleanInput($_POST['first_name']),
                 'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'])
+                'middle_name' => cleanInput($_POST['middle_name'] ?? '') // Optional
             ];
 
             // Validation
@@ -90,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['last_name'] = 'Last name is required.';
             }
 
+            // Return errors if any
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;

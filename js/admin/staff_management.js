@@ -33,6 +33,9 @@ $(document).ready(function () {
         displayTable(currentPage);
         setupPagination(filteredStaff); // Pass all data initially
       },
+      error: function (xhr, status, error) {
+        console.error("Failed to load staff:", error);
+      },
     });
   }
 
@@ -47,7 +50,7 @@ $(document).ready(function () {
     if (visibleStaff.length === 0) {
       tableBody.append(`
         <tr>
-          <td colspan="5" class="text-center">No data found.</td>
+          <td colspan="4" class="text-center">No data found.</td>
         </tr>
       `);
     } else {
@@ -60,10 +63,6 @@ $(document).ready(function () {
             <td>${staffMember.staff_id}</td>
             <td>${fullName}</td>
             <td>${staffMember.email}</td>
-            <td>
-              <span class="masked-password">••••••••</span>
-              <button class="btn btn-sm btn-secondary reveal-password" data-password="${staffMember.password}">Reveal</button>
-            </td>
             <td>
               <button class="btn btn-sm btn-warning edit-btn" data-id="${staffMember.staff_id}">Edit</button>
               <button class="btn btn-sm btn-danger delete-btn" data-id="${staffMember.staff_id}">Delete</button>
@@ -78,7 +77,7 @@ $(document).ready(function () {
 
   function setupPagination(data) {
     const pageCount = Math.ceil(data.length / rowsPerPage);
-    const pagination = $("#pagination");
+    const pagination = $("#pagination ul");
     pagination.empty();
 
     for (let i = 1; i <= pageCount; i++) {
@@ -100,20 +99,51 @@ $(document).ready(function () {
     });
   }
 
+  // Open "Add Staff" modal
   $("#addStaffBtn").click(function () {
-    $("#staffForm")[0].reset();
+    $("#addStaffForm")[0].reset();
     $(".form-control").removeClass("is-invalid");
     $(".invalid-feedback").text("");
-    $("#staff_id").val("");
-    $("#staffModalLabel").text("Add Staff");
-    $("#staffModal").modal("show");
+    $("#addStaffModal").modal("show");
   });
 
-  $("#staffForm").submit(function (e) {
+  // Open "Edit Staff" modal
+  $(document).on("click", ".edit-btn", function () {
+    const staff_id = $(this).data("id");
+
+    $.ajax({
+      url: "/cssc/server/admin/staff_server.php",
+      type: "POST",
+      data: { action: "get", staff_id },
+      success: function (response) {
+        const staffMember = JSON.parse(response);
+
+        if (staffMember.error) {
+          alert("Error: " + staffMember.error);
+          return;
+        }
+
+        $("#edit_staff_id").val(staffMember.staff_id);
+        $("#edit_email").val(staffMember.email);
+        $("#edit_first_name").val(staffMember.first_name);
+        $("#edit_last_name").val(staffMember.last_name);
+        $("#edit_middle_name").val(staffMember.middle_name);
+
+        $(".form-control").removeClass("is-invalid");
+        $(".invalid-feedback").text("");
+        $("#editStaffModal").modal("show");
+      },
+      error: function () {
+        alert("Failed to fetch staff details.");
+      },
+    });
+  });
+
+  // Handle form submission for "Add Staff"
+  $("#addStaffForm").submit(function (e) {
     e.preventDefault();
 
-    const action = $("#staff_id").val() ? "update" : "create";
-    const formData = $(this).serialize() + `&action=${action}`;
+    const formData = $(this).serialize() + "&action=create";
 
     $.ajax({
       url: "/cssc/server/admin/staff_server.php",
@@ -122,78 +152,77 @@ $(document).ready(function () {
       success: function (response) {
         const result = JSON.parse(response);
 
-        $(".form-control").removeClass("is-invalid");
-        $(".invalid-feedback").text("");
-        $("#staffModal .modal-content").removeClass("border-danger");
-
         if (result.success) {
-          alert(`Staff ${action === "create" ? "created" : "updated"} successfully!`);
-          $("#staffModal").modal("hide");
+          alert("Staff added successfully!");
+          $("#addStaffModal").modal("hide");
           loadStaff();
-        } else if (result.errors) {
-          $("#staffModal .modal-content").addClass("border-danger");
-          Object.keys(result.errors).forEach((field) => {
-            const fieldElement = $(`[name="${field}"]`);
-            fieldElement.addClass("is-invalid");
-            fieldElement.next(".invalid-feedback").text(result.errors[field]);
-          });
         } else {
-          alert("An unexpected error occurred.");
+          displayFormErrors("#addStaffForm", result.errors);
         }
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to add staff:", error);
       },
     });
   });
 
-  function attachEventListeners() {
-    $(".edit-btn").click(function () {
-      const staff_id = $(this).data("id");
+  // Handle form submission for "Edit Staff"
+  $("#editStaffForm").submit(function (e) {
+    e.preventDefault();
 
+    const formData = $(this).serialize() + "&action=update";
+
+    $.ajax({
+      url: "/cssc/server/admin/staff_server.php",
+      type: "POST",
+      data: formData,
+      success: function (response) {
+        const result = JSON.parse(response);
+
+        if (result.success) {
+          alert("Staff updated successfully!");
+          $("#editStaffModal").modal("hide");
+          loadStaff();
+        } else {
+          displayFormErrors("#editStaffForm", result.errors);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to update staff:", error);
+      },
+    });
+  });
+
+  function displayFormErrors(formSelector, errors) {
+    $(".form-control").removeClass("is-invalid");
+    $(".invalid-feedback").text("");
+
+    Object.keys(errors).forEach(function (field) {
+      const errorMessage = errors[field];
+      const fieldElement = $(formSelector + " [name='" + field + "']");
+      fieldElement.addClass("is-invalid");
+      fieldElement.next(".invalid-feedback").text(errorMessage).show();
+    });
+  }
+
+  // Delete staff
+  $(document).on("click", ".delete-btn", function () {
+    const staff_id = $(this).data("id");
+
+    if (confirm("Are you sure you want to delete this staff?")) {
       $.ajax({
         url: "/cssc/server/admin/staff_server.php",
         type: "POST",
-        data: { action: "get", staff_id },
+        data: { action: "delete", staff_id },
         success: function (response) {
-          const staffMember = JSON.parse(response);
-
-          if (staffMember.error) {
-            alert("Error: " + staffMember.error);
-            return;
-          }
-
-          $("#staff_id").val(staffMember.staff_id);
-          $("#email").val(staffMember.email);
-          $("#first_name").val(staffMember.first_name);
-          $("#last_name").val(staffMember.last_name);
-          $("#middle_name").val(staffMember.middle_name);
-          $("#password").val("");
-
-          $(".form-control").removeClass("is-invalid");
-          $(".invalid-feedback").text("");
-          $("#staffModal .modal-content").removeClass("border-danger");
-
-          $("#staffModalLabel").text("Edit Staff");
-          $("#staffModal").modal("show");
+          const result = JSON.parse(response);
+          alert(result.success ? "Staff deleted successfully!" : "Failed to delete staff.");
+          loadStaff();
+        },
+        error: function () {
+          alert("Failed to delete staff.");
         },
       });
-    });
-
-    $(".delete-btn").click(function () {
-      const staff_id = $(this).data("id");
-
-      if (confirm("Are you sure you want to delete this staff?")) {
-        $.ajax({
-          url: "/cssc/server/admin/staff_server.php",
-          type: "POST",
-          data: { action: "delete", staff_id },
-          success: function (response) {
-            const result = JSON.parse(response);
-            alert(
-              result.success ? "Deleted successfully!" : "Failed to delete."
-            );
-            loadStaff();
-          },
-        });
-      }
-    });
-  }
+    }
+  });
 });

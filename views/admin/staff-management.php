@@ -23,7 +23,6 @@
                 <th>ID</th>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Password</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -39,6 +38,7 @@
 </div>
 
     <!-- Include Add/Edit Modal -->
-    <?php include 'addedit-staff-modal.php'; ?>
+    <?php include 'add-staff-modal.php'; ?>
+    <?php include 'edit-staff-modal.php'; ?>
 </body>
 </html>
