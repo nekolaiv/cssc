@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $entry = $entries->getEntryById($entry_id);
 
             if ($entry) {
-                $query = "SELECT status FROM registered_students WHERE student_id = :student_id";
+                $query = "SELECT status FROM student_accounts WHERE student_id = :student_id";
                 $db = new Database();
                 $status = $db->fetchOne($query, [':student_id' => $entry['student_id']]);
 

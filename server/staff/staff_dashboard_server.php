@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'unverifiedCount' => $db->fetchColumn("SELECT COUNT(*) FROM students_unverified_entries"),
                 'verifiedCount' => $db->fetchColumn("SELECT COUNT(*) FROM students_verified_entries"),
-                'pendingCount' => $db->fetchColumn("SELECT COUNT(*) FROM registered_students WHERE status = 'Pending'"),
-                'revisionCount' => $db->fetchColumn("SELECT COUNT(*) FROM registered_students WHERE status = 'Need Revision'")
+                'pendingCount' => $db->fetchColumn("SELECT COUNT(*) FROM student_accounts WHERE status = 'Pending'"),
+                'revisionCount' => $db->fetchColumn("SELECT COUNT(*) FROM student_accounts WHERE status = 'Need Revision'")
             ];
             echo json_encode(['success' => true, 'data' => $data]);
             break;

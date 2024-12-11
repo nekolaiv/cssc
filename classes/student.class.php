@@ -82,11 +82,11 @@ class Student
     // UPDATING STUDENT STATUS
     private function _updateStudentStatus($email){
         if($this->_isEntryPending($email)){
-            $sql = 'UPDATE registered_students SET status = "Pending" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Pending" WHERE email = :email;';
         } else if($this->_isEntryVerified($email)){
-            $sql = 'UPDATE registered_students SET status = "Verified" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Verified" WHERE email = :email;';
         } else {
-            $sql = 'UPDATE registered_students SET status = "Not Submitted" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Not Submitted" WHERE email = :email;';
         }
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -251,7 +251,7 @@ class Student
 
     private function _getStudentData($email){
         $this->_updateStudentStatus($email);
-        $sql = "SELECT * FROM registered_students WHERE email = :email LIMIT 1;";
+        $sql = "SELECT * FROM student_accounts WHERE email = :email LIMIT 1;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         $student = NULL;

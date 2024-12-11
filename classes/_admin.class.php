@@ -171,19 +171,19 @@ class Admin {
     }
 
     public function createStudent($data) {
-        $query = "INSERT INTO registered_students (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
+        $query = "INSERT INTO student_accounts (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
                   VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, 'student')";
         return $this->database->execute($query, $data);
     }
 
     public function getAllStudents() {
-        $query = "SELECT * FROM registered_students";
+        $query = "SELECT * FROM student_accounts";
         return $this->database->fetchAll($query);
     }
 
     public function updateStudent($data)
     {
-        $query = "UPDATE registered_students SET 
+        $query = "UPDATE student_accounts SET 
             student_id = :student_id, 
             email = :email, 
             first_name = :first_name, 
@@ -224,19 +224,19 @@ class Admin {
     
 
     public function deleteStudent($user_id) {
-        $query = "DELETE FROM registered_students WHERE user_id = :user_id";
+        $query = "DELETE FROM student_accounts WHERE user_id = :user_id";
         return $this->database->execute($query, ['user_id' => $user_id]);
     }
 
     public function getStudentById($user_id) {
-        $query = "SELECT * FROM registered_students WHERE user_id = :user_id LIMIT 1";
+        $query = "SELECT * FROM student_accounts WHERE user_id = :user_id LIMIT 1";
     
         // Execute the query with the user_id as a parameter
         return $this->database->fetchOne($query, ['user_id' => $user_id]);
     }
 
     public function studentIdExists($student_id, $exclude_user_id = null) {
-        $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id";
+        $query = "SELECT COUNT(*) FROM student_accounts WHERE student_id = :student_id";
         if ($exclude_user_id) {
             $query .= " AND user_id != :exclude_user_id";
         }
@@ -254,7 +254,7 @@ class Admin {
 
     public function studentIdExistsForOther($student_id, $user_id)
 {
-    $query = "SELECT COUNT(*) FROM registered_students WHERE student_id = :student_id AND user_id != :user_id";
+    $query = "SELECT COUNT(*) FROM student_accounts WHERE student_id = :student_id AND user_id != :user_id";
     $stmt = $this->database->connect()->prepare($query);
     $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);

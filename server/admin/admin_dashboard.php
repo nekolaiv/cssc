@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'getCounts') {
         try {
-            $students = $db->fetchOne("SELECT COUNT(*) as count FROM registered_students")['count'] ?? 0;
+            $students = $db->fetchOne("SELECT COUNT(*) as count FROM student_accounts")['count'] ?? 0;
             $staff = $db->fetchOne("SELECT COUNT(*) as count FROM staff_accounts")['count'] ?? 0;
             $admins = $db->fetchOne("SELECT COUNT(*) as count FROM admin_accounts")['count'] ?? 0;
 

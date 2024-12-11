@@ -26,7 +26,7 @@ class Staff {
                 e.created_at,
                 rs.status
             FROM students_unverified_entries e
-            LEFT JOIN registered_students rs ON e.student_id = rs.student_id
+            LEFT JOIN student_accounts rs ON e.student_id = rs.student_id
         ";
     
         return $this->database->fetchAll($query);
@@ -76,7 +76,7 @@ public function verifyEntry($entry_id) {
         $deleteStmt->execute([':entry_id' => $entry_id]);
 
         // Update student status
-        $updateStatusQuery = "UPDATE registered_students SET status = 'Verified' WHERE student_id = :student_id";
+        $updateStatusQuery = "UPDATE student_accounts SET status = 'Verified' WHERE student_id = :student_id";
         $statusStmt = $connection->prepare($updateStatusQuery);
         $statusStmt->execute([':student_id' => $entry['student_id']]);
 
@@ -98,7 +98,7 @@ public function rejectEntry($entry_id) {
             throw new Exception("Entry with ID $entry_id not found.");
         }
 
-        $updateStatusQuery = "UPDATE registered_students SET status = 'Need Revision' WHERE student_id = :student_id";
+        $updateStatusQuery = "UPDATE student_accounts SET status = 'Need Revision' WHERE student_id = :student_id";
         $this->database->execute($updateStatusQuery, [':student_id' => $entry['student_id']]);
 
         return true;
@@ -161,7 +161,7 @@ public function removeVerifiedEntry($entry_id) {
         $stmt->execute();
 
         // Update the student's status to Pending
-        $updateStatusQuery = "UPDATE registered_students SET status = 'Pending' WHERE student_id = :student_id";
+        $updateStatusQuery = "UPDATE student_accounts SET status = 'Pending' WHERE student_id = :student_id";
         $updateStatusStmt = $connection->prepare($updateStatusQuery);
         $updateStatusStmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
         $updateStatusStmt->execute();
