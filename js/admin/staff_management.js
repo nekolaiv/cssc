@@ -72,7 +72,6 @@ $(document).ready(function () {
       });
     }
 
-    attachEventListeners();
   }
 
   function setupPagination(data) {

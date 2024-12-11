@@ -11,13 +11,13 @@
                     <!-- Student ID -->
                     <div class="mb-3">
                         <label for="edit_student_id" class="form-label">Student ID</label>
-                        <input type="text" class="form-control" id="edit_student_id" name="student_id" required>
+                        <input type="text" class="form-control" id="edit_student_id" name="student_id">
                         <div class="invalid-feedback">Student ID is required.</div>
                     </div>
                     <!-- First Name -->
                     <div class="mb-3">
                         <label for="edit_first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="edit_first_name" name="first_name" required>
+                        <input type="text" class="form-control" id="edit_first_name" name="first_name">
                         <div class="invalid-feedback">First Name is required.</div>
                     </div>
                     <!-- Middle Name -->
@@ -28,31 +28,31 @@
                     <!-- Last Name -->
                     <div class="mb-3">
                         <label for="edit_last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="edit_last_name" name="last_name" required>
+                        <input type="text" class="form-control" id="edit_last_name" name="last_name">
                         <div class="invalid-feedback">Last Name is required.</div>
                     </div>
                     <!-- Email -->
                     <div class="mb-3">
                         <label for="edit_email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="edit_email" name="email" required>
+                        <input type="email" class="form-control" id="edit_email" name="email">
                         <div class="invalid-feedback">Valid Email is required.</div>
                     </div>
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="edit_course" class="form-label">Course</label>
-                        <input type="text" class="form-control" id="edit_course" name="course" required>
+                        <input type="text" class="form-control" id="edit_course" name="course" >
                         <div class="invalid-feedback">Course is required.</div>
                     </div>
                     <!-- Year Level -->
                     <div class="mb-3">
                         <label for="edit_year_level" class="form-label">Year Level</label>
-                        <input type="number" class="form-control" id="edit_year_level" name="year_level" min="1" max="10" required>
+                        <input type="number" class="form-control" id="edit_year_level" name="year_level" min="1" max="10" >
                         <div class="invalid-feedback">Year Level is required.</div>
                     </div>
                     <!-- Section -->
                     <div class="mb-3">
                         <label for="edit_section" class="form-label">Section</label>
-                        <input type="text" class="form-control" id="edit_section" name="section" required>
+                        <input type="text" class="form-control" id="edit_section" name="section">
                         <div class="invalid-feedback">Section is required.</div>
                     </div>
                 </div>
