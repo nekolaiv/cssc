@@ -7,17 +7,6 @@ $(document).ready(function () {
   // Load students on page load
   loadStudents();
 
-  const studentForm = document.getElementById("studentForm");
-
-  // Bootstrap validation styles
-  studentForm.addEventListener("submit", function (e) {
-    if (!studentForm.checkValidity()) {
-      e.preventDefault(); // Prevent form submission
-      e.stopPropagation(); // Stop event bubbling
-    }
-    studentForm.classList.add("was-validated"); // Add validation classes
-  });
-
   // Load all students into the table
   function loadStudents() {
     $.ajax({
@@ -46,35 +35,35 @@ $(document).ready(function () {
     tableBody.empty(); // Clear table before appending new rows
 
     if (visibleStudents.length === 0) {
-      tableBody.append(`
-              <tr>
-                  <td colspan="7" class="text-center">No data found.</td>
-              </tr>
-          `);
+      tableBody.append(
+        `<tr>
+          <td colspan="7" class="text-center">No data found.</td>
+        </tr>`
+      );
       return; // Exit the function early since there's no data to process
     }
 
     visibleStudents.forEach((student) => {
-      tableBody.append(`
-              <tr>
-                  <td>${student.student_id}</td>
-                  <td>${student.first_name} ${student.middle_name ?? ""} ${
+      tableBody.append(
+        `<tr>
+          <td>${student.student_id}</td>
+          <td>${student.first_name} ${student.middle_name ?? ""} ${
         student.last_name
       }</td>
-                  <td>${student.email}</td>
-                  <td>${student.course}</td>
-                  <td>${student.year_level}</td>
-                  <td>${student.section}</td>
-                  <td>
-                      <button class="btn btn-sm btn-warning edit-btn" data-id="${
-                        student.user_id
-                      }">Edit</button>
-                      <button class="btn btn-sm btn-danger delete-btn" data-id="${
-                        student.user_id
-                      }">Delete</button>
-                  </td>
-              </tr>
-          `);
+          <td>${student.email}</td>
+          <td>${student.course}</td>
+          <td>${student.year_level}</td>
+          <td>${student.section}</td>
+          <td>
+              <button class="btn btn-sm btn-warning edit-btn" data-id="${
+                student.user_id
+              }">Edit</button>
+              <button class="btn btn-sm btn-danger delete-btn" data-id="${
+                student.user_id
+              }">Delete</button>
+          </td>
+        </tr>`
+      );
     });
 
     attachEventListeners();
@@ -87,11 +76,11 @@ $(document).ready(function () {
 
     for (let i = 1; i <= pageCount; i++) {
       const activeClass = i === currentPage ? "active" : "";
-      pagination.append(`
-              <li class="page-item ${activeClass}">
-                  <a class="page-link" href="#" data-page="${i}">${i}</a>
-              </li>
-          `);
+      pagination.append(
+        `<li class="page-item ${activeClass}">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>`
+      );
     }
 
     $(".page-link").on("click", function (e) {
@@ -133,131 +122,135 @@ $(document).ready(function () {
   // Open "Add Student" modal
   $("#addStudentBtn").click(function () {
     console.log("Add Student Button Clicked"); // Debug log
-    $("#studentForm")[0].reset();
-    $("#user_id").val(""); // Clear hidden user_id field
-    $("#password").closest(".mb-3").show(); // Show password field for adding
-    $("#studentModalLabel").text("Add Student");
-    $("#studentModal").modal("show");
+    $("#addStudentForm")[0].reset(); 
+    $("#addStudentModal").modal("show");
   });
 
-  // Handle form submission for Add/Edit
-  $("#studentForm").submit(function (e) {
+  // Open "Edit Student" modal
+  $(document).on("click", ".edit-btn", function () {
+    const user_id = $(this).data("id");
+    console.log("Edit Button Clicked for User ID:", user_id);
+
+    $.ajax({
+      url: "/cssc/server/admin/student_server.php",
+      type: "POST",
+      data: { action: "get", user_id: user_id },
+      success: function (response) {
+        console.log("Edit Response:", response);
+        const student = JSON.parse(response);
+
+        if (student.error) {
+          alert("Error fetching student data.");
+          return;
+        }
+
+        $("#edit_user_id").val(student.user_id);
+        $("#edit_student_id").val(student.student_id);
+        $("#edit_first_name").val(student.first_name);
+        $("#edit_middle_name").val(student.middle_name ?? "");
+        $("#edit_last_name").val(student.last_name);
+        $("#edit_email").val(student.email);
+        $("#edit_course").val(student.course);
+        $("#edit_year_level").val(student.year_level);
+        $("#edit_section").val(student.section);
+
+        $("#editStudentModal").modal("show");
+      },
+      error: function () {
+        alert("Error fetching student details.");
+      },
+    });
+  });
+
+  // Handle form submission for "Add Student"
+  $("#addStudentForm").submit(function (e) {
     e.preventDefault();
-
-    const action = $("#user_id").val() ? "update" : "create";
-    let formData = $(this).serialize();
-
-    if (!$("#password").val()) {
-      formData = formData.replace(/&password=[^&]*/, ""); // Remove password if empty
-    }
-
-    formData += `&action=${action}`;
-    console.log("Submitting Form Data:", formData);
+    const formData = $(this).serialize() + "&action=create";
+    console.log("Submitting Add Student Form Data:", formData);
 
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
       type: "POST",
       data: formData,
       success: function (response) {
-        console.log("Raw Response:", response);
+        console.log("Add Student Response:", response);
         const result = JSON.parse(response);
 
-        // Clear previous error messages
-        $(".form-control").removeClass("is-invalid");
-        $(".invalid-feedback").text("");
-        $("#studentModal .modal-content").removeClass("border-danger");
-
         if (result.success) {
-          alert("Student saved successfully!");
-          $("#studentModal").modal("hide");
+          alert("Student added successfully!");
+          $("#addStudentModal").modal("hide");
           loadStudents();
-        } else if (result.errors) {
-          // Display error messages
-          console.log("Validation Errors:", result.errors); // Log validation errors
-          $("#studentModal .modal-content").addClass("border-danger");
-          Object.keys(result.errors).forEach(function (field) {
-            const errorMessage = result.errors[field];
-            const fieldElement = $(`[name="${field}"]`);
-            fieldElement.addClass("is-invalid");
-            fieldElement.next(".invalid-feedback").text(errorMessage).show();
-          });
         } else {
-          alert("An unexpected error occurred.");
+          displayFormErrors("#addStudentForm", result.errors);
         }
       },
       error: function (xhr, status, error) {
-        console.error("Failed to submit form:", error);
+        console.error("Failed to add student:", error);
       },
     });
   });
 
-  // Attach event listeners for Edit and Delete buttons
-  function attachEventListeners() {
-    $(".edit-btn").click(function () {
-      const user_id = $(this).data("id");
-      console.log("Triggering edit for User ID:", user_id);
+  // Handle form submission for "Edit Student"
+  $("#editStudentForm").submit(function (e) {
+    e.preventDefault();
+    const formData = $(this).serialize() + "&action=update";
+    console.log("Submitting Edit Student Form Data:", formData);
 
+    $.ajax({
+      url: "/cssc/server/admin/student_server.php",
+      type: "POST",
+      data: formData,
+      success: function (response) {
+        console.log("Edit Student Response:", response);
+        const result = JSON.parse(response);
+
+        if (result.success) {
+          alert("Student updated successfully!");
+          $("#editStudentModal").modal("hide");
+          loadStudents();
+        } else {
+          displayFormErrors("#editStudentForm", result.errors);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to update student:", error);
+      },
+    });
+  });
+
+  // Display form errors
+  function displayFormErrors(formSelector, errors) {
+    $(".form-control").removeClass("is-invalid");
+    $(".invalid-feedback").text("");
+
+    Object.keys(errors).forEach(function (field) {
+      const errorMessage = errors[field];
+      const fieldElement = $(formSelector + " [name='" + field + "']");
+      fieldElement.addClass("is-invalid");
+      fieldElement.next(".invalid-feedback").text(errorMessage).show();
+    });
+  }
+
+  // Attach event listeners for Delete buttons
+  $(document).on("click", ".delete-btn", function () {
+    const user_id = $(this).data("id");
+    console.log("Delete Button Clicked for User ID:", user_id);
+
+    if (confirm("Are you sure you want to delete this student?")) {
       $.ajax({
         url: "/cssc/server/admin/student_server.php",
         type: "POST",
-        data: { action: "get", user_id: user_id },
+        data: { action: "delete", user_id },
         success: function (response) {
-          console.log("Edit response:", response);
-          const student = JSON.parse(response);
-
-          if (student.error) {
-            console.error("Error fetching student:", student.error);
-            alert("Error: " + student.error);
-            return;
-          }
-
-          // Populate the modal with data
-          $("#user_id").val(student.user_id);
-          $("#student_id").val(student.student_id);
-          $("#first_name").val(student.first_name);
-          $("#middle_name").val(student.middle_name ?? "");
-          $("#last_name").val(student.last_name);
-          $("#email").val(student.email);
-          $("#password").closest(".mb-3").hide(); // Hide password field for editing
-          $("#course").val(student.course);
-          $("#year_level").val(student.year_level);
-          $("#section").val(student.section);
-
-          // Reset error messages and modal styles
-          $(".form-control").removeClass("is-invalid");
-          $(".invalid-feedback").text("");
-          $("#studentModal .modal-content").removeClass("border-danger");
-
-          $("#studentModalLabel").text("Edit Student");
-          $("#studentModal").modal("show");
+          console.log("Delete Student Response:", response);
+          const result = JSON.parse(response);
+          alert(result.success ? "Student deleted successfully!" : "Failed to delete student.");
+          loadStudents();
         },
         error: function (xhr, status, error) {
-          console.error("Failed to fetch student data:", error);
+          console.error("Failed to delete student:", error);
         },
       });
-    });
-
-    $(".delete-btn").click(function () {
-      const user_id = $(this).data("id");
-      console.log("Triggering delete for User ID:", user_id);
-      if (confirm("Are you sure you want to delete this student?")) {
-        $.ajax({
-          url: "/cssc/server/admin/student_server.php",
-          type: "POST",
-          data: { action: "delete", user_id },
-          success: function (response) {
-            console.log("Delete Response:", response);
-            const result = JSON.parse(response);
-            alert(
-              result.success ? "Deleted successfully!" : "Failed to delete."
-            );
-            loadStudents();
-          },
-          error: function (xhr, status, error) {
-            console.error("Failed to delete student:", error);
-          },
-        });
-      }
-    });
-  }
+    }
+  });
 });

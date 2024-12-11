@@ -43,6 +43,7 @@
     </div>
 
     <!-- Include Modals -->
-    <?php include 'addedit-student-modal.php'; ?>
+    <?php include 'add-student-modal.php'; ?>
+    <?php include 'edit-student-modal.php'; ?>
 </body>
 </html>
