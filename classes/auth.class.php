@@ -155,38 +155,40 @@ class Auth{
 		return $count > 0;
 	}
 
-	// REGISTRATION FUNCTIONS
-	public function register(string $email, string $password){
-		if($this->emailExists($email, 'student')){
-			return 'email exists';
+	// RESET/SET PASSWORD FUNCTIONS
+	public function resetPassword($email, $new_password){
+		$role = $this->_detectRole($email);
+		if($this->emailExists($email, $role) === false){
+			return ['email does not exists', ' '];
 		} else {
-			$student = $this->_isCCSEmail($email);
-			if($student){
-				$sql = "INSERT INTO student_accounts(email, password, first_name, last_name, middle_name, course, year_level, section, adviser_name) 
-				VALUES(:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, :adviser_name)";
-				$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-				$adviser = $this->_getAdviser($student['year_level']);
-				$adviser_name = $adviser['adviser_name'] ?? ' ';
-				$role = 'student';
-				$query = $this->database->connect()->prepare($sql);
-				$query->bindParam(':student_id', $student['student_id']);
-				$query->bindParam(':email', $email);
-				$query->bindParam(':password', $hashed_password);
-				$query->bindParam(':first_name', $student['first_name']);
-				$query->bindParam(':last_name', $student['last_name']);
-				$query->bindParam(':middle_name', $student['middle_name']);
-				$query->bindParam(':course', $student['course']);
-				$query->bindParam(':year_level', $student['year_level']);
-				$query->bindParam(':section', $student['section']);
-				$query->bindParam(':adviser_name', $adviser_name);
-				if($query->execute()){
-					return true;
-				} else {
-					return 'execution failed';
-				}
-			} else {
-				return 'email is not from CCS';
-			}
+			if($role === 'student'){ $sql = "UPDATE student_accounts set password = :password WHERE email = :email"; }
+			else if($role === 'staff'){ $sql = "UPDATE staff_accounts set password = :password WHERE email = :email"; }
+			else if($role === 'admin'){ $sql = "UPDATE admin_accounts set password = :password WHERE email = :email"; }
+		}
+
+		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+		if($this->_retrievePassword($email, $new_password)){
+			return [' ', 'similar to old password'];
+		} else {
+			$query = $this->database->connect()->prepare($sql);
+			$query->bindParam(':email', $email);
+			$query->bindParam(':password', $new_hashed_password);
+			return $query->execute();
+		}
+	}
+
+	private function _retrievePassword($email, $password){
+		$sql = "SELECT password FROM student_accounts WHERE email = :email";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$retrieved_password=null;
+		if($query->execute()){
+			$retrieved_password = $query->fetch();
+		}
+		if(password_verify($password, $retrieved_password["password"])){ 
+			return true;
+		} else { 
+			return false; 
 		}
 	}
 
@@ -203,18 +205,64 @@ class Auth{
 		return $count > 0;
 	}
 
-	private function _isCCSEmail($email){
-		$sql = "SELECT * FROM unregistered_students WHERE email = :email LIMIT 1;";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$student=NULL;
-		if($query->execute()){
-			$student = $query->fetch(PDO::FETCH_ASSOC);
-			return $student;
-		} else {
-			return false;
-		}
-	}
+	// REGISTRATION FUNCTIONS - DEPRECATED
+	// public function register(string $email, string $password){
+	// 	if($this->emailExists($email, 'student')){
+	// 		return 'email exists';
+	// 	} else {
+	// 		$student = $this->_isCCSEmail($email);
+	// 		if($student){
+	// 			$sql = "INSERT INTO student_accounts(email, password, first_name, last_name, middle_name, course, year_level, section, adviser_name) 
+	// 			VALUES(:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, :adviser_name)";
+	// 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+	// 			$adviser = $this->_getAdviser($student['year_level']);
+	// 			$adviser_name = $adviser['adviser_name'] ?? ' ';
+	// 			$role = 'student';
+	// 			$query = $this->database->connect()->prepare($sql);
+	// 			$query->bindParam(':student_id', $student['student_id']);
+	// 			$query->bindParam(':email', $email);
+	// 			$query->bindParam(':password', $hashed_password);
+	// 			$query->bindParam(':first_name', $student['first_name']);
+	// 			$query->bindParam(':last_name', $student['last_name']);
+	// 			$query->bindParam(':middle_name', $student['middle_name']);
+	// 			$query->bindParam(':course', $student['course']);
+	// 			$query->bindParam(':year_level', $student['year_level']);
+	// 			$query->bindParam(':section', $student['section']);
+	// 			$query->bindParam(':adviser_name', $adviser_name);
+	// 			if($query->execute()){
+	// 				return true;
+	// 			} else {
+	// 				return 'execution failed';
+	// 			}
+	// 		} else {
+	// 			return 'email is not from CCS';
+	// 		}
+	// 	}
+	// }
+
+	// private function _isCCSEmail($email){
+	// 	$sql = "SELECT * FROM unregistered_students WHERE email = :email LIMIT 1;";
+	// 	$query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':email', $email);
+	// 	$student=NULL;
+	// 	if($query->execute()){
+	// 		$student = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $student;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
+
+	// private function _getAdviser($year_level){
+	// 	$sql = "SELECT id, CONCAT(last_name, ', ', first_name, ' ', middle_name) as adviser_name FROM advisers WHERE year_level = :year_level LIMIT 1";
+	// 	$query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':year_level', $year_level);
+	// 	$adviser=NULL;
+	// 	if($query->execute()){
+	// 		$adviser = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $adviser;
+	// 	}
+	// }
 
 	// private function _isFromCS($email){
 	// 	$sql = "SELECT COUNT(*) FROM List_of_CS_Students WHERE email = :email";
@@ -243,53 +291,9 @@ class Auth{
 	// 	return $count > 0;
 	// }
 
-	private function _getAdviser($year_level){
-		$sql = "SELECT id, CONCAT(last_name, ', ', first_name, ' ', middle_name) as adviser_name FROM advisers WHERE year_level = :year_level LIMIT 1";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':year_level', $year_level);
-		$adviser=NULL;
-		if($query->execute()){
-			$adviser = $query->fetch(PDO::FETCH_ASSOC);
-			return $adviser;
-		}
-	}
+	
 
-	// RESET PASSWORD FUNCTIONS
-	public function resetPassword($email, $new_password){
-		$role = $this->_detectRole($email);
-		if($this->emailExists($email, $role) === false){
-			return ['email does not exists', ' '];
-		} else {
-			if($role === 'student'){ $sql = "UPDATE student_accounts set password = :password WHERE email = :email"; }
-			else if($role === 'staff'){ $sql = "UPDATE staff_accounts set password = :password WHERE email = :email"; }
-			else if($role === 'admin'){ $sql = "UPDATE admin_accounts set password = :password WHERE email = :email"; }
-		}
-
-		$new_hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-		if(!$this->_retrievePassword($email, $new_password)){
-			$query = $this->database->connect()->prepare($sql);
-			$query->bindParam(':email', $email);
-			$query->bindParam(':password', $new_hashed_password);
-			return $query->execute();
-		} else {
-			return [' ', 'similar to old password'];
-		}
-	}
-
-	private function _retrievePassword($email, $password){
-		$sql = "SELECT password FROM student_accounts WHERE email = :email";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$retrieved_password=null;
-		if($query->execute()){
-			$retrieved_password = $query->fetch();
-		}
-		if(password_verify($password, $retrieved_password["password"])){ 
-			return true;
-		} else { 
-			return false; 
-		}
-	}
+	
 
 
 	// =================== DUMPS BUT MIGHT BE USEFUL =================== 
