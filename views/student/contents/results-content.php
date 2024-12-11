@@ -20,10 +20,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
     <div id="result-action-buttons">
         <a href="home" id="result-home-link" class="nav-items"><button>Home</button></a>
         <a href="calculate" id="calculate-link" class="nav-items"><button>Edit Inputs</button></a>
-        <form id="validation-buttons" action="" method="POST" enctype="multipart/form-data">
-            <button type="submit" name="validate-button" id="validate-button"> <?php echo $_SESSION['validate-button'] ?? "Validate Entry" ?></button>
-            <input type="file" name="image-proof" id="image-proof" accept="image/*" title="Screenshot of your Complete Portal Grades" required>
-        </form>
+        <?php if($_SESSION['GWA']['gwa-score'] < 2.0){ ?>
+            <form id="validation-buttons" action="" method="POST" enctype="multipart/form-data">
+                <button type="submit" name="validate-button" id="validate-button"> <?php echo $_SESSION['validate-button'] ?? "Validate Entry" ?></button>
+                <input type="file" name="image-proof" id="image-proof" accept="image/*" title="Screenshot of your Complete Portal Grades" required>
+            </form>
+        <?php }?>
         <?php if(isset($image_proof)){
             // echo '<img src="data:image/jpeg;base64,' . base64_encode($_SESSION['image-proof']) . '" />';
             
