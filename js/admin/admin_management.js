@@ -58,7 +58,6 @@ $(document).ready(function () {
       });
     }
 
-    attachEventListeners();
   }
 
   // Set up pagination
