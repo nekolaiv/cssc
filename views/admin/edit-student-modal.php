@@ -40,7 +40,7 @@
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="edit_course" class="form-label">Course</label>
-                        <select class="form-control" id="edit_course" name="course">
+                        <select class="form-control course-dropdown" id="edit_course" name="course_id">
                             <option value="">Select a course</option>
                             <!-- Options will be dynamically populated -->
                         </select>

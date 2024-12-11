@@ -16,7 +16,6 @@ class Admin {
     public function __construct() {
         $this->database = new Database();
     }
-    
     public function getAdvisers() {
         $query = "SELECT id, CONCAT(first_name, ' ', last_name) AS full_name, email, course, year_level 
                   FROM adviser";
@@ -170,9 +169,23 @@ class Admin {
         return $this->database->fetchColumn($query, $params) > 0;
     }
 
+    public function getNextUserId() {
+        // Fetch the highest user_id from the student_accounts table
+        $query = "SELECT MAX(user_id) AS max_user_id FROM student_accounts";
+        $result = $this->database->fetchOne($query);
+    
+        // If no rows exist, start from 1; otherwise, increment the max_user_id
+        return ($result && $result['max_user_id']) ? $result['max_user_id'] + 1 : 1;
+    }
+
     public function createStudent($data) {
-        $query = "INSERT INTO student_accounts (student_id, email, password, first_name, last_name, middle_name, course_id, year_level, section, role)
-                  VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course_id, :year_level, :section, 'student')";
+        // Determine the next user_id
+        $data['user_id'] = $this->getNextUserId();
+    
+        // SQL query to insert a new student
+        $query = "INSERT INTO student_accounts (user_id, student_id, email, password, first_name, last_name, middle_name, course_id, year_level, section, role)
+                  VALUES (:user_id, :student_id, :email, :password, :first_name, :last_name, :middle_name, :course_id, :year_level, :section, 'student')";
+    
         return $this->database->execute($query, $data);
     }
     
@@ -197,7 +210,7 @@ class Admin {
             first_name = :first_name, 
             middle_name = :middle_name, 
             last_name = :last_name, 
-            course = :course, 
+            course_id = :course_id, 
             year_level = :year_level, 
             section = :section";
     
@@ -216,7 +229,7 @@ class Admin {
         $stmt->bindParam(':first_name', $data['first_name']);
         $stmt->bindParam(':middle_name', $data['middle_name']);
         $stmt->bindParam(':last_name', $data['last_name']);
-        $stmt->bindParam(':course', $data['course']);
+        $stmt->bindParam(':course_id', $data['course_id']);
         $stmt->bindParam(':year_level', $data['year_level']);
         $stmt->bindParam(':section', $data['section']);
         $stmt->bindParam(':user_id', $data['user_id']);
