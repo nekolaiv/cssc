@@ -40,13 +40,16 @@
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="edit_course" class="form-label">Course</label>
-                        <input type="text" class="form-control" id="edit_course" name="course" >
+                        <select class="form-control" id="edit_course" name="course">
+                            <option value="">Select a course</option>
+                            <!-- Options will be dynamically populated -->
+                        </select>
                         <div class="invalid-feedback">Course is required.</div>
                     </div>
                     <!-- Year Level -->
                     <div class="mb-3">
                         <label for="edit_year_level" class="form-label">Year Level</label>
-                        <input type="number" class="form-control" id="edit_year_level" name="year_level" min="1" max="10" >
+                        <input type="number" class="form-control" id="edit_year_level" name="year_level" min="1" max="10">
                         <div class="invalid-feedback">Year Level is required.</div>
                     </div>
                     <!-- Section -->

@@ -45,7 +45,9 @@
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="add_course" class="form-label">Course</label>
-                        <input type="text" class="form-control" id="add_course" name="course" required>
+                        <select class="form-control course-dropdown" id="add_course" name="course_id" required>
+                            <option value="">Select a course</option>
+                        </select>
                         <div class="invalid-feedback">Course is required.</div>
                     </div>
                     <!-- Year Level -->

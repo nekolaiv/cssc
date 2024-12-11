@@ -4,8 +4,9 @@ $(document).ready(function () {
   const rowsPerPage = 5; // Rows per page
   let currentPage = 1; // Current page
 
-  // Load students on page load
+  // Load students and courses on page load
   loadStudents();
+  loadCourses();
 
   // Load all students into the table
   function loadStudents() {
@@ -22,6 +23,31 @@ $(document).ready(function () {
       },
       error: function (xhr, status, error) {
         console.error("Failed to load students:", error);
+      },
+    });
+  }
+
+  // Load courses into the dropdowns
+  function loadCourses() {
+    $.ajax({
+      url: "/cssc/server/admin/student_server.php",
+      type: "POST",
+      data: { action: "get_courses" },
+      success: function (response) {
+        console.log("Load Courses Response:", response);
+        const courses = JSON.parse(response);
+        const courseDropdowns = $(".course-dropdown");
+        courseDropdowns.empty();
+        courseDropdowns.append('<option value="">Select a course</option>');
+
+        courses.forEach((course) => {
+          courseDropdowns.append(
+            `<option value="${course.course_id}">${course.course_code}</option>`
+          );
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to load courses:", error);
       },
     });
   }
@@ -51,7 +77,7 @@ $(document).ready(function () {
         student.last_name
       }</td>
           <td>${student.email}</td>
-          <td>${student.course}</td>
+          <td>${student.course_code}</td>
           <td>${student.year_level}</td>
           <td>${student.section}</td>
           <td>
@@ -65,7 +91,6 @@ $(document).ready(function () {
         </tr>`
       );
     });
-
   }
 
   function setupPagination() {
@@ -121,7 +146,7 @@ $(document).ready(function () {
   // Open "Add Student" modal
   $("#addStudentBtn").click(function () {
     console.log("Add Student Button Clicked"); // Debug log
-    $("#addStudentForm")[0].reset(); 
+    $("#addStudentForm")[0].reset();
     $("#addStudentModal").modal("show");
   });
 
@@ -149,7 +174,7 @@ $(document).ready(function () {
         $("#edit_middle_name").val(student.middle_name ?? "");
         $("#edit_last_name").val(student.last_name);
         $("#edit_email").val(student.email);
-        $("#edit_course").val(student.course);
+        $("#edit_course").val(student.course_id); // Update course dropdown
         $("#edit_year_level").val(student.year_level);
         $("#edit_section").val(student.section);
 
@@ -243,7 +268,11 @@ $(document).ready(function () {
         success: function (response) {
           console.log("Delete Student Response:", response);
           const result = JSON.parse(response);
-          alert(result.success ? "Student deleted successfully!" : "Failed to delete student.");
+          alert(
+            result.success
+              ? "Student deleted successfully!"
+              : "Failed to delete student."
+          );
           loadStudents();
         },
         error: function (xhr, status, error) {

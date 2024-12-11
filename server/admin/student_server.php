@@ -4,22 +4,22 @@ require_once '../../classes/_admin.class.php';
 require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = isset($_POST['action']) ? cleanInput($_POST['action']) : '';
+    $action = cleanInput($_POST['action'] ?? '');
     $student = new Admin();
 
     switch ($action) {
         case 'create':
             $errors = [];
             $data = [
-                'student_id' => cleanInput($_POST['student_id']),
-                'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']),
-                'first_name' => cleanInput($_POST['first_name']),
+                'student_id' => cleanInput($_POST['student_id'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''),
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
-                'last_name' => cleanInput($_POST['last_name']),
-                'course' => cleanInput($_POST['course']),
-                'year_level' => intval(cleanInput($_POST['year_level'])),
-                'section' => cleanInput($_POST['section']),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'course_id' => cleanInput($_POST['course_id'] ?? ''),
+                'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
+                'section' => cleanInput($_POST['section'] ?? ''),
             ];
 
             // Validation
@@ -49,8 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['password'] = 'Password is required.';
             }
 
-            if (empty($data['course'])) {
-                $errors['course'] = 'Course is required.';
+            if (empty($data['course_id'])) {
+                $errors['course_id'] = 'Course is required.';
+            } elseif (!ctype_digit($data['course_id'])) {
+                $errors['course_id'] = 'Invalid course ID.';
             }
 
             if (empty($data['year_level'])) {
@@ -85,16 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'update':
             $errors = [];
             $data = [
-                'user_id' => intval(cleanInput($_POST['user_id'])),
-                'student_id' => cleanInput($_POST['student_id']),
-                'email' => cleanInput($_POST['email']),
+                'user_id' => intval(cleanInput($_POST['user_id'] ?? 0)),
+                'student_id' => cleanInput($_POST['student_id'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
                 'password' => isset($_POST['password']) ? cleanInput($_POST['password']) : '',
-                'first_name' => cleanInput($_POST['first_name']),
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
-                'last_name' => cleanInput($_POST['last_name']),
-                'course' => cleanInput($_POST['course']),
-                'year_level' => intval(cleanInput($_POST['year_level'])),
-                'section' => cleanInput($_POST['section']),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'course_id' => cleanInput($_POST['course_id'] ?? ''),
+                'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
+                'section' => cleanInput($_POST['section'] ?? ''),
             ];
 
             // Validation
@@ -120,8 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['email'] = 'Invalid email format.';
             }
 
-            if (empty($data['course'])) {
-                $errors['course'] = 'Course is required.';
+            if (empty($data['course_id'])) {
+                $errors['course_id'] = 'Course is required.';
             }
 
             if (empty($data['year_level'])) {
@@ -163,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
 
         case 'delete':
-            $user_id = intval(cleanInput($_POST['user_id']));
+            $user_id = intval(cleanInput($_POST['user_id'] ?? 0));
             $studentData = $student->getStudentById($user_id);
             $response = $student->deleteStudent($user_id);
 
@@ -188,6 +190,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 echo json_encode(['error' => 'Student not found']);
             }
+            break;
+
+        case 'get_courses':
+            $courses = $student->getAllCourses();
+            echo json_encode($courses);
             break;
 
         default:

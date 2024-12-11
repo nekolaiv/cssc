@@ -171,13 +171,21 @@ class Admin {
     }
 
     public function createStudent($data) {
-        $query = "INSERT INTO student_accounts (student_id, email, password, first_name, last_name, middle_name, course, year_level, section, role)
-                  VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, 'student')";
+        $query = "INSERT INTO student_accounts (student_id, email, password, first_name, last_name, middle_name, course_id, year_level, section, role)
+                  VALUES (:student_id, :email, :password, :first_name, :last_name, :middle_name, :course_id, :year_level, :section, 'student')";
         return $this->database->execute($query, $data);
     }
-
+    
     public function getAllStudents() {
-        $query = "SELECT * FROM student_accounts";
+        $query = "
+            SELECT 
+                sa.*, 
+                c.course_code 
+            FROM 
+                student_accounts sa
+            LEFT JOIN 
+                courses c ON sa.course_id = c.course_id
+        ";
         return $this->database->fetchAll($query);
     }
 
@@ -229,11 +237,21 @@ class Admin {
     }
 
     public function getStudentById($user_id) {
-        $query = "SELECT * FROM student_accounts WHERE user_id = :user_id LIMIT 1";
-    
-        // Execute the query with the user_id as a parameter
+        $query = "
+            SELECT 
+                sa.*, 
+                c.course_code 
+            FROM 
+                student_accounts sa
+            LEFT JOIN 
+                courses c ON sa.course_id = c.course_id
+            WHERE 
+                sa.user_id = :user_id 
+            LIMIT 1
+        ";
         return $this->database->fetchOne($query, ['user_id' => $user_id]);
     }
+    
 
     public function studentIdExists($student_id, $exclude_user_id = null) {
         $query = "SELECT COUNT(*) FROM student_accounts WHERE student_id = :student_id";
@@ -303,5 +321,11 @@ public function logAudit($action, $details) {
     }
     return false;
 }
+
+public function getAllCourses() {
+    $query = "SELECT course_id, course_code FROM courses";
+    return $this->database->fetchAll($query);
+}
+
 }
 ?>
