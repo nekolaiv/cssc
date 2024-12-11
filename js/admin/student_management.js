@@ -136,8 +136,6 @@ $(document).ready(function () {
     $("#studentForm")[0].reset();
     $("#user_id").val(""); // Clear hidden user_id field
     $("#password").closest(".mb-3").show(); // Show password field for adding
-    $(".form-control").removeClass("is-invalid"); // Clear invalid styles
-    $(".invalid-feedback").text(""); // Clear error messages
     $("#studentModalLabel").text("Add Student");
     $("#studentModal").modal("show");
   });
