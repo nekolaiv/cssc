@@ -97,7 +97,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 
         <button type="submit" class="primary-button" name="form-action" value="attempt-reset-password">reset password</button>
-        <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">cancel</button></a>
+        <!-- <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">cancel</button></a> -->
     </form>
     <script src="/cssc/js/auth_show-password.js"></script>
 </body>

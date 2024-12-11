@@ -99,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
 
         <button type="submit" class="primary-button" name="form-action" value="attempt-login" tabindex="3">login</button>
-        <a href="register.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-register" tabindex="4">or register</button></a>
+        <!-- <a href="register.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-register" tabindex="4">or register</button></a> -->
     </form>
     <script src="/cssc/js/auth_show-password.js"></script>
 </body>
