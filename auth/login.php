@@ -45,6 +45,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
                 // echo the path or use header location depending on the structure of the code
             }
+        } else if($login_status === 'first login'){
+            header("Location: set-password.php");
         } else {
             $email_err = $login_status[0];
             $password_err = $login_status[1];

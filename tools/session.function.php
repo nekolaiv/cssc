@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$auth_files = ['login.php', 'register.php', 'forgot-password.php'];
+$auth_files = ['login.php', 'set-password.php', 'forgot-password.php'];
 $current_file = basename($_SERVER['PHP_SELF']);
 
 if (!isLoggedIn() && !in_array($current_file, $auth_files)) {

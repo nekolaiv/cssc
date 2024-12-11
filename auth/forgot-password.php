@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/auth.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 
 $required = '*';
@@ -39,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if($email_err == ' ' && $new_password_err == ' ' && $confirm_password_err == ' '){
         $reset_status = $auth->resetPassword($email, $new_password);
-        $reset_status = $auth->resetPassword($email, $new_password);
+        // $reset_status = $auth->resetPassword($email, $new_password);
         if($reset_status === true){
             $_SESSION['feedback'] = 'reset password successful';
             header("Location: login.php");

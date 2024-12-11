@@ -15,7 +15,7 @@ class Auth{
 	// LOGIN FUNCTIONS
 	public function login($email, $password) {
 		if($this->_detectRole($email) === 'student'){
-			$sql = "SELECT * FROM registered_students WHERE email = :email";
+			$sql = "SELECT * FROM student_accounts WHERE email = :email";
 		} else if($this->_detectRole($email) === 'staff'){
 			$sql = "SELECT * FROM staff_accounts WHERE email = :email";
 		} else if($this->_detectRole($email) === 'admin'){
@@ -25,6 +25,8 @@ class Auth{
 		}
 
 		$academic_term = $this->_getCurrentAcademicTerm();
+		$adviser = $this->_getStudentAdviser($email);
+		$course = $this->_getStudentCourse($email);
 		
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -33,7 +35,10 @@ class Auth{
 			$user = $query->fetch(PDO::FETCH_ASSOC);
 		}
 
-		if (!password_verify($password, $user['password'])){
+		if ($password == $user['password']){
+			// echo '<script> alert("First Login Detected!\nKindly create a strong password");</script>';
+			return 'first login';	
+        } else if (!password_verify($password, $user['password'])){
 			return [' ', 'incorrect password'];	
         } else {
 			if($user['role'] === 'student'){
@@ -41,10 +46,10 @@ class Auth{
 					'fullname' => $user['last_name'] . ', ' . $user['first_name'] . ' ' . $user['middle_name'],
 					'student-id' => $user['student_id'],
 					'email' => $user['email'],
-					'course' => $user['course'],
+					'course' => $course['course_name'],
 					'year-level' => $user['year_level'],
-					'adviser' => $user['adviser_name'],
-					'school-year' => $academic_term['school_year'],
+					'adviser' => $adviser['full_name'],
+					'school-year' => $academic_term['academic_year'],
 					'semester' => $academic_term['semester'],
 					'status' => $user['status']
 				];
@@ -69,8 +74,39 @@ class Auth{
     }
 
 	private function _getCurrentAcademicTerm(){
-		$sql = "SELECT * FROM current_academic_term";
+		$sql = "SELECT * FROM current_academic_term WHERE active = 1";
 		$query = $this->database->connect()->prepare($sql);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+	}
+
+	private function _getStudentAdviser($email){
+		$sql = "SELECT sa.adviser_id as adviser_id, CONCAT(a.first_name, ', ', a.last_name, ' ', a.middle_name) as full_name
+		FROM student_accounts as sa LEFT JOIN advisers as a ON sa.adviser_id = a.adviser_id
+		WHERE sa.email = :email;";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+	}
+
+	private function _getStudentCourse($email){
+		$sql = 'SELECT sa.course_id as course_id, c.course_name as course_name
+		FROM student_accounts as sa LEFT JOIN courses as c
+		ON sa.course_id = c.course_id
+		WHERE sa.email = :email;';
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
 		$data=NULL;
 		if($query->execute()){
 			$data = $query->fetch(PDO::FETCH_ASSOC);
@@ -93,7 +129,7 @@ class Auth{
 	}
 
 	private function _isStudent($email){
-		$sql = "SELECT COUNT(*) FROM registered_students WHERE email = :email";
+		$sql = "SELECT COUNT(*) FROM student_accounts WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
 		$query->execute();
@@ -126,7 +162,7 @@ class Auth{
 		} else {
 			$student = $this->_isCCSEmail($email);
 			if($student){
-				$sql = "INSERT INTO registered_students(student_id, email, password, first_name, last_name, middle_name, course, year_level, section, adviser_name) 
+				$sql = "INSERT INTO student_accounts(email, password, first_name, last_name, middle_name, course, year_level, section, adviser_name) 
 				VALUES(:student_id, :email, :password, :first_name, :last_name, :middle_name, :course, :year_level, :section, :adviser_name)";
 				$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 				$adviser = $this->_getAdviser($student['year_level']);
@@ -155,7 +191,7 @@ class Auth{
 	}
 
 	private function emailExists($email, $role){
-		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM registered_students WHERE email = :email"; } 
+		if($role === 'student'){ $sql = "SELECT COUNT(*) FROM student_accounts WHERE email = :email"; } 
 		else if ($role === 'staff'){ $sql = "SELECT COUNT(*) FROM staff_accounts WHERE email = :email"; } 
 		else if($role === 'admin'){ $sql = "SELECT COUNT(*) FROM admin_accounts WHERE email = :email"; }
 		else { return false; }
@@ -224,7 +260,7 @@ class Auth{
 		if($this->emailExists($email, $role) === false){
 			return ['email does not exists', ' '];
 		} else {
-			if($role === 'student'){ $sql = "UPDATE registered_students set password = :password WHERE email = :email"; }
+			if($role === 'student'){ $sql = "UPDATE student_accounts set password = :password WHERE email = :email"; }
 			else if($role === 'staff'){ $sql = "UPDATE staff_accounts set password = :password WHERE email = :email"; }
 			else if($role === 'admin'){ $sql = "UPDATE admin_accounts set password = :password WHERE email = :email"; }
 		}
@@ -241,7 +277,7 @@ class Auth{
 	}
 
 	private function _retrievePassword($email, $password){
-		$sql = "SELECT password FROM registered_students WHERE email = :email";
+		$sql = "SELECT password FROM student_accounts WHERE email = :email";
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':email', $email);
 		$retrieved_password=null;
