@@ -18,15 +18,6 @@ $(document).ready(function () {
     studentForm.classList.add("was-validated"); // Add validation classes
   });
 
-  // Event delegation for Reveal Password
-  $(document)
-    .off("click.reveal", ".reveal-password")
-    .on("click.reveal", ".reveal-password", function () {
-      const password = $(this).data("password");
-      console.log("Reveal Password clicked:", password); // Debugging
-      alert(`Password: ${password}`);
-    });
-
   // Load all students into the table
   function loadStudents() {
     $.ajax({
@@ -34,10 +25,14 @@ $(document).ready(function () {
       type: "POST",
       data: { action: "read" },
       success: function (response) {
+        console.log("Load Students Response:", response); // Log the response
         students = JSON.parse(response);
         allStudents = [...students]; // Keep original data
         displayTable(currentPage); // Display the first page
         setupPagination(); // Set up pagination
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to load students:", error);
       },
     });
   }
@@ -53,7 +48,7 @@ $(document).ready(function () {
     if (visibleStudents.length === 0) {
       tableBody.append(`
               <tr>
-                  <td colspan="8" class="text-center">No data found.</td>
+                  <td colspan="7" class="text-center">No data found.</td>
               </tr>
           `);
       return; // Exit the function early since there's no data to process
@@ -67,12 +62,6 @@ $(document).ready(function () {
         student.last_name
       }</td>
                   <td>${student.email}</td>
-                  <td>
-                      <span class="masked-password">••••••••</span>
-                      <button class="btn btn-sm btn-secondary reveal-password" data-password="${
-                        student.password
-                      }">Reveal</button>
-                  </td>
                   <td>${student.course}</td>
                   <td>${student.year_level}</td>
                   <td>${student.section}</td>
@@ -146,6 +135,9 @@ $(document).ready(function () {
     console.log("Add Student Button Clicked"); // Debug log
     $("#studentForm")[0].reset();
     $("#user_id").val(""); // Clear hidden user_id field
+    $("#password").closest(".mb-3").show(); // Show password field for adding
+    $(".form-control").removeClass("is-invalid"); // Clear invalid styles
+    $(".invalid-feedback").text(""); // Clear error messages
     $("#studentModalLabel").text("Add Student");
     $("#studentModal").modal("show");
   });
@@ -183,6 +175,7 @@ $(document).ready(function () {
           loadStudents();
         } else if (result.errors) {
           // Display error messages
+          console.log("Validation Errors:", result.errors); // Log validation errors
           $("#studentModal .modal-content").addClass("border-danger");
           Object.keys(result.errors).forEach(function (field) {
             const errorMessage = result.errors[field];
@@ -227,7 +220,7 @@ $(document).ready(function () {
           $("#middle_name").val(student.middle_name ?? "");
           $("#last_name").val(student.last_name);
           $("#email").val(student.email);
-          $("#password").val(""); // Leave password blank
+          $("#password").closest(".mb-3").hide(); // Hide password field for editing
           $("#course").val(student.course);
           $("#year_level").val(student.year_level);
           $("#section").val(student.section);
@@ -248,17 +241,22 @@ $(document).ready(function () {
 
     $(".delete-btn").click(function () {
       const user_id = $(this).data("id");
+      console.log("Triggering delete for User ID:", user_id);
       if (confirm("Are you sure you want to delete this student?")) {
         $.ajax({
           url: "/cssc/server/admin/student_server.php",
           type: "POST",
           data: { action: "delete", user_id },
           success: function (response) {
+            console.log("Delete Response:", response);
             const result = JSON.parse(response);
             alert(
               result.success ? "Deleted successfully!" : "Failed to delete."
             );
             loadStudents();
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to delete student:", error);
           },
         });
       }

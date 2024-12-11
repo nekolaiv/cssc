@@ -27,7 +27,6 @@
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Password</th>
                 <th>Course</th>
                 <th>Year Level</th>
                 <th>Section</th>

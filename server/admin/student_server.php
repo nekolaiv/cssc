@@ -123,11 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
 
-            // Hash password if provided
+            // Hash password if provided; otherwise, exclude it
             if (!empty($data['password'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             } else {
-                unset($data['password']); // Keep existing password
+                unset($data['password']); // Do not update the password
             }
 
             $response = $student->updateStudent($data);
