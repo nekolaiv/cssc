@@ -66,26 +66,26 @@ function subjectFieldsSubmission(){
     })
 }
 
-function addSubjectRow() {
-    $('#grading').append(`
-        <div class="subject-fields" id='row-${session_length}'>
-            <input type="text" name="subject-code[]">
-            <input type="number" name="unit[]">
-            <input type="number" name="grade[]">
-            <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(${session_length})">remove</button>
-        </div>
-    `); 
-    session_length++;
-    $('input').on('input', (e) => {
-        $('#grading').submit();
-    })
-    $('#grading').submit();
-}
+// function addSubjectRow() {
+//     $('#grading').append(`
+//         <div class="subject-fields" id='row-${session_length}'>
+//             <input type="text" name="subject-code[]">
+//             <input type="number" name="unit[]">
+//             <input type="number" name="grade[]">
+//             <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(${session_length})">remove</button>
+//         </div>
+//     `); 
+//     session_length++;
+//     $('input').on('input', (e) => {
+//         $('#grading').submit();
+//     })
+//     $('#grading').submit();
+// }
 
-function removeSubjectRow(i) {
-    $(`#row-${i}`).remove();
-    $('#grading').submit();
-}
+// function removeSubjectRow(i) {
+//     $(`#row-${i}`).remove();
+//     $('#grading').submit();
+// }
 
 function displayFormData(formData) {
     let formDataEntries = [];

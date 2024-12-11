@@ -426,7 +426,7 @@ header nav ul button {
 }
 
 #grading-headers h3:nth-child(4) {
-	width: 100px;
+	/* width: 100px; */
 	/* border: 1px solid red; */
 }
 
@@ -486,11 +486,15 @@ header nav ul button {
 
 #calculate-action-buttons button {
 	height: 40px;
-	width: 200px;
+	width: 1030px;
 	border: unset;
 	border-radius: calc(var(--Gborder-radius));
 	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.356);
 	cursor: pointer;
+}
+
+#calculate-action-buttons button:hover {
+	background-color: #D9D9D9;
 }
 
 #image-proof {
@@ -554,6 +558,10 @@ header nav ul button {
 	border: none;
 	border-radius: calc(var(--Gborder-radius));
 	cursor: pointer;
+}
+
+#result-action-buttons button:hover {
+	background-color: #D9D9D9;
 }
 
 #validation-buttons {
