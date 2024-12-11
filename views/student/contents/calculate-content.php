@@ -2,9 +2,20 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 $page_title = "calculate";
-// require_once('../../../tools/session.function.php');
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
+$student = new Student();
+
+$subject_load = $student->loadStudentsSubjects($_SESSION['profile']['email']);
+
+for($i = 0; $i < count($subject_load); $i++){
+    $_SESSION['course-fields']['subject-name'][$i] = $subject_load[$i]['subject_name'];
+    $_SESSION['course-fields']['subject-code'][$i] = $subject_load[$i]['subject_code'];
+    $_SESSION['course-fields']['units'][$i] = $subject_load[$i]['units'];
+}
+
 
 ?>
 <script>
@@ -60,8 +71,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
                 <?php for ($i = 0; $i < count($_SESSION['course-fields']['subject-code']); $i++): ?>
                     <div class="subject-fields" id="row-<?= $i ?>">
                         <input type="text" name="subject-code[]" value="<?= $_SESSION['course-fields']['subject-code'][$i] ?>">
-                        <input type="number" name="unit[]" value="<?= $_SESSION['course-fields']['unit'][$i] ?>">
-                        <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?>">
+                        <input type="number" name="unit[]" value="<?= $_SESSION['course-fields']['units'][$i] ?>">
+                        <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?? NULL ?>">
                         <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(<?= $i ?>)">remove</button>
                     </div>
                 <?php endfor; ?>

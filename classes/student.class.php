@@ -82,11 +82,11 @@ class Student
     // UPDATING STUDENT STATUS
     private function _updateStudentStatus($email){
         if($this->_isEntryPending($email)){
-            $sql = 'UPDATE registered_students SET status = "Pending" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Pending" WHERE email = :email;';
         } else if($this->_isEntryVerified($email)){
-            $sql = 'UPDATE registered_students SET status = "Verified" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Verified" WHERE email = :email;';
         } else {
-            $sql = 'UPDATE registered_students SET status = "Not Submitted" WHERE email = :email;';
+            $sql = 'UPDATE student_accounts SET status = "Not Submitted" WHERE email = :email;';
         }
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
@@ -116,6 +116,24 @@ class Student
         if($query->execute()){
             $row_count = $query->fetchColumn();
             return $row_count > 0;
+        } else {
+            return false;
+        }
+    }
+
+    // ASSIGNING STUDENT CURRICULAR SUBJECTS
+    public function loadStudentsSubjects($email){
+        $sql = 'SELECT ss.subject_name, ss.subject_code, ss.units
+        FROM student_accounts as sa
+        LEFT JOIN curriculum_subjects as cs ON sa.curriculum_code = cs.curriculum_code
+        LEFT JOIN student_subjects as ss ON cs.subject_id = ss.subject_id
+        WHERE sa.email = :email';
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':email', $email);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
         } else {
             return false;
         }
@@ -193,19 +211,7 @@ class Student
             return false;
         }
     }
-    // private function _getEntryForDatabase() {
-    //     $query->bindParam(':student_id', $student['student_id']);
-    //     $query->bindParam(':email', $email);
-    //     $query->bindParam(':password', $hashed_password);
-    //     $query->bindParam(':first_name', $student['first_name']);
-    //     $query->bindParam(':last_name', $student['last_name']);
-    //     $query->bindParam(':middle_name', $student['middle_name']);
-    //     $query->bindParam(':course', $student['course']);
-    //     $query->bindParam(':year_level', $student['year_level']);
-    //     $query->bindParam(':section', $student['section']);
-    //     $query->bindParam(':adviser_name', $adviser_name);
-    // }
-
+    
     // RESULT MODELS
     public function saveEntryToDatabase($email, $gwa, $image_proof){
         if ($this->_entryExists($email)) {
@@ -251,7 +257,7 @@ class Student
 
     private function _getStudentData($email){
         $this->_updateStudentStatus($email);
-        $sql = "SELECT * FROM registered_students WHERE email = :email LIMIT 1;";
+        $sql = "SELECT * FROM student_accounts WHERE email = :email LIMIT 1;";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':email', $email);
         $student = NULL;
@@ -286,6 +292,8 @@ class Student
             return false;
         }
     }
+
+    // ======== DUMPS BUT MIGHT BE USEFUL ========
 
     // public function handleRequest() {
     //     session_start(); // Start the session
@@ -323,6 +331,19 @@ class Student
     //         'units' => $units,
     //         'grades' => $grades
     //     ];
+    // }
+
+    // private function _getEntryForDatabase() {
+    //     $query->bindParam(':student_id', $student['student_id']);
+    //     $query->bindParam(':email', $email);
+    //     $query->bindParam(':password', $hashed_password);
+    //     $query->bindParam(':first_name', $student['first_name']);
+    //     $query->bindParam(':last_name', $student['last_name']);
+    //     $query->bindParam(':middle_name', $student['middle_name']);
+    //     $query->bindParam(':course', $student['course']);
+    //     $query->bindParam(':year_level', $student['year_level']);
+    //     $query->bindParam(':section', $student['section']);
+    //     $query->bindParam(':adviser_name', $adviser_name);
     // }
 
 }
