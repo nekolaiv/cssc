@@ -12,7 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="/cssc/css/sidebar.css">
-    <link rel="stylesheet" href="/cssc/css/admin_dashboard.css">
+    <link rel="stylesheet" href="/cssc/css/admin_index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -43,7 +43,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script src="/cssc/js/admin/admin_index.js"></script>
-    <script src="/cssc/js/admin/admin-sidebar.js"></script>
+    <script src="/cssc/js/admin/admin_sidebar.js"></script>
 </body>
 
 </html>
