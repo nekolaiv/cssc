@@ -365,5 +365,94 @@ public function getAllCourses() {
     return $this->database->fetchAll($query);
 }
 
+public function getAllAcademicTerms()
+{
+    $query = "SELECT * FROM current_academic_term ORDER BY term_id ASC";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function addAcademicTerm($academic_year, $semester, $start_date, $end_date)
+{
+    $query = "INSERT INTO current_academic_term (academic_year, semester, start_date, end_date, active) 
+              VALUES (:academic_year, :semester, :start_date, :end_date, 0)";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':academic_year', $academic_year, PDO::PARAM_STR);
+    $stmt->bindParam(':semester', $semester, PDO::PARAM_STR);
+    $stmt->bindParam(':start_date', $start_date, PDO::PARAM_STR);
+    $stmt->bindParam(':end_date', $end_date, PDO::PARAM_STR);
+    $stmt->execute();
+    return $this->database->connect()->lastInsertId();
+}
+
+public function updateAcademicTerm($term_id, $academic_year, $semester, $start_date, $end_date)
+{
+    $query = "UPDATE current_academic_term 
+              SET academic_year = :academic_year, semester = :semester, start_date = :start_date, end_date = :end_date
+              WHERE term_id = :term_id";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':academic_year', $academic_year, PDO::PARAM_STR);
+    $stmt->bindParam(':semester', $semester, PDO::PARAM_STR);
+    $stmt->bindParam(':start_date', $start_date, PDO::PARAM_STR);
+    $stmt->bindParam(':end_date', $end_date, PDO::PARAM_STR);
+    $stmt->bindParam(':term_id', $term_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
+
+public function toggleActiveTerm($term_id)
+{
+    // Deactivate all terms
+    $query = "UPDATE current_academic_term SET active = 0";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute();
+
+    // Activate the selected term
+    $query = "UPDATE current_academic_term SET active = 1 WHERE term_id = :term_id";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':term_id', $term_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
+
+public function getAllGwaSchedules()
+{
+    $query = "SELECT g.*, cat.academic_year, cat.semester 
+              FROM gwa_submission_schedule g
+              JOIN current_academic_term cat ON g.term_id = cat.term_id
+              ORDER BY g.submission_id ASC";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function addGwaSchedule($term_id, $gwa_submission_start, $gwa_submission_end)
+{
+    $query = "INSERT INTO gwa_submission_schedule (term_id, gwa_submission_start, gwa_submission_end, active) 
+              VALUES (:term_id, :gwa_submission_start, :gwa_submission_end, 0)";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':term_id', $term_id, PDO::PARAM_INT);
+    $stmt->bindParam(':gwa_submission_start', $gwa_submission_start, PDO::PARAM_STR);
+    $stmt->bindParam(':gwa_submission_end', $gwa_submission_end, PDO::PARAM_STR);
+    $stmt->execute();
+    return $this->database->connect()->lastInsertId();
+}
+
+public function toggleActiveGwaSchedule($submission_id)
+{
+    // Deactivate all schedules
+    $query = "UPDATE gwa_submission_schedule SET active = 0";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute();
+
+    // Activate the selected schedule
+    $query = "UPDATE gwa_submission_schedule SET active = 1 WHERE submission_id = :submission_id";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->bindParam(':submission_id', $submission_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
+
 }
 ?>
