@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'course_id' => cleanInput($_POST['course_id'] ?? ''),
                 'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
                 'section' => cleanInput($_POST['section'] ?? ''),
+                'curriculum_code' => cleanInput($_POST['curriculum_code'] ?? '')
             ];
 
             // Validation
@@ -61,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['section'] = 'Section is required.';
             }
 
+            if (empty($data['curriculum_code'])) {
+                $errors['curriculum_code'] = 'Curriculum code is required.';
+            }
+
             // Return errors if any
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
@@ -92,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'last_name' => cleanInput($_POST['last_name'] ?? ''),
                 'course_id' => cleanInput($_POST['course_id'] ?? ''),
                 'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
-                'section' => cleanInput($_POST['section'] ?? ''),
+                'section' => cleanInput($_POST['section'] ?? ''),'curriculum_code' => cleanInput($_POST['curriculum_code'] ?? '')
             ];
 
             // Validation
@@ -120,6 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (empty($data['course_id'])) {
                 $errors['course_id'] = 'Course is required.';
+            }
+
+            if (empty($data['curriculum_code'])) {
+                $errors['curriculum_code'] = 'Curriculum code is required.';
             }
 
             if (empty($data['year_level'])) {
@@ -199,6 +208,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'get_courses':
             $courses = $student->getAllCourses();
             echo json_encode($courses);
+            break;
+
+        case 'get_curriculum_codes':
+            $codes = $student->getCurriculumCodes();
+            echo json_encode($codes);
             break;
 
         default:

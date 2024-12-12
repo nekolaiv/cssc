@@ -42,6 +42,11 @@
                         <input type="password" class="form-control" id="add_password" name="password" required>
                         <div class="invalid-feedback">Password is required.</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="add_curriculum_code">Curriculum Code</label>
+                        <select id="add_curriculum_code" name="curriculum_code" class="form-control curriculum-dropdown"></select>
+                        <div class="invalid-feedback">Curriculum Code is required.</div>
+                    </div>
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="add_course" class="form-label">Course</label>

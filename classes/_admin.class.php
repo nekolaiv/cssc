@@ -183,11 +183,32 @@ class Admin {
         $data['user_id'] = $this->getNextUserId();
     
         // SQL query to insert a new student
-        $query = "INSERT INTO student_accounts (user_id, student_id, email, password, first_name, last_name, middle_name, course_id, year_level, section, role)
-                  VALUES (:user_id, :student_id, :email, :password, :first_name, :last_name, :middle_name, :course_id, :year_level, :section, 'student')";
+        $query = "INSERT INTO student_accounts (
+                    user_id, student_id, email, password, first_name, last_name, middle_name, 
+                    course_id, year_level, section, curriculum_code, role
+                  ) VALUES (
+                    :user_id, :student_id, :email, :password, :first_name, :last_name, :middle_name, 
+                    :course_id, :year_level, :section, :curriculum_code, 'student'
+                  )";
     
-        return $this->database->execute($query, $data);
+        $stmt = $this->database->connect()->prepare($query);
+    
+        // Bind parameters
+        $stmt->bindParam(':user_id', $data['user_id']);
+        $stmt->bindParam(':student_id', $data['student_id']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':password', $data['password']);
+        $stmt->bindParam(':first_name', $data['first_name']);
+        $stmt->bindParam(':middle_name', $data['middle_name']);
+        $stmt->bindParam(':last_name', $data['last_name']);
+        $stmt->bindParam(':course_id', $data['course_id']);
+        $stmt->bindParam(':year_level', $data['year_level']);
+        $stmt->bindParam(':section', $data['section']);
+        $stmt->bindParam(':curriculum_code', $data['curriculum_code']);
+    
+        return $stmt->execute();
     }
+    
     
     public function getAllStudents($filters = [])
 {
@@ -227,27 +248,27 @@ class Admin {
 }
 
 
-    public function updateStudent($data)
-    {
+    public function updateStudent($data) {
         $query = "UPDATE student_accounts SET 
-            student_id = :student_id, 
-            email = :email, 
-            first_name = :first_name, 
-            middle_name = :middle_name, 
-            last_name = :last_name, 
-            course_id = :course_id, 
-            year_level = :year_level, 
-            section = :section";
-    
+                    student_id = :student_id, 
+                    email = :email, 
+                    first_name = :first_name, 
+                    middle_name = :middle_name, 
+                    last_name = :last_name, 
+                    course_id = :course_id, 
+                    year_level = :year_level, 
+                    section = :section, 
+                    curriculum_code = :curriculum_code";
+
         // Include password update only if provided
         if (!empty($data['password'])) {
             $query .= ", password = :password";
         }
-    
+
         $query .= " WHERE user_id = :user_id";
-    
+
         $stmt = $this->database->connect()->prepare($query);
-    
+
         // Bind parameters
         $stmt->bindParam(':student_id', $data['student_id']);
         $stmt->bindParam(':email', $data['email']);
@@ -257,16 +278,17 @@ class Admin {
         $stmt->bindParam(':course_id', $data['course_id']);
         $stmt->bindParam(':year_level', $data['year_level']);
         $stmt->bindParam(':section', $data['section']);
+        $stmt->bindParam(':curriculum_code', $data['curriculum_code']);
         $stmt->bindParam(':user_id', $data['user_id']);
-    
+
         // Bind password if provided
         if (!empty($data['password'])) {
             $stmt->bindParam(':password', $data['password']);
         }
-    
+
         return $stmt->execute();
     }
-    
+
     
 
     public function deleteStudent($user_id) {
@@ -467,6 +489,13 @@ public function getCurrentAcademicTerm() {
     } catch (Exception $e) {
         throw new Exception("Failed to fetch current academic term: " . $e->getMessage());
     }
+}
+
+public function getCurriculumCodes() {
+    $query = "SELECT curriculum_code FROM curriculum";
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 }

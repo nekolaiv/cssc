@@ -7,6 +7,7 @@ $(document).ready(function () {
   // Load students, courses, and filters on page load
   loadStudents();
   loadCourses();
+  loadCurriculumCodes();
   setupFilters();
   setupSearch();
 
@@ -63,6 +64,31 @@ $(document).ready(function () {
       },
     });
   }
+
+    // Load curriculum codes into dropdowns
+    function loadCurriculumCodes() {
+      $.ajax({
+        url: "/cssc/server/admin/student_server.php",
+        type: "POST",
+        data: { action: "get_curriculum_codes" },
+        success: function (response) {
+          console.log("Load Curriculum Codes Response:", response);
+          const codes = JSON.parse(response);
+          const curriculumDropdowns = $(".curriculum-dropdown");
+          curriculumDropdowns.empty();
+          curriculumDropdowns.append('<option value="">Select Curriculum Code</option>');
+  
+          codes.forEach((code) => {
+            curriculumDropdowns.append(
+              `<option value="${code.curriculum_code}">${code.curriculum_code}</option>`
+            );
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("Failed to load curriculum codes:", error);
+        },
+      });
+    }
 
   // Set up dropdown filters
   function setupFilters() {
@@ -125,6 +151,7 @@ $(document).ready(function () {
         student.last_name
       }</td>
           <td>${student.email}</td>
+          <td>${student.curriculum_code}</td>
           <td>${student.course_code}</td>
           <td>${student.year_level}</td>
           <td>${student.section}</td>
@@ -194,6 +221,7 @@ $(document).ready(function () {
         $("#edit_middle_name").val(student.middle_name ?? "");
         $("#edit_last_name").val(student.last_name);
         $("#edit_email").val(student.email);
+        $("#edit_curriculum_code").val(student.curriculum_code);
         $("#edit_course").val(student.course_id);
         $("#edit_year_level").val(student.year_level);
         $("#edit_section").val(student.section);

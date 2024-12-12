@@ -57,6 +57,7 @@
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Curriculum Code</th>
                 <th>Course</th>
                 <th>Year Level</th>
                 <th>Section</th>

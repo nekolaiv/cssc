@@ -37,6 +37,11 @@
                         <input type="email" class="form-control" id="edit_email" name="email">
                         <div class="invalid-feedback">Valid Email is required.</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="edit_curriculum_code">Curriculum Code</label>
+                        <select id="edit_curriculum_code" name="curriculum_code" class="form-control curriculum-dropdown"></select>
+                        <div class="invalid-feedback">Curriculum Code is required.</div>
+                    </div>
                     <!-- Course -->
                     <div class="mb-3">
                         <label for="edit_course" class="form-label">Course</label>
