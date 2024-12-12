@@ -54,8 +54,8 @@ public function verifyEntry($entry_id) {
             throw new Exception("Entry with ID $entry_id not found.");
         }
 
-        $query = "INSERT INTO students_verified_entries (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
-                  VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof, :created_at)";
+        $query = "INSERT INTO students_verified_entries (student_id, email, fullname, course, year_level, section, gwa, image_proof, created_at)
+                  VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :created_at)";
         $stmt = $connection->prepare($query);
 
         $stmt->execute([
@@ -65,7 +65,6 @@ public function verifyEntry($entry_id) {
             ':course' => $entry['course'],
             ':year_level' => $entry['year_level'],
             ':section' => $entry['section'],
-            ':adviser_name' => $entry['adviser_name'],
             ':gwa' => $entry['gwa'],
             ':image_proof' => $entry['image_proof'],
             ':created_at' => $entry['created_at'],
@@ -112,7 +111,7 @@ public function rejectEntry($entry_id) {
 
     // Fetch all verified entries
 public function getAllVerifiedEntries() {
-    $query = "SELECT id, student_id, email, fullname, CONCAT(course, '-', year_level, section) AS course_details, gwa, adviser_name, created_at
+    $query = "SELECT id, student_id, email, fullname, CONCAT(course, '-', year_level, section) AS course_details, gwa, created_at
               FROM students_verified_entries";
     return $this->database->fetchAll($query);
 }
@@ -127,64 +126,6 @@ public function getVerifiedEntryById($entry_id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Remove an entry from verified entries (move back to unverified or delete)
-public function removeVerifiedEntry($entry_id) {
-    try {
-        // Start transaction
-        $connection = $this->database->connect();
-        $connection->beginTransaction();
-
-        // Fetch the verified entry
-        $entry = $this->getVerifiedEntryById($entry_id);
-        if (!$entry) {
-            throw new Exception("Verified entry with ID $entry_id not found.");
-        }
-
-        // Insert back into unverified entries
-        $query = "INSERT INTO students_unverified_entries 
-                  (student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof, created_at)
-                  VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof, :created_at)";
-        $stmt = $connection->prepare($query);
-
-        // Bind values
-        $stmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
-        $stmt->bindValue(':email', $entry['email'], PDO::PARAM_STR);
-        $stmt->bindValue(':fullname', $entry['fullname'], PDO::PARAM_STR);
-        $stmt->bindValue(':course', $entry['course'], PDO::PARAM_STR);
-        $stmt->bindValue(':year_level', $entry['year_level'], PDO::PARAM_INT);
-        $stmt->bindValue(':section', $entry['section'], PDO::PARAM_STR);
-        $stmt->bindValue(':adviser_name', $entry['adviser_name'], PDO::PARAM_STR);
-        $stmt->bindValue(':gwa', $entry['gwa'], PDO::PARAM_STR);
-        $stmt->bindValue(':image_proof', $entry['image_proof'], PDO::PARAM_LOB);
-        $stmt->bindValue(':created_at', $entry['created_at'], PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        // Update the student's status to Pending
-        $updateStatusQuery = "UPDATE student_accounts SET status = 'Pending' WHERE student_id = :student_id";
-        $updateStatusStmt = $connection->prepare($updateStatusQuery);
-        $updateStatusStmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
-        $updateStatusStmt->execute();
-
-        // Delete the entry from verified entries
-        $deleteQuery = "DELETE FROM students_verified_entries WHERE id = :entry_id";
-        $deleteStmt = $connection->prepare($deleteQuery);
-        $deleteStmt->bindValue(':entry_id', $entry_id, PDO::PARAM_INT);
-        $deleteStmt->execute();
-
-        // Commit transaction
-        $connection->commit();
-        return true;
-
-    } catch (Exception $e) {
-        // Rollback in case of error
-        if ($connection->inTransaction()) {
-            $connection->rollBack();
-        }
-        error_log("Error in removeVerifiedEntry: " . $e->getMessage());
-        return false;
-    }
-}
 
 // Log an audit event
 public function logAudit($action, $details) {
@@ -204,7 +145,166 @@ public function logAudit($action, $details) {
 }
 
 
-    
-    
+public function getEntryWithStatus($entry_id) {
+    $query = "SELECT * FROM students_unverified_entries WHERE id = :entry_id";
+    $entry = $this->database->fetchOne($query, [':entry_id' => $entry_id]);
+
+    if ($entry) {
+        $statusQuery = "SELECT status FROM student_accounts WHERE student_id = :student_id";
+        $status = $this->database->fetchOne($statusQuery, [':student_id' => $entry['student_id']]);
+        $entry['status'] = $status['status'] ?? 'Not Submitted';
+
+        // If there's an image, encode it properly
+        if (!empty($entry['image_proof'])) {
+            $entry['image_proof'] = base64_encode($entry['image_proof']);
+        }
+    }
+
+    return $entry ?: ['error' => 'Entry not found.'];
+}
+
+public function verifyAndLogEntry($entry_id) {
+    try {
+        $this->database->connect()->beginTransaction();
+
+        // Fetch entry details
+        $entryDetails = $this->getEntryById($entry_id);
+        if (!$entryDetails) {
+            return ['success' => false, 'error' => 'Entry not found.'];
+        }
+
+        $studentId = $entryDetails['student_id'];
+
+        // Move entry to verified table
+        $insertQuery = "
+            INSERT INTO students_verified_entries (student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id, created_at, updated_at)
+            SELECT student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id, created_at, updated_at
+            FROM students_unverified_entries
+            WHERE id = :entry_id
+        ";
+        $this->database->execute($insertQuery, [':entry_id' => $entry_id]);
+
+        // Delete from unverified table
+        $deleteQuery = "DELETE FROM students_unverified_entries WHERE id = :entry_id";
+        $this->database->execute($deleteQuery, [':entry_id' => $entry_id]);
+
+        // Log audit
+        $this->logAudit('Verify Entry', "Verified entry for Student ID: $studentId");
+
+        $this->database->connect()->commit();
+        return ['success' => true, 'message' => 'Entry verified successfully.'];
+    } catch (Exception $e) {
+        $this->database->connect()->rollBack();
+        return ['success' => false, 'error' => 'Failed to verify the entry.'];
+    }
+}
+
+public function rejectAndLogEntry($entry_id) {
+    try {
+        // Fetch entry details
+        $entry = $this->getEntryById($entry_id);
+        if (!$entry) {
+            throw new Exception("Entry with ID $entry_id not found.");
+        }
+
+        // Update the status in the student_accounts table
+        $updateStatusQuery = "UPDATE student_accounts SET status = 'Need Revision' WHERE student_id = :student_id";
+        $this->database->execute($updateStatusQuery, [':student_id' => $entry['student_id']]);
+
+        // Log audit
+        $this->logAudit('Reject Entry', "Marked Student ID: {$entry['student_id']} as 'Need Revision'.");
+
+        return ['success' => true, 'message' => 'Entry marked as "Need Revision" successfully.'];
+
+    } catch (Exception $e) {
+        error_log("Error in rejectAndLogEntry: " . $e->getMessage());
+        return ['success' => false, 'error' => 'Failed to reject the entry.'];
+    }
+}
+
+public function getSubjectFieldsByStudent($student_id) {
+    $query = "
+        SELECT subject_code, units, grade, academic_year, semester
+        FROM subject_fields
+        WHERE student_id = :student_id
+    ";
+    return $this->database->fetchAll($query, [':student_id' => $student_id]);
+}    
+
+
+public function getVerifiedEntryWithDetails($entry_id) {
+    $query = "SELECT * FROM students_verified_entries WHERE id = :entry_id";
+    $entry = $this->database->fetchOne($query, [':entry_id' => $entry_id]);
+
+    if ($entry) {
+        // If there's an image, encode it properly
+        if (!empty($entry['image_proof'])) {
+            $entry['image_proof'] = base64_encode($entry['image_proof']);
+        }
+        return ['success' => true, 'entry' => $entry];
+    } else {
+        return ['success' => false, 'error' => 'Entry not found.'];
+    }
+}
+
+public function removeAndLogVerifiedEntry($entry_id) {
+    try {
+        // Start transaction
+        $connection = $this->database->connect();
+        $connection->beginTransaction();
+
+        // Fetch the verified entry
+        $entry = $this->getVerifiedEntryById($entry_id);
+        if (!$entry) {
+            throw new Exception("Verified entry with ID $entry_id not found.");
+        }
+
+        // Insert back into unverified entries
+        $query = "INSERT INTO students_unverified_entries 
+                  (student_id, email, fullname, course, year_level, section, gwa, image_proof, created_at)
+                  VALUES (:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :created_at)";
+        $stmt = $connection->prepare($query);
+
+        // Bind values
+        $stmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $entry['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':fullname', $entry['fullname'], PDO::PARAM_STR);
+        $stmt->bindValue(':course', $entry['course'], PDO::PARAM_STR);
+        $stmt->bindValue(':year_level', $entry['year_level'], PDO::PARAM_INT);
+        $stmt->bindValue(':section', $entry['section'], PDO::PARAM_STR);
+        $stmt->bindValue(':gwa', $entry['gwa'], PDO::PARAM_STR);
+        $stmt->bindValue(':image_proof', $entry['image_proof'], PDO::PARAM_LOB);
+        $stmt->bindValue(':created_at', $entry['created_at'], PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        // Update the student's status to Pending
+        $updateStatusQuery = "UPDATE student_accounts SET status = 'Pending' WHERE student_id = :student_id";
+        $updateStatusStmt = $connection->prepare($updateStatusQuery);
+        $updateStatusStmt->bindValue(':student_id', $entry['student_id'], PDO::PARAM_STR);
+        $updateStatusStmt->execute();
+
+        // Delete the entry from verified entries
+        $deleteQuery = "DELETE FROM students_verified_entries WHERE id = :entry_id";
+        $deleteStmt = $connection->prepare($deleteQuery);
+        $deleteStmt->bindValue(':entry_id', $entry_id, PDO::PARAM_INT);
+        $deleteStmt->execute();
+
+        // Log the audit
+        $this->logAudit('Remove Verified Entry', "Moved entry for Student ID: {$entry['student_id']} back to unverified entries and marked status as Pending.");
+
+        // Commit transaction
+        $connection->commit();
+        return ['success' => true, 'message' => 'Entry removed and moved back to unverified entries successfully.'];
+
+    } catch (Exception $e) {
+        // Rollback in case of error
+        if ($connection->inTransaction()) {
+            $connection->rollBack();
+        }
+        error_log("Error in removeAndLogVerifiedEntry: " . $e->getMessage());
+        return ['success' => false, 'error' => 'Failed to remove and move the entry back to unverified entries.'];
+    }
+}
 }
 ?>

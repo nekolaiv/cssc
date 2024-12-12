@@ -20,7 +20,6 @@
                     <th>Student ID</th>
                     <th>Full Name</th>
                     <th>Course</th>
-                    <th>Adviser Name</th>
                     <th>GWA</th>
                     <th>Verification Date</th>
                     <th>Actions</th>
@@ -50,12 +49,41 @@
                     <p><strong>Course:</strong> <span id="modalVerifiedCourse"></span></p>
                     <p><strong>Year Level:</strong> <span id="modalVerifiedYearLevel"></span></p>
                     <p><strong>Section:</strong> <span id="modalVerifiedSection"></span></p>
-                    <p><strong>Adviser Name:</strong> <span id="modalVerifiedAdviserName"></span></p>
                     <p><strong>GWA:</strong> <span id="modalVerifiedGWA"></span></p>
                     <p><strong>Image Proof:</strong> <img id="modalVerifiedImageProof" src="" alt="Image Proof" style="width: 100%; max-height: 200px;"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" id="removeVerifiedBtn">Remove Verified Entry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for displaying subject fields -->
+    <div class="modal fade" id="subjectFieldsModal" tabindex="-1" aria-labelledby="subjectFieldsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="subjectFieldsModalLabel">Subject Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="subjectFieldsTable">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Units</th>
+                                <th>Grade</th>
+                                <th>Academic Year</th>
+                                <th>Semester</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="text-center">No subject details available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
