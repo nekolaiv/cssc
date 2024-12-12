@@ -19,6 +19,7 @@ $(document).ready(function () {
                     alert(result.message);
                     $("#addAcademicTermModal").modal("hide");
                     loadAcademicTerms();
+                    loadTermsDropdown();
                 } else {
                     alert("Error: " + result.message);
                 }
@@ -54,8 +55,16 @@ $(document).ready(function () {
         });
     });
 
-     // Load academic terms for dropdown
-     function loadTermsDropdown() {
+    // Clear modal on close and remove backdrop issues
+    $("#addAcademicTermModal, #addGwaSubmissionModal").on("hidden.bs.modal", function () {
+        $(this).find("form")[0].reset(); // Clear form
+        $("body").removeClass("modal-open"); // Remove modal-open class
+        $(".modal-backdrop").remove(); // Remove lingering backdrop
+        $("html, body").css("overflow", "auto"); // Re-enable scrolling
+    });
+
+    // Load academic terms for dropdown
+    function loadTermsDropdown() {
         $.ajax({
             url: "/cssc/server/admin/academic_server.php",
             type: "POST",
@@ -179,12 +188,12 @@ $(document).ready(function () {
     function populateAcademicTermsTable(data) {
         const tableBody = $("#academicTermTable tbody");
         tableBody.empty();
-    
+
         if (data.length === 0) {
             tableBody.append('<tr><td colspan="7" class="text-center">No academic terms found.</td></tr>');
             return;
         }
-    
+
         data.forEach((term) => {
             const isActive = parseInt(term.active) === 1;
             const statusLabel = isActive
@@ -192,7 +201,7 @@ $(document).ready(function () {
                 : '<span class="badge bg-secondary">Inactive</span>';
             const toggleButtonClass = isActive ? "btn-outline-danger" : "btn-outline-success";
             const toggleButtonText = isActive ? "Deactivate" : "Activate";
-    
+
             tableBody.append(`
                 <tr>
                     <td>${term.term_id}</td>
@@ -208,19 +217,17 @@ $(document).ready(function () {
             `);
         });
     }
-    
-    
 
     // Populate GWA schedules table
     function populateGwaSchedulesTable(data) {
         const tableBody = $("#gwaSubmissionTable tbody");
         tableBody.empty();
-    
+
         if (data.length === 0) {
             tableBody.append('<tr><td colspan="6" class="text-center">No GWA schedules found.</td></tr>');
             return;
         }
-    
+
         data.forEach((schedule) => {
             const isActive = parseInt(schedule.active) === 1;
             const statusLabel = isActive
@@ -228,7 +235,7 @@ $(document).ready(function () {
                 : '<span class="badge bg-secondary">Inactive</span>';
             const toggleButtonClass = isActive ? "btn-outline-danger" : "btn-outline-success";
             const toggleButtonText = isActive ? "Deactivate" : "Activate";
-    
+
             tableBody.append(`
                 <tr>
                     <td>${schedule.submission_id}</td>
@@ -243,5 +250,4 @@ $(document).ready(function () {
             `);
         });
     }
-    
 });
