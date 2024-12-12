@@ -4,18 +4,19 @@ $(document).ready(function () {
   const rowsPerPage = 5; // Rows per page
   let currentPage = 1; // Current page
 
-  // Load students and courses on page load
+  // Load students, courses, and filters on page load
   loadStudents();
   loadCourses();
+  setupFilters();
 
   // Load all students into the table
-  function loadStudents() {
+  function loadStudents(filters = {}) {
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
       type: "POST",
-      data: { action: "read" },
+      data: { action: "read", ...filters },
       success: function (response) {
-        console.log("Load Students Response:", response); // Log the response
+        console.log("Load Students Response:", response);
         students = JSON.parse(response);
         allStudents = [...students]; // Keep original data
         displayTable(currentPage); // Display the first page
@@ -27,7 +28,7 @@ $(document).ready(function () {
     });
   }
 
-  // Load courses into the dropdowns
+  // Load courses into dropdowns
   function loadCourses() {
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
@@ -45,6 +46,16 @@ $(document).ready(function () {
             `<option value="${course.course_id}">${course.course_code}</option>`
           );
         });
+
+        // Populate course filter dropdown
+        const courseFilter = $("#filterCourse");
+        courseFilter.empty();
+        courseFilter.append('<option value="">All Courses</option>');
+        courses.forEach((course) => {
+          courseFilter.append(
+            `<option value="${course.course_id}">${course.course_code}</option>`
+          );
+        });
       },
       error: function (xhr, status, error) {
         console.error("Failed to load courses:", error);
@@ -52,6 +63,27 @@ $(document).ready(function () {
     });
   }
 
+  // Set up dropdown filters
+  function setupFilters() {
+    $("#filterCourse, #filterYear, #filterSection").on("change", function () {
+      const filters = {
+        course_id: $("#filterCourse").val(),
+        year_level: $("#filterYear").val(),
+        section: $("#filterSection").val(),
+      };
+
+      // Remove empty filters
+      Object.keys(filters).forEach((key) => {
+        if (!filters[key]) {
+          delete filters[key];
+        }
+      });
+
+      loadStudents(filters); // Load filtered students
+    });
+  }
+
+  // Display student data in the table
   function displayTable(page) {
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
@@ -66,7 +98,7 @@ $(document).ready(function () {
           <td colspan="7" class="text-center">No data found.</td>
         </tr>`
       );
-      return; // Exit the function early since there's no data to process
+      return;
     }
 
     visibleStudents.forEach((student) => {
@@ -81,18 +113,19 @@ $(document).ready(function () {
           <td>${student.year_level}</td>
           <td>${student.section}</td>
           <td>
-              <button class="btn btn-sm btn-warning edit-btn" data-id="${
-                student.user_id
-              }">Edit</button>
-              <button class="btn btn-sm btn-danger delete-btn" data-id="${
-                student.user_id
-              }">Delete</button>
+            <button class="btn btn-sm btn-warning edit-btn" data-id="${
+              student.user_id
+            }">Edit</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${
+              student.user_id
+            }">Delete</button>
           </td>
         </tr>`
       );
     });
   }
 
+  // Setup pagination
   function setupPagination() {
     const pageCount = Math.ceil(students.length / rowsPerPage);
     const pagination = $("#pagination ul");
@@ -117,35 +150,8 @@ $(document).ready(function () {
     });
   }
 
-  // Search functionality
-  $("#searchStudent").on("keyup", function () {
-    const value = $(this).val().toLowerCase();
-
-    if (value === "") {
-      students = [...allStudents]; // Reset to original data
-      currentPage = 1; // Reset to first page
-      displayTable(currentPage);
-      setupPagination();
-    } else {
-      students = allStudents.filter((student) => {
-        return (
-          student.student_id.toLowerCase().includes(value) ||
-          `${student.first_name} ${student.middle_name ?? ""} ${
-            student.last_name
-          }`
-            .toLowerCase()
-            .includes(value)
-        );
-      });
-      currentPage = 1; // Reset to first page
-      displayTable(currentPage);
-      setupPagination();
-    }
-  });
-
   // Open "Add Student" modal
   $("#addStudentBtn").click(function () {
-    console.log("Add Student Button Clicked"); // Debug log
     $("#addStudentForm")[0].reset();
     $("#addStudentModal").modal("show");
   });
@@ -153,14 +159,12 @@ $(document).ready(function () {
   // Open "Edit Student" modal
   $(document).on("click", ".edit-btn", function () {
     const user_id = $(this).data("id");
-    console.log("Edit Button Clicked for User ID:", user_id);
 
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
       type: "POST",
-      data: { action: "get", user_id: user_id },
+      data: { action: "get", user_id },
       success: function (response) {
-        console.log("Edit Response:", response);
         const student = JSON.parse(response);
 
         if (student.error) {
@@ -174,7 +178,7 @@ $(document).ready(function () {
         $("#edit_middle_name").val(student.middle_name ?? "");
         $("#edit_last_name").val(student.last_name);
         $("#edit_email").val(student.email);
-        $("#edit_course").val(student.course_id); // Update course dropdown
+        $("#edit_course").val(student.course_id);
         $("#edit_year_level").val(student.year_level);
         $("#edit_section").val(student.section);
 
@@ -186,18 +190,16 @@ $(document).ready(function () {
     });
   });
 
-  // Handle form submission for "Add Student"
+  // Submit "Add Student" form
   $("#addStudentForm").submit(function (e) {
     e.preventDefault();
     const formData = $(this).serialize() + "&action=create";
-    console.log("Submitting Add Student Form Data:", formData);
 
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
       type: "POST",
       data: formData,
       success: function (response) {
-        console.log("Add Student Response:", response);
         const result = JSON.parse(response);
 
         if (result.success) {
@@ -214,18 +216,16 @@ $(document).ready(function () {
     });
   });
 
-  // Handle form submission for "Edit Student"
+  // Submit "Edit Student" form
   $("#editStudentForm").submit(function (e) {
     e.preventDefault();
     const formData = $(this).serialize() + "&action=update";
-    console.log("Submitting Edit Student Form Data:", formData);
 
     $.ajax({
       url: "/cssc/server/admin/student_server.php",
       type: "POST",
       data: formData,
       success: function (response) {
-        console.log("Edit Student Response:", response);
         const result = JSON.parse(response);
 
         if (result.success) {
@@ -255,10 +255,9 @@ $(document).ready(function () {
     });
   }
 
-  // Attach event listeners for Delete buttons
+  // Delete student
   $(document).on("click", ".delete-btn", function () {
     const user_id = $(this).data("id");
-    console.log("Delete Button Clicked for User ID:", user_id);
 
     if (confirm("Are you sure you want to delete this student?")) {
       $.ajax({
@@ -266,7 +265,6 @@ $(document).ready(function () {
         type: "POST",
         data: { action: "delete", user_id },
         success: function (response) {
-          console.log("Delete Student Response:", response);
           const result = JSON.parse(response);
           alert(
             result.success

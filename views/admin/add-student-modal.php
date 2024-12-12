@@ -53,15 +53,27 @@
                     <!-- Year Level -->
                     <div class="mb-3">
                         <label for="add_year_level" class="form-label">Year Level</label>
-                        <input type="number" class="form-control" id="add_year_level" name="year_level" min="1" max="10" required>
+                        <select class="form-control" id="add_year_level" name="year_level" required>
+                            <option value="">Select Year Level</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
                         <div class="invalid-feedback">Year Level is required.</div>
                     </div>
                     <!-- Section -->
                     <div class="mb-3">
                         <label for="add_section" class="form-label">Section</label>
-                        <input type="text" class="form-control" id="add_section" name="section" required>
+                        <select class="form-control" id="add_section" name="section" required>
+                            <option value="">Select Section</option>
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                        </select>
                         <div class="invalid-feedback">Section is required.</div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

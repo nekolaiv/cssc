@@ -51,14 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (empty($data['course_id'])) {
                 $errors['course_id'] = 'Course is required.';
-            } elseif (!ctype_digit($data['course_id'])) {
-                $errors['course_id'] = 'Invalid course ID.';
             }
 
             if (empty($data['year_level'])) {
                 $errors['year_level'] = 'Year level is required.';
-            } elseif (!ctype_digit((string)$data['year_level'])) {
-                $errors['year_level'] = 'Year level must be numeric.';
             }
 
             if (empty($data['section'])) {
@@ -128,8 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (empty($data['year_level'])) {
                 $errors['year_level'] = 'Year level is required.';
-            } elseif (!ctype_digit((string)$data['year_level'])) {
-                $errors['year_level'] = 'Year level must be numeric.';
             }
 
             if (empty($data['section'])) {
