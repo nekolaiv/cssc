@@ -3,7 +3,6 @@ $(document).ready(function () {
 		e.preventDefault();
 		$(".nav-items").removeClass("nav-active");
 		$(this).addClass("nav-active");
-
 		let url = $(this).attr("href");
 		console.log(url);
 		window.history.pushState({ path: url }, "", url);
@@ -66,6 +65,11 @@ $(document).ready(function () {
 		loadPage('results-content.php');
 	});
 
+	$("#previous-link").on("click", function (e) {
+		e.preventDefault();
+		loadPage('previous-results-content.php');
+	});
+
 
 	$("#profile-link").on("click", function (e) {
 		e.preventDefault();
@@ -90,6 +94,8 @@ $(document).ready(function () {
 		$("#leaderboard-act-link").trigger("click");
 	} else if (url.endsWith("results")) {
 		$("#results-link").trigger("click");
+	} else if (url.endsWith("previous")) {
+		$("#previous-link").trigger("click");
 	} else if (url.endsWith("profile")) {
 		$("#profile-link").trigger("click");
 	} else if (url.endsWith("calculate")) {
@@ -122,6 +128,9 @@ $(document).ready(function () {
 		} else if (url.endsWith("results")) {
 			// $("#results-link").trigger("click");
 			loadPage('results-content.php');
+		} else if (url.endsWith("previous")) {
+			// $("#results-link").trigger("click");
+			loadPage('previous-results-content.php');
 		} else if (url.endsWith("profile")) {
 			// $("#profile-link").trigger("click");
 			loadPage('profile-content.php');

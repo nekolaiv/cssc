@@ -133,9 +133,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
         echo "Error: " . $e->getMessage();
     }
 
-    
-    
-
     $result = $student->saveEntryToDatabase($email, $gwa_result, $imageData);
     if($result){
         $_SESSION['validate-button'] = "Submitted";
