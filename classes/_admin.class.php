@@ -454,6 +454,20 @@ public function toggleActiveGwaSchedule($submission_id)
     return $stmt->rowCount();
 }
 
+public function getCurrentAcademicTerm() {
+    try {
+        $query = "SELECT academic_year, semester 
+                  FROM current_academic_term 
+                  WHERE active = 1 
+                  LIMIT 1";
+        $stmt = $this->database->connect()->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception("Failed to fetch current academic term: " . $e->getMessage());
+    }
+}
 
 }
 ?>
