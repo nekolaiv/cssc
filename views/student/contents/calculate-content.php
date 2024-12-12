@@ -74,7 +74,7 @@ for($i = 0; $i < count($subject_load); $i++){
                         <input type="text" name="subject-name[]" value="<?= $_SESSION['course-fields']['subject-name'][$i] ?>" readonly>
                         <input type="text" name="subject-code[]" value="<?= $_SESSION['course-fields']['subject-code'][$i] ?>" readonly>
                         <input type="number" name="unit[]" value="<?= $_SESSION['course-fields']['units'][$i] ?>" readonly>
-                        <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?? NULL ?>">
+                        <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?? NULL?>">
                         <!-- <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(<?= $i ?>)">remove</button> -->
                     </div>
                 <?php endfor; ?>
