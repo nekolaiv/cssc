@@ -241,20 +241,24 @@ class Student
             if($entry_exists === 'is_verified'){
                 $this->_deleteStudentVerifiedEntry($email);
             }
-            $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, adviser_name, gwa, image_proof)
-            VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :adviser_name, :gwa, :image_proof)";
+            $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id)
+            VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :submission_id)";
             $student = $this->_getStudentData($email);
+            $adviser = $this->_getStudentAdviser($email);
+            $course = $this->_getStudentCourse($email);
+            $submission_id = $this->_getEntryTermSubmitted();
             $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
+
             $query = $this->database->connect()->prepare($sql);
             $query->bindParam(':student_id', $student['student_id']);
             $query->bindParam(':email', $email);
             $query->bindParam(':fullname', $student_fullname);
-            $query->bindParam(':course', $student['course']);
+            $query->bindParam(':course', $course['course_code']);
             $query->bindParam(':year_level', $student['year_level']);
             $query->bindParam(':section', $student['section']);
-            $query->bindParam(':adviser_name', $student['adviser_name']);
             $query->bindParam(':gwa', $gwa);
             $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
+            $query->bindParam(':submission_id', $submission_id['submission_id']);
         }
         if ($query->execute()) {
             return true;
@@ -305,6 +309,50 @@ class Student
         } else {
             return false;
         }
+    }
+
+    private function _getStudentAdviser($email){
+		$sql = "SELECT sa.adviser_id as adviser_id, CONCAT(a.first_name, ', ', a.last_name, ' ', a.middle_name) as full_name
+		FROM student_accounts as sa LEFT JOIN advisers as a ON sa.adviser_id = a.adviser_id
+		WHERE sa.email = :email;";
+		$query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+	}
+
+    private function _getStudentCourse($email){
+        $sql = 'SELECT c.course_code as course_code 
+        FROM student_accounts AS sa
+        LEFT JOIN courses AS c
+        ON sa.course_id = c.course_id
+        WHERE sa.email = :email;';
+        $query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':email', $email);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+    }
+
+    private function _getEntryTermSubmitted(){
+        $sql = 'SELECT submission_id FROM gwa_submission_schedule WHERE active = 1;';
+        $query = $this->database->connect()->prepare($sql);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
     }
 
     // public function setScreenshotFile($student_id, $image){
