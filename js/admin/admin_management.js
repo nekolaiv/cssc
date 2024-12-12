@@ -63,7 +63,7 @@ $(document).ready(function () {
   // Set up pagination
   function setupPagination(data) {
     const pageCount = Math.ceil(data.length / rowsPerPage);
-    const pagination = $("#pagination ul");
+    const pagination = $("#pagination");
     pagination.empty();
 
     for (let i = 1; i <= pageCount; i++) {
