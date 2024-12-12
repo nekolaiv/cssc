@@ -2,6 +2,7 @@ $(document).ready(function () {
     // Load data on page load
     loadAcademicTerms();
     loadGwaSchedules();
+    loadTermsDropdown();
 
     // Add Academic Term form submission
     $("#addAcademicTermForm").submit(function (e) {
@@ -52,6 +53,37 @@ $(document).ready(function () {
             },
         });
     });
+
+     // Load academic terms for dropdown
+     function loadTermsDropdown() {
+        $.ajax({
+            url: "/cssc/server/admin/academic_server.php",
+            type: "POST",
+            data: { action: "get_all_terms" },
+            success: function (response) {
+                const result = JSON.parse(response);
+                if (result.success) {
+                    const terms = result.data;
+                    const termDropdown = $("#gwaTermId"); // Dropdown ID
+                    termDropdown.empty();
+                    termDropdown.append('<option value="">Select a term</option>');
+
+                    terms.forEach((term) => {
+                        termDropdown.append(`
+                            <option value="${term.term_id}">
+                                ${term.academic_year} - ${term.semester}
+                            </option>
+                        `);
+                    });
+                } else {
+                    alert("Error loading terms: " + result.message);
+                }
+            },
+            error: function () {
+                alert("Failed to load terms.");
+            },
+        });
+    }
 
     // Toggle active academic term
     $(document).on("click", ".toggle-active-term", function () {
@@ -154,7 +186,13 @@ $(document).ready(function () {
         }
     
         data.forEach((term) => {
-            const isActive = parseInt(term.active) === 1 ? "Active" : "Inactive"; // Ensure active is treated as an integer
+            const isActive = parseInt(term.active) === 1;
+            const statusLabel = isActive
+                ? '<span class="badge bg-success">Active</span>'
+                : '<span class="badge bg-secondary">Inactive</span>';
+            const toggleButtonClass = isActive ? "btn-outline-danger" : "btn-outline-success";
+            const toggleButtonText = isActive ? "Deactivate" : "Activate";
+    
             tableBody.append(`
                 <tr>
                     <td>${term.term_id}</td>
@@ -162,14 +200,15 @@ $(document).ready(function () {
                     <td>${term.semester}</td>
                     <td>${term.start_date}</td>
                     <td>${term.end_date}</td>
-                    <td>${isActive}</td>
+                    <td>${statusLabel}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary toggle-active-term" data-id="${term.term_id}">Toggle Active</button>
+                        <button class="btn ${toggleButtonClass} btn-sm toggle-active-term" data-id="${term.term_id}">${toggleButtonText}</button>
                     </td>
                 </tr>
             `);
         });
     }
+    
     
 
     // Populate GWA schedules table
@@ -183,19 +222,26 @@ $(document).ready(function () {
         }
     
         data.forEach((schedule) => {
-            const isActive = parseInt(schedule.active) === 1 ? "Active" : "Inactive"; // Ensure active is treated as an integer
+            const isActive = parseInt(schedule.active) === 1;
+            const statusLabel = isActive
+                ? '<span class="badge bg-success">Active</span>'
+                : '<span class="badge bg-secondary">Inactive</span>';
+            const toggleButtonClass = isActive ? "btn-outline-danger" : "btn-outline-success";
+            const toggleButtonText = isActive ? "Deactivate" : "Activate";
+    
             tableBody.append(`
                 <tr>
                     <td>${schedule.submission_id}</td>
                     <td>${schedule.term_id}</td>
                     <td>${schedule.gwa_submission_start}</td>
                     <td>${schedule.gwa_submission_end}</td>
-                    <td>${isActive}</td>
+                    <td>${statusLabel}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary toggle-active-gwa" data-id="${schedule.submission_id}">Toggle Active</button>
+                        <button class="btn ${toggleButtonClass} btn-sm toggle-active-gwa" data-id="${schedule.submission_id}">${toggleButtonText}</button>
                     </td>
                 </tr>
             `);
         });
-    }    
+    }
+    
 });

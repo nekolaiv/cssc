@@ -130,6 +130,6 @@
     </div>
 </div>
 
-<script src="/cssc/js/admin/academic_term_management.js"></script>
+<!-- <script src="/cssc/js/admin/academic_term_management.js"></script> -->
 </body>
 </html>

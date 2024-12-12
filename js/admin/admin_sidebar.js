@@ -68,28 +68,32 @@ $(document).ready(function () {
 
     // Fetch content via AJAX
     $.ajax({
-      url: url,
-      method: "GET",
-      success: function (data) {
-        content.html(data);
+        url: url,
+        method: "GET",
+        success: function (data) {
+            content.html(data);
 
-        // Dynamically load specific JavaScript for each page
-        if (url.includes("admin-dashboard.php")) {
-          $.getScript("/cssc/js/admin/admin_dashboard.js");
-        }
-        if (url.includes("student-management.php")) {
-          $.getScript("/cssc/js/admin/student_management.js");
-        }
-        if (url.includes("staff-management.php")) {
-          $.getScript("/cssc/js/admin/staff_management.js");
-        }
-        if (url.includes("admin-management.php")) {
-          $.getScript("/cssc/js/admin/admin_management.js");
-        }
-      },
-      error: function () {
-        content.html("<p>Error loading content. Please try again later.</p>");
-      },
+            // Dynamically load specific JavaScript for each page
+            if (url.includes("admin-dashboard.php")) {
+                $.getScript("/cssc/js/admin/admin_dashboard.js");
+            }
+            if (url.includes("student-management.php")) {
+                $.getScript("/cssc/js/admin/student_management.js");
+            }
+            if (url.includes("staff-management.php")) {
+                $.getScript("/cssc/js/admin/staff_management.js");
+            }
+            if (url.includes("admin-management.php")) {
+                $.getScript("/cssc/js/admin/admin_management.js");
+            }
+            if (url.includes("academic-submission.php")) {
+                $.getScript("/cssc/js/admin/academic_term_management.js");
+            }
+        },
+        error: function () {
+            content.html("<p>Error loading content. Please try again later.</p>");
+        },
     });
-  }
+}
+
 });

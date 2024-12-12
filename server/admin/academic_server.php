@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 $newTermId = $admin->addAcademicTerm($academic_year, $semester, $start_date, $end_date);
-                echo json_encode(['success' => true, 'message' => "New term added with ID $newTermId."]);
+                echo json_encode(['success' => true, 'message' => "New term added"]);
                 break;
 
             case 'update_academic_term':

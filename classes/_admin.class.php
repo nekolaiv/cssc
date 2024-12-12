@@ -454,5 +454,6 @@ public function toggleActiveGwaSchedule($submission_id)
     return $stmt->rowCount();
 }
 
+
 }
 ?>
