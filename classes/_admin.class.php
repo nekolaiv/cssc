@@ -189,18 +189,43 @@ class Admin {
         return $this->database->execute($query, $data);
     }
     
-    public function getAllStudents() {
-        $query = "
-            SELECT 
-                sa.*, 
-                c.course_code 
-            FROM 
-                student_accounts sa
-            LEFT JOIN 
-                courses c ON sa.course_id = c.course_id
-        ";
-        return $this->database->fetchAll($query);
+    public function getAllStudents($filters = [])
+{
+    $query = "SELECT sa.*, c.course_code 
+              FROM student_accounts sa
+              LEFT JOIN courses c ON sa.course_id = c.course_id";
+
+    $params = [];
+    $conditions = [];
+
+    // Apply filters dynamically
+    if (!empty($filters['course_id'])) {
+        $conditions[] = "sa.course_id = :course_id";
+        $params[':course_id'] = $filters['course_id'];
     }
+    if (!empty($filters['year_level'])) {
+        $conditions[] = "sa.year_level = :year_level";
+        $params[':year_level'] = $filters['year_level'];
+    }
+    if (!empty($filters['section'])) {
+        $conditions[] = "sa.section = :section";
+        $params[':section'] = $filters['section'];
+    }
+
+    // Append conditions to query
+    if (!empty($conditions)) {
+        $query .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    $query .= " ORDER BY sa.student_id";
+
+    // Execute query
+    $stmt = $this->database->connect()->prepare($query);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
     public function updateStudent($data)
     {

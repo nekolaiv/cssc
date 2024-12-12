@@ -153,10 +153,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode(['success' => $response]);
             break;
 
-        case 'read':
-            $students = $student->getAllStudents();
-            echo json_encode($students);
-            break;
+            case 'read':
+                $filters = [
+                    'course_id' => cleanInput($_POST['course_id'] ?? ''),
+                    'year_level' => cleanInput($_POST['year_level'] ?? ''),
+                    'section' => cleanInput($_POST['section'] ?? ''),
+                ];
+    
+                // Remove empty filters
+                $filters = array_filter($filters);
+    
+                // Get students with optional filters
+                $students = $student->getAllStudents($filters);
+                echo json_encode($students);
+                break;
 
         case 'delete':
             $user_id = intval(cleanInput($_POST['user_id'] ?? 0));

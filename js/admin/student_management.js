@@ -8,6 +8,7 @@ $(document).ready(function () {
   loadStudents();
   loadCourses();
   setupFilters();
+  setupSearch();
 
   // Load all students into the table
   function loadStudents(filters = {}) {
@@ -72,14 +73,29 @@ $(document).ready(function () {
         section: $("#filterSection").val(),
       };
 
-      // Remove empty filters
-      Object.keys(filters).forEach((key) => {
-        if (!filters[key]) {
-          delete filters[key];
-        }
+      // Load filtered students
+      loadStudents(filters);
+    });
+  }
+
+  // Set up search functionality
+  function setupSearch() {
+    $("#searchStudent").on("keyup", function () {
+      const query = $(this).val().toLowerCase();
+
+      const filteredStudents = allStudents.filter((student) => {
+        return (
+          student.student_id.toString().toLowerCase().includes(query) ||
+          `${student.first_name} ${student.middle_name ?? ""} ${
+            student.last_name
+          }`.toLowerCase().includes(query)
+        );
       });
 
-      loadStudents(filters); // Load filtered students
+      students = filteredStudents; // Update students with the filtered result
+      currentPage = 1; // Reset to the first page
+      displayTable(currentPage);
+      setupPagination();
     });
   }
 
