@@ -1,0 +1,18 @@
+#dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+#academic-details {
+    font-weight: bold;
+}
+
+#datetime-details {
+    font-size: 12px;
+    font-style: italic;
+}

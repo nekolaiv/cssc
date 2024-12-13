@@ -1,5 +1,4 @@
 <?php
-require_once '../../classes/database.class.php';
 require_once '../../classes/_staff.class.php';
 require_once '../../tools/clean.function.php';
 
@@ -9,76 +8,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     switch ($action) {
         case 'read':
-            $unverifiedEntries = $entries->getAllUnverifiedEntries();
-            echo json_encode($unverifiedEntries);
+            // Fetch all unverified entries
+            echo json_encode($entries->getAllUnverifiedEntries());
             break;
 
         case 'get':
+            // Get specific entry details
             $entry_id = intval(cleanInput($_POST['id']));
-            $entry = $entries->getEntryById($entry_id);
-
-            if ($entry) {
-                $query = "SELECT status FROM registered_students WHERE student_id = :student_id";
-                $db = new Database();
-                $status = $db->fetchOne($query, [':student_id' => $entry['student_id']]);
-
-                // If there's an image, encode it properly
-                if (!empty($entry['image_proof'])) {
-                    $entry['image_proof'] = base64_encode($entry['image_proof']);
-                }
-
-                $entry['status'] = $status['status'] ?? 'Not Submitted';
-                echo json_encode($entry);
-            } else {
-                echo json_encode(['error' => 'Entry not found.']);
-            }
+            echo json_encode($entries->getEntryWithStatus($entry_id));
             break;
 
-            case 'verify':
-                $entry_id = intval(cleanInput($_POST['id']));
-            
-                // Fetch the student ID before moving the entry
-                $entryDetails = $entries->getEntryById($entry_id);
-                if (!$entryDetails) {
-                    echo json_encode(['success' => false, 'error' => 'Entry not found or invalid.']);
-                    exit;
-                }
-            
-                $studentId = $entryDetails['student_id'] ?? 'Unknown';
-            
-                // Perform the verification (move to verified entries table)
-                $response = $entries->verifyEntry($entry_id);
-            
-                if ($response) {
-                    // Log the audit event after successful verification
-                    $entries->logAudit(
-                        'Verify Entry',
-                        "Verified entry for Student ID: $studentId"
-                    );
-            
-                    echo json_encode(['success' => true, 'message' => 'Entry verified successfully.']);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'Failed to verify the entry.']);
-                }
-                break;
-            
+        case 'verify':
+            // Verify the entry
+            $entry_id = intval(cleanInput($_POST['id']));
+            echo json_encode($entries->verifyAndLogEntry($entry_id));
+            break;
 
         case 'reject':
+            // Reject the entry
             $entry_id = intval(cleanInput($_POST['id']));
-            $response = $entries->rejectEntry($entry_id);
+            echo json_encode($entries->rejectAndLogEntry($entry_id));
+            break;
 
-            if ($response) {
-                $entryDetails = $entries->getEntryById($entry_id);
-                $studentId = $entryDetails['student_id'] ?? 'Unknown';
-                $entries->logAudit(
-                    'Reject Entry',
-                    "Rejected entry for Student ID: $studentId"
-                );
-
-                echo json_encode(['success' => true, 'message' => 'Entry rejected successfully.']);
-            } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to reject the entry.']);
-            }
+        case 'get_subject_fields':
+            // Fetch subject fields for the student
+            $student_id = intval(cleanInput($_POST['student_id']));
+            echo json_encode($entries->getSubjectFieldsByStudent($student_id));
             break;
 
         default:

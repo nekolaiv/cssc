@@ -14,33 +14,35 @@ $(document).ready(function () {
 
         if (entries.length === 0) {
           tableBody.append(`
-                        <tr>
-                            <td colspan="7" class="text-center">No verified entries found.</td>
-                        </tr>
-                    `);
+            <tr>
+                <td colspan="7" class="text-center">No verified entries found.</td>
+            </tr>
+          `);
         } else {
           entries.forEach((entry) => {
             tableBody.append(`
-                            <tr>
-                                <td>${entry.student_id}</td>
-                                <td>${entry.fullname}</td>
-                                <td>${
-                                  entry.course_details ||
-                                  `${entry.course}-${entry.year_level}-${entry.section}`
-                                }</td>
-                                <td>${entry.adviser_name}</td>
-                                <td>${entry.gwa}</td>
-                                <td>${entry.created_at}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-info view-details" data-id="${
-                                      entry.id
-                                    }">View</button>
-                                    <button class="btn btn-sm btn-danger remove-entry" data-id="${
-                                      entry.id
-                                    }">Remove</button>
-                                </td>
-                            </tr>
-                        `);
+              <tr>
+                  <td>${entry.student_id}</td>
+                  <td>${entry.fullname}</td>
+                  <td>${
+                    entry.course_details ||
+                    `${entry.course}-${entry.year_level}-${entry.section}`
+                  }</td>
+                  <td>${entry.gwa}</td>
+                  <td>${entry.created_at}</td>
+                  <td>
+                      <button class="btn btn-sm btn-info view-details" data-id="${
+                        entry.id
+                      }">View</button>
+                      <button class="btn btn-sm btn-secondary compare-grades" data-student-id="${
+                        entry.student_id
+                      }">Compare Grades</button>
+                      <button class="btn btn-sm btn-danger remove-entry" data-id="${
+                        entry.id
+                      }">Remove</button>
+                  </td>
+              </tr>
+            `);
           });
         }
       },
@@ -99,6 +101,49 @@ $(document).ready(function () {
       },
       error: function () {
         alert("Failed to fetch entry details. Please try again.");
+      },
+    });
+  });
+
+  // Delegate event handling for Compare Grades button
+  $("#verifiedEntriesTable").on("click", ".compare-grades", function () {
+    const studentId = $(this).data("student-id");
+
+    // Fetch subject fields via AJAX
+    $.ajax({
+      url: "/cssc/server/staff/verified_entries_server.php",
+      type: "POST",
+      data: { action: "get_subject_fields", student_id: studentId },
+      success: function (response) {
+        const subjects = JSON.parse(response);
+        const tableBody = $("#subjectFieldsTable tbody");
+        tableBody.empty();
+
+        if (subjects.length === 0) {
+          tableBody.append(`
+            <tr>
+                <td colspan="5" class="text-center">No subject details available.</td>
+            </tr>
+          `);
+        } else {
+          subjects.forEach((subject) => {
+            tableBody.append(`
+              <tr>
+                  <td>${subject.subject_code}</td>
+                  <td>${subject.units}</td>
+                  <td>${subject.grade}</td>
+                  <td>${subject.academic_year}</td>
+                  <td>${subject.semester}</td>
+              </tr>
+            `);
+          });
+        }
+
+        // Show the modal
+        $("#subjectFieldsModal").modal("show");
+      },
+      error: function () {
+        alert("Failed to fetch subject details. Please try again.");
       },
     });
   });
