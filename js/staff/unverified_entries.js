@@ -19,17 +19,18 @@ $(document).ready(function () {
         } else {
           entries.forEach((entry) => {
             tableBody.append(`
-                        <tr>
-                            <td>${entry.student_id}</td>
-                            <td>${entry.fullname}</td>
-                            <td>${entry.course_details}</td>
-                            <td>${entry.created_at}</td>
-                            <td>${entry.status}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm view-details-btn" data-id="${entry.id}">View Details</button>
-                            </td>
-                        </tr>
-                    `);
+              <tr>
+                  <td>${entry.student_id}</td>
+                  <td>${entry.fullname}</td>
+                  <td>${entry.course_details}</td>
+                  <td>${entry.created_at}</td>
+                  <td>${entry.status}</td>
+                  <td>
+                      <button class="btn btn-primary btn-sm view-details-btn" data-id="${entry.id}">View Details</button>
+                      <button class="btn btn-secondary btn-sm compare-grades-btn" data-student-id="${entry.student_id}">Compare Grades</button>
+                  </td>
+              </tr>
+            `);
           });
         }
       },
@@ -124,4 +125,44 @@ $(document).ready(function () {
         });
       }
     });
+
+  // Event delegation for Compare Grades button
+  $(document).on("click", ".compare-grades-btn", function () {
+    const studentId = $(this).data("student-id");
+    // Fetch subject fields via AJAX
+    $.ajax({
+      url: "/cssc/server/staff/unverified_entries_server.php",
+      type: "POST",
+      data: { action: "get_subject_fields", student_id: studentId },
+      success: function (response) {
+        const subjects = JSON.parse(response);
+        const tableBody = $("#subjectFieldsTable tbody");
+        tableBody.empty();
+
+        if (subjects.length === 0) {
+          tableBody.append(
+            `<tr><td colspan="5" class="text-center">No subject details available.</td></tr>`
+          );
+        } else {
+          subjects.forEach((subject) => {
+            tableBody.append(`
+              <tr>
+                  <td>${subject.subject_code}</td>
+                  <td>${subject.units}</td>
+                  <td>${subject.grade}</td>
+                  <td>${subject.academic_year}</td>
+                  <td>${subject.semester}</td>
+              </tr>
+            `);
+          });
+        }
+
+        // Show the modal
+        $("#subjectFieldsModal").modal("show");
+      },
+      error: function () {
+        alert("Failed to fetch subject details.");
+      },
+    });
+  });
 });

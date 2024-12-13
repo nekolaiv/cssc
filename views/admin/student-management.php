@@ -19,7 +19,37 @@
         <div class="mb-3">
             <input type="text" id="searchStudent" class="form-control" placeholder="Search by Student ID or Name">
         </div>
-        
+
+        <div class="row mb-3">
+        <!-- Filter by Course -->
+        <div class="col-md-4">
+            <label for="filterCourse" class="form-label">Filter by Course</label>
+            <select class="form-control" id="filterCourse">
+            <option value="">All Courses</option>
+            </select>
+        </div>
+        <!-- Filter by Year Level -->
+        <div class="col-md-4">
+            <label for="filterYear" class="form-label">Filter by Year Level</label>
+            <select class="form-control" id="filterYear">
+            <option value="">All Year Levels</option>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+            </select>
+        </div>
+        <!-- Filter by Section -->
+        <div class="col-md-4">
+            <label for="filterSection" class="form-label">Filter by Section</label>
+            <select class="form-control" id="filterSection">
+            <option value="">All Sections</option>
+            <option value="A">Section A</option>
+            <option value="B">Section B</option>
+            <option value="C">Section C</option>
+            </select>
+        </div>
+        </div>  
         <!-- Table to display all students -->
         <table class="table table-bordered" id="studentsTable">
             <thead>
@@ -27,7 +57,7 @@
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Password</th>
+                <th>Curriculum Code</th>
                 <th>Course</th>
                 <th>Year Level</th>
                 <th>Section</th>
@@ -44,6 +74,7 @@
     </div>
 
     <!-- Include Modals -->
-    <?php include 'addedit-student-modal.php'; ?>
+    <?php include 'add-student-modal.php'; ?>
+    <?php include 'edit-student-modal.php'; ?>
 </body>
 </html>

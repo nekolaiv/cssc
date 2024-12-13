@@ -6,7 +6,7 @@ $db = new Database();
 
 try {
     // Queries to get counts for students, staff, and admin
-    $queryStudents = "SELECT COUNT(*) AS student_count FROM registered_students";
+    $queryStudents = "SELECT COUNT(*) AS student_count FROM student_accounts";
     $queryStaff = "SELECT COUNT(*) AS staff_count FROM staff_accounts";
     $queryAdmin = "SELECT COUNT(*) AS admin_count FROM admin_accounts";
 

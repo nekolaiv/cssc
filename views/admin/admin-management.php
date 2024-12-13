@@ -27,10 +27,6 @@
                 <th>Admin ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <!-- <th>First Name</th>
-                <th>Last Name</th>
-                <th>Middle Name</th> -->
-                <th>Password</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -45,7 +41,9 @@
     </nav>
 
     <!-- Include Modals -->
-    <?php include 'addedit-admin-modal.php'; ?>
+    <?php include 'add-admin-modal.php'; ?>
+    <?php include 'edit-admin-modal.php'; ?>
+
 </div>
 </body>
 </html>

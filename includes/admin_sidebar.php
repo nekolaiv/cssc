@@ -34,6 +34,12 @@
             </ul>
         </li>
         <li class="sidebar-item">
+            <a href="#" data-url="/cssc/views/admin/academic-submission.php" class="sidebar-link menu-link">
+                <i class="lni lni-graduation"></i>
+                <span>Academic Management</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
             <a href="#" data-url="/cssc/views/admin/admin-profile.php" class="sidebar-link menu-link">
                 <i class="lni lni-user"></i>
                 <span>Profile</span>

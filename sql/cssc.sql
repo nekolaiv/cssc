@@ -96,10 +96,10 @@ INSERT INTO `current_academic_term` (`id`, `school_year`, `semester`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `registered_students`
+-- Table structure for table `student_accounts`
 --
 
-CREATE TABLE `registered_students` (
+CREATE TABLE `student_accounts` (
   `user_id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -118,10 +118,10 @@ CREATE TABLE `registered_students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `registered_students`
+-- Dumping data for table `student_accounts`
 --
 
-INSERT INTO `registered_students` (`user_id`, `student_id`, `email`, `password`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `role`, `adviser_name`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `student_accounts` (`user_id`, `student_id`, `email`, `password`, `first_name`, `last_name`, `middle_name`, `course`, `year_level`, `section`, `role`, `adviser_name`, `status`, `created_at`, `updated_at`) VALUES
 (1, '202300001', 'hz202300001@wmsu.edu.ph', '$2y$10$cYsXuMVdmyw21xY0hzALM.6pY0V5Z4LRefXvd9ZwBP3Av332gG4j.', 'John', 'Doe', 'Michael', 'Computer Science', 1, 'A', 'student', 'Tahil, Salimar Bendanillo', 'Not Submitted', '2024-12-01 01:37:59', '2024-12-01 01:37:59'),
 (2, '202300013', 'hz202300013@wmsu.edu.ph', '$2y$10$Auk9ddjtFfMa3KWna6IK.OJPNOeu8sEtGmNIo8EFDYLCwkb8JPbZ2', 'Robert', 'Johnson', 'William', 'Information Technology', 3, 'C', 'student', 'Jaafar, Rhamirl Balang', 'Not Submitted', '2024-12-01 01:38:48', '2024-12-01 01:38:48'),
 (3, '202300022', 'hz202300022@wmsu.edu.ph', '$2y$10$n52fyKth8WXJZ79dYeEMee4FdlLHIi9kHeTRhdatKYDzElYymk2bi', 'Jane', 'Smith', 'Elizabeth', 'Associate in Computer Technology', 2, 'B', 'student', 'Ballaho, Jaydee ', 'Not Submitted', '2024-12-01 01:39:07', '2024-12-01 01:39:07');
@@ -275,9 +275,9 @@ ALTER TABLE `current_academic_term`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `registered_students`
+-- Indexes for table `student_accounts`
 --
-ALTER TABLE `registered_students`
+ALTER TABLE `student_accounts`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `student_id` (`student_id`),
   ADD UNIQUE KEY `email` (`email`);
@@ -330,9 +330,9 @@ ALTER TABLE `current_academic_term`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `registered_students`
+-- AUTO_INCREMENT for table `student_accounts`
 --
-ALTER TABLE `registered_students`
+ALTER TABLE `student_accounts`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --

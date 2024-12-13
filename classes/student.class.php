@@ -80,7 +80,7 @@ class Student
     }
 
     // UPDATING STUDENT STATUS
-    private function _updateStudentStatus($email){
+        private function _updateStudentStatus($email){
         if($this->_isEntryPending($email)){
             if(!$this->_isStatusRejected($email)){
                 return true;

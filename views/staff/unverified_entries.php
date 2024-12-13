@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unverified Entries</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <script src="/cssc/vendor/jquery-3.7.1/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/cssc/js/staff/unverified_entries.js"></script>
+    <!-- <script src="/cssc/js/staff/unverified_entries.js"></script> -->
 </head>
 <body>
     <div class="container mt-4">
@@ -16,21 +15,21 @@
 
         <!-- Table to display unverified entries -->
         <table class="table table-bordered" id="unverifiedEntriesTable">
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Full Name</th>
-                <th>Course</th>
-                <th>Submission Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="6" class="text-center">No unverified entries found.</td>
-            </tr>
-        </tbody>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Full Name</th>
+                    <th>Course</th>
+                    <th>Submission Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" class="text-center">No unverified entries found.</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -50,13 +49,42 @@
                     <p><strong>Course:</strong> <span id="modalCourse"></span></p>
                     <p><strong>Year Level:</strong> <span id="modalYearLevel"></span></p>
                     <p><strong>Section:</strong> <span id="modalSection"></span></p>
-                    <p><strong>Adviser Name:</strong> <span id="modalAdviserName"></span></p>
                     <p><strong>GWA:</strong> <span id="modalGWA"></span></p>
                     <p><strong>Image Proof:</strong> <img id="modalImageProof" src="" alt="Image Proof" style="width: 100%; max-height: 200px;"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="approveBtn">Approve</button>
                     <button type="button" class="btn btn-danger" id="rejectBtn">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for displaying subject fields -->
+    <div class="modal fade" id="subjectFieldsModal" tabindex="-1" aria-labelledby="subjectFieldsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="subjectFieldsModalLabel">Subject Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="subjectFieldsTable">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Units</th>
+                                <th>Grade</th>
+                                <th>Academic Year</th>
+                                <th>Semester</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="text-center">No subject details available.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

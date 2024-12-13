@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             }
 
-            // If no errors, hash the password and proceed
+            // Hash the password and create admin
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             $result = $admin->createAdmin([
                 'email' => $email,
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'update':
             $admin_id = intval(cleanInput($_POST['admin_id']));
             $email = cleanInput($_POST['email']);
-            $password = cleanInput($_POST['password']);
+            $password = isset($_POST['password']) ? cleanInput($_POST['password']) : '';
             $first_name = cleanInput($_POST['first_name']);
             $last_name = cleanInput($_POST['last_name']);
             $middle_name = cleanInput($_POST['middle_name']);
@@ -99,12 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['middle_name'] = 'Middle name is required.';
             }
 
-            if (!empty($password)) {
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            } else {
-                $hashedPassword = null; // Keep existing password if no new one is provided
-            }
+            // Hash the password if provided
+            $hashedPassword = !empty($password) ? password_hash($password, PASSWORD_BCRYPT) : null;
 
+            // If errors, return them
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
@@ -114,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'admin_id' => $admin_id,
                 'email' => $email,
-                'password' => $hashedPassword,
+                'password' => $hashedPassword, // Optional
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'middle_name' => $middle_name
