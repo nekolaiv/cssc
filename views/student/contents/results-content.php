@@ -14,16 +14,21 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
     <h2 id="result-message-2"><?php echo $_SESSION['GWA']['message-2'] ?? "None"?></h2>
     <h2 id="result-message-3"><?php echo $_SESSION['GWA']['message-3'] ?? "None"?></h2>
     <h2 id="result-message-4">GWA SCORE: <?php echo $_SESSION['GWA']['gwa-score'] ?? "None"?></h2>
-    <h2 id="result-verification-status">Verification Status: 
-        <?php echo $_SESSION['profile']['status'] ?? "None";?>
-    </h2>
+
     <div id="result-action-buttons">
         <a href="home" id="result-home-link" class="nav-items"><button>Home</button></a>
         <a href="calculate" id="calculate-link" class="nav-items"><button>Edit Inputs</button></a>
-        <form id="validation-buttons" action="" method="POST" enctype="multipart/form-data">
-            <button type="submit" name="validate-button" id="validate-button"> <?php echo $_SESSION['validate-button'] ?? "Validate Entry" ?></button>
-            <input type="file" name="image-proof" id="image-proof" accept="image/*" title="Screenshot of your Complete Portal Grades" required>
-        </form>
+        <a href="previous" id="previous-link" class="nav-items"><button>Show Previous Results</button></a>
+        <!-- <a href="previous-results" id="previous-results-link" class="nav-items"><button>Show Previous Results</button></a> -->
+        <!-- <form id="action-buttons" action="" method="POST">
+            <button type="submit" name="show-previous-entry" id="show-previous-entry"></button>
+        </form> -->
+        <?php if($_SESSION['GWA']['gwa-score'] < 2.0){ ?>
+            <form id="validation-buttons" action="" method="POST" enctype="multipart/form-data">
+                <button type="submit" name="validate-button" id="validate-button"> <?php echo $_SESSION['validate-button'] ?? "Validate Entry" ?></button>
+                <input type="file" name="image-proof" id="image-proof" accept="image/*" title="Screenshot of your Complete Portal Grades" required>
+            </form>
+        <?php }?>
         <?php if(isset($image_proof)){
             // echo '<img src="data:image/jpeg;base64,' . base64_encode($_SESSION['image-proof']) . '" />';
             
