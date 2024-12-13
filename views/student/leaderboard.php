@@ -6,18 +6,39 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
 
 $student = new Student();
-$cs_top1 = $student->getCSTopNotcher();
-$it_top1 = $student->getITTopNotcher();
-$act_top1 = $student->getACTTopNotcher();
-$cs_leaderboard = $student->getCSLeaderboardData();
-$it_leaderboard = $student->getITLeaderboardData();
-$act_leaderboard = $student->getACTLeaderboardData();
+// $cs_top1 = $student->getCSTopNotcher();
+// $it_top1 = $student->getITTopNotcher();
+// $act_top1 = $student->getACTTopNotcher();
+// $cs_leaderboard = $student->getCSLeaderboardData();
+// $it_leaderboard = $student->getITLeaderboardData();
+// $act_leaderboard = $student->getACTLeaderboardData();
+
+$year_level = NULL;
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['filter-year'])){
+        $year_level = $_POST['year-level'];
+        echo "<script>alert('leaderboard')</script>";
+    }
+}
+$_SESSION['cs_top1'] = $student->getStudentTopNotcher($year_level, 'BSCS');
+$_SESSION['it_top1'] = $student->getStudentTopNotcher($year_level, 'BSIT');
+$_SESSION['act_top1'] = $student->getStudentTopNotcher($year_level, 'ACT');
+$_SESSION['cs_leaderboard'] = $student->getStudentLeaderboardData($year_level, 'BSCS');
+$_SESSION['it_leaderboard'] = $student->getStudentLeaderboardData($year_level, 'BSIT');
+$_SESSION['act_leaderboard'] = $student->getStudentLeaderboardData($year_level, 'ACT');
+$cs_top1 = $_SESSION['cs_top1'];
+$it_top1 = $_SESSION['it_top1'];
+$act_top1 = $_SESSION['act_top1'];
+$cs_leaderboard = $_SESSION['cs_leaderboard'];
+$it_leaderboard = $_SESSION['it_leaderboard'];
+$act_leaderboard = $_SESSION['act_leaderboard'];
 
 ?>
 
 <body class="home-body">
     <main class="wrapper">
-        <?php include_once "../../includes/_student-header.php"?>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-header.php');?>
         <div class="content">
             <section id="leaderboard-section">
                 <div class="div-pad" id="leaderboard-div1">
@@ -33,6 +54,20 @@ $act_leaderboard = $student->getACTLeaderboardData();
                         <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
                         <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
                     </div>
+                    <form action="" method="POST">
+                        <select name="year-level" id="leaderboard-year-level-filter">
+                            <option value="">--Filter Year--</option>
+                            <?php
+                                $year_levels = $student->fetchYearLevels();
+                                foreach ($year_levels as $year){
+                            ?>
+                                <option value="<?= $year['year_level'] ?>" <?= ($year_levels == $year['year_level']) ? 'selected' : '' ?>><?= $year['year_level'] ?></option>
+                            <?php
+                                }
+                            ?>
+                        </select>
+                        <input type="submit" id="filter-year-button" value="filter-year">
+                    </form>
                 </div>
                 <div id="leaderboard-top-notchers">
                     <div class="topnotcher-pads">
