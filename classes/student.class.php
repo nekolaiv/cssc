@@ -156,9 +156,14 @@ class Student
     }
 
     // LEADERBOARD MODELS
-    public function getCSTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Computer Science" ORDER BY gwa, created_at ASC LIMIT 1;';
+    public function getCSTopNotcher($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "1" ORDER BY gwa, created_at ASC LIMIT 1;';
+        } else {
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "1" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
+        }
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetch(PDO::FETCH_ASSOC); 
@@ -168,9 +173,14 @@ class Student
         }
     }
 
-    public function getITTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Information Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+    public function getITTopNotcher($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "2" ORDER BY gwa, created_at ASC LIMIT 1;';
+        } else {
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "2" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
+        }
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetch(PDO::FETCH_ASSOC); 
@@ -180,9 +190,14 @@ class Student
         }
     }
 
-    public function getACTTopNotcher(){
-        $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, created_at ASC LIMIT 1;';
+    public function getACTTopNotcher($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "3" ORDER BY gwa, created_at ASC LIMIT 1;';
+        } else {
+            $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "3" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
+        }
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetch(PDO::FETCH_ASSOC); 
@@ -192,9 +207,15 @@ class Student
         }
     }
 
-    public function getCSLeaderboardData(){
-        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Computer Science" ORDER BY gwa, fullname ASC';
+
+    public function getCSLeaderboardData($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "1" ORDER BY gwa, fullname ASC';
+        } else {
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "1" AND year_level = :year_level ORDER BY gwa, fullname ASC';
+        }
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetchAll(PDO::FETCH_ASSOC); 
@@ -204,9 +225,14 @@ class Student
         }
     }
 
-    public function getITLeaderboardData(){
-        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Information Technology" ORDER BY gwa, fullname ASC';
+    public function getITLeaderboardData($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "2" ORDER BY gwa, fullname ASC';
+        } else {
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "2" AND year_level = :year_level ORDER BY gwa, fullname ASC';
+        }
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetchAll(PDO::FETCH_ASSOC); 
@@ -216,8 +242,65 @@ class Student
         }
     }
 
-    public function getACTLeaderboardData(){
-        $sql = 'SELECT * FROM students_verified_entries WHERE course = "Associate in Computer Technology" ORDER BY gwa, fullname ASC';
+    public function getACTLeaderboardData($year_level = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "3" ORDER BY gwa, fullname ASC';
+        } else {
+            $sql = 'SELECT * FROM students_verified_entries WHERE course = "3" AND year_level = :year_level ORDER BY gwa, fullname ASC';
+        }
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':year_level', $year_level);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getStudentLeaderboardData($year_level = NULL, $course = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course ORDER BY gwa, fullname ASC';
+        } else {
+            $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course AND year_level = :year_level ORDER BY gwa, fullname ASC';
+        }
+        $query = $this->database->connect()->prepare($sql);
+        if($year_level !== NULL){
+            $query->bindParam(':year_level', $year_level);
+        }
+        $query->bindParam(':course', $course);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function getStudentTopNotcher($year_level = NULL, $course = NULL){
+        if($year_level === NULL){
+            $sql = 'SELECT fullname, gwa, created_at FROM students_unverified_entries WHERE course = :course ORDER BY gwa, created_at ASC LIMIT 1;';
+        } else {
+            $sql = 'SELECT fullname, gwa, created_at FROM students_unverified_entries WHERE course = :course AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
+        }
+        $query = $this->database->connect()->prepare($sql);
+        if($year_level !== NULL){
+            $query->bindParam(':year_level', $year_level);
+        }
+        $query->bindParam(':course', $course);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetch(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function fetchYearLevels(){
+        $sql = 'SELECT DISTINCT year_level FROM student_accounts;'; // TODO: Change to students_verified_entries table later
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -253,7 +336,7 @@ class Student
             $query->bindParam(':student_id', $student['student_id']);
             $query->bindParam(':email', $email);
             $query->bindParam(':fullname', $student_fullname);
-            $query->bindParam(':course', $course['course_code']);
+            $query->bindParam(':course', $course['course']);
             $query->bindParam(':year_level', $student['year_level']);
             $query->bindParam(':section', $student['section']);
             $query->bindParam(':gwa', $gwa);
@@ -327,7 +410,7 @@ class Student
 	}
 
     private function _getStudentCourse($email){
-        $sql = 'SELECT c.course_code as course_code 
+        $sql = 'SELECT c.course as course 
         FROM student_accounts AS sa
         LEFT JOIN courses AS c
         ON sa.course_id = c.course_id

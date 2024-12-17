@@ -51,11 +51,12 @@ STUDENT
 44. change cursor leaderboard button in home /
 45. restructure project structure /
 46. change head title to variable or manually add each/
-47. handle the disabled submit when failed in results
+47. handle the disabled submit when failed in results /
 48. handle the year filter in leaderboard
 49. handle the previous sem leaderboard in leaderboard
-50. handle the adding of term id and submission id when submitting an entry for students
+50. handle the adding of term id and submission id when submitting an entry for students /
 51. add leaderboard and calculate page in staff and admin
 52. add curriculum selector in calculate page and handle the session
 53. add the alerts for logout
 54. add the alerts for submitting of validation entrys
+55. fix leaderboard spacing problem
