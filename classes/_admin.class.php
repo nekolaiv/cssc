@@ -30,6 +30,86 @@ class Admin {
         return $stmt->execute();
     }
 
+    public function createUser($data) {
+        $sql = "INSERT INTO user (identifier, firstname, middlename, lastname, email, curriculum_id, created_at)
+                VALUES (:identifier, :firstname, :middlename, :lastname, :email, :curriculum_id, NOW())";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':identifier' => $data['identifier'],
+            ':firstname' => $data['first_name'],
+            ':middlename' => $data['middle_name'],
+            ':lastname' => $data['last_name'],
+            ':email' => $data['email'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+
+    public function updateUser($data) {
+        $sql = "UPDATE user 
+                SET identifier = :identifier, firstname = :firstname, middlename = :middlename, 
+                    lastname = :lastname, email = :email, curriculum_id = :curriculum_id 
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':id' => $data['id'],
+            ':identifier' => $data['identifier'],
+            ':firstname' => $data['first_name'],
+            ':middlename' => $data['middle_name'],
+            ':lastname' => $data['last_name'],
+            ':email' => $data['email'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+    
+
+    public function getAllUsers($filters = []) {
+        $sql = "SELECT u.id, 
+                       u.identifier, 
+                       CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name, 
+                       u.email, 
+                       c.remarks AS curriculum, 
+                       a.status
+                FROM user u
+                LEFT JOIN curriculum c ON u.curriculum_id = c.id
+                LEFT JOIN account a ON u.id = a.user_id
+                WHERE 1=1"; // Always true for dynamic conditions
+    
+        $params = [];
+    
+        // Add search filter (identifier or name)
+        if (!empty($filters['search'])) {
+            $sql .= " AND (u.identifier LIKE :search OR 
+                           CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
+            $params[':search'] = "%" . $filters['search'] . "%";
+        }
+    
+        // Filter by curriculum
+        if (!empty($filters['curriculum_id'])) {
+            $sql .= " AND u.curriculum_id = :curriculum_id";
+            $params[':curriculum_id'] = $filters['curriculum_id'];
+        }
+    
+        // Filter by account status
+        if (!empty($filters['status'])) {
+            $sql .= " AND a.status = :status";
+            $params[':status'] = $filters['status'];
+        }
+    
+        // Order by identifier (default ordering)
+        $sql .= " ORDER BY u.identifier ASC";
+    
+        // Prepare and execute query
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        // Fetch and return results
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+
     // Get All Admins
     public function getAllAdmins() {
         $sql = "SELECT admin_id, email, password, first_name, last_name, middle_name FROM admin_accounts";
@@ -524,6 +604,48 @@ public function getCurriculumCodes() {
         ";
         return $this->database->fetchAll($sql);
     }
+
+    public function identifierExists($identifier, $excludeId = null) {
+        $sql = "SELECT COUNT(*) FROM user WHERE identifier = :identifier";
+        $params = [':identifier' => $identifier];
+    
+        if ($excludeId) {
+            $sql .= " AND id != :exclude_id";
+            $params[':exclude_id'] = $excludeId;
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchColumn() > 0;
+    }
+    
+
+    public function getCurriculums() {
+        $sql = "SELECT id, remarks FROM curriculum";
+        $stmt = $this->database->connect()->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getUserById($id) {
+        $sql = "SELECT u.id, u.identifier, 
+                       u.firstname, u.middlename, u.lastname, 
+                       u.email, u.curriculum_id, a.status
+                FROM user u
+                LEFT JOIN account a ON u.id = a.user_id
+                WHERE u.id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function softDeleteUser($id) {
+        $sql = "UPDATE account SET status = 'inactive' WHERE user_id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+    
+    
 
 }
 ?>
