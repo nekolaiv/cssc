@@ -9,12 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     switch ($action) {
         /**
-         * CREATE User
+         * CREATE User and Account
          */
         case 'create':
             $errors = [];
             $data = [
                 'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
                 'email' => cleanInput($_POST['email'] ?? ''),
                 'password' => cleanInput($_POST['password'] ?? ''),
                 'first_name' => cleanInput($_POST['first_name'] ?? ''),
@@ -29,6 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['identifier'] = 'Identifier is required and must be numeric.';
             } elseif ($admin->identifierExists($data['identifier'])) {
                 $errors['identifier'] = 'Identifier already exists.';
+            }
+
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
             }
 
             if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
@@ -50,22 +55,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 
-            // Call Admin function to create user
+            // Call Admin function to create user and account
             $response = $admin->createUser($data);
 
-            if ($response) $admin->logAudit('Create User', "Created user with Identifier: {$data['identifier']}");
-
-            echo json_encode(['success' => $response]);
+            if ($response) {
+                $admin->logAudit('Create User', "Created user and account with Identifier: {$data['identifier']}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to create user.']);
+            }
             break;
 
         /**
-         * UPDATE User
+         * Other Actions: UPDATE, READ, DELETE
          */
         case 'update':
             $errors = [];
             $data = [
                 'id' => intval(cleanInput($_POST['id'] ?? 0)),
                 'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
                 'email' => cleanInput($_POST['email'] ?? ''),
                 'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
@@ -74,19 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'status' => cleanInput($_POST['status'] ?? 'active')
             ];
 
-            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
-                $errors['identifier'] = 'Identifier is required and must be numeric.';
-            } elseif ($admin->identifierExists($data['identifier'], $data['id'])) {
-                $errors['identifier'] = 'This Identifier is already taken.';
+            // Validation
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
             }
 
             if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = 'Valid email is required.';
             }
-
-            if (empty($data['first_name'])) $errors['first_name'] = 'First name is required.';
-            if (empty($data['last_name'])) $errors['last_name'] = 'Last name is required.';
-            if (empty($data['curriculum_id'])) $errors['curriculum_id'] = 'Curriculum is required.';
 
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
@@ -95,9 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $response = $admin->updateUser($data);
 
-            if ($response) $admin->logAudit('Update User', "Updated user with ID: {$data['id']}");
-
-            echo json_encode(['success' => $response]);
+            if ($response) {
+                $admin->logAudit('Update User', "Updated user with ID: {$data['id']}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to update user.']);
+            }
             break;
 
         /**
@@ -159,6 +166,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo json_encode(['error' => 'Invalid action.']);
             break;
     }
-
-    
 }

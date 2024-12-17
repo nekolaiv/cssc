@@ -31,19 +31,53 @@ class Admin {
     }
 
     public function createUser($data) {
-        $sql = "INSERT INTO user (identifier, firstname, middlename, lastname, email, curriculum_id, created_at)
-                VALUES (:identifier, :firstname, :middlename, :lastname, :email, :curriculum_id, NOW())";
+        try {
+            // Use a single connection instance
+            $conn = $this->database->connect();
+            $conn->beginTransaction();
     
-        $stmt = $this->database->connect()->prepare($sql);
-        return $stmt->execute([
-            ':identifier' => $data['identifier'],
-            ':firstname' => $data['first_name'],
-            ':middlename' => $data['middle_name'],
-            ':lastname' => $data['last_name'],
-            ':email' => $data['email'],
-            ':curriculum_id' => $data['curriculum_id']
-        ]);
+            // Insert into `user` table
+            $userSql = "INSERT INTO user (identifier, firstname, middlename, lastname, email, curriculum_id, created_at) 
+                        VALUES (:identifier, :firstname, :middlename, :lastname, :email, :curriculum_id, NOW())";
+    
+            $stmt = $conn->prepare($userSql);
+            $stmt->execute([
+                ':identifier' => $data['identifier'],
+                ':firstname' => $data['first_name'],
+                ':middlename' => $data['middle_name'],
+                ':lastname' => $data['last_name'],
+                ':email' => $data['email'],
+                ':curriculum_id' => $data['curriculum_id']
+            ]);
+    
+            $userId = $conn->lastInsertId();
+    
+            // Insert into `account` table
+            $accountSql = "INSERT INTO account (user_id, username, password, status, created_at) 
+                           VALUES (:user_id, :username, :password, :status, NOW())";
+    
+            $stmt = $conn->prepare($accountSql);
+            $stmt->execute([
+                ':user_id' => $userId,
+                ':username' => $data['username'],
+                ':password' => $data['password'],
+                ':status' => $data['status']
+            ]);
+    
+            // Commit the transaction
+            $conn->commit();
+            return true;
+        } catch (Exception $e) {
+            // Rollback only if transaction is active
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log("Error in createUser: " . $e->getMessage()); // Log the error for debugging
+            return false;
+        }
     }
+    
+    
 
     public function updateUser($data) {
         $sql = "UPDATE user 
@@ -67,6 +101,7 @@ class Admin {
     public function getAllUsers($filters = []) {
         $sql = "SELECT u.id, 
                        u.identifier, 
+                       a.username,
                        CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name, 
                        u.email, 
                        c.remarks AS curriculum, 
@@ -80,8 +115,9 @@ class Admin {
     
         // Add search filter (identifier or name)
         if (!empty($filters['search'])) {
-            $sql .= " AND (u.identifier LIKE :search OR 
-                           CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
+            $sql .= " AND (u.identifier LIKE :search 
+                           OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search
+                           OR a.username LIKE :search)";
             $params[':search'] = "%" . $filters['search'] . "%";
         }
     
@@ -627,7 +663,7 @@ public function getCurriculumCodes() {
     }
     
     public function getUserById($id) {
-        $sql = "SELECT u.id, u.identifier, 
+        $sql = "SELECT u.id, u.identifier, a.username,
                        u.firstname, u.middlename, u.lastname, 
                        u.email, u.curriculum_id, a.status
                 FROM user u

@@ -7,7 +7,7 @@ $(document).ready(function () {
   // Initial page load
   loadInitialData();
 
-  // Load initial data (students, courses, curriculums)
+  // Load initial data (students, curriculums, statuses)
   function loadInitialData() {
     loadStudents();
     loadCurriculums();
@@ -23,6 +23,7 @@ $(document).ready(function () {
       { action: "read", ...filters },
       function (response) {
         try {
+          console.log("Server Response:", response);
           students = JSON.parse(response);
           allStudents = [...students];
           displayTable(currentPage);
@@ -79,18 +80,26 @@ $(document).ready(function () {
   function setupSearch() {
     $("#searchStudent").on("keyup", function () {
       const query = $(this).val().toLowerCase();
+  
       const filtered = allStudents.filter((student) => {
+        const username = student.username ? student.username.toLowerCase() : ''; // Handle null username
+        const fullName = student.full_name ? student.full_name.toLowerCase() : '';
+        const identifier = student.identifier ? student.identifier.toLowerCase() : '';
+  
         return (
-          student.identifier.toLowerCase().includes(query) ||
-          student.full_name.toLowerCase().includes(query)
+          identifier.includes(query) ||
+          fullName.includes(query) ||
+          username.includes(query)
         );
       });
-      students = filtered;
+  
+      students = filtered; // Update filtered data
       currentPage = 1;
       displayTable(currentPage);
       setupPagination();
     });
   }
+  
 
   // Display data in the table
   function displayTable(page) {
@@ -102,7 +111,7 @@ $(document).ready(function () {
     tableBody.empty();
 
     if (visible.length === 0) {
-      tableBody.append(`<tr><td colspan="6" class="text-center">No data found.</td></tr>`);
+      tableBody.append(`<tr><td colspan="7" class="text-center">No data found.</td></tr>`);
       return;
     }
 
@@ -111,6 +120,7 @@ $(document).ready(function () {
         <tr>
           <td>${student.identifier}</td>
           <td>${student.full_name}</td>
+          <td>${student.username}</td>
           <td>${student.email}</td>
           <td>${student.curriculum}</td>
           <td>${student.status}</td>
@@ -148,45 +158,24 @@ $(document).ready(function () {
   // Open "Edit User" modal
   $(document).on("click", ".edit-btn", function () {
     const userId = $(this).data("id");
-    $.post(
-      "/cssc/server/admin/student_server.php",
-      { action: "get", id: userId },
-      function (response) {
-        const user = JSON.parse(response);
+    $.post("/cssc/server/admin/student_server.php", { action: "get", id: userId }, function (response) {
+      const user = JSON.parse(response);
 
-        if (user.error) return alert("Error fetching user data.");
+      if (user.error) return alert("Error fetching user data.");
 
-        $("#edit_user_id").val(user.id);
-        $("#edit_identifier").val(user.identifier);
-        $("#edit_first_name").val(user.firstname);
-        $("#edit_middle_name").val(user.middlename ?? "");
-        $("#edit_last_name").val(user.lastname);
-        $("#edit_email").val(user.email);
-        $("#edit_curriculum").val(user.curriculum_id);
-        $("#edit_status").val(user.status);
+      $("#editUserId").val(user.id);
+      $("#editIdentifier").val(user.identifier);
+      $("#editUsername").val(user.username);
+      $("#edit_first_name").val(user.firstname);
+      $("#edit_middle_name").val(user.middlename ?? "");
+      $("#edit_last_name").val(user.lastname);
+      $("#editEmail").val(user.email);
+      $("#editCurriculum").val(user.curriculum_id);
+      $("#editStatus").val(user.status);
 
-        $("#editUserModal").modal("show");
-      }
-    ).fail(function () {
+      $("#editUserModal").modal("show");
+    }).fail(function () {
       alert("Failed to fetch user data.");
-    });
-  });
-
-  // Delete User
-  $(document).on("click", ".delete-btn", function () {
-    const userId = $(this).data("id");
-    if (!confirm("Are you sure you want to delete this user?")) return;
-
-    $.post(
-      "/cssc/server/admin/student_server.php",
-      { action: "delete", id: userId },
-      function (response) {
-        const result = JSON.parse(response);
-        alert(result.success ? "User deleted successfully!" : "Failed to delete user.");
-        loadStudents();
-      }
-    ).fail(function () {
-      alert("Failed to delete user.");
     });
   });
 
@@ -199,7 +188,6 @@ $(document).ready(function () {
       const result = JSON.parse(response);
       if (result.success) {
         alert("User created successfully!");
-        $(".modal-backdrop").remove();
         $("#addUserModal").modal("hide");
         loadStudents();
       } else {
@@ -207,6 +195,25 @@ $(document).ready(function () {
       }
     }).fail(function () {
       alert("Failed to create user.");
+    });
+  });
+
+  // Submit "Edit User" form
+  $("#editUserForm").submit(function (e) {
+    e.preventDefault();
+    const formData = $(this).serialize() + "&action=update";
+
+    $.post("/cssc/server/admin/student_server.php", formData, function (response) {
+      const result = JSON.parse(response);
+      if (result.success) {
+        alert("User updated successfully!");
+        $("#editUserModal").modal("hide");
+        loadStudents();
+      } else {
+        displayFormErrors("#editUserForm", result.errors);
+      }
+    }).fail(function () {
+      alert("Failed to update user.");
     });
   });
 

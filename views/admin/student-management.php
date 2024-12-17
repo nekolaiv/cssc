@@ -45,6 +45,7 @@
                 <tr>
                     <th>Identifier</th>
                     <th>Full Name</th>
+                    <th>Username</th>
                     <th>Email</th>
                     <th>Curriculum</th>
                     <th>Status</th>
@@ -77,6 +78,12 @@
                             <label for="identifier" class="form-label">Identifier</label>
                             <input type="text" class="form-control" id="identifier" name="identifier" >
                             <div class="invalid-feedback">Identifier is required.</div>
+                        </div>
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                            <div class="invalid-feedback">Username is required.</div>
                         </div>
                         <!-- First Name -->
                         <div class="mb-3">
@@ -148,6 +155,11 @@
                         <div class="mb-3">
                             <label for="editIdentifier" class="form-label">Identifier</label>
                             <input type="text" class="form-control" id="editIdentifier" name="identifier" readonly>
+                        </div>
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="editUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="editUsername" name="username">
                         </div>
                         <!-- First Name -->
                         <div class="mb-3">
