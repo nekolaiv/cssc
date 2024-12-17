@@ -186,6 +186,7 @@ $(document).ready(function () {
 
     $.post("/cssc/server/admin/student_server.php", formData, function (response) {
       const result = JSON.parse(response);
+      console.log("Server Response:", result);
       if (result.success) {
         alert("User created successfully!");
         $("#addUserModal").modal("hide");
@@ -226,4 +227,50 @@ $(document).ready(function () {
       fieldElement.next(".invalid-feedback").text(errors[field]);
     });
   }
+
+  // Delete User
+$(document).on("click", ".delete-btn", function () {
+  const userId = $(this).data("id");
+
+  // Confirm before deleting
+  if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+    return;
+  }
+
+  // Send delete request to the server
+  $.post("/cssc/server/admin/student_server.php", { action: "delete", id: userId }, function (response) {
+    try {
+      const result = JSON.parse(response);
+
+      if (result.success) {
+        alert("User deleted successfully!");
+        loadStudents(); // Reload the table to reflect changes
+      } else {
+        alert(result.error || "Failed to delete user. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error parsing delete response:", error);
+      alert("An error occurred while deleting the user.");
+    }
+  }).fail(function (xhr, status, error) {
+    console.error("AJAX Error:", xhr.responseText || error);
+    alert("Failed to communicate with the server. Please try again later.");
+  });
+});
+
+
+  // Event: Cleanup modal backdrop after the modal is closed
+$(".modal").on("hidden.bs.modal", function () {
+  // Remove any lingering modal-backdrop elements
+  $(".modal-backdrop").remove();
+
+  // Remove the 'modal-open' class from the body to fix scrolling
+  $("body").removeClass("modal-open");
+
+  // Reset the form inside the modal
+  $(this).find("form")[0].reset();
+  $(this).find(".form-control").removeClass("is-invalid");
+  $(this).find(".invalid-feedback").text("");
+});
+
 });

@@ -32,7 +32,6 @@ class Admin {
 
     public function createUser($data) {
         try {
-            // Use a single connection instance
             $conn = $this->database->connect();
             $conn->beginTransaction();
     
@@ -50,32 +49,45 @@ class Admin {
                 ':curriculum_id' => $data['curriculum_id']
             ]);
     
+            // Check if the user insertion succeeded
             $userId = $conn->lastInsertId();
+            if (!$userId) {
+                throw new Exception("Failed to retrieve user ID after insert.");
+            }
     
             // Insert into `account` table
-            $accountSql = "INSERT INTO account (user_id, username, password, status, created_at) 
-                           VALUES (:user_id, :username, :password, :status, NOW())";
+            $accountSql = "INSERT INTO account (user_id, username, password, role_id, status, created_at) 
+                           VALUES (:user_id, :username, :password, :role_id, :status, NOW())";
     
             $stmt = $conn->prepare($accountSql);
             $stmt->execute([
                 ':user_id' => $userId,
                 ':username' => $data['username'],
-                ':password' => $data['password'],
+                ':password' => $data['password'], // Make sure this is hashed
+                ':role_id' => 1, // Assign default role_id (e.g., 1 for 'user')
                 ':status' => $data['status']
             ]);
     
-            // Commit the transaction
             $conn->commit();
             return true;
-        } catch (Exception $e) {
-            // Rollback only if transaction is active
+        } catch (PDOException $e) {
             if ($conn->inTransaction()) {
                 $conn->rollBack();
             }
-            error_log("Error in createUser: " . $e->getMessage()); // Log the error for debugging
+            // Log the error
+            error_log("Database Error in createUser: " . $e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log("General Error in createUser: " . $e->getMessage());
             return false;
         }
     }
+    
+    
+    
     
     
 

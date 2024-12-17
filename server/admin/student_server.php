@@ -58,11 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Call Admin function to create user and account
             $response = $admin->createUser($data);
 
-            if ($response) {
+            if ($response === true) {
                 $admin->logAudit('Create User', "Created user and account with Identifier: {$data['identifier']}");
                 echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to create user.']);
+                // Return the detailed error
+                echo json_encode(['success' => false, 'error' => $response]);
             }
             break;
 
