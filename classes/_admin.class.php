@@ -92,22 +92,55 @@ class Admin {
     
 
     public function updateUser($data) {
-        $sql = "UPDATE user 
-                SET identifier = :identifier, firstname = :firstname, middlename = :middlename, 
-                    lastname = :lastname, email = :email, curriculum_id = :curriculum_id 
-                WHERE id = :id";
+        try {
+            $conn = $this->database->connect();
+            $conn->beginTransaction();
     
-        $stmt = $this->database->connect()->prepare($sql);
-        return $stmt->execute([
-            ':id' => $data['id'],
-            ':identifier' => $data['identifier'],
-            ':firstname' => $data['first_name'],
-            ':middlename' => $data['middle_name'],
-            ':lastname' => $data['last_name'],
-            ':email' => $data['email'],
-            ':curriculum_id' => $data['curriculum_id']
-        ]);
+            // Update the `user` table
+            $userSql = "UPDATE user 
+                        SET identifier = :identifier, firstname = :firstname, middlename = :middlename, 
+                            lastname = :lastname, email = :email, curriculum_id = :curriculum_id, 
+                            department_id = :department_id
+                        WHERE id = :id";
+    
+            $stmt = $conn->prepare($userSql);
+            $stmt->execute([
+                ':id' => $data['id'],
+                ':identifier' => $data['identifier'],
+                ':firstname' => $data['first_name'],
+                ':middlename' => $data['middle_name'],
+                ':lastname' => $data['last_name'],
+                ':email' => $data['email'],
+                ':curriculum_id' => $data['curriculum_id'],
+                ':department_id' => $data['department_id'] ?? null, // Null if department is not provided
+            ]);
+    
+            // Update the `account` table
+            $accountSql = "UPDATE account 
+                           SET username = :username, status = :status, role_id = :role_id
+                           WHERE user_id = :id";
+    
+            $stmt = $conn->prepare($accountSql);
+            $stmt->execute([
+                ':id' => $data['id'],
+                ':username' => $data['username'],
+                ':status' => $data['status'],
+                ':role_id' => 1,
+            ]);
+    
+            // Commit the transaction
+            $conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            // Rollback the transaction on error
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log("Database Error in updateUser: " . $e->getMessage());
+            return false;
+        }
     }
+    
     
 
     public function getAllUsers($filters = []) {

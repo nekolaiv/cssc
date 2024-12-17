@@ -141,64 +141,80 @@
     </div>
 
     <!-- Edit User Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editUserForm">
-                        <input type="hidden" id="editUserId" name="id">
-                        <!-- Identifier -->
-                        <div class="mb-3">
-                            <label for="editIdentifier" class="form-label">Identifier</label>
-                            <input type="text" class="form-control" id="editIdentifier" name="identifier" readonly>
-                        </div>
-                        <!-- Username -->
-                        <div class="mb-3">
-                            <label for="editUsername" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="editUsername" name="username">
-                        </div>
-                        <!-- First Name -->
-                        <div class="mb-3">
-                            <label for="edit_first_name" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="edit_first_name" name="first_name" >
-                        </div>
-                        <!-- Last Name -->
-                        <div class="mb-3">
-                            <label for="edit_last_name" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="edit_last_name" name="last_name" >
-                        </div>
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label for="editEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editEmail" name="email" >
-                        </div>
-                        <!-- Curriculum -->
-                        <div class="mb-3">
-                            <label for="editCurriculum" class="form-label">Curriculum</label>
-                            <select class="form-control curriculum-dropdown" id="editCurriculum" name="curriculum_id" >
-                                <!-- Dynamically populated -->
-                            </select>
-                        </div>
-                        <!-- Status -->
-                        <div class="mb-3">
-                            <label for="editStatus" class="form-label">Status</label>
-                            <select class="form-control" id="editStatus" name="status" >
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="updateUserBtn">Update User</button>
-                        </div>
-                    </form>
-                </div>
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId" name="id">
+
+                    <!-- Identifier -->
+                    <div class="mb-3">
+                        <label for="editIdentifier" class="form-label">Identifier</label>
+                        <input type="text" class="form-control" id="editIdentifier" name="identifier" readonly>
+                        <div class="invalid-feedback">Identifier is required.</div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="editUsername" name="username">
+                        <div class="invalid-feedback">Username is required.</div>
+                    </div>
+
+                    <!-- First Name -->
+                    <div class="mb-3">
+                        <label for="edit_first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="edit_first_name" name="first_name">
+                        <div class="invalid-feedback">First name is required.</div>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="mb-3">
+                        <label for="edit_last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="edit_last_name" name="last_name">
+                        <div class="invalid-feedback">Last name is required.</div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="email">
+                        <div class="invalid-feedback">Valid email is required.</div>
+                    </div>
+
+                    <!-- Curriculum -->
+                    <div class="mb-3">
+                        <label for="editCurriculum" class="form-label">Curriculum</label>
+                        <select class="form-control curriculum-dropdown" id="editCurriculum" name="curriculum_id">
+                            <!-- Dynamically populated -->
+                        </select>
+                        <div class="invalid-feedback">Please select a curriculum.</div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label for="editStatus" class="form-label">Status</label>
+                        <select class="form-control" id="editStatus" name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a status.</div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="updateUserBtn">Update User</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
 </body>
 </html>

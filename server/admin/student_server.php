@@ -77,29 +77,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'identifier' => cleanInput($_POST['identifier'] ?? ''),
                 'username' => cleanInput($_POST['username'] ?? ''),
                 'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''), // Optional password update
                 'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
                 'last_name' => cleanInput($_POST['last_name'] ?? ''),
                 'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
                 'status' => cleanInput($_POST['status'] ?? 'active')
             ];
-
+        
             // Validation
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
+            }
+        
             if (empty($data['username'])) {
                 $errors['username'] = 'Username is required.';
             }
-
+        
             if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors['email'] = 'Valid email is required.';
             }
-
+        
+            if (empty($data['first_name'])) {
+                $errors['first_name'] = 'First name is required.';
+            }
+        
+            if (empty($data['last_name'])) {
+                $errors['last_name'] = 'Last name is required.';
+            }
+        
+            if (empty($data['curriculum_id'])) {
+                $errors['curriculum_id'] = 'Curriculum is required.';
+            }
+        
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
-
+        
+            // Optional password hashing
+            if (!empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            } else {
+                unset($data['password']); // Prevent empty password overwrites
+            }
+        
             $response = $admin->updateUser($data);
-
+        
             if ($response) {
                 $admin->logAudit('Update User', "Updated user with ID: {$data['id']}");
                 echo json_encode(['success' => true]);
@@ -107,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode(['success' => false, 'error' => 'Failed to update user.']);
             }
             break;
+        
 
         /**
          * READ Users (with filters)
