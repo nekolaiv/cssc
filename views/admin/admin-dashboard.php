@@ -51,25 +51,25 @@
 
         <!-- Assigned Advisers Table -->
         <div class="row my-4">
-            <div class="col-12">
-                <h6 class="text-muted">ASSIGNED ADVISERS</h6>
-                <table class="table table-hover table-striped" id="advisersTable">
-                    <thead>
-                        <tr class="text-muted">
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Course</th>
-                            <th>Year Level</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="4" class="text-center">Loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="col-12">
+            <h6 class="text-muted">ASSIGNED ADVISERS</h6>
+            <table class="table table-hover table-striped" id="advisersTable">
+                <thead>
+                    <tr class="text-muted">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" class="text-center">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
+
 
         <!-- Audit Logs Table -->
         <div class="row my-4">
