@@ -8,14 +8,16 @@ $(document).ready(function () {
       url: "/cssc/server/admin/admin_dashboard.php",
       type: "POST",
       data: { action: "getCounts" },
+      dataType: "json", // Tell jQuery to expect JSON directly
       success: function (response) {
-        const result = JSON.parse(response);
-        if (result.success) {
-          $("#studentCount").text(result.students);
-          $("#staffCount").text(result.staff);
-          $("#adminCount").text(result.admins);
+        console.log("Server Response:", response); // Debugging
+
+        if (response.success) {
+          $("#studentCount").text(response.students);
+          $("#staffCount").text(response.staff);
+          $("#adminCount").text(response.admins);
         } else {
-          alert(result.error || "Failed to load counts.");
+          alert(response.error || "Failed to load counts.");
         }
       },
       error: function () {
@@ -30,25 +32,24 @@ $(document).ready(function () {
       url: "/cssc/server/admin/admin_dashboard.php",
       type: "POST",
       data: { action: "getAdvisers" },
+      dataType: "json", // Expect JSON response
       success: function (response) {
-        const result = JSON.parse(response);
         const tableBody = $("#advisersTable tbody");
         tableBody.empty();
-
-        if (result.success && result.advisers.length > 0) {
-          result.advisers.forEach((adviser) => {
+  
+        if (response.success && response.advisers.length > 0) {
+          response.advisers.forEach((adviser) => {
             tableBody.append(`
               <tr>
                 <td>${adviser.name}</td>
                 <td>${adviser.email}</td>
-                <td>${adviser.course}</td>
-                <td>${adviser.year_level}</td>
+                <td>${adviser.department}</td>
               </tr>
             `);
           });
         } else {
           tableBody.append(
-            `<tr><td colspan="4" class="text-center">No advisers found.</td></tr>`
+            `<tr><td colspan="3" class="text-center">No advisers found.</td></tr>`
           );
         }
       },
@@ -57,6 +58,7 @@ $(document).ready(function () {
       },
     });
   }
+  
 
   // Fetch and display audit logs
   function loadAuditLogs() {
@@ -64,13 +66,13 @@ $(document).ready(function () {
       url: "/cssc/server/admin/admin_dashboard.php",
       type: "POST",
       data: { action: "getAuditLogs" },
+      dataType: "json", // Expect JSON response
       success: function (response) {
-        const result = JSON.parse(response);
         const tableBody = $("#auditLogsTable tbody");
         tableBody.empty();
 
-        if (result.success && result.logs.length > 0) {
-          result.logs.forEach((log) => {
+        if (response.success && response.logs.length > 0) {
+          response.logs.forEach((log) => {
             tableBody.append(`
               <tr>
                 <td>${new Date(log.timestamp).toLocaleString()}</td>
@@ -81,9 +83,7 @@ $(document).ready(function () {
             `);
           });
         } else {
-          tableBody.append(
-            `<tr><td colspan="4" class="text-center">No audit logs found.</td></tr>`
-          );
+          tableBody.append(`<tr><td colspan="4" class="text-center">No audit logs found.</td></tr>`);
         }
       },
       error: function () {
@@ -92,8 +92,8 @@ $(document).ready(function () {
     });
   }
 
-  // Initialize the dashboard
+  // Initialize dashboard
   loadCounts();
   loadAdvisers();
-  loadAuditLogs(); // Call this to load audit logs on page load
+  loadAuditLogs();
 });
