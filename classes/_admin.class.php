@@ -17,6 +17,244 @@ class Admin {
         $this->database = new Database();
     }
 
+        /**
+     * Create a new staff member and their account
+     */
+    public function createStaff($data) {
+        try {
+            $conn = $this->database->connect();
+            $conn->beginTransaction();
+
+            // Insert into `user` table
+            $userSql = "INSERT INTO user (identifier, firstname, middlename, lastname, email, department_id, created_at) 
+                        VALUES (:identifier, :firstname, :middlename, :lastname, :email, :department_id, NOW())";
+            $stmt = $conn->prepare($userSql);
+            $stmt->execute([
+                ':identifier' => $data['identifier'],
+                ':firstname' => $data['first_name'],
+                ':middlename' => $data['middle_name'],
+                ':lastname' => $data['last_name'],
+                ':email' => $data['email'],
+                ':department_id' => $data['department_id']
+            ]);
+
+            $userId = $conn->lastInsertId();
+
+            // Insert into `account` table
+            $accountSql = "INSERT INTO account (user_id, username, password, role_id, status, created_at) 
+                           VALUES (:user_id, :username, :password, 2, :status, NOW())";
+            $stmt = $conn->prepare($accountSql);
+            $stmt->execute([
+                ':user_id' => $userId,
+                ':username' => $data['username'],
+                ':password' => $data['password'], // Make sure this is hashed before calling
+                ':status' => $data['status']
+            ]);
+
+            $conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log("Database Error in createStaff: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update staff member and account details
+     */
+    public function updateStaff($data) {
+        try {
+            $conn = $this->database->connect();
+            $conn->beginTransaction();
+
+            // Update `user` table
+            $userSql = "UPDATE user 
+                        SET identifier = :identifier, firstname = :firstname, middlename = :middlename, 
+                            lastname = :lastname, email = :email, department_id = :department_id
+                        WHERE id = :id";
+            $stmt = $conn->prepare($userSql);
+            $stmt->execute([
+                ':id' => $data['id'],
+                ':identifier' => $data['identifier'],
+                ':firstname' => $data['first_name'],
+                ':middlename' => $data['middle_name'],
+                ':lastname' => $data['last_name'],
+                ':email' => $data['email'],
+                ':department_id' => $data['department_id']
+            ]);
+
+            // Update `account` table
+            $accountSql = "UPDATE account 
+                           SET username = :username, status = :status";
+            $params = [
+                ':username' => $data['username'],
+                ':status' => $data['status'],
+                ':id' => $data['id']
+            ];
+
+            if (!empty($data['password'])) {
+                $accountSql .= ", password = :password";
+                $params[':password'] = $data['password'];
+            }
+
+            $accountSql .= " WHERE user_id = :id";
+            $stmt = $conn->prepare($accountSql);
+            $stmt->execute($params);
+
+            $conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log("Database Error in updateStaff: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Retrieve all staff with optional filters
+     */
+    public function getAllStaff($filters = []) {
+        $sql = "SELECT u.id, 
+                       u.identifier, 
+                       a.username, 
+                       CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name, 
+                       u.email, 
+                       d.department_name AS department, 
+                       a.status
+                FROM user u
+                INNER JOIN department d ON u.department_id = d.id
+                INNER JOIN account a ON u.id = a.user_id
+                WHERE a.role_id = 2"; // Role ID 2 for staff
+
+        $params = [];
+
+        // Apply filters dynamically
+        if (!empty($filters['search'])) {
+            $sql .= " AND (u.identifier LIKE :search 
+                           OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search
+                           OR a.username LIKE :search)";
+            $params[':search'] = "%" . $filters['search'] . "%";
+        }
+
+        if (!empty($filters['department_id'])) {
+            $sql .= " AND u.department_id = :department_id";
+            $params[':department_id'] = $filters['department_id'];
+        }
+
+        if (!empty($filters['status'])) {
+            $sql .= " AND a.status = :status";
+            $params[':status'] = $filters['status'];
+        }
+
+        $sql .= " ORDER BY u.identifier ASC";
+
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Soft delete a staff member (set inactive status)
+     */
+    public function softDeleteStaff($id) {
+        $sql = "UPDATE account SET status = 'inactive' WHERE user_id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    /**
+     * Check if an identifier exists (used for validation)
+     */
+    public function identifierExists($identifier, $excludeId = null) {
+        $sql = "SELECT COUNT(*) FROM user WHERE identifier = :identifier";
+        $params = [':identifier' => $identifier];
+
+        if ($excludeId) {
+            $sql .= " AND id != :exclude_id";
+            $params[':exclude_id'] = $excludeId;
+        }
+
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Retrieve a single staff member by ID
+     */
+    public function getStaffById($id) {
+        $sql = "SELECT u.id, 
+                       u.identifier, 
+                       a.username, 
+                       u.firstname, 
+                       u.middlename, 
+                       u.lastname, 
+                       u.email, 
+                       u.department_id, 
+                       a.status
+                FROM user u
+                INNER JOIN account a ON u.id = a.user_id
+                WHERE u.id = :id";
+
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getDepartments() {
+        $sql = "SELECT id, department_name FROM department";
+        $stmt = $this->database->connect()->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function usernameExists($username, $excludeId = null) {
+        $sql = "SELECT COUNT(*) FROM account WHERE username = :username";
+        $params = [':username' => $username];
+    
+        if ($excludeId !== null) {
+            $sql .= " AND user_id != :exclude_id"; // Exclude a specific user ID (for updates)
+            $params[':exclude_id'] = $excludeId;
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchColumn() > 0; // Returns true if a username exists, otherwise false
+    }
+    
+    public function departmentExists($departmentId) {
+        $sql = "SELECT COUNT(*) FROM department WHERE id = :department_id";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':department_id' => $departmentId]);
+    
+        return $stmt->fetchColumn() > 0; // Returns true if a department exists, otherwise false
+    }
+
+    public function emailExists($email, $excludeId = null) {
+        $sql = "SELECT COUNT(*) FROM user WHERE email = :email";
+        $params = [':email' => $email];
+    
+        if ($excludeId !== null) {
+            $sql .= " AND id != :exclude_id"; // Exclude a specific user ID (for updates)
+            $params[':exclude_id'] = $excludeId;
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchColumn() > 0; // Returns true if the email exists, otherwise false
+    }
+    
+    
+
     public function updateAccountStatus($id, $status) {
         $sql = "UPDATE account SET status = :status WHERE user_id = :id";
     
@@ -120,11 +358,6 @@ class Admin {
             return false;
         }
     }
-    
-    
-    
-    
-    
 
     public function updateUser($data) {
         try {
@@ -271,79 +504,6 @@ class Admin {
         $stmt->bindValue(':admin_id', $admin_id, PDO::PARAM_INT);
 
         return $stmt->execute();
-    }
-
-    // Check if Email Exists
-    public function emailExists($email, $exclude_admin_id = null) {
-        $sql = "SELECT admin_id FROM admin_accounts WHERE email = :email";
-        if ($exclude_admin_id) {
-            $sql .= " AND admin_id != :admin_id";
-        }
-
-        $stmt = $this->database->connect()->prepare($sql);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        if ($exclude_admin_id) {
-            $stmt->bindValue(':admin_id', $exclude_admin_id, PDO::PARAM_INT);
-        }
-        $stmt->execute();
-
-        return $stmt->fetchColumn() ? true : false;
-    }
-
-        // Create a new staff account
-        public function createStaff($data) {
-            $query = "INSERT INTO staff_accounts (email, password, first_name, last_name, middle_name) VALUES (:email, :password, :first_name, :last_name, :middle_name)";
-            $params = [
-                ':email' => $data['email'],
-                ':password' => $data['password'],
-                ':first_name' => $data['first_name'],
-                ':last_name' => $data['last_name'],
-                ':middle_name' => $data['middle_name']
-            ];
-    
-            return $this->database->execute($query, $params);
-        }
-        
-    // Get all staff accounts
-    public function getAllStaff() {
-        $query = "SELECT staff_id, email, password, first_name, last_name, middle_name FROM staff_accounts";
-        return $this->database->fetchAll($query);
-    }
-
-    // Get a specific staff account by ID
-    public function getStaffById($staff_id) {
-        $query = "SELECT staff_id, email, password, first_name, last_name, middle_name FROM staff_accounts WHERE staff_id = :staff_id";
-        $params = [':staff_id' => $staff_id];
-        return $this->database->fetch($query, $params);
-    }
-
-    // Update an existing staff account
-    public function updateStaff($data) {
-        $query = "UPDATE staff_accounts SET email = :email, first_name = :first_name, last_name = :last_name, middle_name = :middle_name";
-
-        $params = [
-            ':email' => $data['email'],
-            ':first_name' => $data['first_name'],
-            ':last_name' => $data['last_name'],
-            ':middle_name' => $data['middle_name'],
-            ':staff_id' => $data['staff_id']
-        ];
-
-        if (isset($data['password']) && !empty($data['password'])) {
-            $query .= ", password = :password";
-            $params[':password'] = $data['password'];
-        }
-
-        $query .= " WHERE staff_id = :staff_id";
-
-        return $this->database->execute($query, $params);
-    }
-
-    // Delete a staff account
-    public function deleteStaff($staff_id) {
-        $query = "DELETE FROM staff_accounts WHERE staff_id = :staff_id";
-        $params = [':staff_id' => $staff_id];
-        return $this->database->execute($query, $params);
     }
 
     // Check if staff email exists (for both create and update)
@@ -721,19 +881,6 @@ public function getCurriculumCodes() {
         return $this->database->fetchAll($sql);
     }
 
-    public function identifierExists($identifier, $excludeId = null) {
-        $sql = "SELECT COUNT(*) FROM user WHERE identifier = :identifier";
-        $params = [':identifier' => $identifier];
-    
-        if ($excludeId) {
-            $sql .= " AND id != :exclude_id";
-            $params[':exclude_id'] = $excludeId;
-        }
-    
-        $stmt = $this->database->connect()->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchColumn() > 0;
-    }
     
 
     public function getCurriculums() {
