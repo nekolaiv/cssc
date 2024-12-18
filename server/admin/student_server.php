@@ -150,16 +150,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /**
          * DELETE User (Soft Delete)
          */
-        case 'delete':
+        case 'toggle_status':
             $id = intval(cleanInput($_POST['id'] ?? 0));
-
-            if ($admin->softDeleteUser($id)) {
-                $admin->logAudit('Delete User', "Soft deleted user with ID: {$id}");
+            $status = cleanInput($_POST['status'] ?? '');
+        
+            if ($admin->updateAccountStatus($id, $status)) {
+                $admin->logAudit('Toggle Account Status', "Account ID {$id} status changed to {$status}");
                 echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to delete user.']);
+                echo json_encode(['success' => false, 'error' => 'Failed to update account status.']);
             }
             break;
+
+            case 'delete_permanent':
+                $id = intval(cleanInput($_POST['id'] ?? 0));
+            
+                if ($admin->deleteUser($id)) {
+                    $admin->logAudit('Permanent Delete', "Permanently deleted user ID: {$id}");
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to permanently delete user.']);
+                }
+                break;
+                        
 
         /**
          * GET User by ID

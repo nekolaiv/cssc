@@ -106,16 +106,19 @@ $(document).ready(function () {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     const visible = students.slice(start, end);
-
+  
     const tableBody = $("#studentsTable tbody");
     tableBody.empty();
-
+  
     if (visible.length === 0) {
       tableBody.append(`<tr><td colspan="7" class="text-center">No data found.</td></tr>`);
       return;
     }
-
+  
     visible.forEach((student) => {
+      const statusButtonLabel = student.status === "active" ? "Deactivate" : "Activate";
+      const statusButtonClass = student.status === "active" ? "btn-outline-danger" : "btn-outline-success";
+  
       tableBody.append(`
         <tr>
           <td>${student.identifier}</td>
@@ -126,12 +129,15 @@ $(document).ready(function () {
           <td>${student.status}</td>
           <td>
             <button class="btn btn-warning btn-sm edit-btn" data-id="${student.id}">Edit</button>
+            <button class="btn ${statusButtonClass} btn-sm toggle-status-btn" data-id="${student.id}" data-status="${student.status}">
+              ${statusButtonLabel}
+            </button>
             <button class="btn btn-danger btn-sm delete-btn" data-id="${student.id}">Delete</button>
           </td>
         </tr>
       `);
     });
-  }
+  }  
 
   // Set up pagination
   function setupPagination() {
@@ -218,6 +224,74 @@ $(document).ready(function () {
     });
   });
 
+  $(document).on("click", ".toggle-status-btn", function () {
+    const userId = $(this).data("id");
+    const currentStatus = $(this).data("status");
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+  
+    // Confirm the action
+    if (!confirm(`Are you sure you want to ${newStatus} this account?`)) {
+      return;
+    }
+  
+    // Send AJAX request to toggle account status
+    $.post(
+      "/cssc/server/admin/student_server.php",
+      { action: "toggle_status", id: userId, status: newStatus },
+      function (response) {
+        try {
+          const result = JSON.parse(response);
+          if (result.success) {
+            alert(`Account ${newStatus}d successfully!`);
+            loadStudents(); // Reload the table
+          } else {
+            alert(result.error || `Failed to ${newStatus} the account.`);
+          }
+        } catch (error) {
+          console.error("Error parsing toggle status response:", error);
+          alert("An error occurred while updating the account status.");
+        }
+      }
+    ).fail(function (xhr, status, error) {
+      console.error("AJAX Error:", xhr.responseText || error);
+      alert("Failed to communicate with the server. Please try again later.");
+    });
+  });
+
+  $(document).on("click", ".delete-btn", function () {
+    const userId = $(this).data("id");
+  
+    // Confirm before deletion
+    if (!confirm("Are you sure you want to permanently delete this user? This action cannot be undone.")) {
+      return;
+    }
+  
+    // Send AJAX request to delete the user
+    $.post(
+      "/cssc/server/admin/student_server.php",
+      { action: "delete_permanent", id: userId },
+      function (response) {
+        try {
+          const result = JSON.parse(response);
+          if (result.success) {
+            alert("User permanently deleted successfully!");
+            loadStudents(); // Reload the table
+          } else {
+            alert(result.error || "Failed to delete user permanently. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error parsing delete response:", error);
+          alert("An unexpected error occurred while deleting the user.");
+        }
+      }
+    ).fail(function (xhr, status, error) {
+      console.error("AJAX Error:", xhr.responseText || error);
+      alert("Failed to communicate with the server. Please try again later.");
+    });
+  });
+  
+  
+
   // Display form errors
   function displayFormErrors(formSelector, errors) {
     $(formSelector + " .form-control").removeClass("is-invalid");
@@ -228,35 +302,35 @@ $(document).ready(function () {
     });
   }
 
-  // Delete User
-$(document).on("click", ".delete-btn", function () {
-  const userId = $(this).data("id");
+//   // Delete User
+// $(document).on("click", ".delete-btn", function () {
+//   const userId = $(this).data("id");
 
-  // Confirm before deleting
-  if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
-    return;
-  }
+//   // Confirm before deleting
+//   if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
+//     return;
+//   }
 
-  // Send delete request to the server
-  $.post("/cssc/server/admin/student_server.php", { action: "delete", id: userId }, function (response) {
-    try {
-      const result = JSON.parse(response);
+//   // Send delete request to the server
+//   $.post("/cssc/server/admin/student_server.php", { action: "delete", id: userId }, function (response) {
+//     try {
+//       const result = JSON.parse(response);
 
-      if (result.success) {
-        alert("User deleted successfully!");
-        loadStudents(); // Reload the table to reflect changes
-      } else {
-        alert(result.error || "Failed to delete user. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error parsing delete response:", error);
-      alert("An error occurred while deleting the user.");
-    }
-  }).fail(function (xhr, status, error) {
-    console.error("AJAX Error:", xhr.responseText || error);
-    alert("Failed to communicate with the server. Please try again later.");
-  });
-});
+//       if (result.success) {
+//         alert("User deleted successfully!");
+//         loadStudents(); // Reload the table to reflect changes
+//       } else {
+//         alert(result.error || "Failed to delete user. Please try again.");
+//       }
+//     } catch (error) {
+//       console.error("Error parsing delete response:", error);
+//       alert("An error occurred while deleting the user.");
+//     }
+//   }).fail(function (xhr, status, error) {
+//     console.error("AJAX Error:", xhr.responseText || error);
+//     alert("Failed to communicate with the server. Please try again later.");
+//   });
+// });
 
 
   // Event: Cleanup modal backdrop after the modal is closed

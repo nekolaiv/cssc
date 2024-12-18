@@ -17,6 +17,41 @@ class Admin {
         $this->database = new Database();
     }
 
+    public function updateAccountStatus($id, $status) {
+        $sql = "UPDATE account SET status = :status WHERE user_id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':status' => $status
+        ]);
+    }
+
+    public function deleteUser($id) {
+        $conn = $this->database->connect();
+        try {
+            $conn->beginTransaction();
+    
+            // Delete from `account` table
+            $accountSql = "DELETE FROM account WHERE user_id = :id";
+            $stmt = $conn->prepare($accountSql);
+            $stmt->execute([':id' => $id]);
+    
+            // Delete from `user` table
+            $userSql = "DELETE FROM user WHERE id = :id";
+            $stmt = $conn->prepare($userSql);
+            $stmt->execute([':id' => $id]);
+    
+            $conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            error_log("Error in deleteUser: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    
     // Create a new admin account
     public function createAdmin($data) {
         $sql = "INSERT INTO admin_accounts (email, password, first_name, last_name, middle_name) VALUES (:email, :password, :first_name, :last_name, :middle_name)";
