@@ -86,8 +86,20 @@ $(document).ready(function () {
             if (url.includes("admin-management.php")) {
                 $.getScript("/cssc/js/admin/admin_management.js");
             }
-            if (url.includes("academic-submission.php")) {
-                $.getScript("/cssc/js/admin/academic_term_management.js");
+            if (url.includes("view-applications.php")) {
+                $.getScript("/cssc/js/admin/view_applications.js");
+            }
+            if (url.includes("dean-lister-periods.php")) {
+                $.getScript("/cssc/js/admin/dean_lister_periods.js");
+            }
+            if (url.includes("curriculum-management.php")) {
+                $.getScript("/cssc/js/admin/curriculum_management.js");
+            }
+            if (url.includes("profile.php")) {
+                $.getScript("/cssc/js/admin/admin_profile.js");
+            }
+            if (url.includes("settings.php")) {
+                $.getScript("/cssc/js/admin/admin_settings.js");
             }
         },
         error: function () {

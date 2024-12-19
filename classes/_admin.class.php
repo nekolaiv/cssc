@@ -716,11 +716,124 @@ public function logAudit($action, $details) {
             return false;
         }
     }
+
+    public function getAllApplications($filters = []) {
+        $sql = "SELECT sa.id, 
+                       sa.user_id,
+                       u.identifier,
+                       CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name,
+                       c.remarks AS curriculum,
+                       sa.status,
+                       sa.created_at AS submission_date,
+                       sa.total_rating
+                FROM student_applications sa
+                INNER JOIN user u ON sa.user_id = u.id
+                LEFT JOIN curriculum c ON u.curriculum_id = c.id
+                WHERE 1=1"; // Always true, for dynamic conditions
     
+        $params = [];
     
+        // Add filters dynamically
+        if (!empty($filters['search'])) {
+            $sql .= " AND (u.identifier LIKE :search 
+                           OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
+            $params[':search'] = '%' . $filters['search'] . '%';
+        }
     
+        if (!empty($filters['curriculum_id'])) {
+            $sql .= " AND u.curriculum_id = :curriculum_id";
+            $params[':curriculum_id'] = $filters['curriculum_id'];
+        }
     
+        if (!empty($filters['status'])) {
+            $sql .= " AND sa.status = :status";
+            $params[':status'] = $filters['status'];
+        }
     
+        if (!empty($filters['submission_date'])) {
+            $sql .= " AND DATE(sa.created_at) = :submission_date";
+            $params[':submission_date'] = $filters['submission_date'];
+        }
+    
+        $sql .= " ORDER BY sa.created_at DESC";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getApplicationById($id) {
+        $sql = "SELECT sa.id, 
+                       sa.user_id,
+                       u.identifier,
+                       CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name,
+                       u.email,
+                       c.remarks AS curriculum,
+                       sa.status,
+                       sa.total_rating,
+                       sa.rejection_reason,
+                       sa.created_at AS submission_date,
+                       sa.updated_at AS last_updated
+                FROM student_applications sa
+                INNER JOIN user u ON sa.user_id = u.id
+                LEFT JOIN curriculum c ON u.curriculum_id = c.id
+                WHERE sa.id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+      /**
+     * Fetch grades for an application.
+     */
+    public function getGradesByApplication($applicationId, $userId) {
+        $sql = "SELECT r.subject_id,
+                       p.subject_code,
+                       p.descriptive_title,
+                       r.rating
+                FROM rating r
+                INNER JOIN prospectus p ON r.subject_id = p.id
+                WHERE r.application_id = :application_id
+                  AND r.user_id = :user_id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([
+            ':application_id' => $applicationId,
+            ':user_id' => $userId
+        ]);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Fetch proof image for a specific application.
+     */
+    public function getProofImageByApplication($applicationId) {
+        $sql = "SELECT image_proof
+                FROM student_applications
+                WHERE id = :application_id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':application_id' => $applicationId]);
+    
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['image_proof'] ?? null;
+    }
+
+    public function updateApplicationStatus($applicationId, $newStatus) {
+        $sql = "UPDATE student_applications
+                SET status = :new_status, updated_at = CURRENT_TIMESTAMP
+                WHERE id = :application_id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':new_status' => $newStatus,
+            ':application_id' => $applicationId
+        ]);
+    }
     
 }
 ?>

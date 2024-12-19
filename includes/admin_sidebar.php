@@ -1,4 +1,3 @@
-<!-- _sidebar.php -->
 <aside id="sidebar">
     <div class="d-flex">
         <button class="toggle-btn" type="button">
@@ -9,12 +8,14 @@
         </div>
     </div>
     <ul class="sidebar-nav">
+        <!-- Dashboard -->
         <li class="sidebar-item">
             <a href="#" data-url="/cssc/views/admin/admin-dashboard.php" class="sidebar-link menu-link">
                 <i class="lni lni-dashboard"></i>
                 <span>Dashboard</span>
             </a>
         </li>
+        <!-- Account Management -->
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
@@ -33,29 +34,77 @@
                 </li>
             </ul>
         </li>
+        <!-- Applications Management -->
         <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/academic-submission.php" class="sidebar-link menu-link">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#applications" aria-expanded="false" aria-controls="applications">
                 <i class="lni lni-graduation"></i>
-                <span>Academic Management</span>
+                <span>Applications</span>
+            </a>
+            <ul id="applications" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/view-applications.php" class="sidebar-link menu-link">View Applications</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/dean-lister-periods.php" class="sidebar-link menu-link">Dean's Lister Periods</a>
+                </li>
+            </ul>
+        </li>
+        <!-- Curriculum Management -->
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#curriculum" aria-expanded="false" aria-controls="curriculum">
+                <i class="lni lni-book"></i>
+                <span>Curriculum Management</span>
+            </a>
+            <ul id="curriculum" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/curriculum-list.php" class="sidebar-link menu-link">Curriculum List</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/subjects-management.php" class="sidebar-link menu-link">Subjects Management</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/prospectus.php" class="sidebar-link menu-link">Prospectus Overview</a>
+                </li>
+            </ul>
+        </li>
+        <!-- Audit Logs -->
+        <li class="sidebar-item">
+            <a href="#" data-url="/cssc/views/admin/activity-logs.php" class="sidebar-link menu-link">
+                <i class="lni lni-timer"></i>
+                <span>Audit Logs</span>
             </a>
         </li>
+        <!-- Settings -->
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#settings" aria-expanded="false" aria-controls="settings">
+                <i class="lni lni-cog"></i>
+                <span>Settings</span>
+            </a>
+            <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/general-settings.php" class="sidebar-link menu-link">General Settings</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" data-url="/cssc/views/admin/access-control.php" class="sidebar-link menu-link">Access Control</a>
+                </li>
+            </ul>
+        </li>
+        <!-- Profile -->
         <li class="sidebar-item">
             <a href="#" data-url="/cssc/views/admin/admin-profile.php" class="sidebar-link menu-link">
                 <i class="lni lni-user"></i>
                 <span>Profile</span>
             </a>
         </li>
-        <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/admin-settings.php" class="sidebar-link menu-link">
-                <i class="lni lni-cog"></i>
-                <span>Setting</span>
-            </a>
-        </li>
     </ul>
-    <div class="sidebar-footer">
+
+        <div class="sidebar-footer">
         <a href="#" class="sidebar-link log-out">
             <i class="lni lni-exit"></i>
             <span>Logout</span>
         </a>
-    </div>
+        </div>
 </aside>
