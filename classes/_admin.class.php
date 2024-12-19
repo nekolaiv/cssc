@@ -16,12 +16,6 @@ class Admin {
     public function __construct() {
         $this->database = new Database();
     }
-    public function getAdvisers() {
-        $query = "SELECT id, CONCAT(first_name, ' ', last_name) AS full_name, email, course, year_level 
-                  FROM adviser";
-        return $this->database->fetchAll($query);
-    }
-    
 
     // Create a new admin account
     public function createAdmin($data) {
@@ -355,16 +349,6 @@ public function fetchAuditLogs() {
     }
 }
 
-// Format logs for AJAX response
-public function getAuditLogs() {
-    $logs = $this->fetchAuditLogs();
-    if (is_array($logs) && !isset($logs['error'])) {
-        return ['success' => true, 'logs' => $logs];
-    } else {
-        return ['success' => false, 'error' => $logs['error'] ?? 'Unable to fetch logs.'];
-    }
-}
-
 // Log an audit event
 public function logAudit($action, $details) {
     if (isset($_SESSION['profile']) && isset($_SESSION['user-type'])) {
@@ -497,6 +481,49 @@ public function getCurriculumCodes() {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+    // Fetch counts for student, staff, and admin accounts
+    public function getAccountCounts() {
+        $students = $this->database->fetchOne("SELECT COUNT(*) as count FROM account WHERE role_id = 1")['count'] ?? 0;
+        $staff = $this->database->fetchOne("SELECT COUNT(*) as count FROM account WHERE role_id = 2")['count'] ?? 0;
+        $admins = $this->database->fetchOne("SELECT COUNT(*) as count FROM account WHERE role_id = 3")['count'] ?? 0;
+
+        return ['students' => $students, 'staff' => $staff, 'admins' => $admins];
+    }
+
+    // Fetch all assigned advisers
+    public function getAdvisers() {
+        $sql = "
+            SELECT 
+                CONCAT(u.firstname, ' ', u.lastname) AS name, 
+                u.email, 
+                d.department_name AS department
+            FROM adviser a
+            JOIN user u ON a.user_id = u.id
+            JOIN department d ON u.department_id = d.id
+            ORDER BY u.lastname ASC
+        ";
+        return $this->database->fetchAll($sql);
+    }
+    
+
+    // Fetch the latest audit logs
+    public function getAuditLogs() {
+        $sql = "
+            SELECT 
+                a.timestamp, 
+                r.name AS role, 
+                CONCAT(u.firstname, ' ', u.lastname) AS name, 
+                a.action_type AS action, 
+                a.action_details AS details
+            FROM audit_logs a
+            JOIN user u ON a.user_id = u.id
+            JOIN role r ON a.role_id = r.id
+            ORDER BY a.timestamp DESC
+            LIMIT 10
+        ";
+        return $this->database->fetchAll($sql);
+    }
 
 }
 ?>

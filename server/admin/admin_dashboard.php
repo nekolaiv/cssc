@@ -1,53 +1,40 @@
 <?php
-require_once '../../classes/database.class.php';
-require_once '../../classes/_admin.class.php'; // Include the Admin class
+require_once '../../classes/_admin.class.php';
+
+header('Content-Type: application/json; charset=utf-8'); // Ensure JSON response
+$admin = new Admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    $db = new Database(); // Existing database object
-    $admin = new Admin(); // New Admin object
 
-    if ($action === 'getCounts') {
-        try {
-            $students = $db->fetchOne("SELECT COUNT(*) as count FROM student_accounts")['count'] ?? 0;
-            $staff = $db->fetchOne("SELECT COUNT(*) as count FROM staff_accounts")['count'] ?? 0;
-            $admins = $db->fetchOne("SELECT COUNT(*) as count FROM admin_accounts")['count'] ?? 0;
+    try {
+        switch ($action) {
+            case 'getCounts':
+                $counts = $admin->getAccountCounts();
+                echo json_encode([
+                    'success' => true, 
+                    'students' => $counts['students'], 
+                    'staff' => $counts['staff'], 
+                    'admins' => $counts['admins']
+                ]);
+                break;
 
-            echo json_encode(['success' => true, 'students' => $students, 'staff' => $staff, 'admins' => $admins]);
-        } catch (Exception $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            case 'getAdvisers':
+                $advisers = $admin->getAdvisers();
+                echo json_encode(['success' => true, 'advisers' => $advisers]);
+                break;
+
+            case 'getAuditLogs':
+                $logs = $admin->getAuditLogs();
+                echo json_encode(['success' => true, 'logs' => $logs]);
+                break;
+
+            default:
+                echo json_encode(['success' => false, 'error' => 'Invalid action']);
         }
-    } elseif ($action === 'getAdvisers') {
-        try {
-            $advisers = $db->fetchAll("
-                SELECT
-                    CONCAT(first_name, ' ', last_name) as name,
-                    email,
-                    course,
-                    year_level
-                FROM advisers
-            ");
-
-            echo json_encode(['success' => true, 'advisers' => $advisers]);
-        } catch (Exception $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-        }
-    } elseif ($action === 'getAuditLogs') { // New audit logs action
-        try {
-            $logs = $admin->fetchAuditLogs(); // Fetch logs from Admin class
-
-            // Combine role and name into the `role` column
-            foreach ($logs as &$log) {
-                $log['role'] = strtoupper($log['role']) . " - " . ucfirst($log['name']);
-                unset($log['name']); // Remove the separate `name` column
-            }
-
-            echo json_encode(['success' => true, 'logs' => $logs]);
-        } catch (Exception $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-        }
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Invalid action.']);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
+    exit; // Ensure no additional output
 }
 ?>

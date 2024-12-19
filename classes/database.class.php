@@ -3,7 +3,7 @@ class Database{
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'cssc';
+    private $database = 'ccs_system';
     protected $connection;
 
     function connect(){
