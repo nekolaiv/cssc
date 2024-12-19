@@ -66,7 +66,9 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                                 }
                             ?>
                         </select>
-                        <input type="submit" id="filter-year-button" value="filter-year">
+                        <!-- <input type="submit" id="filter-year-button" value="filter-year"> -->
+                        <a href="results" id="results-link"><button id="student-calculate-calculate">Calculate</button></a>   
+
                     </form>
                 </div>
                 <div id="leaderboard-top-notchers">
