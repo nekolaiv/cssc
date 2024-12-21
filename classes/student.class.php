@@ -34,50 +34,6 @@ class Student
         return $gwa;
     }
 
-    private function _studentUnverifiedEntryExists($email){
-        $sql = "SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;";
-        $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
-        if ($query->execute()) {
-            $row_count = $query->fetchColumn();
-            return $row_count > 0;
-        } else {
-            return false;
-        }
-    }
-
-    private function _studentVerifiedEntryExists($email){
-        $sql = "SELECT COUNT(*) FROM students_verified_entries WHERE email = :email LIMIT 1;";
-        $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
-        if ($query->execute()) {
-            $row_count = $query->fetchColumn();
-            return $row_count > 0;
-        } 
-        return false;
-    }
-
-    private function getStudentEntry($email){
-        if($this->_studentUnverifiedEntryExists($email)){
-            $sql = "SELECT * FROM students_unverified_entries WHERE email = :email LIMIT 1;";
-        } else if ($this->_studentVerifiedEntryExists($email)){
-            $sql = "SELECT * FROM students_verified_entries WHERE email = :email LIMIT 1;";
-        }
-        $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
-        $data = NULL;
-        if ($query->execute()) {
-            $data = $query->fetch(PDO::FETCH_ASSOC);
-            return $data;
-        } else {
-            return false;
-        }
-    }
-
-    public function getStudentImageProof( $email ){
-        $data = $this->getStudentEntry($email);
-        return $data['image_proof'];
-    }
 
     // UPDATING STUDENT STATUS
         private function _updateStudentStatus($email){
@@ -138,14 +94,17 @@ class Student
     }
 
     // ASSIGNING STUDENT CURRICULAR SUBJECTS
-    public function loadStudentsSubjects($email){
-        $sql = 'SELECT ss.subject_name, ss.subject_code, ss.units
-        FROM student_accounts as sa
-        LEFT JOIN curriculum_subjects as cs ON sa.curriculum_code = cs.curriculum_code
-        LEFT JOIN student_subjects as ss ON cs.subject_id = ss.subject_id
-        WHERE sa.email = :email';
+    public function loadStudentsSubjects($id){
+        $sql = "SELECT (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS student_year, 
+        p.descriptive_title as subject_name, p.subject_code as subject_code, p.total_units as units
+        FROM user as u
+        LEFT JOIN curriculum as c ON u.curriculum_id = c.id
+        LEFT JOIN dean_lister_application_periods as dlap ON dlap.status = 'open'
+        LEFT JOIN prospectus as p ON c.id = p.curriculum_id
+        WHERE u.id = :id AND CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED) = p.year_level
+        AND dlap.semester = p.semester";
         $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
+        $query->bindParam(':id', $id);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetchAll(PDO::FETCH_ASSOC); 
@@ -314,41 +273,49 @@ class Student
     // RESULT MODELS
     public function saveEntryToDatabase($email, $gwa, $image_proof){
         $entry_exists = $this->_entryExists($email);
-        if ($entry_exists === 'is_pending') {
-            $sql = "UPDATE students_unverified_entries SET gwa = :gwa, image_proof = :image_proof WHERE email = :email";
-            $query = $this->database->connect()->prepare($sql);
-            $query->bindParam(':gwa', $gwa);
-            $query->bindParam(':email', $email);
-            $query->bindParam(':image_proof', $image_proof);
-        } else {
-            if($entry_exists === 'is_verified'){
-                $this->_deleteStudentVerifiedEntry($email);
-            }
-            $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id)
-            VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :submission_id)";
-            $student = $this->_getStudentData($email);
-            $adviser = $this->_getStudentAdviser($email);
-            $course = $this->_getStudentCourse($email);
-            $submission_id = $this->_getEntryTermSubmitted();
-            $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
-
-            $query = $this->database->connect()->prepare($sql);
-            $query->bindParam(':student_id', $student['student_id']);
-            $query->bindParam(':email', $email);
-            $query->bindParam(':fullname', $student_fullname);
-            $query->bindParam(':course', $course['course']);
-            $query->bindParam(':year_level', $student['year_level']);
-            $query->bindParam(':section', $student['section']);
-            $query->bindParam(':gwa', $gwa);
-            $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
-            $query->bindParam(':submission_id', $submission_id['submission_id']);
+        
+        if($entry_exists){
+            $this->_deleteStudentVerifiedEntry($email);
         }
+        $sql = "INSERT INTO student_applications(user_id, adviser_id, school_year, semester, status, rejection_reason, total_rating, dean_lister_period_id, image_proof)
+        VALUES(:user_id, :adviser_id, :school_year, :semester, :status, :rejection_reason, :total_rating, :dean_lister_period_id, :image_proof)";
+        
+        $rejection_reason = 'None';
+        $student_year = $this->loadStudentsSubjects($_SESSION['profile']['user-id']);
+        $adviser_id = 1;
+        $status = 'Pending';
+        $current_term = $this->_getCurrentAcademicTerm();
+
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $_SESSION['profile']['student-id']);
+        $query->bindParam(':adviser_id', $_SESSION['profile']['user-id']);
+        $query->bindParam(':school_year', $_SESSION['profile']['school-year']);
+        $query->bindParam(':semester', $current_term['semester']);
+        $query->bindParam(':status', $status);
+        $query->bindParam(':rejection_reason', $rejection_reason);
+        $query->bindParam(':total_rating', $_SESSION['GWA']['gwa-score']);
+        $query->bindParam(':dean_lister_period_id', $current_term['id']);
+        $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
+        
         if ($query->execute()) {
             return true;
         } else {
             return false;
         }
     }
+
+    private function _getCurrentAcademicTerm(){
+		$sql = "SELECT * FROM dean_lister_application_periods WHERE status = 'open'";
+		$query = $this->database->connect()->prepare($sql);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+	}
+    
 
     public function getStudentSubmittedGWA($email){
         $sql = 'SELECT gwa FROM students_verified_entries WHERE email = :email';
@@ -361,82 +328,182 @@ class Student
         }
     }
 
-    private function _entryExists($email){
-        if($this->_isEntryVerified($email)){
-            $result = 'is_verified';
-        } else if($this->_isEntryPending($email)){
-            $result = 'is_pending';
-        } else {
-            $result = 'not_submitted';
+    private function _entryExists($user_id){
+        $sql = "SELECT COUNT(*) FROM student_applications WHERE user_id = :user_id";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+        $data=NULL;
+        if($query->execute()){
+            $row_count = $query->fetchColumn();
+            return $row_count > 0;
         }
-
-        return $result;
     }
 
-    private function _deleteStudentVerifiedEntry($email){
-        $sql = 'DELETE FROM students_verified_entries WHERE email = :email;';
+
+    private function _deleteStudentVerifiedEntry($user_id){
+        $sql = 'DELETE FROM student_applications WHERE user_id = :user_id;';
         $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
+        $query->bindParam(':user_id', $user_id);
         return $query->execute();
     }
 
-    private function _getStudentData($email){
-        $this->_updateStudentStatus($email);
-        $sql = "SELECT * FROM student_accounts WHERE email = :email LIMIT 1;";
-        $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
-        $student = NULL;
-        if ($query->execute()) {
-            $student = $query->fetch(PDO::FETCH_ASSOC);
-            return $student;
-        } else {
-            return false;
-        }
-    }
+    
 
-    private function _getStudentAdviser($email){
-		$sql = "SELECT sa.adviser_id as adviser_id, CONCAT(a.first_name, ', ', a.last_name, ' ', a.middle_name) as full_name
-		FROM student_accounts as sa LEFT JOIN advisers as a ON sa.adviser_id = a.adviser_id
-		WHERE sa.email = :email;";
-		$query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$data=NULL;
-		if($query->execute()){
-			$data = $query->fetch(PDO::FETCH_ASSOC);
-			return $data;
-		} else {
-			return false;
-		}
-	}
+    // ======== DUMPS BUT MIGHT BE USEFUL ========
 
-    private function _getStudentCourse($email){
-        $sql = 'SELECT c.course as course 
-        FROM student_accounts AS sa
-        LEFT JOIN courses AS c
-        ON sa.course_id = c.course_id
-        WHERE sa.email = :email;';
-        $query = $this->database->connect()->prepare($sql);
-		$query->bindParam(':email', $email);
-		$data=NULL;
-		if($query->execute()){
-			$data = $query->fetch(PDO::FETCH_ASSOC);
-			return $data;
-		} else {
-			return false;
-		}
-    }
+    // private function _studentUnverifiedEntryExists($email){
+    //     $sql = "SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;";
+    //     $query = $this->database->connect()->prepare($sql);
+    //     $query->bindParam(':email', $email);
+    //     if ($query->execute()) {
+    //         $row_count = $query->fetchColumn();
+    //         return $row_count > 0;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    private function _getEntryTermSubmitted(){
-        $sql = 'SELECT submission_id FROM gwa_submission_schedule WHERE active = 1;';
-        $query = $this->database->connect()->prepare($sql);
-		$data=NULL;
-		if($query->execute()){
-			$data = $query->fetch(PDO::FETCH_ASSOC);
-			return $data;
-		} else {
-			return false;
-		}
-    }
+    // private function _studentVerifiedEntryExists($email){
+    //     $sql = "SELECT COUNT(*) FROM students_verified_entries WHERE email = :email LIMIT 1;";
+    //     $query = $this->database->connect()->prepare($sql);
+    //     $query->bindParam(':email', $email);
+    //     if ($query->execute()) {
+    //         $row_c`ount = $query->fetchColumn();
+    //         return $row_count > 0;
+    //     } 
+    //     return false;
+    // }
+
+    // private function getStudentEntry($email){
+    //     if($this->_studentUnverifiedEntryExists($email)){
+    //         $sql = "SELECT * FROM students_unverified_entries WHERE email = :email LIMIT 1;";
+    //     } else if ($this->_studentVerifiedEntryExists($email)){
+    //         $sql = "SELECT * FROM students_verified_entries WHERE email = :email LIMIT 1;";
+    //     }
+    //     $query = $this->database->connect()->prepare($sql);
+    //     $query->bindParam(':email', $email);
+    //     $data = NULL;
+    //     if ($query->execute()) {
+    //         $data = $query->fetch(PDO::FETCH_ASSOC);
+    //         return $data;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    // public function getStudentImageProof( $email ){
+    //     $data = $this->getStudentEntry($email);
+    //     return $data['image_proof'];
+    // }
+
+
+    // public function saveEntryToDatabase($email, $gwa, $image_proof){
+    //     $entry_exists = $this->_entryExists($email);
+    //     if ($entry_exists === 'is_pending') {
+    //         $sql = "UPDATE students_unverified_entries SET total_rating = :gwa, image_proof = :image_proof WHERE email = :email";
+    //         $query = $this->database->connect()->prepare($sql);
+    //         $query->bindParam(':gwa', $gwa);
+    //         $query->bindParam(':email', $email);
+    //         $query->bindParam(':image_proof', $image_proof);
+    //     } else {
+    //         if($entry_exists === 'is_verified'){
+    //             $this->_deleteStudentVerifiedEntry($email);
+    //         }
+    //         $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id)
+    //         VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :submission_id)";
+    //         $student = $this->_getStudentData($email);
+    //         $adviser = $this->_getStudentAdviser($email);
+    //         $course = $this->_getStudentCourse($email);
+    //         $submission_id = $this->_getEntryTermSubmitted();
+    //         $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
+
+    //         $query = $this->database->connect()->prepare($sql);
+    //         $query->bindParam(':student_id', $student['student_id']);
+    //         $query->bindParam(':email', $email);
+    //         $query->bindParam(':fullname', $student_fullname);
+    //         $query->bindParam(':course', $course['course']);
+    //         $query->bindParam(':year_level', $student['year_level']);
+    //         $query->bindParam(':section', $student['section']);
+    //         $query->bindParam(':gwa', $gwa);
+    //         $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
+    //         $query->bindParam(':submission_id', $submission_id['submission_id']);
+    //     }
+    //     if ($query->execute()) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    // private function _getStudentData($email){
+    //     $this->_updateStudentStatus($email);
+    //     $sql = "SELECT * FROM student_accounts WHERE email = :email LIMIT 1;";
+    //     $query = $this->database->connect()->prepare($sql);
+    //     $query->bindParam(':email', $email);
+    //     $student = NULL;
+    //     if ($query->execute()) {
+    //         $student = $query->fetch(PDO::FETCH_ASSOC);
+    //         return $student;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    // private function _getStudentAdviser($email){
+	// 	$sql = "SELECT sa.adviser_id as adviser_id, CONCAT(a.first_name, ', ', a.last_name, ' ', a.middle_name) as full_name
+	// 	FROM student_accounts as sa LEFT JOIN advisers as a ON sa.adviser_id = a.adviser_id
+	// 	WHERE sa.email = :email;";
+	// 	$query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':email', $email);
+	// 	$data=NULL;
+	// 	if($query->execute()){
+	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $data;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
+
+    // private function _getStudentCourse($email){
+    //     $sql = 'SELECT c.course as course 
+    //     FROM student_accounts AS sa
+    //     LEFT JOIN courses AS c
+    //     ON sa.course_id = c.course_id
+    //     WHERE sa.email = :email;';
+    //     $query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':email', $email);
+	// 	$data=NULL;
+	// 	if($query->execute()){
+	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $data;
+	// 	} else {
+	// 		return false;
+	// 	}
+    // }
+
+    // private function _getEntryTermSubmitted(){
+    //     $sql = 'SELECT submission_id FROM gwa_submission_schedule WHERE active = 1;';
+    //     $query = $this->database->connect()->prepare($sql);
+	// 	$data=NULL;
+	// 	if($query->execute()){
+	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $data;
+	// 	} else {
+	// 		return false;
+	// 	}
+    // }
+
+    // private function _entryExists($email){
+    //     if($this->_isEntryVerified($email)){
+    //         $result = 'is_verified';
+    //     } else if($this->_isEntryPending($email)){
+    //         $result = 'is_pending';
+    //     } else {
+    //         $result = 'not_submitted';
+    //     }
+
+    //     return $result;
+    // }
 
     // public function setScreenshotFile($student_id, $image){
     //     if($this->screenshotFileExists($student_id)){
@@ -462,7 +529,6 @@ class Student
     //     }
     // }
 
-    // ======== DUMPS BUT MIGHT BE USEFUL ========
 
     // public function handleRequest() {
     //     session_start(); // Start the session

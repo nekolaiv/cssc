@@ -8,7 +8,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/includes/_student-head.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 $student = new Student();
 
-$subject_load = $student->loadStudentsSubjects($_SESSION['profile']['email']);
+$subject_load = $student->loadStudentsSubjects($_SESSION['profile']['user-id']);
+
+// echo "<pre>";
+// print_r($subject_load);
+// echo "</pre>";
 
 for($i = 0; $i < count($subject_load); $i++){
     $_SESSION['course-fields']['subject-name'][$i] = $subject_load[$i]['subject_name'];
@@ -28,7 +32,7 @@ for($i = 0; $i < count($subject_load); $i++){
             <div class="student-info-left">
                 <div class="calculate-student-name">
                     <label for="calculate-student-name">NAME:</label>
-                    <input type="text" id="calculate-student-name" value="<?php echo $_SESSION['profile']['fullname']?>" readonly>
+                    <input type="text" id="calculate-student-name" value="<?php echo $_SESSION['profile']['user-name']?>" readonly>
                 </div>
                 <div class="calculate-student-id">
                     <label for="calculate-student-id">STUDENT ID:</label>
@@ -42,7 +46,7 @@ for($i = 0; $i < count($subject_load); $i++){
                 </div>
                 <div class="calculate-student-course-year">
                     <label for="calculate-student-course-year">COURSE & YEAR:</label>
-                    <input type="text" id="calculate-student-course-year" value="<?php echo $_SESSION['profile']['course'],' ', $_SESSION['profile']['year-level'] ?>" readonly>
+                    <input type="text" id="calculate-student-course-year" value="<?php echo $_SESSION['profile']['course'],' ', $subject_load[0]['student_year'] ?>" readonly>
                 </div>
             </div>
 
