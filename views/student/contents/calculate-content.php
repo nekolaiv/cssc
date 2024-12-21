@@ -46,7 +46,7 @@ for($i = 0; $i < count($subject_load); $i++){
                 </div>
                 <div class="calculate-student-course-year">
                     <label for="calculate-student-course-year">COURSE & YEAR:</label>
-                    <input type="text" id="calculate-student-course-year" value="<?php echo $_SESSION['profile']['course'],' ', $subject_load[0]['student_year'] ?>" readonly>
+                    <input type="text" id="calculate-student-course-year" value="<?php echo $_SESSION['profile']['course'],' ', $_SESSION['profile']['year-level'] ?>" readonly>
                 </div>
             </div>
 

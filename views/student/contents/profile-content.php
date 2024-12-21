@@ -11,7 +11,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
         <div id="profile-right-section">
             <div class="profile-data-pad">
                 <div class="profile-data-header">Name:</div>
-                <div class="profile-data-body"><?php echo $_SESSION['profile']['fullname']?></div>
+                <div class="profile-data-body"><?php echo $_SESSION['profile']['user-name']?></div>
             </div>
             <div class="profile-data-pad">
                 <div class="profile-data-header">Student Id:</div>
@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
             </div>
             <div class="profile-data-pad">
                 <div class="profile-data-header">Status:</div>
-                <div class="profile-data-body"><?php echo $_SESSION['profile']['status']?></div>
+                <div class="profile-data-body"><?php echo $_SESSION['profile']['status'] ?? "Not Submitted"?></div>
             </div>
         </div>
     </div>

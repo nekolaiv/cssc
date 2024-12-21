@@ -37,6 +37,10 @@ class Auth {
             $academic_term = $this->_getCurrentAcademicTerm();
             $adviser = $this->_getStudentAdviser($user['account_id']);
             $course = $this->_getStudentCourse($user['identifier']);
+            $year_level = $this->_getStudentYearLevel($user['identifier']);
+            $status = $this->_getStudentStatus($user['identifier']);
+            $status === false ? $entry_status = NULL : $entry_status = $status;
+            
 
             // Check if account is inactive
             if ($user['status'] !== 'active') {
@@ -66,10 +70,12 @@ class Auth {
 					'user-name' => $user['lastname'] . ', ' . $user['firstname'] . ' ' . $user['middlename'],
 					'student-id' => $user['identifier'],
 					'user-email' => $user['email'],
-					'course' => $course['department_name'],
+					'course' => $course['course_name'],
 					'adviser' => $adviser['adviser_name'],
 					'school-year' => $academic_term['year'],
 					'semester' => $academic_term['semester'],
+					'year-level' => $year_level['student_year'],
+					'status' => $entry_status['status'],
 				];
 				$_SESSION['is-logged-in'] = true;
             }
@@ -92,6 +98,38 @@ class Auth {
 		}
 	}
 
+    private function _getStudentStatus($user_id){
+        $sql = "SELECT status FROM student_applications WHERE user_id = :user_id";
+		$query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+		$data=NULL;
+		if($query->execute()){
+            if ($query->rowCount() > 0){
+                $data = $query->fetch(PDO::FETCH_ASSOC);
+			    return $data;
+            } else {
+                return false;
+            }
+		} else {
+			return false;
+		}
+    }
+
+    private function _getStudentYearLevel($id){
+        $sql = "SELECT (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS student_year
+        FROM user AS u, dean_lister_application_periods AS dlap
+        WHERE u.identifier = :id AND dlap.status = 'open';";
+        $query = $this->database->connect()->prepare($sql);
+		$query->bindParam(':id', $id);
+		$data=NULL;
+		if($query->execute()){
+			$data = $query->fetch(PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			return false;
+		}
+    }
+
 	private function _getStudentAdviser($id){
 		$sql = "SELECT CONCAT(a.firstname, ', ', a.lastname, ' ', a.middlename) as adviser_name
 		FROM user as u
@@ -108,24 +146,40 @@ class Auth {
 		}
 	}
 
-	private function _getStudentCourse($id){
-		$sql = 'SELECT u.identifier, d.department_name AS department_name
+	// private function _getStudentCourse($id){
+	// 	$sql = 'SELECT u.identifier, d.department_name AS department_name
+    //     FROM user AS u
+    //     LEFT JOIN department as d ON u.department_id = d.id
+    //     WHERE u.identifier = :id';
+	// 	$query = $this->database->connect()->prepare($sql);
+	// 	$query->bindParam(':id', $id);
+	// 	$data=NULL;
+	// 	if($query->execute()){
+	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
+	// 		return $data;
+            
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
+
+    private function _getStudentCourse($id){
+		$sql = 'SELECT u.department_id AS department_id, c.course_name AS course_name
         FROM user AS u
-        LEFT JOIN department as d ON u.department_id = d.id
+        LEFT JOIN course as c ON u.department_id = c.id
         WHERE u.identifier = :id';
 		$query = $this->database->connect()->prepare($sql);
 		$query->bindParam(':id', $id);
 		$data=NULL;
 		if($query->execute()){
 			$data = $query->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['GETCOURSE'] = 'true';
 			return $data;
             
 		} else {
-            $_SESSION['GETCOURSE'] = 'false';
 			return false;
 		}
 	}
+
 
     // RESET PASSWORD FUNCTION
     public function resetPassword($email, $new_password) {
