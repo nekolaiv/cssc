@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Process login if no validation errors
-    if (empty($email_err) && empty($password_err)) {
+    if ($email_err === ' ' && $password_err === ' ') { // Spacing is used for show password to be pushed to the left
         $login_status = $auth->login($email, $password);
         if ($login_status === 'first login'){
             header("Location: set-password.php");
