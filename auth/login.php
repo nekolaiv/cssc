@@ -7,11 +7,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
 
 generateCSRF();
-regenerateSession();
+
 
 $required = '*';
 $email = $password = '';
-$email_err = $password_err = '';
+$email_err = $password_err = ' ';
 $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,10 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Process login if no validation errors
     if (empty($email_err) && empty($password_err)) {
         $login_status = $auth->login($email, $password);
-
+        if ($login_status === 'first login'){
+            header("Location: set-password.php");
+            exit;
+        }
         if ($login_status === true) {
             // Redirect based on user role
-            if ($_SESSION['user-role'] === 'user') {
+            if ($_SESSION['profile']['user-role'] === 'user') {
                 echo '<script type="text/javascript">window.location.href = "../views/student/home";</script>';
                 exit;
             } else if ($_SESSION['user-role'] === 'staff') {
