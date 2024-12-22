@@ -15,7 +15,7 @@ if (!isLoggedIn() && !in_array($current_file, $auth_files)) {
     exit;
 } else if(isLoggedIn() && in_array($current_file, $auth_files)) {
     $user_type = getUserType();
-    if ($user_type === "student") {
+    if ($user_type === "user") {
         echo '<script type="text/javascript">window.location.href = "../views/student/home";</script>';
         exit;
     } else if ($user_type === 'staff') {
@@ -27,7 +27,7 @@ if (!isLoggedIn() && !in_array($current_file, $auth_files)) {
     }
 }
 function isLoggedIn() {
-    return isset($_SESSION['user-id']) && isset($_SESSION['is-logged-in']);
+    return (isset($_SESSION['profile']['user-id']) && isset($_SESSION['is-logged-in'])) || (isset($_SESSION['user-id']) && isset($_SESSION['is-logged-in']));
 }
 
 function regenerateSession() {
@@ -48,7 +48,8 @@ function logOut() {
 }
 
 function getUserType() {
-    return $_SESSION['user-type'] ?? null;
+    isset($_SESSION['profile']['user-role']) ? $role = $_SESSION['profile']['user-role'] : (isset($_SESSION['user-role']) ? $role = $_SESSION['user-role'] : NULL);
+    return $role;
 }
 
 function initializeSession($userId, $userRole) {

@@ -24,6 +24,7 @@
     <input type="hidden" id="calculate-gwa"> 
     <input type="hidden" id="results-link"> 
     <input type="hidden" id="previous-link"> 
+    <input type="hidden" id="filter-year"> 
     <input type="hidden" id="leaderboard-cs-link">
     <input type="hidden" id="leaderboard-it-link">
     <input type="hidden" id="leaderboard-act-link">

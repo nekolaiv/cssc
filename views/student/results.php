@@ -14,7 +14,7 @@ $_SESSION['validate-button'] = "Submit";
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
    
     // $folder = '/cssc/assets/student';
-    $email = cleanInput($_SESSION['profile']['email']);
+    $email = cleanInput($_SESSION['profile']['user-email']);
     $gwa_result = cleanInput($_SESSION['GWA']['gwa-score']);
 
     // $destination_path = getcwd().DIRECTORY_SEPARATOR;
@@ -140,8 +140,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
         $_SESSION['validate-button'] = "Failed";
     }
 
-    $image_proof = $student->getStudentImageProof($email);
-    $_SESSION['image-proof'] = $image_proof;
+    // $image_proof = $student->getStudentImageProof($email);
+    // $_SESSION['image-proof'] = $image_proof;
 
 }
 ?>

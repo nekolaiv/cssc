@@ -16,7 +16,6 @@ class Admin {
     public function __construct() {
         $this->database = new Database();
     }
-
         /**
      * Create a new staff member and their account
      */
@@ -762,7 +761,7 @@ public function logAudit($action, $details) {
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+  
     public function getApplicationById($id) {
         $sql = "SELECT sa.id, 
                        sa.user_id,
@@ -834,6 +833,5 @@ public function logAudit($action, $details) {
             ':application_id' => $applicationId
         ]);
     }
-    
 }
 ?>
