@@ -5,214 +5,200 @@ require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = cleanInput($_POST['action'] ?? '');
-    $student = new Admin();
+    $admin = new Admin();
 
     switch ($action) {
+        /**
+         * CREATE User and Account
+         */
         case 'create':
             $errors = [];
             $data = [
-                'student_id' => cleanInput($_POST['student_id'] ?? ''),
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
                 'email' => cleanInput($_POST['email'] ?? ''),
                 'password' => cleanInput($_POST['password'] ?? ''),
                 'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
                 'last_name' => cleanInput($_POST['last_name'] ?? ''),
-                'course_id' => cleanInput($_POST['course_id'] ?? ''),
-                'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
-                'section' => cleanInput($_POST['section'] ?? ''),
-                'curriculum_code' => cleanInput($_POST['curriculum_code'] ?? '')
+                'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? 'active')
             ];
 
             // Validation
-            if (empty($data['student_id'])) {
-                $errors['student_id'] = 'Student ID is required.';
-            } elseif (!ctype_digit($data['student_id'])) {
-                $errors['student_id'] = 'Student ID must be numeric.';
-            } elseif ($student->studentIdExists($data['student_id'])) {
-                $errors['student_id'] = 'Student ID already exists.';
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
+            } elseif ($admin->identifierExists($data['identifier'])) {
+                $errors['identifier'] = 'Identifier already exists.';
             }
 
-            if (empty($data['first_name'])) {
-                $errors['first_name'] = 'First name is required.';
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
             }
 
-            if (empty($data['last_name'])) {
-                $errors['last_name'] = 'Last name is required.';
-            }
-
-            if (empty($data['email'])) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
             }
 
             if (empty($data['password'])) {
                 $errors['password'] = 'Password is required.';
             }
 
-            if (empty($data['course_id'])) {
-                $errors['course_id'] = 'Course is required.';
-            }
+            if (empty($data['first_name'])) $errors['first_name'] = 'First name is required.';
+            if (empty($data['last_name'])) $errors['last_name'] = 'Last name is required.';
+            if (empty($data['curriculum_id'])) $errors['curriculum_id'] = 'Curriculum is required.';
 
-            if (empty($data['year_level'])) {
-                $errors['year_level'] = 'Year level is required.';
-            }
-
-            if (empty($data['section'])) {
-                $errors['section'] = 'Section is required.';
-            }
-
-            if (empty($data['curriculum_code'])) {
-                $errors['curriculum_code'] = 'Curriculum code is required.';
-            }
-
-            // Return errors if any
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Hash password
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 
-            // Create student
-            $response = $student->createStudent($data);
+            // Call Admin function to create user and account
+            $response = $admin->createUser($data);
 
-            if ($response) {
-                $student->logAudit('Create Student', "Created student account with ID: {$data['student_id']}");
+            if ($response === true) {
+                $admin->logAudit('Create User', "Created user and account with Identifier: {$data['identifier']}");
+                echo json_encode(['success' => true]);
+            } else {
+                // Return the detailed error
+                echo json_encode(['success' => false, 'error' => $response]);
             }
-
-            echo json_encode(['success' => $response]);
             break;
 
+        /**
+         * Other Actions: UPDATE, READ, DELETE
+         */
         case 'update':
             $errors = [];
             $data = [
-                'user_id' => intval(cleanInput($_POST['user_id'] ?? 0)),
-                'student_id' => cleanInput($_POST['student_id'] ?? ''),
+                'id' => intval(cleanInput($_POST['id'] ?? 0)),
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
                 'email' => cleanInput($_POST['email'] ?? ''),
-                'password' => isset($_POST['password']) ? cleanInput($_POST['password']) : '',
+                'password' => cleanInput($_POST['password'] ?? ''), // Optional password update
                 'first_name' => cleanInput($_POST['first_name'] ?? ''),
                 'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
                 'last_name' => cleanInput($_POST['last_name'] ?? ''),
-                'course_id' => cleanInput($_POST['course_id'] ?? ''),
-                'year_level' => intval(cleanInput($_POST['year_level'] ?? 0)),
-                'section' => cleanInput($_POST['section'] ?? ''),'curriculum_code' => cleanInput($_POST['curriculum_code'] ?? '')
+                'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? 'active')
             ];
-
+        
             // Validation
-            if (empty($data['student_id'])) {
-                $errors['student_id'] = 'Student ID is required.';
-            } elseif (!ctype_digit($data['student_id'])) {
-                $errors['student_id'] = 'Student ID must be numeric.';
-            } elseif ($student->studentIdExists($data['student_id'], $data['user_id'])) {
-                $errors['student_id'] = 'This Student ID is already taken.';
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
             }
-
+        
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
+            }
+        
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
+            }
+        
             if (empty($data['first_name'])) {
                 $errors['first_name'] = 'First name is required.';
             }
-
+        
             if (empty($data['last_name'])) {
                 $errors['last_name'] = 'Last name is required.';
             }
-
-            if (empty($data['email'])) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
+        
+            if (empty($data['curriculum_id'])) {
+                $errors['curriculum_id'] = 'Curriculum is required.';
             }
-
-            if (empty($data['course_id'])) {
-                $errors['course_id'] = 'Course is required.';
-            }
-
-            if (empty($data['curriculum_code'])) {
-                $errors['curriculum_code'] = 'Curriculum code is required.';
-            }
-
-            if (empty($data['year_level'])) {
-                $errors['year_level'] = 'Year level is required.';
-            }
-
-            if (empty($data['section'])) {
-                $errors['section'] = 'Section is required.';
-            }
-
-            // Return errors if any
+        
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
-
-            // Hash password only if provided
+        
+            // Optional password hashing
             if (!empty($data['password'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             } else {
-                unset($data['password']); // Do not update password if empty
+                unset($data['password']); // Prevent empty password overwrites
             }
-
-            // Update student
-            $response = $student->updateStudent($data);
-
+        
+            $response = $admin->updateUser($data);
+        
             if ($response) {
-                $student->logAudit('Update Student', "Updated student account with ID: {$data['student_id']}");
-            }
-
-            echo json_encode(['success' => $response]);
-            break;
-
-            case 'read':
-                $filters = [
-                    'course_id' => cleanInput($_POST['course_id'] ?? ''),
-                    'year_level' => cleanInput($_POST['year_level'] ?? ''),
-                    'section' => cleanInput($_POST['section'] ?? ''),
-                ];
-    
-                // Remove empty filters
-                $filters = array_filter($filters);
-    
-                // Get students with optional filters
-                $students = $student->getAllStudents($filters);
-                echo json_encode($students);
-                break;
-
-        case 'delete':
-            $user_id = intval(cleanInput($_POST['user_id'] ?? 0));
-            $studentData = $student->getStudentById($user_id);
-            $response = $student->deleteStudent($user_id);
-
-            if ($response) {
-                $student->logAudit('Delete Student', "Deleted student account with ID: {$studentData['student_id']}");
-            }
-
-            echo json_encode(['success' => $response]);
-            break;
-
-        case 'get':
-            if (empty($_POST['user_id'])) {
-                echo json_encode(['error' => 'Missing user_id']);
-                break;
-            }
-
-            $user_id = intval(cleanInput($_POST['user_id']));
-            $studentData = $student->getStudentById($user_id);
-
-            if ($studentData) {
-                echo json_encode($studentData);
+                $admin->logAudit('Update User', "Updated user with ID: {$data['id']}");
+                echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['error' => 'Student not found']);
+                echo json_encode(['success' => false, 'error' => 'Failed to update user.']);
+            }
+            break;
+        
+
+        /**
+         * READ Users (with filters)
+         */
+        case 'read':
+            $filters = [
+                'search' => cleanInput($_POST['search'] ?? ''),
+                'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? '')
+            ];
+
+            $users = $admin->getAllUsers($filters);
+            echo json_encode($users);
+            break;
+
+        /**
+         * DELETE User (Soft Delete)
+         */
+        case 'toggle_status':
+            $id = intval(cleanInput($_POST['id'] ?? 0));
+            $status = cleanInput($_POST['status'] ?? '');
+        
+            if ($admin->updateAccountStatus($id, $status)) {
+                $admin->logAudit('Toggle Account Status', "Account ID {$id} status changed to {$status}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to update account status.']);
             }
             break;
 
-        case 'get_courses':
-            $courses = $student->getAllCourses();
-            echo json_encode($courses);
+            case 'delete_permanent':
+                $id = intval(cleanInput($_POST['id'] ?? 0));
+            
+                if ($admin->deleteUser($id)) {
+                    $admin->logAudit('Permanent Delete', "Permanently deleted user ID: {$id}");
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to permanently delete user.']);
+                }
+                break;
+                        
+
+        /**
+         * GET User by ID
+         */
+        case 'get':
+            $id = intval(cleanInput($_POST['id'] ?? 0));
+            $user = $admin->getUserById($id);
+
+            if ($user) echo json_encode($user);
+            else echo json_encode(['error' => 'User not found.']);
             break;
 
-        case 'get_curriculum_codes':
-            $codes = $student->getCurriculumCodes();
-            echo json_encode($codes);
+        /**
+         * FETCH All Curriculums
+         */
+        case 'fetch_curriculums':
+            $curriculums = $admin->getCurriculums();
+            echo json_encode($curriculums);
+            break;
+
+        /**
+         * FETCH All Status Options
+         */
+        case 'fetch_status_options':
+            $statuses = ['active', 'inactive'];
+            echo json_encode($statuses);
             break;
 
         default:

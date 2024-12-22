@@ -4,159 +4,184 @@ require_once '../../classes/_admin.class.php';
 require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = isset($_POST['action']) ? cleanInput($_POST['action']) : '';
+    $action = cleanInput($_POST['action'] ?? '');
     $admin = new Admin();
 
     switch ($action) {
+        /**
+         * CREATE Admin Account
+         */
         case 'create':
             $errors = [];
-            $email = cleanInput($_POST['email']);
-            $password = cleanInput($_POST['password']);
-            $first_name = cleanInput($_POST['first_name']);
-            $last_name = cleanInput($_POST['last_name']);
-            $middle_name = cleanInput($_POST['middle_name']);
+            $data = [
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''),
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
+                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'role_id' => 3, // Role ID for Admin
+                'status' => cleanInput($_POST['status'] ?? 'active')
+            ];
 
             // Validation
-            if (empty($email)) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
-            } elseif ($admin->emailExists($email)) {
-                $errors['email'] = 'This email is already in use.';
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
+            } elseif ($admin->identifierExists($data['identifier'])) {
+                $errors['identifier'] = 'Identifier already exists.';
             }
 
-            if (empty($password)) {
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
+            }
+
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
+            }
+
+            if (empty($data['password'])) {
                 $errors['password'] = 'Password is required.';
             }
 
-            if (empty($first_name)) {
-                $errors['first_name'] = 'First name is required.';
-            }
+            if (empty($data['first_name'])) $errors['first_name'] = 'First name is required.';
+            if (empty($data['last_name'])) $errors['last_name'] = 'Last name is required.';
 
-            if (empty($last_name)) {
-                $errors['last_name'] = 'Last name is required.';
-            }
-
-            if (empty($middle_name)) {
-                $errors['middle_name'] = 'Middle name is required.';
-            }
-
-            // If errors, return them
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Hash the password and create admin
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $result = $admin->createAdmin([
-                'email' => $email,
-                'password' => $hashedPassword,
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'middle_name' => $middle_name
-            ]);
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 
-            if ($result) {
-                $admin->logAudit('Create Admin', "Created admin account for email: $email");
+            // Create Admin Account
+            $response = $admin->createAdmin($data);
+
+            if ($response === true) {
+                $admin->logAudit('Create Admin', "Created admin account with Identifier: {$data['identifier']}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => $response]);
             }
-
-            echo json_encode(['success' => $result]);
             break;
 
-        case 'read':
-            $admins = $admin->getAllAdmins();
-            echo json_encode($admins);
-            break;
-
+        /**
+         * UPDATE Admin Account
+         */
         case 'update':
-            $admin_id = intval(cleanInput($_POST['admin_id']));
-            $email = cleanInput($_POST['email']);
-            $password = isset($_POST['password']) ? cleanInput($_POST['password']) : '';
-            $first_name = cleanInput($_POST['first_name']);
-            $last_name = cleanInput($_POST['last_name']);
-            $middle_name = cleanInput($_POST['middle_name']);
+            $errors = [];
+            $data = [
+                'id' => intval(cleanInput($_POST['id'] ?? 0)),
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''), // Optional password update
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
+                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? 'active')
+            ];
 
             // Validation
-            $errors = [];
-            if (empty($email)) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
-            } elseif ($admin->emailExists($email, $admin_id)) {
-                $errors['email'] = 'This email is already in use by another admin.';
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
             }
 
-            if (empty($first_name)) {
-                $errors['first_name'] = 'First name is required.';
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
             }
 
-            if (empty($last_name)) {
-                $errors['last_name'] = 'Last name is required.';
-            }
-
-            if (empty($middle_name)) {
-                $errors['middle_name'] = 'Middle name is required.';
-            }
-
-            // Hash the password if provided
-            $hashedPassword = !empty($password) ? password_hash($password, PASSWORD_BCRYPT) : null;
-
-            // If errors, return them
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Update admin
-            $data = [
-                'admin_id' => $admin_id,
-                'email' => $email,
-                'password' => $hashedPassword, // Optional
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'middle_name' => $middle_name
-            ];
+            // Optional password hashing
+            if (!empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+            } else {
+                unset($data['password']); // Prevent empty password overwrites
+            }
 
             $response = $admin->updateAdmin($data);
 
             if ($response) {
-                $admin->logAudit('Update Admin', "Updated admin account for ID: $admin_id");
+                $admin->logAudit('Update Admin', "Updated admin with ID: {$data['id']}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to update admin.']);
             }
-
-            echo json_encode(['success' => $response]);
             break;
 
-        case 'delete':
-            $admin_id = intval(cleanInput($_POST['admin_id']));
-            $response = $admin->deleteAdmin($admin_id);
+        /**
+         * READ Admins
+         */
+        case 'read':
+            $filters = [
+                'search' => cleanInput($_POST['search'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? '')
+            ];
 
-            if ($response) {
-                $admin->logAudit('Delete Admin', "Deleted admin account with ID: $admin_id");
+            $admins = $admin->getAllAdmins($filters); // Specific function for fetching admins
+            echo json_encode($admins);
+            break;
+
+        /**
+         * TOGGLE Admin Status (Activate/Deactivate)
+         */
+        case 'toggle_status':
+            $id = intval(cleanInput($_POST['id'] ?? 0));
+            $status = cleanInput($_POST['status'] ?? '');
+
+            if ($admin->updateAccountStatus($id, $status)) {
+                $admin->logAudit('Toggle Admin Status', "Admin ID {$id} status changed to {$status}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to update admin status.']);
             }
-
-            echo json_encode(['success' => $response]);
             break;
 
         case 'get':
-            if (empty($_POST['admin_id'])) {
-                echo json_encode(['error' => 'Missing admin_id']);
-                break;
+            $id = intval(cleanInput($_POST['id'] ?? 0)); // Admin ID to fetch
+        
+            if (empty($id)) {
+                echo json_encode(['success' => false, 'error' => 'Invalid Admin ID.']);
+                exit;
             }
-
-            $admin_id = intval(cleanInput($_POST['admin_id']));
-            $adminData = $admin->getAdminById($admin_id);
-
+        
+            // Call Admin function to get admin data by ID
+            $adminData = $admin->getAdminById($id);
+        
             if ($adminData) {
-                echo json_encode($adminData);
+                echo json_encode(['success' => true, 'data' => $adminData]);
             } else {
-                echo json_encode(['error' => 'Admin not found']);
+                echo json_encode(['success' => false, 'error' => 'Admin not found.']);
             }
             break;
+        
+            case 'delete':
+                $id = intval(cleanInput($_POST['id'] ?? 0)); // Admin ID to delete
+            
+                if (empty($id)) {
+                    echo json_encode(['success' => false, 'error' => 'Invalid Admin ID.']);
+                    exit;
+                }
+            
+                // Call Admin function to delete admin
+                $response = $admin->deleteAdmin($id);
+            
+                if ($response) {
+                    $admin->logAudit('Delete Admin', "Admin ID {$id} deleted successfully.");
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to delete admin.']);
+                }
+                break;
+            
+        
 
         default:
             echo json_encode(['error' => 'Invalid action.']);
             break;
     }
 }
-?>

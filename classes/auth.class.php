@@ -40,7 +40,6 @@ class Auth {
             $year_level = $this->_getStudentYearLevel($user['identifier']);
             $status = $this->_getStudentStatus($user['identifier']);
             $status === false ? $entry_status = NULL : $entry_status = $status;
-            
 
             // Check if account is inactive
             if ($user['status'] !== 'active') {
@@ -67,17 +66,17 @@ class Auth {
                 $_SESSION['profile'] = [
                     'user-id' => $user['account_id'],
                     'user-role' => $user['role'],
-					'user-name' => $user['lastname'] . ', ' . $user['firstname'] . ' ' . $user['middlename'],
-					'student-id' => $user['identifier'],
-					'user-email' => $user['email'],
-					'course' => $course['course_name'],
-					'adviser' => $adviser['adviser_name'],
-					'school-year' => $academic_term['year'],
-					'semester' => $academic_term['semester'],
-					'year-level' => $year_level['student_year'],
-					'status' => $entry_status['status'],
-				];
-				$_SESSION['is-logged-in'] = true;
+                    'user-name' => $user['lastname'] . ', ' . $user['firstname'] . ' ' . $user['middlename'],
+                    'student-id' => $user['identifier'],
+                    'user-email' => $user['email'],
+                    'course' => $course['course_name'],
+                    'adviser' => $adviser['adviser_name'],
+                    'school-year' => $academic_term['year'],
+                    'semester' => $academic_term['semester'],
+                    'year-level' => $year_level['student_year'],
+                    'status' => $entry_status['status'],
+                  ];
+               $_SESSION['is-logged-in'] = true;
             }
             return true;
         } catch (PDOException $e) {
@@ -179,7 +178,6 @@ class Auth {
 			return false;
 		}
 	}
-
 
     // RESET PASSWORD FUNCTION
     public function resetPassword($email, $new_password) {

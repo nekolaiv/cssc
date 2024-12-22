@@ -11,7 +11,7 @@ generateCSRF();
 
 $required = '*';
 $email = $password = '';
-$email_err = $password_err = ' ';
+$email_err = $password_err = '';
 $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($login_status === true) {
             // Redirect based on user role
             if ($_SESSION['profile']['user-role'] === 'user') {
+
                 echo '<script type="text/javascript">window.location.href = "../views/student/home";</script>';
                 exit;
             } else if ($_SESSION['user-role'] === 'staff') {

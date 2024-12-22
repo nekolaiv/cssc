@@ -13,7 +13,7 @@ $(document).ready(function () {
                     $('#academic-year').text(`Academic Year: ${result.data.academic_year}`);
                     $('#semester').text(`Semester: ${result.data.semester}`);
                 } else {
-                    alert(`Error: ${result.message}`);
+                    console.log(result.message);
                 }
             },
             error: function () {

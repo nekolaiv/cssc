@@ -4,26 +4,43 @@ require_once '../../classes/_admin.class.php';
 require_once '../../tools/clean.function.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = isset($_POST['action']) ? cleanInput($_POST['action']) : '';
+    $action = cleanInput($_POST['action'] ?? '');
     $admin = new Admin();
 
     switch ($action) {
+        /**
+         * CREATE Staff and Account
+         */
         case 'create':
             $errors = [];
             $data = [
-                'email' => cleanInput($_POST['email']),
-                'password' => cleanInput($_POST['password']),
-                'first_name' => cleanInput($_POST['first_name']),
-                'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'] ?? '') // Optional
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''),
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
+                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'department_id' => intval(cleanInput($_POST['department_id'] ?? 0)),
+                'status' => cleanInput($_POST['status'] ?? 'active')
             ];
 
             // Validation
-            if (empty($data['email'])) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
-            } elseif ($admin->staffEmailExists($data['email'])) {
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
+            } elseif ($admin->identifierExists($data['identifier'])) {
+                $errors['identifier'] = 'Identifier already exists.';
+            }
+
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
+            } elseif ($admin->usernameExists($data['username'])) {
+                $errors['username'] = 'Username already exists.';
+            }
+
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
+            } elseif ($admin->emailExists($data['email'])) {
                 $errors['email'] = 'Email already exists.';
             }
 
@@ -31,117 +48,167 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['password'] = 'Password is required.';
             }
 
-            if (empty($data['first_name'])) {
-                $errors['first_name'] = 'First name is required.';
+            if (empty($data['first_name'])) $errors['first_name'] = 'First name is required.';
+            if (empty($data['last_name'])) $errors['last_name'] = 'Last name is required.';
+            if (empty($data['department_id']) || !$admin->departmentExists($data['department_id'])) {
+                $errors['department_id'] = 'Valid department is required.';
             }
 
-            if (empty($data['last_name'])) {
-                $errors['last_name'] = 'Last name is required.';
-            }
-
-            // Return errors if any
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Hash password and create staff
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+
+            // Call Admin function to create user and account
             $response = $admin->createStaff($data);
 
-            if ($response) {
-                $admin->logAudit('Create Staff', "Created staff account for email: {$data['email']}");
+            if ($response === true) {
+                $admin->logAudit('Create Staff', "Created staff with Identifier: {$data['identifier']}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => $response]);
             }
-
-            echo json_encode(['success' => $response]);
             break;
 
+        /**
+         * READ Staff (with filters)
+         */
         case 'read':
-            $staff = $admin->getAllStaff();
+            $filters = [
+                'search' => cleanInput($_POST['search'] ?? ''),
+                'department_id' => cleanInput($_POST['department_id'] ?? ''),
+                'status' => cleanInput($_POST['status'] ?? '')
+            ];
+
+            $staff = $admin->getAllStaff($filters);
             echo json_encode($staff);
             break;
 
+        /**
+         * UPDATE Staff
+         */
         case 'update':
-            $staff_id = intval(cleanInput($_POST['staff_id']));
+            $errors = [];
             $data = [
-                'staff_id' => $staff_id,
-                'email' => cleanInput($_POST['email']),
-                'password' => isset($_POST['password']) ? cleanInput($_POST['password']) : '',
-                'first_name' => cleanInput($_POST['first_name']),
-                'last_name' => cleanInput($_POST['last_name']),
-                'middle_name' => cleanInput($_POST['middle_name'] ?? '') // Optional
+                'id' => intval(cleanInput($_POST['id'] ?? 0)),
+                'identifier' => cleanInput($_POST['identifier'] ?? ''),
+                'username' => cleanInput($_POST['username'] ?? ''),
+                'email' => cleanInput($_POST['email'] ?? ''),
+                'password' => cleanInput($_POST['password'] ?? ''), // Optional password update
+                'first_name' => cleanInput($_POST['first_name'] ?? ''),
+                'middle_name' => cleanInput($_POST['middle_name'] ?? ''),
+                'last_name' => cleanInput($_POST['last_name'] ?? ''),
+                'department_id' => intval(cleanInput($_POST['department_id'] ?? 0)),
+                'status' => cleanInput($_POST['status'] ?? 'active')
             ];
 
             // Validation
-            $errors = [];
-            if (empty($data['email'])) {
-                $errors['email'] = 'Email is required.';
-            } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors['email'] = 'Invalid email format.';
-            } elseif ($admin->staffEmailExists($data['email'], $staff_id)) {
-                $errors['email'] = 'This email is already taken by another staff.';
+            if (empty($data['id'])) {
+                $errors['id'] = 'Valid staff ID is required.';
             }
 
-            if (empty($data['first_name'])) {
-                $errors['first_name'] = 'First name is required.';
+            if (empty($data['identifier']) || !ctype_digit($data['identifier'])) {
+                $errors['identifier'] = 'Identifier is required and must be numeric.';
             }
 
-            if (empty($data['last_name'])) {
-                $errors['last_name'] = 'Last name is required.';
+            if (empty($data['username'])) {
+                $errors['username'] = 'Username is required.';
             }
 
-            // Return errors if any
+            if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Valid email is required.';
+            }
+
+            if (empty($data['first_name'])) $errors['first_name'] = 'First name is required.';
+            if (empty($data['last_name'])) $errors['last_name'] = 'Last name is required.';
+            if (empty($data['department_id']) || !$admin->departmentExists($data['department_id'])) {
+                $errors['department_id'] = 'Valid department is required.';
+            }
+
             if (!empty($errors)) {
                 echo json_encode(['success' => false, 'errors' => $errors]);
                 exit;
             }
 
-            // Hash new password if provided
+            // Optional password hashing
             if (!empty($data['password'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
             } else {
-                unset($data['password']); // Keep existing password
+                unset($data['password']); // Prevent empty password overwrites
             }
 
             $response = $admin->updateStaff($data);
 
             if ($response) {
-                $admin->logAudit('Update Staff', "Updated staff account for ID: $staff_id");
-            }
-
-            echo json_encode(['success' => $response]);
-            break;
-
-        case 'delete':
-            $staff_id = intval(cleanInput($_POST['staff_id']));
-            $response = $admin->deleteStaff($staff_id);
-
-            if ($response) {
-                $admin->logAudit('Delete Staff', "Deleted staff account with ID: $staff_id");
-            }
-
-            echo json_encode(['success' => $response]);
-            break;
-
-        case 'get':
-            if (empty($_POST['staff_id'])) {
-                echo json_encode(['error' => 'Missing staff_id']);
-                break;
-            }
-
-            $staff_id = intval(cleanInput($_POST['staff_id']));
-            $staffData = $admin->getStaffById($staff_id);
-
-            if ($staffData) {
-                echo json_encode($staffData);
+                $admin->logAudit('Update Staff', "Updated staff with Identifier: {$data['identifier']}");
+                echo json_encode(['success' => true]);
             } else {
-                echo json_encode(['error' => 'Staff not found']);
+                echo json_encode(['success' => false, 'error' => 'Failed to update staff.']);
             }
             break;
+
+        /**
+         * DELETE Staff (Soft Delete)
+         */
+        case 'delete':
+            $id = intval(cleanInput($_POST['id'] ?? 0));
+
+            if ($admin->softDeleteStaff($id)) {
+                $admin->logAudit('Delete Staff', "Soft deleted staff with ID: {$id}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to delete staff.']);
+            }
+            break;
+
+        case 'fetch_departments':
+            $departments = $admin->getDepartments(); // Ensure `getDepartments` fetches the department data
+            echo json_encode($departments);
+            break;
+
+        case 'fetch_status_options':
+            $statuses = ['active', 'inactive']; // Static options
+            echo json_encode($statuses);
+            break;
+
+        case 'toggle_status':
+            $id = intval(cleanInput($_POST['id'] ?? 0));
+            $status = cleanInput($_POST['status'] ?? '');
+        
+            if ($admin->updateAccountStatus($id, $status)) {
+                $admin->logAudit('Toggle Account Status', "Account ID {$id} status changed to {$status}");
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to update account status.']);
+            }
+            break;
+        
+        case 'get':
+            $id = intval(cleanInput($_POST['id'] ?? 0)); // Ensure ID is provided and valid
+        
+            if ($id <= 0) {
+                echo json_encode(['error' => 'Invalid staff ID.']);
+                exit;
+            }
+        
+            // Fetch the staff member by ID
+            $staff = $admin->getStaffById($id);
+        
+            if ($staff) {
+                echo json_encode($staff);
+            } else {
+                echo json_encode(['error' => 'Staff not found.']);
+            }
+            break;
+        
+            
+                
+            
 
         default:
             echo json_encode(['error' => 'Invalid action.']);
             break;
     }
 }
-?>
