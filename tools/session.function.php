@@ -27,7 +27,7 @@ if (!isLoggedIn() && !in_array($current_file, $auth_files)) {
     }
 }
 function isLoggedIn() {
-    return isset($_SESSION['profile']['user-id']) && isset($_SESSION['is-logged-in']);
+    return (isset($_SESSION['profile']['user-id']) && isset($_SESSION['is-logged-in'])) || (isset($_SESSION['user-id']) && isset($_SESSION['is-logged-in']));
 }
 
 function regenerateSession() {
@@ -48,7 +48,8 @@ function logOut() {
 }
 
 function getUserType() {
-    return $_SESSION['profile']['user-role'] ?? null;
+    isset($_SESSION['profile']['user-role']) ? $role = $_SESSION['profile']['user-role'] : (isset($_SESSION['user-role']) ? $role = $_SESSION['user-role'] : NULL);
+    return $role;
 }
 
 function initializeSession($userId, $userRole) {

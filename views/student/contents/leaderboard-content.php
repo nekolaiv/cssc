@@ -34,21 +34,26 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
             <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
             <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
         </div>
-        <form action="" method="POST">
-            <select name="year-level" id="leaderboard-year-level-filter">
-                <option value="">--Filter Year--</option>
-                <?php
-                    $year_levels = $student->fetchYearLevels();
-                    foreach ($year_levels as $year){
-                ?>
-                    <option value="<?= $year['year_level'] ?>" <?= ($year_levels == $year['year_level']) ? 'selected' : '' ?>><?= $year['year_level'] ?></option>
-                <?php
-                    }
-                ?>
-            </select>
-            <input type="submit" id="filter-year-button" value="filter-year">
-        </form>
-    </div>
+            <form id="filter-leaderboard" action="" method="POST">
+                <select name="year-level" id="leaderboard-year-level-filter">
+                    <option value="">--Filter Year--</option>
+                    <option value="1">First Year</option>
+                    <option value="2">Second Year</option>
+                    <option value="3">Third Year</option>
+                    <option value="4">Fourth Year</option>
+                    <?php
+                        // $year_levels = $student->fetchYearLevels();
+                        // foreach ($year_levels as $year){
+                    ?>
+                        <!-- <option value="<?= $year['year_level'] ?>" <?= ($year_levels == $year['year_level']) ? 'selected' : '' ?>><?= $year['year_level'] ?></option> -->
+                    <?php
+                        // }
+                    ?>
+                </select>
+                <!-- <input type="submit" id="filter-year-button" value="filter-year"> -->
+                <button type="submit" id="filter-year-button">Filter Year</button>
+            </form>
+        </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
@@ -56,7 +61,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $cs_top1['gwa'] ?? 'None'; ?></h3></div>
+                    <div><h3><?php echo $cs_top1['total_rating'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -68,7 +73,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $it_top1['gwa'] ?? 'None'; ?></h3></div>
+                    <div><h3><?php echo $it_top1['total_rating'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -80,7 +85,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $act_top1['gwa'] ?? 'None'; ?></h3></div>
+                    <div><h3><?php echo $act_top1['total_rating'] ?? 'None'; ?></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -107,7 +112,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                                 <p class="student-name"><?php echo $csl['fullname']; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $csl['gwa']; ?></p>
+                                <p class="student-rating"><?php echo $csl['total_rating']; ?></p>
                             </div>
                         </div>
                 <?php 
@@ -134,7 +139,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                                 <p class="student-name"><?php echo $itl['fullname'] ?? "None"; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $itl['gwa'] ?? "None"; ?></p>
+                                <p class="student-rating"><?php echo $itl['total_rating'] ?? "None"; ?></p>
                             </div>
                         </div>
                 <?php 
@@ -160,7 +165,7 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                                 <p class="student-name"><?php echo $actl['fullname']; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $actl['gwa']; ?></p>
+                                <p class="student-rating"><?php echo $actl['total_rating']; ?></p>
                             </div>
                         </div>
                 <?php 
@@ -171,3 +176,4 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
         
     </div>
 </section>
+<script src="/cssc/controllers/leaderboard-filter.js"></script>

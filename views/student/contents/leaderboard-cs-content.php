@@ -2,13 +2,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
-$student = new Student();
-$cs_top1 = $student->getCSTopNotcher();
-$it_top1 = $student->getITTopNotcher();
-$act_top1 = $student->getACTTopNotcher();
-$cs_leaderboard = $student->getCSLeaderboardData();
-$it_leaderboard = $student->getITLeaderboardData();
-$act_leaderboard = $student->getACTLeaderboardData();
+// $student = new Student();
+// $cs_top1 = $student->getCSTopNotcher();
+// $it_top1 = $student->getITTopNotcher();
+// $act_top1 = $student->getACTTopNotcher();
+// $cs_leaderboard = $student->getCSLeaderboardData();
+// $it_leaderboard = $student->getITLeaderboardData();
+// $act_leaderboard = $student->getACTLeaderboardData();
 ?>
 <section id="leaderboard-section">
     <div class="div-pad" id="leaderboard-div1">

@@ -119,9 +119,21 @@ class Student
 
     public function getStudentLeaderboardData($year_level = NULL, $course = NULL){
         if($year_level === NULL){
-            $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course ORDER BY gwa, fullname ASC';
+            // $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course ORDER BY gwa, fullname ASC';
+            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating
+            FROM student_applications AS sa
+            LEFT JOIN user AS u ON sa.user_id = u.identifier
+            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
+            ORDER BY sa.total_rating, CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) ASC;";
         } else {
-            $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course AND year_level = :year_level ORDER BY gwa, fullname ASC';
+            // $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course AND year_level = :year_level ORDER BY gwa, fullname ASC';
+            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating
+            FROM student_applications AS sa
+            LEFT JOIN user AS u ON sa.user_id = u.identifier
+            LEFT JOIN dean_lister_application_periods AS dlap ON dlap.status = 'open'
+            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
+            AND CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED) = :year_level
+            ORDER BY sa.total_rating, CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) ASC;";
         }
         $query = $this->database->connect()->prepare($sql);
         if($year_level !== NULL){
@@ -139,9 +151,20 @@ class Student
 
     public function getStudentTopNotcher($year_level = NULL, $course = NULL){
         if($year_level === NULL){
-            $sql = 'SELECT fullname, gwa, created_at FROM student_applications WHERE course = :course ORDER BY gwa, created_at ASC LIMIT 1;';
+            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating, sa.created_at 
+            FROM student_applications AS sa
+            LEFT JOIN user AS u ON sa.user_id = u.identifier
+            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
+            ORDER BY sa.total_rating, sa.created_at ASC LIMIT 1;";
         } else {
-            $sql = 'SELECT fullname, gwa, created_at FROM student_applications WHERE course = :course AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
+            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating, sa.created_at 
+            FROM student_applications AS sa
+            LEFT JOIN user AS u ON sa.user_id = u.identifier
+            LEFT JOIN dean_lister_application_periods AS dlap ON dlap.status = 'open'
+            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
+            AND (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = :year_level
+            ORDER BY sa.total_rating, sa.created_at ASC LIMIT 1;";
+            // $sql = 'SELECT fullname, total_rating, created_at FROM student_applications WHERE course = :course AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
         }
         $query = $this->database->connect()->prepare($sql);
         if($year_level !== NULL){

@@ -75,6 +75,11 @@ $(document).ready(function () {
 		e.preventDefault();
 		loadPage('profile-content.php');
 	});
+
+	$("#filter-year").on("click", function (e) {
+		e.preventDefault();
+		alert("filter year clicked");
+	});
 	
 
 	let url = window.location.href;
@@ -170,6 +175,21 @@ $(document).ready(function () {
 			},
 			error: function (xhr, status, error) {
 				console.error("Error calculating: ", error);
+				return false;
+			}
+		});
+	}
+
+	function leadboardLoad(){
+		$.ajax({
+			url: "/cssc/server/leaderboard_load.php", // URL for fetching categories
+			type: "POST", // Use GET request
+			dataType: "json",
+			success: function (data) {
+				console.log("Success loading leaderboard data: ", data);
+			},
+			error: function (xhr, status, error) {
+				console.error("Error loading leaderboard data: ", error);
 				return false;
 			}
 		});
