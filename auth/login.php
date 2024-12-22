@@ -11,7 +11,7 @@ generateCSRF();
 
 $required = '*';
 $email = $password = '';
-$email_err = $password_err = '';
+$email_err = $password_err = ' ';
 $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
