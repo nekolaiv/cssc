@@ -610,14 +610,14 @@ header nav ul button {
   /* border: 1px solid red; */
 }
 
-#leaderboard-year-level-filter {
+#leaderboard-year-level-filter, #leaderboard-submission-period-filter {
 	height: 50px;
 	width: 200px;
 	background-color: var(--color-white);
 	border-radius: calc(var(--Gborder-radius));
 }
 
-#leaderboard-year-level-filter:active {
+#leaderboard-year-level-filter:active, #leaderboard-submission-period-filter:active {
 	background-color: var(--button-white-active);
 }
 

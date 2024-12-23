@@ -6,12 +6,13 @@ $(document).ready(function () {
 		let url = $(this).attr("href");
 		console.log(url);
 		window.history.pushState({ path: url }, "", url);
-
 	});
+
 
 	$("#home-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('home-content.php');
+		leadboardLoad();
 	});
 
 	$("#result-home-link").on("click", function (e) {
@@ -37,16 +38,19 @@ $(document).ready(function () {
 	$("#leaderboard-cs-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-cs-content.php');
+		leadboardLoad();
 	});
 
 	$("#leaderboard-it-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-it-content.php');
+		leadboardLoad();
 	});
 
 	$("#leaderboard-act-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-act-content.php');
+		leadboardLoad();
 	});
 
 	$("#calculate-link").on("click", function (e) {
@@ -91,12 +95,16 @@ $(document).ready(function () {
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
 		$("#home-leaderboard-link").trigger("click");
+		leadboardLoad();
 	} else if (url.endsWith("leaderboard-cs")) {
 		$("#leaderboard-cs-link").trigger("click");
+		leadboardLoad();
 	} else if (url.endsWith("leaderboard-it")) {
 		$("#leaderboard-it-link").trigger("click");
+		leadboardLoad();
 	} else if (url.endsWith("leaderboard-act")) {
 		$("#leaderboard-act-link").trigger("click");
+		leadboardLoad();
 	} else if (url.endsWith("results")) {
 		$("#results-link").trigger("click");
 	} else if (url.endsWith("previous")) {
@@ -121,15 +129,19 @@ $(document).ready(function () {
 			// $("#leaderboard-link").trigger("click");
 			// $("#home-leaderboard-link").trigger("click");
 			loadPage('leaderboard-content.php');
+			leadboardLoad();
 		} else if (url.endsWith("leaderboard-cs")) {
 			// $("#leaderboard-cs-link").trigger("click");
 			loadPage('leaderboard-cs-content.php');
+			leadboardLoad();
 		} else if (url.endsWith("leaderboard-it")) {
 			// $("#leaderboard-it-link").trigger("click");
 			loadPage('leaderboard-it-content.php');
+			leadboardLoad();
 		} else if (url.endsWith("leaderboard-act")) {
 			// $("#leaderboard-act-link").trigger("click");
 			loadPage('leaderboard-act-content.php');
+			leadboardLoad();
 		} else if (url.endsWith("results")) {
 			// $("#results-link").trigger("click");
 			loadPage('results-content.php');
@@ -140,6 +152,10 @@ $(document).ready(function () {
 			// $("#profile-link").trigger("click");
 			loadPage('profile-content.php');
 		} else if (url.endsWith("calculate")) {
+			// $("#calculate-link").trigger("click");
+			// $("#result-calculate-link").trigger("click");
+			loadPage('calculate-content.php');
+		} else if (url.endsWith("leaderboard-ajax")) {
 			// $("#calculate-link").trigger("click");
 			// $("#result-calculate-link").trigger("click");
 			loadPage('calculate-content.php');
@@ -157,12 +173,16 @@ $(document).ready(function () {
 			dataType: "html",
 			success: function (response) {
 				$(".content").html(response);
+				if (url.includes("leaderboard-ajax")) {
+					$.getScript("/cssc/js/leaderboard.js");
+				}
 			},
 			error: function (xhr, status, error) {
 				console.error("Error loading the page: ", error);
 			}
 		});
 	}
+	
 
 	// Function to fetch product categories
 	function calculateGWA() {
@@ -180,17 +200,20 @@ $(document).ready(function () {
 		});
 	}
 
-	function leadboardLoad(){
+	function leadboardLoad(course=null, year=null, period=null){
+		const selectedYear = year;
+		const selectedCourse = course;
+		const selectedPeriod = period;
 		$.ajax({
-			url: "/cssc/server/leaderboard_load.php", // URL for fetching categories
-			type: "POST", // Use GET request
+			type: "POST",
+			url: "/cssc/server/leaderboard_load.php",
+			data: { year_level: selectedYear, course: selectedCourse, submission_period: selectedPeriod },
 			dataType: "json",
-			success: function (data) {
-				console.log("Success loading leaderboard data: ", data);
+			success: function(response) {
+				console.log(response);
 			},
-			error: function (xhr, status, error) {
-				console.error("Error loading leaderboard data: ", error);
-				return false;
+			error: function(xhr, status, error) {
+				console.error("Error loading leaderboard: ", error);
 			}
 		});
 	}

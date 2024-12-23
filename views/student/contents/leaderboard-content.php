@@ -1,23 +1,22 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 $student = new Student();
-// $cs_top1 = $student->getCSTopNotcher();
-// $it_top1 = $student->getITTopNotcher();
-// $act_top1 = $student->getACTTopNotcher();
-// $cs_leaderboard = $student->getCSLeaderboardData();
-// $it_leaderboard = $student->getITLeaderboardData();
-// $act_leaderboard = $student->getACTLeaderboardData();
-
-
+// $year_level = NULL;
+// $_SESSION['cs_top1'] = $student->getStudentTopNotcher($year_level, 1);
+// $_SESSION['it_top1'] = $student->getStudentTopNotchsession_start();level, 2);
+// $_SESSION['act_top1'] = $student->getStudentTopNotcher($year_level, 3);
+// $_SESSION['cs_leaderboard'] = $student->getStudentLeaderboardData($year_level, 1);
+// $_SESSION['it_leaderboard'] = $student->getStudentLeaderboardData($year_level, 2);
+// $_SESSION['act_leaderboard'] = $student->getStudentLeaderboardData($year_level, 3);
 $cs_top1 = $_SESSION['cs_top1'];
 $it_top1 = $_SESSION['it_top1'];
 $act_top1 = $_SESSION['act_top1'];
 $cs_leaderboard = $_SESSION['cs_leaderboard'];
 $it_leaderboard = $_SESSION['it_leaderboard'];
 $act_leaderboard = $_SESSION['act_leaderboard'];
-
 
 ?>
 <section id="leaderboard-section">
@@ -34,26 +33,28 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
             <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
             <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
         </div>
-            <form id="filter-leaderboard" action="" method="POST">
-                <select name="year-level" id="leaderboard-year-level-filter">
-                    <option value="">--Filter Year--</option>
-                    <option value="1">First Year</option>
-                    <option value="2">Second Year</option>
-                    <option value="3">Third Year</option>
-                    <option value="4">Fourth Year</option>
-                    <?php
-                        // $year_levels = $student->fetchYearLevels();
-                        // foreach ($year_levels as $year){
-                    ?>
-                        <!-- <option value="<?= $year['year_level'] ?>" <?= ($year_levels == $year['year_level']) ? 'selected' : '' ?>><?= $year['year_level'] ?></option> -->
-                    <?php
-                        // }
-                    ?>
-                </select>
-                <!-- <input type="submit" id="filter-year-button" value="filter-year"> -->
-                <button type="submit" id="filter-year-button">Filter Year</button>
-            </form>
-        </div>
+        <form id="filter-leaderboard" action="" method="POST">
+            <select name="year-level" id="leaderboard-year-level-filter">
+                <option value="all">--Year Level--</option>
+                <option value="1">First Year</option>
+                <option value="2">Second Year</option>
+                <option value="3">Third Year</option>
+                <option value="4">Fourth Year</option>
+            </select>
+            <select name="submission-period" id="leaderboard-submission-period-filter">
+                <option value="all">--Submission Period--</option>
+                <?php
+                    $submission_id = $student->fetchSubmissionId();
+                    foreach ($submission_id as $sid){
+                ?>
+                    <option value="<?= $sid['submission_id'] ?>" <?= ($submission_id == $sid['submission_id']) ? 'selected' : '' ?>><?= $sid['submission_description'] ?></option>
+                <?php
+                    }
+                ?>
+            </select>
+            <input type="submit" id="filter-year-button" value="filter">
+        </form>
+    </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
@@ -103,6 +104,12 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                     <div class="leaderboard-list-pad-div2">
                         <p class="list-header-rating">RATING:</p>
                     </div>
+                    <div class="leaderboard-list-pad-div2">
+                        <p class="list-header-rating">YEAR LEVEL:</p>
+                    </div>
+                    <div class="leaderboard-list-pad-div2">
+                        <p class="list-header-rating">SUBMISSION PERIOD:</p>
+                    </div>
                 </div>
                 <?php 
                     $csi = 1;
@@ -113,6 +120,12 @@ $act_leaderboard = $_SESSION['act_leaderboard'];
                             </div>
                             <div class="leaderboard-list-pad-div2">
                                 <p class="student-rating"><?php echo $csl['total_rating']; ?></p>
+                            </div>
+                            <div class="leaderboard-list-pad-div2">
+                                <p class="student-rating"><?php echo $csl['year_level']; ?></p>
+                            </div>
+                            <div class="leaderboard-list-pad-div2">
+                                <p class="student-rating"><?php echo $csl['submission_description']; ?></p>
                             </div>
                         </div>
                 <?php 

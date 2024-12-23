@@ -2,13 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
-// $student = new Student();
-// $cs_top1 = $student->getCSTopNotcher();
-// $it_top1 = $student->getITTopNotcher();
-// $act_top1 = $student->getACTTopNotcher();
-// $cs_leaderboard = $student->getCSLeaderboardData();
-// $it_leaderboard = $student->getITLeaderboardData();
-// $act_leaderboard = $student->getACTLeaderboardData();
+$student = new Student();
+$cs_top1 = $_SESSION['cs_top1'];
+$cs_leaderboard = $_SESSION['cs_leaderboard'];
+
 ?>
 <section id="leaderboard-section">
     <div class="div-pad" id="leaderboard-div1">
@@ -24,15 +21,25 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
             <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
             <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course">ACT</button></a>
         </div>
+        <form id="filter-leaderboard" action="" method="POST">
+            <select name="year-level" id="leaderboard-year-level-filter">
+                <option value="all">--All--</option>
+                <option value="1">First Year</option>
+                <option value="2">Second Year</option>
+                <option value="3">Third Year</option>
+                <option value="4">Fourth Year</option>
+            </select>
+            <input type="submit" id="filter-year-button" value="filter-year">
+        </form>
     </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p class="topnotcher-course">BS COMPUTER SCIENCE</p></div>
-            <div class="topnotcher-div-2"><h2 class="topnotcher-name"><?php echo $cs_top1['fullname'] ?? 'None<br><br>';?></h2></div>
+            <div class="topnotcher-div-2"><h2 class="topnotcher-name"><?php echo $cs_top1['fullname'] ?? 'None<br>';?></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div class="topnotcher-rating-score"><h3 class="topnotcher-rating"><?php echo $cs_top1['gwa'] ?? 'None'; ?></h3></div>
+                    <div class="topnotcher-rating-score"><h3 class="topnotcher-rating"><?php echo $cs_top1['total_rating'] ?? 'None'; ?></h3></div>
                     <p class="topnotcher-word-rating">RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -59,7 +66,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
                                 <p class="student-name"><?php echo $csl['fullname'] ?? "None"; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $csl['gwa'] ?? "None"; ?></p>
+                                <p class="student-rating"><?php echo $csl['total_rating'] ?? "None"; ?></p>
                             </div>
                         </div>
                 <?php 
@@ -69,3 +76,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
         </div>
     </div>
 </section>
+<script src="/cssc/controllers/leaderboard-filter.js"></script>
