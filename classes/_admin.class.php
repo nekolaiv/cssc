@@ -716,51 +716,58 @@ public function logAudit($action, $details) {
         }
     }
 
-    public function getAllApplications($filters = []) {
+    public function getAllApplications($filters) {
         $sql = "SELECT sa.id, 
                        sa.user_id,
                        u.identifier,
                        CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name,
+                       u.email,
                        c.remarks AS curriculum,
                        sa.status,
+                       sa.total_rating,
+                       sa.rejection_reason,
                        sa.created_at AS submission_date,
-                       sa.total_rating
+                       sa.updated_at AS last_updated,
+                       sa.school_year,
+                       sa.semester
                 FROM student_applications sa
                 INNER JOIN user u ON sa.user_id = u.id
                 LEFT JOIN curriculum c ON u.curriculum_id = c.id
-                WHERE 1=1"; // Always true, for dynamic conditions
+                WHERE 1=1";
     
         $params = [];
     
-        // Add filters dynamically
         if (!empty($filters['search'])) {
-            $sql .= " AND (u.identifier LIKE :search 
-                           OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
+            $sql .= " AND (u.identifier LIKE :search OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
             $params[':search'] = '%' . $filters['search'] . '%';
         }
-    
         if (!empty($filters['curriculum_id'])) {
             $sql .= " AND u.curriculum_id = :curriculum_id";
             $params[':curriculum_id'] = $filters['curriculum_id'];
         }
-    
         if (!empty($filters['status'])) {
             $sql .= " AND sa.status = :status";
             $params[':status'] = $filters['status'];
         }
-    
         if (!empty($filters['submission_date'])) {
             $sql .= " AND DATE(sa.created_at) = :submission_date";
             $params[':submission_date'] = $filters['submission_date'];
         }
-    
-        $sql .= " ORDER BY sa.created_at DESC";
+        if (!empty($filters['school_year'])) {
+            $sql .= " AND sa.school_year = :school_year";
+            $params[':school_year'] = $filters['school_year'];
+        }
+        if (!empty($filters['semester'])) {
+            $sql .= " AND sa.semester = :semester";
+            $params[':semester'] = $filters['semester'];
+        }
     
         $stmt = $this->database->connect()->prepare($sql);
         $stmt->execute($params);
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
   
     public function getApplicationById($id) {
         $sql = "SELECT sa.id, 

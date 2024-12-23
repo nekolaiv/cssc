@@ -1,146 +1,154 @@
 $(document).ready(function () {
-  let applications = [];
-  let allApplications = [];
-  const rowsPerPage = 5;
-  let currentPage = 1;
+    let applications = [];
+    let allApplications = [];
+    const rowsPerPage = 5;
+    let currentPage = 1;
 
-  // Initial Load
-  loadApplications();
-  loadCurriculums();
-  setupFilters();
-  setupSearch();
+    // Initial Load
+    loadApplications();
+    loadFilters();
+    setupFilters();
+    setupSearch();
 
-  // Fetch Applications
-  function loadApplications(filters = {}) {
-      $.post(
-          "/cssc/server/admin/application_server.php",
-          { action: "read", ...filters },
-          function (response) {
-              try {
-                  console.log("Server Response:", response);
-                  applications = JSON.parse(response);
-                  allApplications = [...applications];
-                  displayTable(currentPage);
-                  setupPagination();
-              } catch (error) {
-                  console.error("Error parsing application data:", error);
-              }
-          }
-      ).fail(function () {
-          console.error("Failed to load applications.");
-      });
-  }
+    // Fetch Applications
+    function loadApplications(filters = {}) {
+        $.post(
+            "/cssc/server/admin/application_server.php",
+            { action: "read", ...filters },
+            function (response) {
+                try {
+                    applications = JSON.parse(response);
+                    allApplications = [...applications];
+                    displayTable(currentPage);
+                    setupPagination();
+                } catch (error) {
+                    console.error("Error parsing application data:", error);
+                }
+            }
+        ).fail(function () {
+            console.error("Failed to load applications.");
+        });
+    }
 
-  // Fetch Curriculums for the filter
-  function loadCurriculums() {
-      $.post(
-          "/cssc/server/admin/application_server.php",
-          { action: "fetch_curriculums" },
-          function (response) {
-              try {
-                  const curriculums = JSON.parse(response);
-                  const dropdown = $("#filterCurriculum");
-                  dropdown.empty().append('<option value="">All Curriculums</option>');
+    // Dynamically Load Filters
+    function loadFilters() {
+        loadSchoolYears();
+        loadSemesters();
+    }
 
-                  curriculums.forEach(({ id, remarks }) => {
-                      dropdown.append(`<option value="${id}">${remarks}</option>`);
-                  });
-              } catch (error) {
-                  console.error("Error parsing curriculums:", error);
-                  alert("Failed to populate curriculums. Please try again.");
-              }
-          }
-      ).fail(function () {
-          alert("Failed to communicate with the server to fetch curriculums.");
-      });
-  }
+    // Dynamically Populate School Year Filter
+    function loadSchoolYears() {
+        const schoolYears = ["2024-2025", "2023-2024", "2022-2023"]; // Example years; replace with dynamic fetching if needed
+        const dropdown = $("#filterSchoolYear");
+        dropdown.empty().append('<option value="">All Years</option>');
 
-  // Filters
-  function setupFilters() {
-      $("#filterCurriculum, #filterStatus, #filterDate").on("change", function () {
-          const filters = {
-              curriculum_id: $("#filterCurriculum").val(),
-              status: $("#filterStatus").val(),
-              submission_date: $("#filterDate").val(),
-          };
-          loadApplications(filters);
-      });
-  }
+        schoolYears.forEach((year) => {
+            dropdown.append(`<option value="${year}">${year}</option>`);
+        });
+    }
 
-  // Search
-  function setupSearch() {
-      $("#searchApplication").on("keyup", function () {
-          const query = $(this).val().toLowerCase();
+    // Dynamically Populate Semester Filter
+    function loadSemesters() {
+        const semesters = ["1st", "2nd", "Summer"];
+        const dropdown = $("#filterSemester");
+        dropdown.empty().append('<option value="">All Semesters</option>');
 
-          const filtered = allApplications.filter((app) => {
-              const identifier = app.identifier ? app.identifier.toLowerCase() : '';
-              const fullName = app.full_name ? app.full_name.toLowerCase() : '';
+        semesters.forEach((semester) => {
+            dropdown.append(`<option value="${semester}">${semester}</option>`);
+        });
+    }
 
-              return identifier.includes(query) || fullName.includes(query);
-          });
+    // Filters
+    function setupFilters() {
+        $("#filterCurriculum, #filterStatus, #filterDate, #filterSchoolYear, #filterSemester").on("change", function () {
+            const filters = {
+                curriculum_id: $("#filterCurriculum").val(),
+                status: $("#filterStatus").val(),
+                submission_date: $("#filterDate").val(),
+                school_year: $("#filterSchoolYear").val(),
+                semester: $("#filterSemester").val(),
+            };
+            loadApplications(filters);
+        });
+    }
 
-          applications = filtered;
-          currentPage = 1;
-          displayTable(currentPage);
-          setupPagination();
-      });
-  }
+    // Search
+    function setupSearch() {
+        $("#searchApplication").on("keyup", function () {
+            const query = $(this).val().toLowerCase();
 
-  // Display Table
-  function displayTable(page) {
-      const start = (page - 1) * rowsPerPage;
-      const end = start + rowsPerPage;
-      const visible = applications.slice(start, end);
+            const filtered = allApplications.filter((app) => {
+                const identifier = app.identifier ? app.identifier.toLowerCase() : '';
+                const fullName = app.full_name ? app.full_name.toLowerCase() : '';
 
-      const tableBody = $("#applicationsTable tbody");
-      tableBody.empty();
+                return identifier.includes(query) || fullName.includes(query);
+            });
 
-      if (visible.length === 0) {
-          tableBody.append('<tr><td colspan="7" class="text-center">No data found.</td></tr>');
-          return;
-      }
+            applications = filtered;
+            currentPage = 1;
+            displayTable(currentPage);
+            setupPagination();
+        });
+    }
 
-      visible.forEach((app) => {
-        tableBody.append(`
-            <tr>
-                <td>${app.identifier}</td>
-                <td>${app.full_name}</td>
-                <td>${app.curriculum}</td>
-                <td>${app.status}</td>
-                <td>${app.submission_date}</td>
-                <td>${app.total_rating}</td>
-                <td>
-                    <button class="btn btn-info btn-sm view-details-btn" data-id="${app.id}">View Details</button>
-                    <button class="btn btn-warning btn-sm compare-grades-btn" data-id="${app.id}" data-user-id="${app.user_id}">Compare Grades</button>
-                    <button class="btn btn-success btn-sm change-status-btn" data-id="${app.id}" data-status="${app.status}">Change Status</button>
-                </td>
-            </tr>
-        `);
-    });    
-  }
+    // Display Table
+    function displayTable(page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const visible = applications.slice(start, end);
+    
+        const tableBody = $("#applicationsTable tbody");
+        tableBody.empty();
+    
+        if (visible.length === 0) {
+            tableBody.append('<tr><td colspan="9" class="text-center">No data found.</td></tr>');
+            return;
+        }
+    
+        visible.forEach((app) => {
+            tableBody.append(`
+                <tr>
+                    <td>${app.identifier}</td>
+                    <td>${app.full_name}</td>
+                    <td>${app.curriculum}</td>
+                    <td>${app.status}</td>
+                    <td>${app.school_year}</td>
+                    <td>${app.semester}</td>
+                    <td>${app.submission_date}</td>
+                    <td>${app.total_rating}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm view-details-btn" data-id="${app.id}">View Details</button>
+                        <button class="btn btn-warning btn-sm compare-grades-btn" data-id="${app.id}" data-user-id="${app.user_id}">Compare Grades</button>
+                        <button class="btn btn-success btn-sm change-status-btn" data-id="${app.id}" data-status="${app.status}">Change Status</button>
+                    </td>
+                </tr>
+            `);
+        });
+    }
+    
 
-  // Pagination
-  function setupPagination() {
-      const totalPages = Math.ceil(applications.length / rowsPerPage);
-      const pagination = $("#pagination ul");
-      pagination.empty();
+    // Pagination
+    function setupPagination() {
+        const totalPages = Math.ceil(applications.length / rowsPerPage);
+        const pagination = $("#pagination ul");
+        pagination.empty();
 
-      for (let i = 1; i <= totalPages; i++) {
-          pagination.append(
-              `<li class="page-item ${i === currentPage ? "active" : ""}">
-                  <a href="#" class="page-link" data-page="${i}">${i}</a>
-              </li>`
-          );
-      }
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.append(
+                `<li class="page-item ${i === currentPage ? "active" : ""}">
+                    <a href="#" class="page-link" data-page="${i}">${i}</a>
+                </li>`
+            );
+        }
 
-      $(".page-link").on("click", function (e) {
-          e.preventDefault();
-          currentPage = parseInt($(this).data("page"));
-          displayTable(currentPage);
-          setupPagination();
-      });
-  }
-
+        $(".page-link").on("click", function (e) {
+            e.preventDefault();
+            currentPage = parseInt($(this).data("page"));
+            displayTable(currentPage);
+            setupPagination();
+        });
+    }
+    
   // View Application Details
   $(document).on("click", ".view-details-btn", function () {
       const applicationId = $(this).data("id");

@@ -16,12 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'search' => cleanInput($_POST['search'] ?? ''),
                 'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
                 'status' => cleanInput($_POST['status'] ?? ''),
-                'submission_date' => cleanInput($_POST['submission_date'] ?? '')
+                'submission_date' => cleanInput($_POST['submission_date'] ?? ''),
+                'school_year' => cleanInput($_POST['school_year'] ?? ''),
+                'semester' => cleanInput($_POST['semester'] ?? '')
             ];
-
+        
             $applications = $admin->getAllApplications($filters);
             echo json_encode($applications);
             break;
+        
 
         /**
          * Get Application Details
