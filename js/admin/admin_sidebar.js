@@ -92,8 +92,8 @@ $(document).ready(function () {
             if (url.includes("deans-period.php")) {
                 $.getScript("/cssc/js/admin/deans_period.js");
             }
-            if (url.includes("curriculum-management.php")) {
-                $.getScript("/cssc/js/admin/curriculum_management.js");
+            if (url.includes("curriculum-list.php")) {
+                $.getScript("/cssc/js/admin/curriculum_list.js");
             }
             if (url.includes("profile.php")) {
                 $.getScript("/cssc/js/admin/admin_profile.js");

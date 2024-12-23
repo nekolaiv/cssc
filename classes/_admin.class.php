@@ -962,6 +962,113 @@ public function logAudit($action, $details) {
         $stmtActivate = $this->database->connect()->prepare($sqlActivate);
         return $stmtActivate->execute([':id' => $id]);
     }
+
+    public function getAllCurricula($filters) {
+        $sql = "SELECT c.id, c.effective_year, c.version, c.remarks, co.course_name AS course_name
+                FROM curriculum c
+                INNER JOIN course co ON c.course_id = co.id
+                WHERE 1=1";
+    
+        $params = [];
+    
+        if (!empty($filters['course_id'])) {
+            $sql .= " AND c.course_id = :course_id";
+            $params[':course_id'] = $filters['course_id'];
+        }
+        if (!empty($filters['year'])) {
+            $sql .= " AND c.effective_year LIKE :year";
+            $params[':year'] = '%' . $filters['year'] . '%';
+        }
+        if (!empty($filters['remarks'])) {
+            $sql .= " AND c.remarks LIKE :remarks";
+            $params[':remarks'] = '%' . $filters['remarks'] . '%';
+        }
+        if (!empty($filters['version'])) {
+            $sql .= " AND c.version LIKE :version";
+            $params[':version'] = '%' . $filters['version'] . '%';
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllCourses() {
+        $sql = "SELECT id, course_name FROM course";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function createCurriculum($data) {
+        $sql = "INSERT INTO curriculum (effective_year, version, remarks, course_id)
+                VALUES (:effective_year, :version, :remarks, :course_id)";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':effective_year' => $data['effective_year'],
+            ':version' => $data['version'],
+            ':remarks' => $data['remarks'],
+            ':course_id' => $data['course_id']
+        ]);
+    }
+    
+    public function updateCurriculum($id, $data) {
+        $sql = "UPDATE curriculum
+                SET effective_year = :effective_year, 
+                    version = :version, 
+                    remarks = :remarks, 
+                    course_id = :course_id
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':effective_year' => $data['effective_year'],
+            ':version' => $data['version'],
+            ':remarks' => $data['remarks'],
+            ':course_id' => $data['course_id'],
+            ':id' => $id
+        ]);
+    }
+    
+    public function getCurriculumById($id) {
+        $sql = "SELECT id, effective_year, version, remarks, course_id
+                FROM curriculum
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function deleteCurriculum($id) {
+        $sql = "DELETE FROM curriculum WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function checkDuplicateCurriculum($course_id, $version, $exclude_id = null) {
+        $sql = "SELECT COUNT(*) FROM curriculum WHERE course_id = :course_id AND version = :version";
+        $params = [
+            ':course_id' => $course_id,
+            ':version' => $version
+        ];
+    
+        if ($exclude_id) {
+            $sql .= " AND id != :id";
+            $params[':id'] = $exclude_id;
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchColumn() > 0; // Returns true if duplicate exists
+    }
+    
+    
     
     
     
