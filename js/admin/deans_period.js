@@ -186,7 +186,7 @@ $(document).ready(function () {
             end_date: formatToDateTime($("#endDate").val()),
             status: $("#status").val(),
         };
-
+        console.log(formData);
         $.post(
             "/cssc/server/admin/deans_period_server.php",
             { action: "save", ...formData },
