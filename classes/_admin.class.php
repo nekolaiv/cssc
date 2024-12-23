@@ -1068,6 +1068,121 @@ public function logAudit($action, $details) {
         return $stmt->fetchColumn() > 0; // Returns true if duplicate exists
     }
     
+    public function getAllSubjects($filters) {
+        $sql = "SELECT p.id, p.subject_code, p.descriptive_title, p.prerequisite,
+                       p.lec_units, p.lab_units, p.total_units, 
+                       p.year_level, p.semester, c.version AS curriculum_version, 
+                       c.effective_year, c.remarks AS curriculum_remarks, co.course_name
+                FROM prospectus p
+                INNER JOIN curriculum c ON p.curriculum_id = c.id
+                INNER JOIN course co ON c.course_id = co.id
+                WHERE 1";
+    
+        $params = [];
+    
+        if (!empty($filters['course_id'])) {
+            $sql .= " AND co.id = :course_id";
+            $params[':course_id'] = $filters['course_id'];
+        }
+        if (!empty($filters['curriculum_id'])) {
+            $sql .= " AND c.id = :curriculum_id";
+            $params[':curriculum_id'] = $filters['curriculum_id'];
+        }
+        if (!empty($filters['year_level'])) {
+            $sql .= " AND p.year_level = :year_level";
+            $params[':year_level'] = $filters['year_level'];
+        }
+        if (!empty($filters['semester'])) {
+            $sql .= " AND p.semester = :semester";
+            $params[':semester'] = $filters['semester'];
+        }
+    
+        $sql .= " ORDER BY p.year_level, p.semester, p.subject_code";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    
+    
+    
+    public function getAllCurriculums() {
+        $sql = "SELECT c.id, c.remarks, co.course_name 
+                FROM curriculum c
+                INNER JOIN course co ON c.course_id = co.id
+                ORDER BY c.remarks";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSubjectById($id) {
+        $sql = "SELECT p.id, p.subject_code, p.descriptive_title, p.prerequisite,
+                       p.lec_units, p.lab_units, p.total_units, p.year_level, 
+                       p.semester, p.curriculum_id, c.remarks AS curriculum_name
+                FROM prospectus p
+                INNER JOIN curriculum c ON p.curriculum_id = c.id
+                WHERE p.id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function createSubject($data) {
+        $sql = "INSERT INTO prospectus (subject_code, descriptive_title, prerequisite, 
+                                         lec_units, lab_units, total_units, year_level, 
+                                         semester, curriculum_id)
+                VALUES (:subject_code, :descriptive_title, :prerequisite, :lec_units, 
+                        :lab_units, :total_units, :year_level, :semester, :curriculum_id)";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':subject_code' => $data['subject_code'],
+            ':descriptive_title' => $data['descriptive_title'],
+            ':prerequisite' => $data['prerequisite'],
+            ':lec_units' => $data['lec_units'],
+            ':lab_units' => $data['lab_units'],
+            ':total_units' => $data['total_units'],
+            ':year_level' => $data['year_level'],
+            ':semester' => $data['semester'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+    
+    public function updateSubject($id, $data) {
+        $sql = "UPDATE prospectus 
+                SET subject_code = :subject_code, 
+                    descriptive_title = :descriptive_title, 
+                    prerequisite = :prerequisite, 
+                    lec_units = :lec_units, 
+                    lab_units = :lab_units, 
+                    total_units = :total_units, 
+                    year_level = :year_level, 
+                    semester = :semester, 
+                    curriculum_id = :curriculum_id
+                WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':subject_code' => $data['subject_code'],
+            ':descriptive_title' => $data['descriptive_title'],
+            ':prerequisite' => $data['prerequisite'],
+            ':lec_units' => $data['lec_units'],
+            ':lab_units' => $data['lab_units'],
+            ':total_units' => $data['total_units'],
+            ':year_level' => $data['year_level'],
+            ':semester' => $data['semester'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+    
+    public function deleteSubject($id) {
+        $sql = "DELETE FROM prospectus WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+    
     
     
     
