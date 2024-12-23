@@ -863,6 +863,53 @@ public function logAudit($action, $details) {
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function autoActivateDeactivatePeriods() {
+        $now = date('Y-m-d H:i:s');
+    
+        // Deactivate periods where the end date has passed
+        $sqlDeactivate = "UPDATE dean_lister_application_periods
+                          SET status = 'closed'
+                          WHERE end_date < :now AND status = 'open'";
+        $stmtDeactivate = $this->database->connect()->prepare($sqlDeactivate);
+        $stmtDeactivate->execute([':now' => $now]);
+    
+        // Activate periods where the current date is between start_date and end_date
+        $sqlActivate = "UPDATE dean_lister_application_periods
+                        SET status = 'open'
+                        WHERE start_date <= :now AND end_date >= :now";
+        $stmtActivate = $this->database->connect()->prepare($sqlActivate);
+        $stmtActivate->execute([':now' => $now]);
+    
+        // Ensure only one period is active at a time
+        $sqlCheck = "SELECT id FROM dean_lister_application_periods
+                     WHERE status = 'open' ORDER BY start_date ASC";
+        $stmtCheck = $this->database->connect()->prepare($sqlCheck);
+        $stmtCheck->execute();
+        $activePeriods = $stmtCheck->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (count($activePeriods) > 1) {
+            // Deactivate all but the first active period
+            $idsToClose = array_column(array_slice($activePeriods, 1), 'id');
+            $sqlDeactivateExtra = "UPDATE dean_lister_application_periods
+                                   SET status = 'closed'
+                                   WHERE id IN (" . implode(',', $idsToClose) . ")";
+            $stmtDeactivateExtra = $this->database->connect()->prepare($sqlDeactivateExtra);
+            $stmtDeactivateExtra->execute();
+        }
+    
+        return true;
+    }
+
+    public function deactivateAllPeriodsExcept($id) {
+        $sql = "UPDATE dean_lister_application_periods
+                SET status = 'closed'
+                WHERE id != :id AND status = 'open'";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    }
+    
+    
     
     
     public function createPeriod($data) {
@@ -901,13 +948,21 @@ public function logAudit($action, $details) {
     
 
     public function togglePeriodStatus($id) {
-        $sql = "UPDATE dean_lister_application_periods
-                SET status = CASE WHEN status = 'open' THEN 'closed' ELSE 'open' END
-                WHERE id = :id";
+        // Deactivate any currently active period
+        $sqlDeactivate = "UPDATE dean_lister_application_periods
+                          SET status = 'closed'
+                          WHERE status = 'open'";
+        $stmtDeactivate = $this->database->connect()->prepare($sqlDeactivate);
+        $stmtDeactivate->execute();
     
-        $stmt = $this->database->connect()->prepare($sql);
-        return $stmt->execute([':id' => $id]);
+        // Activate the selected period
+        $sqlActivate = "UPDATE dean_lister_application_periods
+                        SET status = 'open'
+                        WHERE id = :id";
+        $stmtActivate = $this->database->connect()->prepare($sqlActivate);
+        return $stmtActivate->execute([':id' => $id]);
     }
+    
     
     
     

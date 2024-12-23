@@ -28,6 +28,7 @@ $(document).ready(function () {
     loadPeriods();
     setupFilters();
     setupSearch();
+    autoActivateDeactivatePeriods();
 
     // Fetch Periods
     function loadPeriods(filters = {}) {
@@ -118,12 +119,50 @@ $(document).ready(function () {
         $("#searchPeriod").on("keyup", function () {
             const query = $(this).val().toLowerCase();
 
-            const filtered = periods.filter((p) =>
-                p.year.toLowerCase().includes(query)
+            const filtered = periods.filter((p) => 
+                p.year && p.year.toLowerCase().includes(query)
             );
 
-            displayTable(1);
+            const filteredPeriods = [...filtered];
+            const tableBody = $("#periodsTable tbody");
+            tableBody.empty();
+
+            if (filteredPeriods.length === 0) {
+                tableBody.append('<tr><td colspan="6" class="text-center">No data found.</td></tr>');
+                return;
+            }
+
+            filteredPeriods.forEach((p) => {
+                tableBody.append(`
+                    <tr>
+                        <td>${p.year}</td>
+                        <td>${p.semester}</td>
+                        <td>${new Date(p.start_date).toLocaleString()}</td>
+                        <td>${new Date(p.end_date).toLocaleString()}</td>
+                        <td>${p.status === "open" ? "Open" : "Closed"}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm edit-period-btn" data-id="${p.id}">Edit</button>
+                            <button class="btn btn-warning btn-sm toggle-status-btn" data-id="${p.id}">
+                                ${p.status === "open" ? "Close" : "Open"}
+                            </button>
+                        </td>
+                    </tr>
+                `);
+            });
         });
+    }
+
+    // Auto-Activate/Deactivate Periods Based on Dates
+    function autoActivateDeactivatePeriods() {
+        setInterval(() => {
+            $.post("/cssc/server/admin/deans_period_server.php", { action: "auto_activate_deactivate" })
+                .done(function () {
+                    loadPeriods();
+                })
+                .fail(function () {
+                    console.error("Failed to auto-activate/deactivate periods.");
+                });
+        }, 60000); // Check every minute
     }
 
     // Open Create Period Modal
@@ -175,7 +214,7 @@ $(document).ready(function () {
         const periodId = $(this).data("id");
 
         const period = periods.find((p) => p.id == periodId);
-console.log(period);
+
         if (period) {
             $("#periodId").val(period.id);
             $("#year").val(period.year);

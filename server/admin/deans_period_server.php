@@ -37,14 +37,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'end_date' => cleanInput($_POST['end_date'] ?? ''),
                 'status' => cleanInput($_POST['status'] ?? '')
             ];
-
+        
             try {
+                // If setting the status to 'open', deactivate all other periods first
+                if ($data['status'] === 'open') {
+                    $admin->deactivateAllPeriodsExcept($id);
+                }
+        
+                // Save the period (create or update)
                 if ($id > 0) {
                     $result = $admin->updatePeriod($id, $data);
                 } else {
                     $result = $admin->createPeriod($data);
                 }
-
+        
                 if ($result) {
                     echo json_encode(['success' => true]);
                 } else {
@@ -54,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode(['error' => 'An error occurred while saving the period.']);
             }
             break;
+        
 
         /**
          * Toggle Period Status
@@ -71,6 +78,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             } catch (Exception $e) {
                 echo json_encode(['error' => 'An error occurred while toggling the period status.']);
+            }
+            break;
+
+        /**
+         * Auto Activate/Deactivate Periods
+         */
+        case 'auto_activate_deactivate':
+            try {
+                $result = $admin->autoActivateDeactivatePeriods();
+
+                if ($result) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['error' => 'Failed to auto-activate/deactivate periods.']);
+                }
+            } catch (Exception $e) {
+                echo json_encode(['error' => 'An error occurred during auto-activation/deactivation.']);
             }
             break;
 
