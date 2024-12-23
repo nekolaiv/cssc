@@ -840,5 +840,77 @@ public function logAudit($action, $details) {
             ':application_id' => $applicationId
         ]);
     }
+
+    public function getAllPeriods($filters) {
+        $sql = "SELECT id, year, semester, start_date, end_date, status
+                FROM dean_lister_application_periods
+                WHERE 1=1";
+    
+        $params = [];
+    
+        if (!empty($filters['search'])) {
+            $sql .= " AND year LIKE :search";
+            $params[':search'] = '%' . $filters['search'] . '%';
+        }
+    
+        if (!empty($filters['status'])) {
+            $sql .= " AND status = :status";
+            $params[':status'] = $filters['status'];
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    public function createPeriod($data) {
+        $sql = "INSERT INTO dean_lister_application_periods (year, semester, start_date, end_date, status)
+                VALUES (:year, :semester, :start_date, :end_date, :status)";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':semester' => $data['semester'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':status' => $data['status']
+        ]);
+    }
+    
+    public function updatePeriod($id, $data) {
+        $sql = "UPDATE dean_lister_application_periods
+                SET year = :year, 
+                    semester = :semester, 
+                    start_date = :start_date, 
+                    end_date = :end_date, 
+                    status = :status
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':semester' => $data['semester'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':status' => $data['status'],
+            ':id' => $id
+        ]);
+    }
+    
+
+    public function togglePeriodStatus($id) {
+        $sql = "UPDATE dean_lister_application_periods
+                SET status = CASE WHEN status = 'open' THEN 'closed' ELSE 'open' END
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+    
+    
+    
+    
 }
 ?>

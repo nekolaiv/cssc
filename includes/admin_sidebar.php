@@ -46,7 +46,7 @@
                     <a href="#" data-url="/cssc/views/admin/view-applications.php" class="sidebar-link menu-link">View Applications</a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/admin/dean-lister-periods.php" class="sidebar-link menu-link">Dean's Lister Periods</a>
+                    <a href="#" data-url="/cssc/views/admin/deans-period.php" class="sidebar-link menu-link">Dean's Lister Periods</a>
                 </li>
             </ul>
         </li>
