@@ -64,9 +64,6 @@
                 <li class="sidebar-item">
                     <a href="#" data-url="/cssc/views/admin/subjects-management.php" class="sidebar-link menu-link">Subjects Management</a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/admin/prospectus.php" class="sidebar-link menu-link">Prospectus Overview</a>
-                </li>
             </ul>
         </li>
         <!-- Audit Logs -->

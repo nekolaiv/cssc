@@ -71,6 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? '')
             ];
 
+                    // Debugging Logs
+        error_log("Raw POST Data: " . print_r($_POST, true));
+        error_log("Cleaned Data: " . print_r($data, true));
+            
             // Validation
             if (empty($data['subject_code'])) {
                 $errors['subject_code'] = 'Subject code is required.';

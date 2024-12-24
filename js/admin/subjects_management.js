@@ -169,16 +169,29 @@ $(document).ready(function () {
     // Submit Create/Update Subject Form
     $("#subjectForm").on("submit", function (e) {
         e.preventDefault();
-
-        const formData = $(this).serialize();
-
-        $.post(
-            "/cssc/server/admin/subjects_server.php",
-            { action: "save", ...formData },
-            function (response) {
+    
+        // Use FormData for proper serialization
+        const formData = new FormData(this);
+    
+        formData.append("action", "save"); // Add the action to the form data
+    
+        // Debugging
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+    
+        // Send AJAX request
+        $.ajax({
+            url: "/cssc/server/admin/subjects_server.php",
+            method: "POST",
+            data: formData,
+            processData: false, // Prevent jQuery from processing the data
+            contentType: false, // Let the browser set the Content-Type
+            success: function (response) {
+                console.log("Server Response:", response); // Debugging
                 try {
                     const data = JSON.parse(response);
-
+    
                     if (data.errors) {
                         $("#formError").removeClass("d-none").html(
                             Object.values(data.errors).map((err) => `<div>${err}</div>`).join("")
@@ -190,13 +203,15 @@ $(document).ready(function () {
                         $("#formError").removeClass("d-none").text(data.error || "Failed to save subject.");
                     }
                 } catch (error) {
-                    console.error("Error parsing save response:", error);
+                    console.error("Error parsing response:", error);
                 }
+            },
+            error: function () {
+                $("#formError").removeClass("d-none").text("Failed to save subject.");
             }
-        ).fail(function () {
-            $("#formError").removeClass("d-none").text("Failed to save subject.");
         });
     });
+    
 
     // Edit Subject
     $(document).on("click", ".edit-subject-btn", function () {

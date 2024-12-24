@@ -66,11 +66,11 @@
                             <input type="hidden" id="curriculumId" name="id">
                             <div class="mb-3">
                                 <label for="effectiveYear" class="form-label">Effective Year</label>
-                                <input type="text" class="form-control" id="effectiveYear" name="effective_year" required>
+                                <input type="text" class="form-control" id="effectiveYear" name="effective_year" >
                             </div>
                             <div class="mb-3">
                                 <label for="version" class="form-label">Version</label>
-                                <input type="text" class="form-control" id="version" name="version" required>
+                                <input type="text" class="form-control" id="version" name="version" >
                             </div>
                             <div class="mb-3">
                                 <label for="remarks" class="form-label">Remarks</label>
@@ -78,7 +78,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="course" class="form-label">Course</label>
-                                <select class="form-control" id="course" name="course_id" required>
+                                <select class="form-control" id="course" name="course_id" >
                                     <option value="">Select Course</option>
                                 </select>
                             </div>
