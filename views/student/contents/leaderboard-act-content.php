@@ -3,12 +3,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1); 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
 $student = new Student();
-$cs_top1 = $student->getCSTopNotcher();
-$it_top1 = $student->getITTopNotcher();
-$act_top1 = $student->getACTTopNotcher();
-$cs_leaderboard = $student->getCSLeaderboardData();
-$it_leaderboard = $student->getITLeaderboardData();
-$act_leaderboard = $student->getACTLeaderboardData();  
+$act_top1 = $_SESSION['act_top1'];
+$act_leaderboard = $_SESSION['act_leaderboard'];
+
 ?>
 <section id="leaderboard-section">
     <div class="div-pad" id="leaderboard-div1">
@@ -24,6 +21,14 @@ $act_leaderboard = $student->getACTLeaderboardData();
             <a href="leaderboard-it" id="leaderboard-it-link" class="nav-items"><button class="leaderboard-course">IT</button></a>
             <a href="leaderboard-act" id="leaderboard-act-link" class="nav-items"><button class="leaderboard-course active">ACT</button></a>
         </div>
+        <form id="filter-leaderboard" action="" method="POST">
+            <select name="year-level" id="leaderboard-year-level-filter">
+                <option value="all">--All--</option>
+                <option value="1">First Year</option>
+                <option value="2">Second Year</option>
+            </select>
+            <input type="submit" id="filter-year-button" value="filter-year">
+        </form>
     </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
@@ -32,7 +37,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div class="topnotcher-rating-score"><h3 class="topnotcher-rating"><?php echo $act_top1['gwa'] ?? 'None';?></h3></div>
+                    <div class="topnotcher-rating-score"><h3 class="topnotcher-rating"><?php echo $act_top1['total_rating'] ?? 'None';?></h3></div>
                     <p class="topnotcher-word-rating">RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -59,7 +64,7 @@ $act_leaderboard = $student->getACTLeaderboardData();
                                 <p class="student-name"><?php echo $actl['fullname'] ?? "None"; ?></p>
                             </div>
                             <div class="leaderboard-list-pad-div2">
-                                <p class="student-rating"><?php echo $actl['gwa'] ?? "None"; ?></p>
+                                <p class="student-rating"><?php echo $actl['total_rating'] ?? "None"; ?></p>
                             </div>
                         </div>
                 <?php 
@@ -68,21 +73,5 @@ $act_leaderboard = $student->getACTLeaderboardData();
             </div>
         </div>
     </div>
-    <!-- <div class="" id="home-div2">
-        <div class="home-div2-leftdiv">
-            <div class="home-div2-leftdiv-congratulations">
-                <h2>Congratulations!</h2>
-                <h4>TO OUR TOP RANKERS</h4>
-            </div>
-            <p>We’re thrilled to honor your hard work, dedication, and<br>
-            exceptional achievements. Your commitment to<br>
-            excellence sets a high standard and inspires others in<br>
-            the academic community. Keep reaching for success—<br>
-            you’ve earned it!</p>
-            <button class="leaderboard-button" onclick="loadPage('leaderboard.php')">LEADERBOARD</button>
-        </div>
-        <div class="div-pad home-div2-rightdiv">
-
-        </div>
-    </div> -->
 </section>
+<script src="/cssc/controllers/leaderboard-filter.js"></script>

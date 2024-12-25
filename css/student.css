@@ -195,6 +195,15 @@ header nav ul button {
   color: white;
 }
 
+.page-title {
+  width: 99vw;
+  padding: 5px 10px;
+  text-align: center;
+  word-spacing: 5px;
+  background-color: var(--green);
+  border-radius: calc(var(--Gborder-radius));
+}
+
 /* === HOME === */
 .home-section {
   height: 100%;
@@ -564,8 +573,6 @@ header nav ul button {
   display: flex;
 }
 
-#validate-button {
-}
 
 /* ===LEADERBOARD=== */
 #leaderboard-section {
@@ -610,14 +617,14 @@ header nav ul button {
   /* border: 1px solid red; */
 }
 
-#leaderboard-year-level-filter {
+#leaderboard-year-level-filter, #leaderboard-submission-period-filter {
 	height: 50px;
 	width: 200px;
 	background-color: var(--color-white);
 	border-radius: calc(var(--Gborder-radius));
 }
 
-#leaderboard-year-level-filter:active {
+#leaderboard-year-level-filter:active, #leaderboard-submission-period-filter:active {
 	background-color: var(--button-white-active);
 }
 

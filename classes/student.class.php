@@ -117,29 +117,121 @@ class Student
 
     // LEADERBOARD MODELS
 
-    public function getStudentLeaderboardData($year_level = NULL, $course = NULL){
-        if($year_level === NULL){
-            // $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course ORDER BY gwa, fullname ASC';
-            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating
-            FROM student_applications AS sa
-            LEFT JOIN user AS u ON sa.user_id = u.identifier
-            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
-            ORDER BY sa.total_rating, CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) ASC;";
-        } else {
-            // $sql = 'SELECT gwa, fullname FROM students_unverified_entries WHERE course = :course AND year_level = :year_level ORDER BY gwa, fullname ASC';
-            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating
-            FROM student_applications AS sa
-            LEFT JOIN user AS u ON sa.user_id = u.identifier
-            LEFT JOIN dean_lister_application_periods AS dlap ON dlap.status = 'open'
-            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
-            AND CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED) = :year_level
-            ORDER BY sa.total_rating, CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) ASC;";
-        }
+    public function loadLeaderboard(){
+        $sql = "SELECT
+        u.identifier AS student_id,
+        CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) AS fullname,
+        sa.total_rating AS total_rating,
+        c.course_name AS course,
+        (CAST(RIGHT(dlap1.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS year_level,
+        CONCAT(dlap2.year, ' - ', dlap2.semester) AS submission_description
+        FROM
+            student_applications AS sa
+        LEFT JOIN
+            dean_lister_application_periods AS dlap1 ON dlap1.status = 'open'
+        LEFT JOIN
+            dean_lister_application_periods AS dlap2 ON sa.dean_lister_period_id = dlap2.id
+        LEFT JOIN
+            user AS u ON sa.user_id = u.identifier
+        LEFT JOIN
+            course AS c ON u.department_id = c.id
+        WHERE 
+            sa.total_rating <= 2.0 
+            AND sa.status = 'Approved'
+        ORDER BY sa.total_rating, CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) ASC
+        ";
         $query = $this->database->connect()->prepare($sql);
-        if($year_level !== NULL){
+        if ($query->execute()) {
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    }
+
+    public function getStudentLeaderboardData($year_level = NULL, $course = NULL, $submission_id = NULL) {
+        $sql = "SELECT 
+                u.identifier AS student_id
+                CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) AS fullname,
+                sa.total_rating AS total_rating,
+                (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS year_level,
+                CONCAT(dlap.year, ' - ', dlap.semester) AS submission_description
+            FROM    
+                student_applications AS sa
+            LEFT JOIN 
+                user AS u ON sa.user_id = u.identifier
+            LEFT JOIN   
+                dean_lister_application_periods AS dlap ON dlap.status = 'open'
+            WHERE 
+                AND sa.total_rating <= 2.0 
+                AND sa.status = 'Approved'
+            ORDER BY sa.total_rating, CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) ASC;
+        ";
+
+        $query = $this->database->connect()->prepare($sql);
+        if ($query->execute()) {
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getStudentTopNotcher($year_level = NULL, $course = NULL, $submission_id = NULL) {
+        $sql = " SELECT 
+                CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) AS fullname,
+                sa.total_rating AS total_rating,
+                (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS year_level,
+                CONCAT(dlap.year, ' - ', dlap.semester) AS submission_description,
+                sa.created_at
+            FROM 
+                student_applications AS sa
+            LEFT JOIN 
+                user AS u ON sa.user_id = u.identifier
+            LEFT JOIN 
+                dean_lister_application_periods AS dlap ON sa.dean_lister_period_id = dlap.id
+            WHERE 
+                u.department_id = :course
+                AND sa.total_rating <= 2.0
+                AND sa.status = 'Approved'
+        ";
+
+        $conditions = [];
+        if ($submission_id != NULL) {
+            $conditions[] = "sa.dean_lister_period_id = :submission_id";
+        }
+        if ($year_level != NULL) {
+            $conditions[] = "(CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = :year_level";
+        }
+
+        if (!empty($conditions)) {
+            $sql .= " AND " . implode(" AND ", $conditions);
+        }
+
+        $sql .= " ORDER BY sa.total_rating, sa.created_at ASC LIMIT 1;";
+
+        $query = $this->database->connect()->prepare($sql);
+
+        if ($year_level != NULL) {
             $query->bindParam(':year_level', $year_level);
         }
+        if ($submission_id !== NULL) {
+            $query->bindParam(':submission_id', $submission_id);
+        }
         $query->bindParam(':course', $course);
+
+        if ($query->execute()) {
+            return $query->fetch(PDO::FETCH_ASSOC); 
+        } else {
+            return false;
+        }
+    }
+
+    public function fetchCourses(){
+        $sql = "SELECT DISTINCT c.course_name AS course
+        FROM student_applications AS sa
+        LEFT JOIN user AS u ON sa.user_id = u.identifier
+        LEFT JOIN course AS c ON u.department_id = c.id;";
+        $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetchAll(PDO::FETCH_ASSOC); 
@@ -148,40 +240,12 @@ class Student
             return false;
         }
     }
-
-    public function getStudentTopNotcher($year_level = NULL, $course = NULL){
-        if($year_level === NULL){
-            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating, sa.created_at 
-            FROM student_applications AS sa
-            LEFT JOIN user AS u ON sa.user_id = u.identifier
-            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
-            ORDER BY sa.total_rating, sa.created_at ASC LIMIT 1;";
-        } else {
-            $sql = "SELECT CONCAT(u.lastname,', ', u.firstname,' ', u.middlename) AS fullname, sa.total_rating AS total_rating, sa.created_at 
-            FROM student_applications AS sa
-            LEFT JOIN user AS u ON sa.user_id = u.identifier
-            LEFT JOIN dean_lister_application_periods AS dlap ON dlap.status = 'open'
-            WHERE u.department_id = :course AND sa.total_rating <= 2.0 AND sa.status = 'Approved'
-            AND (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = :year_level
-            ORDER BY sa.total_rating, sa.created_at ASC LIMIT 1;";
-            // $sql = 'SELECT fullname, total_rating, created_at FROM student_applications WHERE course = :course AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
-        }
-        $query = $this->database->connect()->prepare($sql);
-        if($year_level !== NULL){
-            $query->bindParam(':year_level', $year_level);
-        }
-        $query->bindParam(':course', $course);
-        $data=NULL;
-        if($query->execute()){
-            $data = $query->fetch(PDO::FETCH_ASSOC); 
-            return $data;
-        } else {
-            return false;
-        }
-    }
-
+    
     public function fetchYearLevels(){
-        $sql = 'SELECT DISTINCT year_level FROM student_accounts;'; // TODO: Change to students_verified_entries table later
+        $sql = "SELECT DISTINCT (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS year_level
+        FROM dean_lister_application_periods AS dlap
+        LEFT JOIN user AS u ON dlap.status = 'open'
+        WHERE u.identifier NOT LIKE '0000%';";
         $query = $this->database->connect()->prepare($sql);
         $data=NULL;
         if($query->execute()){
@@ -191,6 +255,21 @@ class Student
             return false;
         }
     }
+
+    public function fetchSubmissionId(){
+        $sql = "SELECT DISTINCT sa.dean_lister_period_id AS submission_id, CONCAT(dlap.year,' - ', dlap.semester) AS submission_description
+        FROM student_applications AS sa
+        LEFT JOIN dean_lister_application_periods AS dlap ON sa.dean_lister_period_id = dlap.id;"; // TODO: Change to students_verified_entries table later
+        $query = $this->database->connect()->prepare($sql);
+        $data=NULL;
+        if($query->execute()){
+            $data = $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
     
     // RESULT MODELS
     public function saveEntryToDatabase($email, $gwa, $image_proof){
