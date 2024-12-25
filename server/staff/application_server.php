@@ -29,14 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             break;
 
-        case 'fetch_curriculums':
-            try {
-                $curriculums = $staff->getCurriculums();
-                echo json_encode($curriculums);
-            } catch (Exception $e) {
-                echo json_encode(['error' => 'Failed to fetch curriculums.']);
-            }
-            break;
 
         /**
          * Get Application Details
@@ -127,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $isUpdated = $staff->updateApplicationStatus($applicationId, $newStatus);
 
                 if ($isUpdated) {
+                    $staff->logAudit('CHANGE_STATUS', "Changed status of application ID: $applicationId from $currentStatus to $newStatus");
                     echo json_encode(['success' => true, 'new_status' => $newStatus]);
                 } else {
                     echo json_encode(['error' => 'Failed to update application status.']);

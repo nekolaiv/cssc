@@ -91,7 +91,7 @@ $(document).ready(function () {
                                 auditLogTableBody.append(`
                                     <tr>
                                         <td>${log.timestamp}</td>
-                                        <td>${log.role_name}</td>
+                                        <td>${log.name}</td>
                                         <td>${log.action_type}</td>
                                         <td>${log.action_details}</td>
                                     </tr>

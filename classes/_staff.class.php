@@ -227,6 +227,66 @@ class Staff {
         return $stmt->execute([':id' => $id]);
     }
     
+    // Log an audit event
+    public function logAudit($actionType, $actionDetails) {
+        try {
+            if (isset($_SESSION['user-id']) && isset($_SESSION['user-role'])) {
+                $userId = $_SESSION['user-id'];
+                $roleId = $this->getRoleIdByName($_SESSION['user-role']);
+    
+                // Verify that the user_id exists in the user table
+                $sqlCheckUser = "SELECT id FROM user WHERE id = :user_id";
+                $stmtCheckUser = $this->database->connect()->prepare($sqlCheckUser);
+                $stmtCheckUser->bindValue(':user_id', $userId, PDO::PARAM_INT);
+                $stmtCheckUser->execute();
+                $userExists = $stmtCheckUser->fetch(PDO::FETCH_ASSOC);
+    
+                if (!$userExists) {
+                    error_log("logAudit: user_id $userId does not exist in the user table.");
+                    return false;
+                }
+    
+                // Insert into audit_logs
+                $sql = "INSERT INTO audit_logs (user_id, role_id, action_type, action_details, timestamp) 
+                        VALUES (:user_id, :role_id, :action_type, :action_details, NOW())";
+    
+                $stmt = $this->database->connect()->prepare($sql);
+                $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+                $stmt->bindValue(':role_id', $roleId, PDO::PARAM_INT);
+                $stmt->bindValue(':action_type', $actionType, PDO::PARAM_STR);
+                $stmt->bindValue(':action_details', $actionDetails, PDO::PARAM_STR);
+    
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    error_log('logAudit: Query execution failed.');
+                    return false;
+                }
+            } else {
+                error_log('logAudit: Required session variables are not set.');
+                return false;
+            }
+        } catch (Exception $e) {
+            error_log('logAudit: Exception occurred - ' . $e->getMessage());
+            return false;
+        }
+    }
+    
+
+// Helper function to map role name to role ID
+private function getRoleIdByName($roleName) {
+    $roles = [
+        'admin' => 3,
+        'staff' => 2,
+        'user' => 1
+    ];
+    if (!isset($roles[$roleName])) {
+        error_log('getRoleIdByName: Invalid role name: ' . $roleName);
+    }
+    return $roles[$roleName] ?? null;
+}
+
+    
     
 }
 ?>
