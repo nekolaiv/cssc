@@ -12,7 +12,6 @@ $(document).ready(function () {
 	$("#home-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('home-content.php');
-		leadboardLoad();
 	});
 
 	$("#result-home-link").on("click", function (e) {
@@ -27,30 +26,12 @@ $(document).ready(function () {
 
 	$("#leaderboard-link").on("click", function (e) {
 		e.preventDefault();
-		loadPage('leaderboard-content.php');
+		viewLeaderboard();
 	});
 
 	$("#home-leaderboard-link").on("click", function (e) {
 		e.preventDefault();
 		loadPage('leaderboard-content.php');
-	});
-
-	$("#leaderboard-cs-link").on("click", function (e) {
-		e.preventDefault();
-		loadPage('leaderboard-cs-content.php');
-		leadboardLoad();
-	});
-
-	$("#leaderboard-it-link").on("click", function (e) {
-		e.preventDefault();
-		loadPage('leaderboard-it-content.php');
-		leadboardLoad();
-	});
-
-	$("#leaderboard-act-link").on("click", function (e) {
-		e.preventDefault();
-		loadPage('leaderboard-act-content.php');
-		leadboardLoad();
 	});
 
 	$("#calculate-link").on("click", function (e) {
@@ -95,16 +76,6 @@ $(document).ready(function () {
 	} else if (url.endsWith("leaderboard")) {
 		$("#leaderboard-link").trigger("click");
 		$("#home-leaderboard-link").trigger("click");
-		leadboardLoad();
-	} else if (url.endsWith("leaderboard-cs")) {
-		$("#leaderboard-cs-link").trigger("click");
-		leadboardLoad();
-	} else if (url.endsWith("leaderboard-it")) {
-		$("#leaderboard-it-link").trigger("click");
-		leadboardLoad();
-	} else if (url.endsWith("leaderboard-act")) {
-		$("#leaderboard-act-link").trigger("click");
-		leadboardLoad();
 	} else if (url.endsWith("results")) {
 		$("#results-link").trigger("click");
 	} else if (url.endsWith("previous")) {
@@ -125,23 +96,6 @@ $(document).ready(function () {
 			// $("#result-home-link").trigger("click");
 			// $("#home-logo-link").trigger("click");
 			loadPage('home-content.php');
-		} else if (url.endsWith("leaderboard")) {
-			// $("#leaderboard-link").trigger("click");
-			// $("#home-leaderboard-link").trigger("click");
-			loadPage('leaderboard-content.php');
-			leadboardLoad();
-		} else if (url.endsWith("leaderboard-cs")) {
-			// $("#leaderboard-cs-link").trigger("click");
-			loadPage('leaderboard-cs-content.php');
-			leadboardLoad();
-		} else if (url.endsWith("leaderboard-it")) {
-			// $("#leaderboard-it-link").trigger("click");
-			loadPage('leaderboard-it-content.php');
-			leadboardLoad();
-		} else if (url.endsWith("leaderboard-act")) {
-			// $("#leaderboard-act-link").trigger("click");
-			loadPage('leaderboard-act-content.php');
-			leadboardLoad();
 		} else if (url.endsWith("results")) {
 			// $("#results-link").trigger("click");
 			loadPage('results-content.php');
@@ -155,15 +109,67 @@ $(document).ready(function () {
 			// $("#calculate-link").trigger("click");
 			// $("#result-calculate-link").trigger("click");
 			loadPage('calculate-content.php');
-		} else if (url.endsWith("leaderboard-ajax")) {
+		} else if (url.endsWith("leaderboard")) {
 			// $("#calculate-link").trigger("click");
 			// $("#result-calculate-link").trigger("click");
-			loadPage('calculate-content.php');
+			viewLeaderboard();
 		} else {
 			// $("#home-link").trigger("click");
 			loadPage('home-content.php');
 		}
 	});
+
+	function viewLeaderboard() {
+		$.ajax({
+			type: "GET", // Use GET request
+			url: "contents/leaderboard-content.php", // URL for products view
+			dataType: "html", // Expect HTML response
+			success: function (response) {
+				$(".content").html(response); // Load the response into the content area
+
+				// Initialize DataTable for product table
+				var table = $("#table-products").DataTable({
+					dom: "rtp", // Set DataTable options
+					pageLength: 10, // Default page length
+					ordering: false, // Disable ordering
+				});
+
+				// Bind custom input to DataTable search
+				$("#custom-search").on("keyup", function () {
+					table.search(this.value).draw(); // Search products based on input
+				});
+
+				// Bind change event for category filter
+				$("#course-filter").on("change", function () {
+				if (this.value !== "choose") {
+					table.column(4).search(this.value).draw(); // Filter products by selected category
+				}
+				});
+
+				$("#year-filter").on("change", function () {
+					table.column(5).search(this.value).draw();
+				});
+
+				$("#period-filter").on("change", function () {
+				if (this.value !== "choose") {
+					table.column(6).search(this.value).draw(); // Filter products by selected category
+				}
+				});
+
+				// Event listener for adding a product
+				$("#add-product").on("click", function (e) {
+					e.preventDefault(); // Prevent default behavior
+					addProduct(); // Call function to add product
+				});
+
+				// Event listener for adding a product
+				$(".edit-product").on("click", function (e) {
+					e.preventDefault(); // Prevent default behavior
+					editProduct(this.dataset.id); // Call function to add product
+				});
+			},
+		});
+	}
 
 
 	function loadPage(page) {
@@ -173,9 +179,6 @@ $(document).ready(function () {
 			dataType: "html",
 			success: function (response) {
 				$(".content").html(response);
-				if (url.includes("leaderboard-ajax")) {
-					$.getScript("/cssc/js/leaderboard.js");
-				}
 			},
 			error: function (xhr, status, error) {
 				console.error("Error loading the page: ", error);
@@ -200,23 +203,23 @@ $(document).ready(function () {
 		});
 	}
 
-	function leadboardLoad(course=null, year=null, period=null){
-		const selectedYear = year;
-		const selectedCourse = course;
-		const selectedPeriod = period;
-		$.ajax({
-			type: "POST",
-			url: "/cssc/server/leaderboard_load.php",
-			data: { year_level: selectedYear, course: selectedCourse, submission_period: selectedPeriod },
-			dataType: "json",
-			success: function(response) {
-				console.log(response);
-			},
-			error: function(xhr, status, error) {
-				console.error("Error loading leaderboard: ", error);
-			}
-		});
-	}
+	// function leadboardLoad(course=null, year=null, period=null){
+	// 	const selectedYear = year;
+	// 	const selectedCourse = course;
+	// 	const selectedPeriod = period;
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: "/cssc/server/leaderboard_load.php",
+	// 		data: { year_level: selectedYear, course: selectedCourse, submission_period: selectedPeriod },
+	// 		dataType: "json",
+	// 		success: function(response) {
+	// 			console.log(response);
+	// 		},
+	// 		error: function(xhr, status, error) {
+	// 			console.error("Error loading leaderboard: ", error);
+	// 		}
+	// 	});
+	// }
 
 	
 

@@ -195,6 +195,15 @@ header nav ul button {
   color: white;
 }
 
+.page-title {
+  width: 99vw;
+  padding: 5px 10px;
+  text-align: center;
+  word-spacing: 5px;
+  background-color: var(--green);
+  border-radius: calc(var(--Gborder-radius));
+}
+
 /* === HOME === */
 .home-section {
   height: 100%;
@@ -564,8 +573,6 @@ header nav ul button {
   display: flex;
 }
 
-#validate-button {
-}
 
 /* ===LEADERBOARD=== */
 #leaderboard-section {
