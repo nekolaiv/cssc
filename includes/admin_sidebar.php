@@ -68,7 +68,7 @@
         </li>
         <!-- Audit Logs -->
         <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/admin/activity-logs.php" class="sidebar-link menu-link">
+            <a href="#" data-url="/cssc/views/admin/audit-logs.php" class="sidebar-link menu-link">
                 <i class="lni lni-timer"></i>
                 <span>Audit Logs</span>
             </a>

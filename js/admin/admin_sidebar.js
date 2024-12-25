@@ -98,6 +98,9 @@ $(document).ready(function () {
             if (url.includes("subjects-management.php")) {
               $.getScript("/cssc/js/admin/subjects_management.js");
           }
+          if (url.includes("audit-logs.php")) {
+            $.getScript("/cssc/js/admin/audit_logs.js");
+        }
             if (url.includes("profile.php")) {
                 $.getScript("/cssc/js/admin/admin_profile.js");
             }

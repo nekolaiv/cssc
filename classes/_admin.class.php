@@ -1183,6 +1183,45 @@ public function logAudit($action, $details) {
         return $stmt->execute([':id' => $id]);
     }
     
+    public function getAllAuditLogs($filters) {
+        $sql = "SELECT al.id, al.user_id, r.name, al.action_type, al.action_details, al.timestamp
+                FROM audit_logs al
+                LEFT JOIN role r ON al.role_id = r.id";
+    
+        $conditions = [];
+        $params = [];
+    
+        if (!empty($filters['role_id'])) {
+            $conditions[] = "al.role_id = :role_id";
+            $params[':role_id'] = $filters['role_id'];
+        }
+    
+        if ($conditions) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+    
+        $sql .= " ORDER BY al.timestamp DESC";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllRoles() {
+        $sql = "SELECT id, name as role_name FROM role";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function deleteAuditLog($id) {
+        $sql = "DELETE FROM audit_logs WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+    
     
     
     
