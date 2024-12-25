@@ -38,7 +38,7 @@ class Auth {
             $adviser = $this->_getStudentAdviser($user['account_id']);
             $course = $this->_getStudentCourse($user['identifier']);
             $year_level = $this->_getStudentYearLevel($user['identifier']);
-            $status = $this->_getStudentStatus($user['identifier']);
+            $status = $this->_getStudentStatus($user['account_id']);
             $status === false ? $entry_status = NULL : $entry_status = $status;
 
             // Check if account is inactive
@@ -76,7 +76,7 @@ class Auth {
                     'year-level' => $year_level['student_year'],
                     'status' => $entry_status['status'],
                   ];
-               $_SESSION['is-logged-in'] = true;
+                $_SESSION['is-logged-in'] = true;
             }
             return true;
         } catch (PDOException $e) {
