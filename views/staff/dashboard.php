@@ -23,39 +23,35 @@
         <!-- Statistics Cards -->
         <h6 class="text-muted">OVERVIEW</h6>
         <div class="row g-3">
-            <div class="col-md-3">
+            <!-- Pending Applications -->
+            <div class="col-md-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body text-center">
-                        <h6 class="text-muted">UNVERIFIED ENTRIES</h6>
-                        <h2 class="fw-bold" id="unverifiedCount">0</h2>
-                        <i class="lni lni-users fs-2 text-primary"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">VERIFIED ENTRIES</h6>
-                        <h2 class="fw-bold" id="verifiedCount">0</h2>
-                        <i class="lni lni-checkmark fs-2 text-success"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">PENDING SUBMISSIONS</h6>
-                        <h2 class="fw-bold" id="pendingCount">0</h2>
+                        <h6 class="text-muted">PENDING APPLICATIONS</h6>
+                        <h2 class="fw-bold" id="pendingApplicationsCount">0</h2>
                         <i class="lni lni-timer fs-2 text-warning"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+
+            <!-- Approved Applications -->
+            <div class="col-md-4">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body text-center">
-                        <h6 class="text-muted">NEED REVISION</h6>
-                        <h2 class="fw-bold" id="revisionCount">0</h2>
-                        <i class="lni lni-reload fs-2 text-danger"></i>
+                        <h6 class="text-muted">APPROVED APPLICATIONS</h6>
+                        <h2 class="fw-bold" id="approvedApplicationsCount">0</h2>
+                        <i class="lni lni-checkmark fs-2 text-success"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejected Applications -->
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">REJECTED APPLICATIONS</h6>
+                        <h2 class="fw-bold" id="rejectedApplicationsCount">0</h2>
+                        <i class="lni lni-close fs-2 text-danger"></i>
                     </div>
                 </div>
             </div>
@@ -83,7 +79,6 @@
                 </table>
             </div>
         </div>
-
         <!-- Audit Logs -->
         <div class="row my-4">
             <div class="col-12">
@@ -105,6 +100,7 @@
                 </table>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

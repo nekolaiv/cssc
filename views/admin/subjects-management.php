@@ -117,7 +117,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="totalUnits" class="form-label">Total Units</label>
-                            <input type="number" class="form-control" id="totalUnits" name="total_units" readonly>
+                            <input type="number" class="form-control" id="totalUnits" name="total_units">
                         </div>
                         <div class="mb-3">
                             <label for="yearLevel" class="form-label">Year Level</label>
