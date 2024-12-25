@@ -76,11 +76,8 @@ $(document).ready(function () {
         content.off();
 
         // Dynamically load specific JavaScript for each page
-        if (url.includes("unverified_entries.php")) {
-          $.getScript("/cssc/js/staff/unverified_entries.js");
-        }
-        if (url.includes("verified_entries.php")) {
-          $.getScript("/cssc/js/staff/verified_entries.js");
+        if (url.includes("view-applications.php")) {
+          $.getScript("/cssc/js/staff/view_applications.js");
         }
         if (url.includes("profile.php")) {
           $.getScript("/cssc/js/profile.js");

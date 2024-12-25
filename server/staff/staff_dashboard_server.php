@@ -1,50 +1,43 @@
 <?php
 require_once '../../classes/database.class.php';
-require_once '../../classes/_admin.class.php'; // Include the Admin class
+require_once '../../classes/_staff.class.php';
+require_once '../../tools/clean.function.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    $db = new Database();
-    $admin = new Admin(); // New Admin object for fetching audit logs
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $action = cleanInput($_POST['action'] ?? '');
+    $staff = new Staff();
 
     switch ($action) {
-        case 'getCounts':
-            // Fetch counts for the overview cards
-            $data = [
-                'unverifiedCount' => $db->fetchColumn("SELECT COUNT(*) FROM students_unverified_entries"),
-                'verifiedCount' => $db->fetchColumn("SELECT COUNT(*) FROM students_verified_entries"),
-                'pendingCount' => $db->fetchColumn("SELECT COUNT(*) FROM student_accounts WHERE status = 'Pending'"),
-                'revisionCount' => $db->fetchColumn("SELECT COUNT(*) FROM student_accounts WHERE status = 'Need Revision'")
-            ];
-            echo json_encode(['success' => true, 'data' => $data]);
-            break;
-
-        case 'recentVerified':
-            // Fetch recently verified entries
-            $query = "SELECT student_id, fullname, course, gwa, updated_at AS date_verified 
-                      FROM students_verified_entries ORDER BY updated_at DESC LIMIT 5";
-            $entries = $db->fetchAll($query);
-            echo json_encode(['success' => true, 'entries' => $entries]);
-            break;
-
-        case 'auditLog':
+        /**
+         * Fetch Application Statistics
+         */
+        case 'fetch_statistics':
             try {
-                $logs = $admin->fetchAuditLogs(); // Fetch audit logs from Admin class
+                $statistics = [
+                    'pending' => $staff->getApplicationsCountByStatus('Pending'),
+                    'approved' => $staff->getApplicationsCountByStatus('Approved'),
+                    'rejected' => $staff->getApplicationsCountByStatus('Rejected')
+                ];
+                echo json_encode(['success' => true, 'data' => $statistics]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            }
+            break;
 
-                // Combine role and name into the `role` column for display
-                foreach ($logs as &$log) {
-                    $log['role'] = strtoupper($log['role']) . " - " . ucfirst($log['name']);
-                    unset($log['name']); // Remove the separate `name` column
-                }
-
-                echo json_encode(['success' => true, 'logs' => $logs]);
+        /**
+         * Fetch Audit Logs
+         */
+        case 'fetch_audit_logs':
+            try {
+                $auditLogs = $staff->getAuditLogs(); // Fetch all audit logs
+                echo json_encode(['success' => true, 'data' => $auditLogs]);
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'error' => $e->getMessage()]);
             }
             break;
 
         default:
-            echo json_encode(['success' => false, 'error' => 'Invalid action']);
+            echo json_encode(['success' => false, 'error' => 'Invalid action.']);
             break;
     }
 }
