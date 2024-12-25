@@ -1,5 +1,3 @@
-
-
 $('#grading').on('submit', function(e) {
     e.preventDefault();
     const data = $(e.currentTarget).serializeArray();
@@ -14,25 +12,6 @@ $('#grading').on('submit', function(e) {
     data.forEach((data, index) => {
         form[data.name].push(data.value);
     });
-    // let form = {
-    //     "subject-name": [],
-    //     "subject-code": [],
-    //     "unit": [],
-    //     "grade": [],
-    // };
-
-    // // Populate form object
-    // data.forEach((item) => {
-    //     if (item.name === "subject-name[]") {
-    //         form["subject-name"].push(item.value);
-    //     } else if (item.name === "subject-code[]") {
-    //         form["subject-code"].push(item.value);
-    //     } else if (item.name === "unit[]") {
-    //         form["unit"].push(item.value);
-    //     } else if (item.name === "grade[]") {
-    //         form["grade"].push(item.value);
-    //     }
-    // });
 
     $.ajax({
         type: "POST",

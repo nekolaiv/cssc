@@ -29,10 +29,15 @@ $(document).ready(function () {
 				$('#itYearLevel').text(itTopnotcher.year_level);
 				$('#itSubmissionDescription').text(itTopnotcher.submission_description);
 
-				$('#actFullname').text(actTopnotcher.fullname);
-				$('#actTotalRating').text(actTopnotcher.total_rating);
-				$('#actYearLevel').text(actTopnotcher.year_level);
-				$('#actSubmissionDescription').text(actTopnotcher.submission_description);
+				if(year <= 2){
+					$('#actFullname').text(actTopnotcher.fullname);
+					$('#actTotalRating').text(actTopnotcher.total_rating);
+					$('#actYearLevel').text(actTopnotcher.year_level);
+					$('#actSubmissionDescription').text(actTopnotcher.submission_description);
+				} else {
+					$('#actFullname').text(actTopnotcher);
+					$('#actTotalRating').text(actTopnotcher);
+				}
 			},
 			error: function(xhr, status, error) {
 				console.error("Error loading leaderboard: ", error);

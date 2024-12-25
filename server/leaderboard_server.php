@@ -8,7 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $cs_topnotcher = $student->getStudentTopNotcher($year_level, 1);
     $it_topnotcher = $student->getStudentTopNotcher($year_level, 2);
-    $act_topnotcher = $student->getStudentTopNotcher($year_level, 3);
+    if($year_level <= 2){
+        $act_topnotcher = $student->getStudentTopNotcher($year_level, 3);
+    } else {
+        $act_topnotcher = 'None';
+    }
 
     header('Content-Type: application/json');
     echo json_encode([
