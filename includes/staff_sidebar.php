@@ -16,21 +16,20 @@
             </a>
         </li>
 
-        <!-- Entries (Verified and Unverified) -->
+        <!-- Applications -->
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#entries" aria-expanded="false" aria-controls="entries">
-                <i class="lni lni-files"></i>
-                <span>Entries</span>
+            <a href="#" data-url="/cssc/views/staff/view-applications.php" class="sidebar-link menu-link">
+                <i class="lni lni-book"></i>
+                <span>Student Applications</span>
             </a>
-            <ul id="entries" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/staff/unverified_entries.php" class="sidebar-link menu-link">Unverified Entries</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/staff/verified_entries.php" class="sidebar-link menu-link">Verified Entries</a>
-                </li>
-            </ul>
+        </li>
+
+        <!-- Audit Logs -->
+        <li class="sidebar-item">
+            <a href="#" data-url="/cssc/views/staff/audit-logs.php" class="sidebar-link menu-link">
+                <i class="lni lni-notepad"></i>
+                <span>Audit Logs</span>
+            </a>
         </li>
 
         <!-- Profile -->
@@ -38,14 +37,6 @@
             <a href="#" data-url="/cssc/views/staff/staff-profile.php" class="sidebar-link menu-link">
                 <i class="lni lni-user"></i>
                 <span>Profile</span>
-            </a>
-        </li>
-
-        <!-- Settings -->
-        <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/staff/staff-settings.php" class="sidebar-link menu-link">
-                <i class="lni lni-cog"></i>
-                <span>Settings</span>
             </a>
         </li>
     </ul>
