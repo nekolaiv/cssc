@@ -8,9 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $staff = new Staff();
 
     switch ($action) {
-        /**
-         * Fetch Application Statistics
-         */
         case 'fetch_statistics':
             try {
                 $statistics = [
@@ -24,12 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             break;
 
-        /**
-         * Fetch Audit Logs
-         */
+        case 'fetch_recent_verified':
+            try {
+                $recentVerified = $staff->getRecentlyVerifiedApplications();
+                echo json_encode(['success' => true, 'data' => $recentVerified]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            }
+            break;
+
         case 'fetch_audit_logs':
             try {
-                $auditLogs = $staff->getAuditLogs(); // Fetch all audit logs
+                $auditLogs = $staff->getAuditLogs();
                 echo json_encode(['success' => true, 'data' => $auditLogs]);
             } catch (Exception $e) {
                 echo json_encode(['success' => false, 'error' => $e->getMessage()]);

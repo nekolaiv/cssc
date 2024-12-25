@@ -165,5 +165,29 @@ class Staff {
             ':application_id' => $applicationId
         ]);
     }
+
+    public function getRecentlyVerifiedApplications() {
+        $stmt = $this->database->connect()->prepare("
+            SELECT
+                u.identifier AS student_identifier,
+                CONCAT(u.firstname, ' ', u.lastname) AS full_name,
+                c.course_name,
+                sa.total_rating AS gwa,
+                sa.updated_at AS date_verified
+            FROM
+                student_applications sa
+            INNER JOIN user u ON sa.user_id = u.id
+            INNER JOIN course c ON u.curriculum_id = c.id
+            WHERE
+                sa.status = 'Approved'
+            ORDER BY
+                sa.updated_at DESC
+            LIMIT 5
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
 }
 ?>
