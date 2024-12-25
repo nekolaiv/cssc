@@ -38,6 +38,26 @@
                 <label for="filterDate" class="form-label">Filter by Submission Date</label>
                 <input type="date" class="form-control" id="filterDate">
             </div>
+            <div class="row mb-3">
+            <!-- Filter by School Year -->
+            <div class="col-md-3">
+                <label for="filterSchoolYear" class="form-label">Filter by School Year</label>
+                <select class="form-control" id="filterSchoolYear">
+                    <option value="">All Years</option>
+                    <!-- Dynamically populated -->
+                </select>
+            </div>
+            <!-- Filter by Semester -->
+            <div class="col-md-3">
+                <label for="filterSemester" class="form-label">Filter by Semester</label>
+                <select class="form-control" id="filterSemester">
+                    <option value="">All Semesters</option>
+                    <option value="1st">1st</option>
+                    <option value="2nd">2nd</option>
+                    <option value="Summer">Summer</option>
+                </select>
+            </div>
+        </div>
         </div>
 
         <!-- Search Bar -->
@@ -53,6 +73,8 @@
                     <th>Full Name</th>
                     <th>Curriculum</th>
                     <th>Status</th>
+                    <th>School Year</th>
+                    <th>Semester</th>
                     <th>Submission Date</th>
                     <th>Total Rating</th>
                     <th>Actions</th>
