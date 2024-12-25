@@ -73,22 +73,6 @@
                 <span>Audit Logs</span>
             </a>
         </li>
-        <!-- Settings -->
-        <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#settings" aria-expanded="false" aria-controls="settings">
-                <i class="lni lni-cog"></i>
-                <span>Settings</span>
-            </a>
-            <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/admin/general-settings.php" class="sidebar-link menu-link">General Settings</a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" data-url="/cssc/views/admin/access-control.php" class="sidebar-link menu-link">Access Control</a>
-                </li>
-            </ul>
-        </li>
         <!-- Profile -->
         <li class="sidebar-item">
             <a href="#" data-url="/cssc/views/admin/admin-profile.php" class="sidebar-link menu-link">

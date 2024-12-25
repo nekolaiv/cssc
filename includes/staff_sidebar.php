@@ -39,14 +39,6 @@
                 <span>Profile</span>
             </a>
         </li>
-
-        <!-- Settings -->
-        <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/staff/staff-settings.php" class="sidebar-link menu-link">
-                <i class="lni lni-cog"></i>
-                <span>Settings</span>
-            </a>
-        </li>
     </ul>
     <div class="sidebar-footer">
         <a href="#" class="sidebar-link log-out">
