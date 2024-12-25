@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once("database.class.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/database.class.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 
 class Student
@@ -91,24 +91,18 @@ class Student
 
     public function getStudentTopNotcher($year_level = NULL, $course = NULL) {
         $sql = "SELECT
-        u.identifier AS student_id,
         CONCAT(u.lastname, ', ', u.firstname, ' ', u.middlename) AS fullname,
-        sa.total_rating AS total_rating,
-        c.course_name AS course,
-        (CAST(RIGHT(dlap1.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS year_level,
-        CONCAT(dlap2.year, ' - ', dlap2.semester) AS submission_description
+        sa.total_rating AS total_rating
         FROM
             student_applications AS sa
         LEFT JOIN
             dean_lister_application_periods AS dlap1 ON dlap1.status = 'open'
         LEFT JOIN
-            dean_lister_application_periods AS dlap2 ON sa.dean_lister_period_id = dlap2.id
-        LEFT JOIN
             user AS u ON sa.user_id = u.id
         LEFT JOIN
             course AS c ON u.department_id = c.id
         WHERE 
-            (CAST(RIGHT(dlap2.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = :year_level
+            (CAST(RIGHT(dlap1.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = :year_level
             AND u.department_id = :course
             AND sa.total_rating <= 2.0 
             AND sa.status = 'Approved'
@@ -231,352 +225,11 @@ class Student
         }
     }
 
-
     private function _deleteStudentVerifiedEntry($user_id){
         $sql = 'DELETE FROM student_applications WHERE user_id = :user_id;';
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':user_id', $user_id);
         return $query->execute();
     }
-
-    
-
-    // ======== DUMPS BUT MIGHT BE USEFUL ========
-
-    // public function getCSTopNotcher($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "1" ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     } else {
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "1" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetch(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function getITTopNotcher($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "2" ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     } else {
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "2" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetch(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function getACTTopNotcher($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "3" ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     } else {
-    //         $sql = 'SELECT fullname, gwa, created_at FROM students_verified_entries WHERE course = "3" AND year_level = :year_level ORDER BY gwa, created_at ASC LIMIT 1;';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetch(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-
-    // public function getCSLeaderboardData($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "1" ORDER BY gwa, fullname ASC';
-    //     } else {
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "1" AND year_level = :year_level ORDER BY gwa, fullname ASC';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetchAll(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function getITLeaderboardData($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "2" ORDER BY gwa, fullname ASC';
-    //     } else {
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "2" AND year_level = :year_level ORDER BY gwa, fullname ASC';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetchAll(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function getACTLeaderboardData($year_level = NULL){
-    //     if($year_level === NULL){
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "3" ORDER BY gwa, fullname ASC';
-    //     } else {
-    //         $sql = 'SELECT * FROM students_verified_entries WHERE course = "3" AND year_level = :year_level ORDER BY gwa, fullname ASC';
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':year_level', $year_level);
-    //     $data=NULL;
-    //     if($query->execute()){
-    //         $data = $query->fetchAll(PDO::FETCH_ASSOC); 
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // private function _studentUnverifiedEntryExists($email){
-    //     $sql = "SELECT COUNT(*) FROM students_unverified_entries WHERE email = :email LIMIT 1;";
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':email', $email);
-    //     if ($query->execute()) {
-    //         $row_count = $query->fetchColumn();
-    //         return $row_count > 0;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // private function _studentVerifiedEntryExists($email){
-    //     $sql = "SELECT COUNT(*) FROM students_verified_entries WHERE email = :email LIMIT 1;";
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':email', $email);
-    //     if ($query->execute()) {
-    //         $row_c`ount = $query->fetchColumn();
-    //         return $row_count > 0;
-    //     } 
-    //     return false;
-    // }
-
-    // private function getStudentEntry($email){
-    //     if($this->_studentUnverifiedEntryExists($email)){
-    //         $sql = "SELECT * FROM students_unverified_entries WHERE email = :email LIMIT 1;";
-    //     } else if ($this->_studentVerifiedEntryExists($email)){
-    //         $sql = "SELECT * FROM students_verified_entries WHERE email = :email LIMIT 1;";
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':email', $email);
-    //     $data = NULL;
-    //     if ($query->execute()) {
-    //         $data = $query->fetch(PDO::FETCH_ASSOC);
-    //         return $data;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function getStudentImageProof( $email ){
-    //     $data = $this->getStudentEntry($email);
-    //     return $data['image_proof'];
-    // }
-
-
-    // public function saveEntryToDatabase($email, $gwa, $image_proof){
-    //     $entry_exists = $this->_entryExists($email);
-    //     if ($entry_exists === 'is_pending') {
-    //         $sql = "UPDATE students_unverified_entries SET total_rating = :gwa, image_proof = :image_proof WHERE email = :email";
-    //         $query = $this->database->connect()->prepare($sql);
-    //         $query->bindParam(':gwa', $gwa);
-    //         $query->bindParam(':email', $email);
-    //         $query->bindParam(':image_proof', $image_proof);
-    //     } else {
-    //         if($entry_exists === 'is_verified'){
-    //             $this->_deleteStudentVerifiedEntry($email);
-    //         }
-    //         $sql = "INSERT INTO students_unverified_entries(student_id, email, fullname, course, year_level, section, gwa, image_proof, submission_id)
-    //         VALUES(:student_id, :email, :fullname, :course, :year_level, :section, :gwa, :image_proof, :submission_id)";
-    //         $student = $this->_getStudentData($email);
-    //         $adviser = $this->_getStudentAdviser($email);
-    //         $course = $this->_getStudentCourse($email);
-    //         $submission_id = $this->_getEntryTermSubmitted();
-    //         $student_fullname = $student['last_name'] . ', ' . $student['first_name'] . ' ' . $student['middle_name'];
-
-    //         $query = $this->database->connect()->prepare($sql);
-    //         $query->bindParam(':student_id', $student['student_id']);
-    //         $query->bindParam(':email', $email);
-    //         $query->bindParam(':fullname', $student_fullname);
-    //         $query->bindParam(':course', $course['course']);
-    //         $query->bindParam(':year_level', $student['year_level']);
-    //         $query->bindParam(':section', $student['section']);
-    //         $query->bindParam(':gwa', $gwa);
-    //         $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
-    //         $query->bindParam(':submission_id', $submission_id['submission_id']);
-    //     }
-    //     if ($query->execute()) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // private function _getStudentData($email){
-    //     $this->_updateStudentStatus($email);
-    //     $sql = "SELECT * FROM student_accounts WHERE email = :email LIMIT 1;";
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(':email', $email);
-    //     $student = NULL;
-    //     if ($query->execute()) {
-    //         $student = $query->fetch(PDO::FETCH_ASSOC);
-    //         return $student;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // private function _getStudentAdviser($email){
-	// 	$sql = "SELECT sa.adviser_id as adviser_id, CONCAT(a.first_name, ', ', a.last_name, ' ', a.middle_name) as full_name
-	// 	FROM student_accounts as sa LEFT JOIN advisers as a ON sa.adviser_id = a.adviser_id
-	// 	WHERE sa.email = :email;";
-	// 	$query = $this->database->connect()->prepare($sql);
-	// 	$query->bindParam(':email', $email);
-	// 	$data=NULL;
-	// 	if($query->execute()){
-	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
-	// 		return $data;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
-
-    // private function _getStudentCourse($email){
-    //     $sql = 'SELECT c.course as course 
-    //     FROM student_accounts AS sa
-    //     LEFT JOIN courses AS c
-    //     ON sa.course_id = c.course_id
-    //     WHERE sa.email = :email;';
-    //     $query = $this->database->connect()->prepare($sql);
-	// 	$query->bindParam(':email', $email);
-	// 	$data=NULL;
-	// 	if($query->execute()){
-	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
-	// 		return $data;
-	// 	} else {
-	// 		return false;
-	// 	}
-    // }
-
-    // private function _getEntryTermSubmitted(){
-    //     $sql = 'SELECT submission_id FROM gwa_submission_schedule WHERE active = 1;';
-    //     $query = $this->database->connect()->prepare($sql);
-	// 	$data=NULL;
-	// 	if($query->execute()){
-	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
-	// 		return $data;
-	// 	} else {
-	// 		return false;
-	// 	}
-    // }
-
-    // private function _entryExists($email){
-    //     if($this->_isEntryVerified($email)){
-    //         $result = 'is_verified';
-    //     } else if($this->_isEntryPending($email)){
-    //         $result = 'is_pending';
-    //     } else {
-    //         $result = 'not_submitted';
-    //     }
-
-    //     return $result;
-    // }
-
-    // public function setScreenshotFile($student_id, $image){
-    //     if($this->screenshotFileExists($student_id)){
-    //         $sql = "UPDATE Image_Proofs SET image = :image WHERE student_id = :student_id";
-    //     } else {
-    //         $sql = "INSERT INTO Image_Proofs(student_id, image) VALUES(:student_id, :image);";
-    //     }
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(":student_id", $student_id);
-    //     $query->bindParam(":image", $image);
-    //     return $query->execute();
-    // }
-
-    // private function screenshotFileExists($student_id){
-    //     $sql = "SELECT COUNT(*) FROM Image_Proofs WHERE student_id = :student_id;";
-    //     $query = $this->database->connect()->prepare($sql);
-    //     $query->bindParam(":student_id", $student_id);
-    //     if($query->execute()){
-    //         $row_count = $query->fetchColumn();
-    //         return $row_count > 0;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-
-    // public function handleRequest() {
-    //     session_start(); // Start the session
-
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         if (isset($_GET['action']) && $_GET['action'] === 'saveCourse') {
-    //             $this->saveCourseToSession();
-    //         } else {
-    //             $this->calculateGPA();
-    //         }
-    //     } else {
-    //         $this->showForm();
-    //     }
-    // }
-
-    // private function showForm() {
-    //     // Fetch courses from the session
-    //     $courses = $_SESSION['courses'] ?? [];
-    //     require_once '../resources/student/course_form.php';
-    // }
-
-    // private function saveCourseToSession() {
-    //     // Validate and save course data to session
-    //     $subjectCode = $_POST['subjectCode'];
-    //     $units = $_POST['units'];
-    //     $grades = $_POST['grades'];
-
-    //     // Initialize session array if not set
-    //     if (!isset($_SESSION['courses'])) {
-    //         $_SESSION['courses'] = [];
-    //     }
-
-    //     $_SESSION['courses'][] = [
-    //         'subjectCode' => $subjectCode,
-    //         'units' => $units,
-    //         'grades' => $grades
-    //     ];
-    // }
-
-    // private function _getEntryForDatabase() {
-    //     $query->bindParam(':student_id', $student['student_id']);
-    //     $query->bindParam(':email', $email);
-    //     $query->bindParam(':password', $hashed_password);
-    //     $query->bindParam(':first_name', $student['first_name']);
-    //     $query->bindParam(':last_name', $student['last_name']);
-    //     $query->bindParam(':middle_name', $student['middle_name']);
-    //     $query->bindParam(':course', $student['course']);
-    //     $query->bindParam(':year_level', $student['year_level']);
-    //     $query->bindParam(':section', $student['section']);
-    //     $query->bindParam(':adviser_name', $adviser_name);
-    // }
-
 }
-
-
 ?>

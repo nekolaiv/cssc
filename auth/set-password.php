@@ -81,8 +81,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <p>show password</p>
             </div>
         </div>
-
-
         <label for="confirm-password">Confirm Password <span class="error"><?= $required ?></span></label>
         <input type="password" name="confirm-password" placeholder="confirm password" id="confirm-password" class="password" value="<?php echo htmlspecialchars($confirm_password); ?>">
         <div class="below-input">
@@ -94,10 +92,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 <p>show password</p>
             </div>
         </div>
-
-
         <button type="submit" class="primary-button" name="form-action" value="attempt-reset-password">reset password</button>
-        <!-- <a href="login.php"><button type="button" class="secondary-button" name="form-action" value="switch-to-login">cancel</button></a> -->
     </form>
     <script src="/cssc/js/auth_show-password.js"></script>
 </body>

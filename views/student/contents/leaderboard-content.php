@@ -155,19 +155,6 @@ $cs_top1
                                         <td><?= $arr['course'] ?></td>
                                         <td><?= $arr['year_level'] ?></td>
                                         <td><?= $arr['submission_description'] ?></td>
-                                        <!-- <td class="text-center">
-                                            <span class="
-                                                <?php
-                                                // if ($available < 1) {
-                                                //     echo 'badge rounded-pill bg-danger px-3';
-                                                // } elseif ($available <= 5) {
-                                                //     echo 'badge rounded-pill bg-warning px-3';
-                                                // }
-                                                ?>
-                                            ">
-                                                <?= $available ?>
-                                            </span>
-                                        </td> -->
                                     </tr>
                                 <?php
                                     $i++;
