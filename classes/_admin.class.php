@@ -457,21 +457,43 @@ public function fetchAuditLogs() {
 }
 
 // Log an audit event
-public function logAudit($action, $details) {
-    if (isset($_SESSION['profile']) && isset($_SESSION['user-type'])) {
-        $role = strtoupper($_SESSION['user-type']);
-        $name = $_SESSION['profile']['fullname'];
-        $sql = "INSERT INTO audit_logs (timestamp, role, name, action, details) 
-                VALUES (NOW(), :role, :name, :action, :details)";
+public function logAudit($actionType, $actionDetails) {
+    // Check if required session variables are set
+    if (isset($_SESSION['user-id']) && isset($_SESSION['user-role'])) {
+        // Retrieve user ID and role ID from session
+        $userId = $_SESSION['user-id'];
+        $roleId = $this->getRoleIdByName($_SESSION['user-role']); // Helper function to get role ID by role name
+
+        // Prepare the SQL query
+        $sql = "INSERT INTO audit_logs (user_id, role_id, action_type, action_details, timestamp) 
+                VALUES (:user_id, :role_id, :action_type, :action_details, NOW())";
+
+        // Prepare the statement
         $stmt = $this->database->connect()->prepare($sql);
-        $stmt->bindValue(':role', $role, PDO::PARAM_STR);
-        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
-        $stmt->bindValue(':action', $action, PDO::PARAM_STR);
-        $stmt->bindValue(':details', $details, PDO::PARAM_STR);
+
+        // Bind parameters
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':role_id', $roleId, PDO::PARAM_INT);
+        $stmt->bindValue(':action_type', $actionType, PDO::PARAM_STR);
+        $stmt->bindValue(':action_details', $actionDetails, PDO::PARAM_STR);
+
+        // Execute the query and return the result
         return $stmt->execute();
     }
+    // If session variables are not set, return false
     return false;
 }
+
+// Helper function to map role name to role ID
+private function getRoleIdByName($roleName) {
+    $roles = [
+        'admin' => 3,
+        'staff' => 2,
+        'user' => 1
+    ];
+    return isset($roles[$roleName]) ? $roles[$roleName] : null;
+}
+
 
     // Fetch counts for student, staff, and admin accounts
     public function getAccountCounts() {
