@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 25, 2024 at 01:52 AM
+-- Generation Time: Dec 25, 2024 at 01:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -351,7 +351,7 @@ CREATE TABLE `student_applications` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `dean_lister_period_id` int(11) DEFAULT NULL COMMENT 'FK to dean_lister_application_periods',
-  `image_proof` longblob DEFAULT NULL COMMENT 'Path to the uploaded proof document'
+  `image_proof` varchar(255) DEFAULT NULL COMMENT 'Path to the uploaded proof document'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
