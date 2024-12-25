@@ -24,14 +24,6 @@
             </a>
         </li>
 
-        <!-- Reports -->
-        <li class="sidebar-item">
-            <a href="#" data-url="/cssc/views/staff/reports.php" class="sidebar-link menu-link">
-                <i class="lni lni-bar-chart"></i>
-                <span>Reports</span>
-            </a>
-        </li>
-
         <!-- Audit Logs -->
         <li class="sidebar-item">
             <a href="#" data-url="/cssc/views/staff/audit-logs.php" class="sidebar-link menu-link">

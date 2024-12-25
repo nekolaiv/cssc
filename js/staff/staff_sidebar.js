@@ -79,6 +79,9 @@ $(document).ready(function () {
         if (url.includes("view-applications.php")) {
           $.getScript("/cssc/js/staff/view_applications.js");
         }
+        if (url.includes("audit-logs.php")) {
+          $.getScript("/cssc/js/staff/audit_logs.js");
+        }
         if (url.includes("profile.php")) {
           $.getScript("/cssc/js/profile.js");
         }
