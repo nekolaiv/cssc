@@ -89,12 +89,15 @@ $(document).ready(function () {
             if (url.includes("view-applications.php")) {
                 $.getScript("/cssc/js/admin/view_applications.js");
             }
-            if (url.includes("dean-lister-periods.php")) {
-                $.getScript("/cssc/js/admin/dean_lister_periods.js");
+            if (url.includes("deans-period.php")) {
+                $.getScript("/cssc/js/admin/deans_period.js");
             }
-            if (url.includes("curriculum-management.php")) {
-                $.getScript("/cssc/js/admin/curriculum_management.js");
+            if (url.includes("curriculum-list.php")) {
+                $.getScript("/cssc/js/admin/curriculum_list.js");
             }
+            if (url.includes("subjects-management.php")) {
+              $.getScript("/cssc/js/admin/subjects_management.js");
+          }
             if (url.includes("profile.php")) {
                 $.getScript("/cssc/js/admin/admin_profile.js");
             }

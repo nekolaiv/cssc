@@ -716,51 +716,58 @@ public function logAudit($action, $details) {
         }
     }
 
-    public function getAllApplications($filters = []) {
+    public function getAllApplications($filters) {
         $sql = "SELECT sa.id, 
                        sa.user_id,
                        u.identifier,
                        CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) AS full_name,
+                       u.email,
                        c.remarks AS curriculum,
                        sa.status,
+                       sa.total_rating,
+                       sa.rejection_reason,
                        sa.created_at AS submission_date,
-                       sa.total_rating
+                       sa.updated_at AS last_updated,
+                       sa.school_year,
+                       sa.semester
                 FROM student_applications sa
                 INNER JOIN user u ON sa.user_id = u.id
                 LEFT JOIN curriculum c ON u.curriculum_id = c.id
-                WHERE 1=1"; // Always true, for dynamic conditions
+                WHERE 1=1";
     
         $params = [];
     
-        // Add filters dynamically
         if (!empty($filters['search'])) {
-            $sql .= " AND (u.identifier LIKE :search 
-                           OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
+            $sql .= " AND (u.identifier LIKE :search OR CONCAT(u.firstname, ' ', COALESCE(u.middlename, ''), ' ', u.lastname) LIKE :search)";
             $params[':search'] = '%' . $filters['search'] . '%';
         }
-    
         if (!empty($filters['curriculum_id'])) {
             $sql .= " AND u.curriculum_id = :curriculum_id";
             $params[':curriculum_id'] = $filters['curriculum_id'];
         }
-    
         if (!empty($filters['status'])) {
             $sql .= " AND sa.status = :status";
             $params[':status'] = $filters['status'];
         }
-    
         if (!empty($filters['submission_date'])) {
             $sql .= " AND DATE(sa.created_at) = :submission_date";
             $params[':submission_date'] = $filters['submission_date'];
         }
-    
-        $sql .= " ORDER BY sa.created_at DESC";
+        if (!empty($filters['school_year'])) {
+            $sql .= " AND sa.school_year = :school_year";
+            $params[':school_year'] = $filters['school_year'];
+        }
+        if (!empty($filters['semester'])) {
+            $sql .= " AND sa.semester = :semester";
+            $params[':semester'] = $filters['semester'];
+        }
     
         $stmt = $this->database->connect()->prepare($sql);
         $stmt->execute($params);
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
   
     public function getApplicationById($id) {
         $sql = "SELECT sa.id, 
@@ -833,5 +840,354 @@ public function logAudit($action, $details) {
             ':application_id' => $applicationId
         ]);
     }
+
+    public function getAllPeriods($filters) {
+        $sql = "SELECT id, year, semester, start_date, end_date, status
+                FROM dean_lister_application_periods
+                WHERE 1=1";
+    
+        $params = [];
+    
+        if (!empty($filters['search'])) {
+            $sql .= " AND year LIKE :search";
+            $params[':search'] = '%' . $filters['search'] . '%';
+        }
+    
+        if (!empty($filters['status'])) {
+            $sql .= " AND status = :status";
+            $params[':status'] = $filters['status'];
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function autoActivateDeactivatePeriods() {
+        $now = date('Y-m-d H:i:s');
+    
+        // Deactivate periods where the end date has passed
+        $sqlDeactivate = "UPDATE dean_lister_application_periods
+                          SET status = 'closed'
+                          WHERE end_date < :now AND status = 'open'";
+        $stmtDeactivate = $this->database->connect()->prepare($sqlDeactivate);
+        $stmtDeactivate->execute([':now' => $now]);
+    
+        // Activate periods where the current date is between start_date and end_date
+        $sqlActivate = "UPDATE dean_lister_application_periods
+                        SET status = 'open'
+                        WHERE start_date <= :now AND end_date >= :now";
+        $stmtActivate = $this->database->connect()->prepare($sqlActivate);
+        $stmtActivate->execute([':now' => $now]);
+    
+        // Ensure only one period is active at a time
+        $sqlCheck = "SELECT id FROM dean_lister_application_periods
+                     WHERE status = 'open' ORDER BY start_date ASC";
+        $stmtCheck = $this->database->connect()->prepare($sqlCheck);
+        $stmtCheck->execute();
+        $activePeriods = $stmtCheck->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (count($activePeriods) > 1) {
+            // Deactivate all but the first active period
+            $idsToClose = array_column(array_slice($activePeriods, 1), 'id');
+            $sqlDeactivateExtra = "UPDATE dean_lister_application_periods
+                                   SET status = 'closed'
+                                   WHERE id IN (" . implode(',', $idsToClose) . ")";
+            $stmtDeactivateExtra = $this->database->connect()->prepare($sqlDeactivateExtra);
+            $stmtDeactivateExtra->execute();
+        }
+    
+        return true;
+    }
+
+    public function deactivateAllPeriodsExcept($id) {
+        $sql = "UPDATE dean_lister_application_periods
+                SET status = 'closed'
+                WHERE id != :id AND status = 'open'";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    }
+    
+    
+    
+    
+    public function createPeriod($data) {
+        $sql = "INSERT INTO dean_lister_application_periods (year, semester, start_date, end_date, status)
+                VALUES (:year, :semester, :start_date, :end_date, :status)";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':semester' => $data['semester'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':status' => $data['status']
+        ]);
+    }
+    
+    public function updatePeriod($id, $data) {
+        $sql = "UPDATE dean_lister_application_periods
+                SET year = :year, 
+                    semester = :semester, 
+                    start_date = :start_date, 
+                    end_date = :end_date, 
+                    status = :status
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':semester' => $data['semester'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':status' => $data['status'],
+            ':id' => $id
+        ]);
+    }
+    
+
+    public function togglePeriodStatus($id) {
+        // Deactivate any currently active period
+        $sqlDeactivate = "UPDATE dean_lister_application_periods
+                          SET status = 'closed'
+                          WHERE status = 'open'";
+        $stmtDeactivate = $this->database->connect()->prepare($sqlDeactivate);
+        $stmtDeactivate->execute();
+    
+        // Activate the selected period
+        $sqlActivate = "UPDATE dean_lister_application_periods
+                        SET status = 'open'
+                        WHERE id = :id";
+        $stmtActivate = $this->database->connect()->prepare($sqlActivate);
+        return $stmtActivate->execute([':id' => $id]);
+    }
+
+    public function getAllCurricula($filters) {
+        $sql = "SELECT c.id, c.effective_year, c.version, c.remarks, co.course_name AS course_name
+                FROM curriculum c
+                INNER JOIN course co ON c.course_id = co.id
+                WHERE 1=1";
+    
+        $params = [];
+    
+        if (!empty($filters['course_id'])) {
+            $sql .= " AND c.course_id = :course_id";
+            $params[':course_id'] = $filters['course_id'];
+        }
+        if (!empty($filters['year'])) {
+            $sql .= " AND c.effective_year LIKE :year";
+            $params[':year'] = '%' . $filters['year'] . '%';
+        }
+        if (!empty($filters['remarks'])) {
+            $sql .= " AND c.remarks LIKE :remarks";
+            $params[':remarks'] = '%' . $filters['remarks'] . '%';
+        }
+        if (!empty($filters['version'])) {
+            $sql .= " AND c.version LIKE :version";
+            $params[':version'] = '%' . $filters['version'] . '%';
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllCourses() {
+        $sql = "SELECT id, course_name FROM course";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function createCurriculum($data) {
+        $sql = "INSERT INTO curriculum (effective_year, version, remarks, course_id)
+                VALUES (:effective_year, :version, :remarks, :course_id)";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':effective_year' => $data['effective_year'],
+            ':version' => $data['version'],
+            ':remarks' => $data['remarks'],
+            ':course_id' => $data['course_id']
+        ]);
+    }
+    
+    public function updateCurriculum($id, $data) {
+        $sql = "UPDATE curriculum
+                SET effective_year = :effective_year, 
+                    version = :version, 
+                    remarks = :remarks, 
+                    course_id = :course_id
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':effective_year' => $data['effective_year'],
+            ':version' => $data['version'],
+            ':remarks' => $data['remarks'],
+            ':course_id' => $data['course_id'],
+            ':id' => $id
+        ]);
+    }
+    
+    public function getCurriculumById($id) {
+        $sql = "SELECT id, effective_year, version, remarks, course_id
+                FROM curriculum
+                WHERE id = :id";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function deleteCurriculum($id) {
+        $sql = "DELETE FROM curriculum WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function checkDuplicateCurriculum($course_id, $version, $exclude_id = null) {
+        $sql = "SELECT COUNT(*) FROM curriculum WHERE course_id = :course_id AND version = :version";
+        $params = [
+            ':course_id' => $course_id,
+            ':version' => $version
+        ];
+    
+        if ($exclude_id) {
+            $sql .= " AND id != :id";
+            $params[':id'] = $exclude_id;
+        }
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchColumn() > 0; // Returns true if duplicate exists
+    }
+    
+    public function getAllSubjects($filters) {
+        $sql = "SELECT p.id, p.subject_code, p.descriptive_title, p.prerequisite,
+                       p.lec_units, p.lab_units, p.total_units, 
+                       p.year_level, p.semester, c.version AS curriculum_version, 
+                       c.effective_year, c.remarks AS curriculum_remarks, co.course_name
+                FROM prospectus p
+                INNER JOIN curriculum c ON p.curriculum_id = c.id
+                INNER JOIN course co ON c.course_id = co.id
+                WHERE 1";
+    
+        $params = [];
+    
+        if (!empty($filters['course_id'])) {
+            $sql .= " AND co.id = :course_id";
+            $params[':course_id'] = $filters['course_id'];
+        }
+        if (!empty($filters['curriculum_id'])) {
+            $sql .= " AND c.id = :curriculum_id";
+            $params[':curriculum_id'] = $filters['curriculum_id'];
+        }
+        if (!empty($filters['year_level'])) {
+            $sql .= " AND p.year_level = :year_level";
+            $params[':year_level'] = $filters['year_level'];
+        }
+        if (!empty($filters['semester'])) {
+            $sql .= " AND p.semester = :semester";
+            $params[':semester'] = $filters['semester'];
+        }
+    
+        $sql .= " ORDER BY p.year_level, p.semester, p.subject_code";
+    
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    
+    
+    
+    public function getAllCurriculums() {
+        $sql = "SELECT c.id, c.remarks, co.course_name 
+                FROM curriculum c
+                INNER JOIN course co ON c.course_id = co.id
+                ORDER BY c.remarks";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSubjectById($id) {
+        $sql = "SELECT p.id, p.subject_code, p.descriptive_title, p.prerequisite,
+                       p.lec_units, p.lab_units, p.total_units, p.year_level, 
+                       p.semester, p.curriculum_id, c.remarks AS curriculum_name
+                FROM prospectus p
+                INNER JOIN curriculum c ON p.curriculum_id = c.id
+                WHERE p.id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function createSubject($data) {
+        $sql = "INSERT INTO prospectus (subject_code, descriptive_title, prerequisite, 
+                                         lec_units, lab_units, total_units, year_level, 
+                                         semester, curriculum_id)
+                VALUES (:subject_code, :descriptive_title, :prerequisite, :lec_units, 
+                        :lab_units, :total_units, :year_level, :semester, :curriculum_id)";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':subject_code' => $data['subject_code'],
+            ':descriptive_title' => $data['descriptive_title'],
+            ':prerequisite' => $data['prerequisite'],
+            ':lec_units' => $data['lec_units'],
+            ':lab_units' => $data['lab_units'],
+            ':total_units' => $data['total_units'],
+            ':year_level' => $data['year_level'],
+            ':semester' => $data['semester'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+    
+    public function updateSubject($id, $data) {
+        $sql = "UPDATE prospectus 
+                SET subject_code = :subject_code, 
+                    descriptive_title = :descriptive_title, 
+                    prerequisite = :prerequisite, 
+                    lec_units = :lec_units, 
+                    lab_units = :lab_units, 
+                    total_units = :total_units, 
+                    year_level = :year_level, 
+                    semester = :semester, 
+                    curriculum_id = :curriculum_id
+                WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':subject_code' => $data['subject_code'],
+            ':descriptive_title' => $data['descriptive_title'],
+            ':prerequisite' => $data['prerequisite'],
+            ':lec_units' => $data['lec_units'],
+            ':lab_units' => $data['lab_units'],
+            ':total_units' => $data['total_units'],
+            ':year_level' => $data['year_level'],
+            ':semester' => $data['semester'],
+            ':curriculum_id' => $data['curriculum_id']
+        ]);
+    }
+    
+    public function deleteSubject($id) {
+        $sql = "DELETE FROM prospectus WHERE id = :id";
+        $stmt = $this->database->connect()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
+    }
+    
+    
+    
+    
+    
+    
+    
 }
 ?>
