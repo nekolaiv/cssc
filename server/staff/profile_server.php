@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $staffId = intval($_SESSION['user-id']);
+    $staffId = intval($_SESSION['user-table-id']);
 
     try {
         switch ($action) {

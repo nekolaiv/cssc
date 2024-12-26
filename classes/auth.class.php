@@ -17,22 +17,22 @@ class Auth {
         try {
             // Query to get user credentials and role
             $sql = "
-                SELECT a.id AS account_id, u.identifier AS identifier, a.password, a.status, r.name AS role, 
+                SELECT a.id AS account_id, u.id AS user_id, u.identifier AS identifier, a.password, a.status, r.name AS role, 
                        u.firstname, u.middlename, u.lastname, u.email
                 FROM account a
                 JOIN user u ON a.user_id = u.id
                 JOIN role r ON a.role_id = r.id
                 WHERE u.email = :email
             ";
-
+    
             $query = $this->database->connect()->prepare($sql);
             $query->bindParam(':email', $email);
             $query->execute();
-
+    
             if ($query->rowCount() == 0) {
                 return ['Email does not exist', ''];
             }
-
+    
             $user = $query->fetch(PDO::FETCH_ASSOC);
             $academic_term = $this->_getCurrentAcademicTerm();
             $adviser = $this->_getStudentAdviser($user['account_id']);
@@ -40,24 +40,24 @@ class Auth {
             $year_level = $this->_getStudentYearLevel($user['identifier']);
             $status = $this->_getStudentStatus($user['identifier']);
             $status === false ? $entry_status = NULL : $entry_status = $status;
-
+    
             // Check if account is inactive
             if ($user['status'] !== 'active') {
                 return ['Account is inactive.', ''];
             }
-
+    
             // Verify password
             if ($password == $user['password']){
-                // echo '<script> alert("First Login Detected!\nKindly create a strong password");</script>';
                 return 'first login';	
             } else if (!password_verify($password, $user['password'])){
                 return [' ', 'incorrect password'];	
             }
-
+    
             // Set session variables
             regenerateSession();
             if($user['role'] !== 'user'){
                 $_SESSION['user-id'] = $user['account_id'];
+                $_SESSION['user-table-id'] = $user['user_id']; // Adding the user_id from the user table
                 $_SESSION['user-name'] = $user['lastname'] . ', ' . $user['firstname'] . ' ' . $user['middlename'];
                 $_SESSION['user-email'] = $user['email'];
                 $_SESSION['user-role'] = $user['role'];
@@ -65,6 +65,7 @@ class Auth {
             } else {
                 $_SESSION['profile'] = [
                     'user-id' => $user['account_id'],
+                    'user-table-id' => $user['user_id'], // Adding the user_id from the user table
                     'user-role' => $user['role'],
                     'user-name' => $user['lastname'] . ', ' . $user['firstname'] . ' ' . $user['middlename'],
                     'student-id' => $user['identifier'],
@@ -84,6 +85,7 @@ class Auth {
             return ['Something went wrong', $e->getMessage()];
         }
     }
+    
 
     private function _getCurrentAcademicTerm(){
 		$sql = "SELECT * FROM dean_lister_application_periods WHERE status = 'open'";
