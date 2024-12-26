@@ -64,3 +64,6 @@ STUDENT
 57. fix curriculum logic
 58. repopulate curriculum, subjects data
 59. refactor image upload
+60. fix topnotcher issue with act
+61. delete excess files
+62. remove minimum error on login
