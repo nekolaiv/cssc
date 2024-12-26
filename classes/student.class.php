@@ -164,7 +164,7 @@ class Student
 
     
     // RESULT MODELS
-    public function saveEntryToDatabase($email, $gwa, $image_proof){
+    public function saveEntryToDatabase($gwa, $image_proof){
         $user_id = cleanInput($_SESSION['profile']['user-id']);
         $entry_exists = $this->_entryExists($user_id);
         if($entry_exists){
@@ -181,7 +181,7 @@ class Student
         $query->bindParam(':adviser_id', $_SESSION['profile']['user-id']);
         $query->bindParam(':school_year', $_SESSION['profile']['school-year']);
         $query->bindParam(':semester', $current_term['semester']);
-        $query->bindParam(':total_rating', $_SESSION['GWA']['gwa-score']);
+        $query->bindParam(':total_rating', $gwa);
         $query->bindParam(':dean_lister_period_id', $current_term['id']);
         $query->bindParam(':image_proof', $image_proof, PDO::PARAM_LOB);
         
