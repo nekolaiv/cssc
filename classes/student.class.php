@@ -170,12 +170,13 @@ class Student
         if($entry_exists){
             $this->_deleteStudentVerifiedEntry($user_id);
         }
-        $sql = "INSERT INTO student_applications(user_id, adviser_id, school_year, semester, total_rating, dean_lister_period_id, image_proof)
-        VALUES(:user_id, :adviser_id, :school_year, :semester, :total_rating, :dean_lister_period_id, :image_proof)";
+        $sql = "INSERT INTO student_applications(id, user_id, adviser_id, school_year, semester, total_rating, dean_lister_period_id, image_proof)
+        VALUES(:id, :user_id, :adviser_id, :school_year, :semester, :total_rating, :dean_lister_period_id, :image_proof)";
         
         $current_term = $this->_getCurrentAcademicTerm();
 
         $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':id', $_SESSION['profile']['user-id']);
         $query->bindParam(':user_id', $_SESSION['profile']['user-id']);
         $query->bindParam(':adviser_id', $_SESSION['profile']['user-id']);
         $query->bindParam(':school_year', $_SESSION['profile']['school-year']);
