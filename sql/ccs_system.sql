@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 25, 2024 at 02:52 AM
+-- Generation Time: Dec 26, 2024 at 06:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -187,16 +187,12 @@ CREATE TABLE `curriculum` (
 --
 
 INSERT INTO `curriculum` (`id`, `course_id`, `version`, `effective_year`, `remarks`, `created_at`) VALUES
-(1, 1, 'v2024', '2024-2025', 'BSCS Curriculum Version 2024', '2024-12-15 13:59:37'),
-(2, 2, 'v2024', '2024-2025', 'BSIT Curriculum Version 2024', '2024-12-15 13:59:37'),
-(3, 3, 'v2024', '2024-2025', 'ACT Curriculum Version 2024', '2024-12-15 13:59:37'),
-(4, 1, 'v2023', '2023-2024', 'BSCS Curriculum Version 2023', '2024-12-15 13:59:37'),
-(5, 2, 'v2023', '2023-2024', 'BSIT Curriculum Version 2023', '2024-12-15 13:59:37'),
-(6, 3, 'v2023', '2023-2024', 'ACT Curriculum Version 2023', '2024-12-15 13:59:37'),
-(7, 1, 'v2022', '2022-2023', 'BSCS Curriculum Version 2022', '2024-12-15 13:59:37'),
-(8, 2, 'v2022', '2022-2023', 'BSIT Curriculum Version 2022', '2024-12-15 13:59:37'),
-(9, 3, 'v2022', '2022-2023', 'ACT Curriculum Version 2022', '2024-12-15 13:59:37'),
-(10, 1, 'v2021', '2021-2022', 'BSCS Curriculum Version 2021', '2024-12-15 13:59:37');
+(1, 1, 'v2016', '2016-2022', 'BSCS Curriculum Version 2016', '2024-12-15 13:59:37'),
+(2, 2, 'v2016', '2016-2022', 'BSIT Curriculum Version 2016', '2024-12-15 13:59:37'),
+(3, 3, 'v2016', '2016-2022', 'ACT Curriculum Version 2016', '2024-12-15 13:59:37'),
+(4, 1, 'v2023', '2023-2040', 'BSCS Curriculum Version 2023', '2024-12-15 13:59:37'),
+(5, 2, 'v2023', '2023-2040', 'BSIT Curriculum Version 2023', '2024-12-15 13:59:37'),
+(6, 3, 'v2023', '2023-2040', 'ACT Curriculum Version 2023', '2024-12-15 13:59:37');
 
 -- --------------------------------------------------------
 
@@ -218,8 +214,8 @@ CREATE TABLE `dean_lister_application_periods` (
 --
 
 INSERT INTO `dean_lister_application_periods` (`id`, `start_date`, `end_date`, `status`, `year`, `semester`) VALUES
-(1, '2024-06-01 00:00:00', '2024-06-30 00:00:00', 'closed', '2024-2025', '1st'),
-(2, '2024-12-01 00:00:00', '2024-12-31 00:00:00', 'open', '2024-2025', '2nd'),
+(1, '2024-06-01 00:00:00', '2024-06-30 00:00:00', 'open', '2024-2025', '1st'),
+(2, '2024-12-01 00:00:00', '2024-12-31 00:00:00', 'closed', '2024-2025', '2nd'),
 (3, '2023-06-01 00:00:00', '2023-06-30 00:00:00', 'closed', '2023-2024', '1st'),
 (4, '2023-12-01 00:00:00', '2023-12-31 00:00:00', 'closed', '2023-2024', '2nd'),
 (5, '2022-06-01 00:00:00', '2022-06-30 00:00:00', 'closed', '2022-2023', '1st'),
@@ -273,16 +269,180 @@ CREATE TABLE `prospectus` (
 --
 
 INSERT INTO `prospectus` (`id`, `curriculum_id`, `subject_code`, `descriptive_title`, `prerequisite`, `lec_units`, `lab_units`, `year_level`, `semester`) VALUES
-(1, 1, 'CS101', 'Intro to Programming', NULL, 3.0, 1.0, 1, '1st'),
-(2, 1, 'CS102', 'Data Structures', 'CS101', 3.0, 1.0, 1, '2nd'),
-(3, 2, 'IT101', 'Fundamentals of IT', NULL, 3.0, 0.0, 1, '1st'),
-(4, 2, 'IT102', 'Web Development', 'IT101', 3.0, 1.0, 2, '2nd'),
-(5, 3, 'ACT101', 'Computer Fundamentals', NULL, 3.0, 0.0, 1, '1st'),
-(6, 3, 'ACT102', 'IT Essentials', 'ACT101', 3.0, 0.0, 1, '2nd'),
-(7, 1, 'CS201', 'Algorithms', 'CS102', 3.0, 1.0, 2, '1st'),
-(8, 2, 'IT201', 'Networks', 'IT102', 3.0, 1.0, 2, '1st'),
-(9, 3, 'ACT201', 'Digital Systems', 'ACT102', 3.0, 0.0, 2, '2nd'),
-(10, 1, 'CS301', 'Operating Systems', 'CS201', 3.0, 1.0, 3, '1st');
+(1, 4, 'CC100', 'Introduction to Computing', NULL, 3.0, 0.0, 1, '1st'),
+(2, 4, 'CC101', 'Computer Programming 1', NULL, 3.0, 1.0, 1, '1st'),
+(3, 4, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 1, '1st'),
+(4, 4, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(5, 4, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(6, 4, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 1, '1st'),
+(7, 4, 'US101', 'Understanding the Self', NULL, 3.0, 0.0, 1, '1st'),
+(8, 4, 'PATHFIT1', 'Movement Competency Training', NULL, 2.0, 0.0, 1, '1st'),
+(9, 4, 'CC102', 'Computer Programming 2', 'CC101', 3.0, 1.0, 1, '2nd'),
+(10, 4, 'OOP112', 'Object-Oriented Programming', 'CC101', 3.0, 0.0, 1, '2nd'),
+(11, 4, 'WD114', 'Web Development 1', 'CC101', 3.0, 0.0, 1, '2nd'),
+(12, 4, 'HCI116', 'Human Computer Interaction', 'CC101', 3.0, 0.0, 1, '2nd'),
+(13, 4, 'DS118', 'Discrete Structures 2', 'DS111', 3.0, 0.0, 1, '2nd'),
+(14, 4, 'HIST101', 'Readings in Philippine History', NULL, 3.0, 0.0, 1, '2nd'),
+(15, 4, 'STS100', 'Science, Technology and Society', NULL, 3.0, 0.0, 1, '2nd'),
+(16, 4, 'PATHFIT2', 'Exercise-Based Fitness Activity', 'PATHFIT1', 2.0, 0.0, 1, '2nd'),
+(17, 4, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(18, 4, 'CC104', 'Information Management', 'CC102,OOP112', 3.0, 0.0, 2, '1st'),
+(19, 4, 'MAD121', 'Mobile Application Development', 'CC102,OOP112', 3.0, 0.0, 2, '1st'),
+(20, 4, 'WD123', 'Web Development 2', 'WD114', 3.0, 0.0, 2, '1st'),
+(21, 4, 'SIPP125', 'Social Issues and Professional Practices', 'CC102', 3.0, 0.0, 2, '1st'),
+(22, 4, 'NC127', 'Networks and Communications', 'CC102', 3.0, 0.0, 2, '1st'),
+(23, 4, 'PATHFIT3', 'Martial Arts 1', 'PATHFIT2', 2.0, 0.0, 2, '1st'),
+(24, 4, 'CC105', 'Application Development and Emerging Technologies', 'CC104', 3.0, 0.0, 2, '2nd'),
+(25, 4, 'ACTINT122', 'ACT Internship', 'WD123,SIPP125', 6.0, 0.0, 2, '2nd'),
+(26, 4, 'AO124', 'Architecture and Organization', 'DS111,CC103', 3.0, 0.0, 2, '2nd'),
+(27, 4, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(28, 4, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 2, '2nd'),
+(29, 4, 'PATHFIT4', 'Martial Arts 2', 'PATHFIT3', 2.0, 0.0, 2, '2nd'),
+(30, 4, 'SE131', 'Software Engineering 1', 'CC105,WD123', 3.0, 0.0, 3, '1st'),
+(31, 4, 'ADS133', 'Advanced Database Systems', 'CC104', 3.0, 0.0, 3, '1st'),
+(32, 4, 'ATFL135', 'Automata Theory and Formal Languages', 'AC1218,PL129', 3.0, 0.0, 3, '1st'),
+(33, 4, 'OS137', 'Operating Systems', 'AO124', 3.0, 0.0, 3, '1st'),
+(34, 4, 'CALC139', 'Calculus for Computer Science', 'MATH100', 3.0, 0.0, 3, '1st'),
+(35, 4, 'CSE1', 'CS Elective 1', NULL, 3.0, 0.0, 3, '1st'),
+(36, 4, 'CSE2', 'CS Elective 2', NULL, 3.0, 0.0, 3, '1st'),
+(37, 4, 'ES130', 'Embedded Systems', 'OS137', 3.0, 0.0, 3, '2nd'),
+(38, 4, 'SE132', 'Software Engineering 2', 'SE131', 3.0, 0.0, 3, '2nd'),
+(39, 4, 'IAS134', 'Information Assurance and Security', 'CC104,OS137', 2.0, 0.0, 3, '2nd'),
+(40, 4, 'TW136', 'Technical Writing for Computer Science', 'SE131,ADS133', 1.0, 0.0, 3, '2nd'),
+(41, 4, 'CSE3', 'CS Elective 3', NULL, 3.0, 0.0, 3, '2nd'),
+(42, 4, 'GEE1', 'GE Elective 1', NULL, 3.0, 0.0, 3, '2nd'),
+(43, 4, 'GEE2', 'GE Elective 2', NULL, 3.0, 0.0, 3, '2nd'),
+(44, 4, 'GEE3', 'GE Elective 3', NULL, 3.0, 0.0, 3, '2nd'),
+(47, 4, 'CSPRAC142', 'Practicum Industry Immersion', 'THESIS141', 3.0, 0.0, 4, '2nd'),
+(48, 4, 'ETHICS101', 'Ethics', NULL, 3.0, 0.0, 4, '2nd'),
+(49, 1, 'NC127', 'Networks and Communications', NULL, 3.0, 0.0, 1, '1st'),
+(50, 1, 'CC101', 'Computer Programming 1', NULL, 3.0, 1.0, 1, '1st'),
+(51, 1, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(52, 1, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(53, 1, 'CC102', 'Computer Programming 2', 'CC101', 3.0, 1.0, 1, '2nd'),
+(54, 1, 'WD114', 'Web Development 1', NULL, 3.0, 0.0, 1, '2nd'),
+(55, 1, 'PATHFIT2', 'Exercise-Based Fitness Activity', NULL, 2.0, 0.0, 1, '2nd'),
+(56, 1, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 1, '2nd'),
+(57, 1, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(58, 1, 'MAD121', 'Mobile Application Development', NULL, 3.0, 0.0, 2, '1st'),
+(59, 1, 'SIPP125', 'Social Issues and Professional Practices', NULL, 3.0, 0.0, 2, '1st'),
+(60, 1, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 2, '1st'),
+(61, 1, 'CC105', 'Application Development and Emerging Technologies', 'CC103', 3.0, 0.0, 2, '2nd'),
+(62, 1, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(63, 1, 'AO124', 'Architecture and Organization', NULL, 3.0, 0.0, 2, '2nd'),
+(64, 1, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 2, '2nd'),
+(65, 1, 'SE131', 'Software Engineering 1', 'CC103', 3.0, 0.0, 3, '1st'),
+(66, 1, 'ADS133', 'Advanced Database Systems', 'CC104', 3.0, 0.0, 3, '1st'),
+(67, 1, 'CALC139', 'Calculus for Computer Science', NULL, 3.0, 0.0, 3, '1st'),
+(68, 1, 'CSE1', 'CS Elective 1', NULL, 3.0, 0.0, 3, '1st'),
+(69, 1, 'ES130', 'Embedded Systems', 'CC105', 3.0, 0.0, 3, '2nd'),
+(70, 1, 'SE132', 'Software Engineering 2', 'SE131', 3.0, 0.0, 3, '2nd'),
+(71, 1, 'IAS134', 'Information Assurance and Security', NULL, 2.0, 0.0, 3, '2nd'),
+(72, 1, 'TW136', 'Technical Writing for Computer Science', NULL, 1.0, 0.0, 3, '2nd'),
+(73, 1, 'THESIS139', 'CS Thesis 1', NULL, 3.0, 0.0, 3, 'Summer'),
+(74, 1, 'THESIS141', 'CS Thesis 2', 'THESIS139', 3.0, 0.0, 4, '1st'),
+(75, 1, 'A&H100', 'Art Appreciation', NULL, 3.0, 0.0, 4, '1st'),
+(76, 1, 'CSPRAC142', 'Practicum Industry Immersion', NULL, 3.0, 0.0, 4, '2nd'),
+(77, 1, 'ETHICS101', 'Ethics', NULL, 3.0, 0.0, 4, '2nd'),
+(78, 5, 'IT101', 'Fundamentals of IT', NULL, 3.0, 0.0, 1, '1st'),
+(79, 5, 'CC101', 'Computer Programming 1', NULL, 3.0, 1.0, 1, '1st'),
+(80, 5, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(81, 5, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(82, 5, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 1, '1st'),
+(83, 5, 'CC102', 'Computer Programming 2', 'CC101', 3.0, 1.0, 1, '2nd'),
+(84, 5, 'WD114', 'Web Development 1', NULL, 3.0, 0.0, 1, '2nd'),
+(85, 5, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 1, '2nd'),
+(86, 5, 'STS100', 'Science, Technology and Society', NULL, 3.0, 0.0, 1, '2nd'),
+(87, 5, 'PATHFIT1', 'Movement Competency Training', NULL, 2.0, 0.0, 1, '2nd'),
+(88, 5, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(89, 5, 'CC104', 'Information Management', NULL, 3.0, 0.0, 2, '1st'),
+(90, 5, 'MAD121', 'Mobile Application Development', NULL, 3.0, 0.0, 2, '1st'),
+(91, 5, 'NC127', 'Networks and Communications', NULL, 3.0, 0.0, 2, '1st'),
+(92, 5, 'SIPP125', 'Social Issues and Professional Practices', NULL, 3.0, 0.0, 2, '1st'),
+(93, 5, 'CC105', 'Application Development and Emerging Technologies', 'CC103', 3.0, 0.0, 2, '2nd'),
+(94, 5, 'AO124', 'Architecture and Organization', NULL, 3.0, 0.0, 2, '2nd'),
+(95, 5, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(96, 5, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 2, '2nd'),
+(97, 5, 'DS118', 'Discrete Structures 2', 'DS111', 3.0, 0.0, 2, '2nd'),
+(98, 2, 'IT101', 'Fundamentals of IT', NULL, 3.0, 0.0, 1, '1st'),
+(99, 2, 'CC101', 'Computer Programming 1', NULL, 3.0, 1.0, 1, '1st'),
+(100, 2, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(101, 2, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(102, 2, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 1, '1st'),
+(103, 2, 'WD114', 'Web Development 1', NULL, 3.0, 0.0, 1, '2nd'),
+(104, 2, 'CC102', 'Computer Programming 2', 'CC101', 3.0, 1.0, 1, '2nd'),
+(105, 2, 'STS100', 'Science, Technology and Society', NULL, 3.0, 0.0, 1, '2nd'),
+(106, 2, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 1, '2nd'),
+(107, 2, 'PATHFIT1', 'Movement Competency Training', NULL, 2.0, 0.0, 1, '2nd'),
+(108, 2, 'CC104', 'Information Management', NULL, 3.0, 0.0, 2, '1st'),
+(109, 2, 'MAD121', 'Mobile Application Development', NULL, 3.0, 0.0, 2, '1st'),
+(110, 2, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(111, 2, 'NC127', 'Networks and Communications', NULL, 3.0, 0.0, 2, '1st'),
+(112, 2, 'SIPP125', 'Social Issues and Professional Practices', NULL, 3.0, 0.0, 2, '1st'),
+(113, 2, 'CC105', 'Application Development and Emerging Technologies', 'CC103', 3.0, 0.0, 2, '2nd'),
+(114, 2, 'AO124', 'Architecture and Organization', NULL, 3.0, 0.0, 2, '2nd'),
+(115, 2, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(116, 2, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 2, '2nd'),
+(117, 2, 'DS118', 'Discrete Structures 2', 'DS111', 3.0, 0.0, 2, '2nd'),
+(118, 2, 'CC106', 'Advanced Web Development', 'WD114', 3.0, 1.0, 3, '1st'),
+(119, 2, 'CSE1', 'CS Elective 1', NULL, 3.0, 0.0, 3, '1st'),
+(120, 2, 'SE131', 'Software Engineering 1', 'CC103', 3.0, 0.0, 3, '1st'),
+(121, 2, 'ADS133', 'Advanced Database Systems', 'CC104', 3.0, 0.0, 3, '1st'),
+(122, 2, 'CALC139', 'Calculus for Computer Science', NULL, 3.0, 0.0, 3, '1st'),
+(123, 2, 'SE132', 'Software Engineering 2', 'SE131', 3.0, 0.0, 3, '2nd'),
+(124, 2, 'IAS134', 'Information Assurance and Security', NULL, 2.0, 0.0, 3, '2nd'),
+(125, 2, 'TW136', 'Technical Writing for Computer Science', NULL, 1.0, 0.0, 3, '2nd'),
+(126, 2, 'CS139', 'Introduction to Artificial Intelligence', NULL, 3.0, 0.0, 3, '2nd'),
+(127, 2, 'ES130', 'Embedded Systems', NULL, 3.0, 0.0, 3, '2nd'),
+(128, 6, 'CC100', 'Introduction to Computing', NULL, 3.0, 0.0, 1, '1st'),
+(129, 6, 'CC101', 'Computer Programming 1', NULL, 3.0, 1.0, 1, '1st'),
+(130, 6, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 1, '1st'),
+(131, 6, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(132, 6, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(133, 6, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 1, '1st'),
+(134, 6, 'US101', 'Understanding the Self', NULL, 3.0, 0.0, 1, '1st'),
+(135, 6, 'PATHFIT1', 'Movement Competency Training', NULL, 2.0, 0.0, 1, '1st'),
+(136, 6, 'CC102', 'Computer Programming 2', 'CC101', 3.0, 1.0, 1, '2nd'),
+(137, 6, 'OOP112', 'Object-Oriented Programming', NULL, 3.0, 0.0, 1, '2nd'),
+(138, 6, 'WD114', 'Web Development 1', NULL, 3.0, 0.0, 1, '2nd'),
+(139, 6, 'HCI116', 'Human Computer Interaction', NULL, 3.0, 0.0, 1, '2nd'),
+(140, 6, 'DS118', 'Discrete Structures 2', 'DS111', 3.0, 0.0, 1, '2nd'),
+(141, 6, 'HIST101', 'Readings in Philippine History', NULL, 3.0, 0.0, 1, '2nd'),
+(142, 6, 'STS100', 'Science, Technology and Society', NULL, 3.0, 0.0, 1, '2nd'),
+(143, 6, 'PATHFIT2', 'Exercise-Based Fitness Activity', NULL, 2.0, 0.0, 1, '2nd'),
+(144, 6, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(145, 6, 'CC104', 'Information Management', NULL, 3.0, 0.0, 2, '1st'),
+(146, 6, 'MAD121', 'Mobile Application Development', NULL, 3.0, 0.0, 2, '1st'),
+(147, 6, 'WD123', 'Web Development 2', NULL, 3.0, 0.0, 2, '1st'),
+(148, 6, 'SIPP125', 'Social Issues and Professional Practices', NULL, 3.0, 0.0, 2, '1st'),
+(149, 6, 'NC127', 'Networks and Communications', NULL, 3.0, 0.0, 2, '1st'),
+(150, 6, 'PATHFIT3', 'Martial Arts 1', NULL, 2.0, 0.0, 2, '1st'),
+(151, 6, 'CC105', 'Application Development and Emerging Technologies', 'CC103', 3.0, 0.0, 2, '2nd'),
+(152, 6, 'ACTINT122', 'ACT Internship', NULL, 6.0, 0.0, 2, '2nd'),
+(153, 6, 'AO124', 'Architecture and Organization', NULL, 3.0, 0.0, 2, '2nd'),
+(154, 6, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(155, 6, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 2, '2nd'),
+(156, 6, 'PATHFIT4', 'Martial Arts 2', NULL, 2.0, 0.0, 2, '2nd'),
+(157, 3, 'CC100', 'Introduction to Computing', NULL, 3.0, 0.0, 1, '1st'),
+(158, 3, 'MATH100', 'Mathematics in the Modern World', NULL, 3.0, 0.0, 1, '1st'),
+(159, 3, 'PATHFIT1', 'Movement Competency Training', NULL, 2.0, 0.0, 1, '1st'),
+(160, 3, 'CAS101', 'Purposive Communication', NULL, 3.0, 0.0, 1, '1st'),
+(161, 3, 'HIST100', 'Life and Works of Rizal', NULL, 3.0, 0.0, 1, '1st'),
+(162, 3, 'DS111', 'Discrete Structures 1', NULL, 3.0, 0.0, 1, '2nd'),
+(163, 3, 'OOP112', 'Object-Oriented Programming', NULL, 3.0, 0.0, 1, '2nd'),
+(164, 3, 'WD114', 'Web Development 1', NULL, 3.0, 0.0, 1, '2nd'),
+(165, 3, 'HCI116', 'Human Computer Interaction', NULL, 3.0, 0.0, 1, '2nd'),
+(166, 3, 'DS118', 'Discrete Structures 2', 'DS111', 3.0, 0.0, 1, '2nd'),
+(167, 3, 'CC103', 'Data Structures and Algorithms', 'CC102', 3.0, 0.0, 2, '1st'),
+(168, 3, 'MAD121', 'Mobile Application Development', NULL, 3.0, 0.0, 2, '1st'),
+(169, 3, 'SIPP125', 'Social Issues and Professional Practices', NULL, 3.0, 0.0, 2, '1st'),
+(170, 3, 'CC104', 'Information Management', NULL, 3.0, 0.0, 2, '1st'),
+(171, 3, 'NC127', 'Networks and Communications', NULL, 3.0, 0.0, 2, '1st'),
+(172, 3, 'CC105', 'Application Development and Emerging Technologies', 'CC103', 3.0, 0.0, 2, '2nd'),
+(173, 3, 'PATHFIT3', 'Martial Arts 1', NULL, 2.0, 0.0, 2, '2nd'),
+(174, 3, 'ACTINT122', 'ACT Internship', NULL, 6.0, 0.0, 2, '2nd'),
+(175, 3, 'PHILCON', 'Philippine Constitution', NULL, 3.0, 0.0, 2, '2nd'),
+(176, 3, 'CW101', 'The Contemporary World', NULL, 3.0, 0.0, 2, '2nd');
 
 -- --------------------------------------------------------
 
@@ -298,20 +458,6 @@ CREATE TABLE `rating` (
   `rating` decimal(4,2) DEFAULT NULL CHECK (`rating` between 0.00 and 5.00),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `rating`
---
-
-INSERT INTO `rating` (`id`, `user_id`, `subject_id`, `application_id`, `rating`, `created_at`) VALUES
-(2, 2, 2, 2, 1.50, '2024-12-15 13:59:37'),
-(4, 4, 4, 4, 1.75, '2024-12-15 13:59:37'),
-(5, 5, 5, 5, 1.80, '2024-12-15 13:59:37'),
-(6, 6, 6, 6, 2.10, '2024-12-15 13:59:37'),
-(7, 7, 7, 7, 2.85, '2024-12-15 13:59:37'),
-(8, 8, 8, 8, 1.65, '2024-12-15 13:59:37'),
-(9, 9, 9, 9, 1.90, '2024-12-15 13:59:37'),
-(10, 10, 10, 10, 2.75, '2024-12-15 13:59:37');
 
 -- --------------------------------------------------------
 
@@ -351,7 +497,7 @@ CREATE TABLE `student_applications` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `dean_lister_period_id` int(11) DEFAULT NULL COMMENT 'FK to dean_lister_application_periods',
-  `image_proof` varchar(255) DEFAULT NULL COMMENT 'Path to the uploaded proof document'
+  `image_proof` longblob DEFAULT NULL COMMENT 'Path to the uploaded proof document'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -359,7 +505,6 @@ CREATE TABLE `student_applications` (
 --
 
 INSERT INTO `student_applications` (`id`, `user_id`, `adviser_id`, `school_year`, `semester`, `status`, `rejection_reason`, `total_rating`, `created_at`, `updated_at`, `dean_lister_period_id`, `image_proof`) VALUES
-(1, 1, 1, '2024-2025', '1st', 'Approved', NULL, 1.55, '2024-12-14 21:59:37', '2024-12-25 01:49:29', 1, NULL),
 (2, 2, 1, '2024-2025', '2nd', 'Approved', NULL, 1.60, '2024-12-14 21:59:37', '2024-12-25 01:49:29', 2, NULL),
 (3, 3, 1, '2023-2024', '1st', 'Approved', NULL, 1.70, '2023-12-14 21:59:37', '2024-12-25 01:49:29', 3, NULL),
 (4, 7, 1, '2023-2024', '2nd', 'Approved', NULL, 1.80, '2023-12-14 21:59:37', '2024-12-25 01:49:29', 4, NULL),
@@ -413,36 +558,36 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `identifier`, `firstname`, `middlename`, `lastname`, `email`, `curriculum_id`, `department_id`, `created_at`) VALUES
-(1, '202400001', 'John', 'A.', 'Doe', 'hz202400001@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
-(2, '202400002', 'Jane', 'B.', 'Smith', 'hz202400002@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
-(3, '202400003', 'Alex', 'C.', 'Johnson', 'hz202400003@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
-(4, '202300004', 'Emily', 'D.', 'Brown', 'hz202300004@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
-(5, '202300005', 'Chris', 'E.', 'Davis', 'hz202300005@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
-(6, '202300006', 'Olivia', 'F.', 'Miller', 'hz202300006@wmsu.edu.ph', 2, 1, '2024-12-15 05:59:37'),
+(1, '202400001', 'John', 'A.', 'Doe', 'hz202400001@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
+(2, '202400002', 'Jane', 'B.', 'Smith', 'hz202400002@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
+(3, '202400003', 'Alex', 'C.', 'Johnson', 'hz202400003@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
+(4, '202300004', 'Emily', 'D.', 'Brown', 'hz202300004@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
+(5, '202300005', 'Chris', 'E.', 'Davis', 'hz202300005@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
+(6, '202300006', 'Olivia', 'F.', 'Miller', 'hz202300006@wmsu.edu.ph', 4, 1, '2024-12-15 05:59:37'),
 (7, '202200007', 'Liam', 'G.', 'Wilson', 'hz202200007@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
 (8, '202200008', 'Sophia', 'H.', 'Moore', 'hz202200008@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
 (9, '202200009', 'Noah', 'I.', 'Taylor', 'hz202200009@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
 (10, '202100010', 'Ava', 'J.', 'Anderson', 'hz202100010@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
 (11, '202100011', 'Ethan', 'K.', 'Martinez', 'hz202100011@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
 (12, '202100012', 'Mia', 'L.', 'Hernandez', 'hz202100012@wmsu.edu.ph', 1, 1, '2024-12-15 05:59:37'),
-(13, '202400013', 'Jacob', 'M.', 'Lee', 'hz202400013@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(14, '202400014', 'Zoe', 'N.', 'Clark', 'hz202400014@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(15, '202400015', 'Luke', 'O.', 'Lewis', 'hz202400015@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(16, '202300016', 'Ella', 'P.', 'Walker', 'hz202300016@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(17, '202300017', 'James', 'Q.', 'Hall', 'hz202300017@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(18, '202300018', 'Luna', 'R.', 'Allen', 'hz202300018@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
-(19, '202200019', 'Logan', 'S.', 'King', 'hz202200019@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(20, '202200020', 'Riley', 'T.', 'Wright', 'hz202200020@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(21, '202200021', 'Carter', 'U.', 'Hill', 'hz202200021@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(22, '202100022', 'Aria', 'V.', 'Scott', 'hz202100022@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(23, '202100023', 'Levi', 'W.', 'Green', 'hz202100023@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(24, '202100024', 'Nora', 'X.', 'Adams', 'hz202100024@wmsu.edu.ph', 1, 2, '2024-12-15 05:59:37'),
-(25, '202400025', 'Daniel', 'Y.', 'Baker', 'hz202400025@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
-(26, '202400026', 'Abigail', 'Z.', 'Gonzalez', 'hz202400026@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
-(27, '202400027', 'Jackson', 'AA.', 'Nelson', 'hz202400027@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
-(28, '202300028', 'Charlotte', 'BB.', 'Carter', 'hz202300028@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
-(29, '202300029', 'Elijah', 'CC.', 'Mitchell', 'hz202300029@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
-(30, '202300030', 'Scarlett', 'DD.', 'Perez', 'hz202300030@wmsu.edu.ph', 2, 3, '2024-12-15 05:59:37'),
+(13, '202400013', 'Jacob', 'M.', 'Lee', 'hz202400013@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(14, '202400014', 'Zoe', 'N.', 'Clark', 'hz202400014@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(15, '202400015', 'Luke', 'O.', 'Lewis', 'hz202400015@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(16, '202300016', 'Ella', 'P.', 'Walker', 'hz202300016@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(17, '202300017', 'James', 'Q.', 'Hall', 'hz202300017@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(18, '202300018', 'Luna', 'R.', 'Allen', 'hz202300018@wmsu.edu.ph', 5, 2, '2024-12-15 05:59:37'),
+(19, '202200019', 'Logan', 'S.', 'King', 'hz202200019@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(20, '202200020', 'Riley', 'T.', 'Wright', 'hz202200020@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(21, '202200021', 'Carter', 'U.', 'Hill', 'hz202200021@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(22, '202100022', 'Aria', 'V.', 'Scott', 'hz202100022@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(23, '202100023', 'Levi', 'W.', 'Green', 'hz202100023@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(24, '202100024', 'Nora', 'X.', 'Adams', 'hz202100024@wmsu.edu.ph', 2, 2, '2024-12-15 05:59:37'),
+(25, '202400025', 'Daniel', 'Y.', 'Baker', 'hz202400025@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
+(26, '202400026', 'Abigail', 'Z.', 'Gonzalez', 'hz202400026@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
+(27, '202400027', 'Jackson', 'AA.', 'Nelson', 'hz202400027@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
+(28, '202300028', 'Charlotte', 'BB.', 'Carter', 'hz202300028@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
+(29, '202300029', 'Elijah', 'CC.', 'Mitchell', 'hz202300029@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
+(30, '202300030', 'Scarlett', 'DD.', 'Perez', 'hz202300030@wmsu.edu.ph', 6, 3, '2024-12-15 05:59:37'),
 (31, '000000001', 'Michael', 'A.', 'Carter', 'staff1@wmsu.edu.ph', NULL, 1, '2024-12-21 05:59:37'),
 (32, '000000002', 'Sarah', 'B.', 'Evans', 'staff2@wmsu.edu.ph', NULL, 1, '2024-12-21 05:59:37'),
 (33, '000000003', 'David', 'C.', 'Martin', 'staff3@wmsu.edu.ph', NULL, 1, '2024-12-21 05:59:37'),
@@ -602,7 +747,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `prospectus`
 --
 ALTER TABLE `prospectus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
 
 --
 -- AUTO_INCREMENT for table `rating`
@@ -620,7 +765,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `student_applications`
 --
 ALTER TABLE `student_applications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -663,7 +808,7 @@ ALTER TABLE `curriculum`
 -- Constraints for table `prospectus`
 --
 ALTER TABLE `prospectus`
-  ADD CONSTRAINT `prospectus_ibfk_1` FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `prospectus_ibfk_1` FOREIGN KEY (`curriculum_id`) REFERENCES `curriculum` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rating`
