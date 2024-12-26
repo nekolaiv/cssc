@@ -21,124 +21,40 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
     // $target_path = $destination_path . basename( $_FILES["image-proof"]["name"]);
 
     try {
-        if (isset($_FILES['image-proof']) && $_FILES['image-proof']['error'] === UPLOAD_ERR_OK) {
-            // Load the image
-            $imagePath = $_FILES['image-proof']['tmp_name'];
-            $imageType = exif_imagetype($imagePath);
+    if (isset($_FILES['image-proof']) && $_FILES['image-proof']['error'] === UPLOAD_ERR_OK) {
+        $imagePath = $_FILES['image-proof']['tmp_name'];
+        $imageType = exif_imagetype($imagePath);
 
-            // Validate image type (only jpeg, png, gif)
-            if (in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
+        // Validate image type (only jpeg, png, gif)
+        if (in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
+            // Read image data into a variable for database storage
+            $imageData = file_get_contents($imagePath);
+            
+            // Example variables for saving (these should come from your form or process)
+            $email = 'example@domain.com'; // Replace with actual data
+            $gwa_result = 1.5; // Replace with actual data
 
-                // Set target dimensions for resizing (for example, 800x600)
-                $maxWidth = 700;
-                $maxHeight = 600;
-
-                // Create image resource based on the type
-                switch ($imageType) {
-                    case IMAGETYPE_JPEG:
-                        $image = imagecreatefromjpeg($imagePath);
-                        break;
-                    case IMAGETYPE_PNG:
-                        $image = imagecreatefrompng($imagePath);
-                        break;
-                    case IMAGETYPE_GIF:
-                        $image = imagecreatefromgif($imagePath);
-                        break;
-                    default:
-                        throw new Exception("Unsupported image type.");
-                }
-
-                // Get original dimensions
-                $originalWidth = imagesx($image);
-                $originalHeight = imagesy($image);
-
-                // Calculate new dimensions while preserving aspect ratio
-                $aspectRatio = $originalWidth / $originalHeight;
-
-                if ($originalWidth > $originalHeight) {
-                    $newWidth = $maxWidth;
-                    $newHeight = $maxWidth / $aspectRatio;
-                } else {
-                    $newHeight = $maxHeight;
-                    $newWidth = $maxHeight * $aspectRatio;
-                }
-
-                // Create a new image resource with the new dimensions
-                $resizedImage = imagecreatetruecolor((int)$newWidth, (int)$newHeight);
-
-                // Preserve transparency for PNG and GIF
-                if ($imageType == IMAGETYPE_PNG) {
-                    imagealphablending($resizedImage, false);
-                    imagesavealpha($resizedImage, true);
-                }
-
-               imagecopyresampled(
-                    $resizedImage, 
-                    $image, 
-                    0, 0, 0, 0, 
-                    (int)$newWidth, 
-                    (int)$newHeight, 
-                    (int)$originalWidth, 
-                    (int)$originalHeight
-                );
-                // Compress the image to fit within a target file size (e.g., 100 KB)
-                $targetFileSize = 100 * 1024; // 100 KB in bytes
-                $quality = 90;  // Initial quality (for JPEG)
-
-                // Create a temporary buffer to store the image
-                ob_start();
-                switch ($imageType) {
-                    case IMAGETYPE_JPEG:
-                        // Compress the image to a temporary buffer
-                        imagejpeg($resizedImage, null, $quality);
-                        break;
-                    case IMAGETYPE_PNG:
-                        // PNG is lossless, so we can only reduce the compression level
-                        imagepng($resizedImage, null, 9); // max compression
-                        break;
-                    case IMAGETYPE_GIF:
-                        imagegif($resizedImage, null);
-                        break;
-                }
-
-                // Get the image data from the buffer
-                $imageData = ob_get_contents();
-                ob_end_clean();
-
-                // Check if the file is too large and compress more if necessary (for JPEG)
-                if (strlen($imageData) > $targetFileSize && $imageType == IMAGETYPE_JPEG) {
-                    // Reduce quality in steps until the file size is below the target size
-                    while (strlen($imageData) > $targetFileSize && $quality > 10) {
-                        $quality -= 10;
-                        ob_start();
-                        imagejpeg($resizedImage, null, $quality);
-                        $imageData = ob_get_contents();
-                        ob_end_clean();
-                    }
-                }
-                echo ("<script>console.log('Resized image inserted successfully')</script>");
+            // Save image data to the database
+            $result = $student->saveEntryToDatabase($email, $gwa_result, $imageData);
+            if ($result) {
+                $_SESSION['validate-button'] = "Submitted";
+                echo "Image saved successfully.";
             } else {
-                echo "Invalid image format.";
+                $_SESSION['validate-button'] = "Failed";
+                echo "Failed to save image to the database.";
             }
-            // Get file details
-            // Read the file content into a variable
-            // $image = file_get_contents($fileTmpName);
-
         } else {
-            echo "No file uploaded or there was an error.";
+            echo "Invalid image format.";
         }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-
-    $result = $student->saveEntryToDatabase($email, $gwa_result, $imageData);
-    if($result){
-        $_SESSION['validate-button'] = "Submitted";
     } else {
-        $_SESSION['validate-button'] = "Failed";
+        echo "No file uploaded or there was an error.";
     }
+} catch (PDOException $e) {
+    echo "Database Error: " . $e->getMessage();
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+
 
     // $image_proof = $student->getStudentImageProof($email);
     // $_SESSION['image-proof'] = $image_proof;
