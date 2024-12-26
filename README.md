@@ -31,6 +31,16 @@ This project allows users to input their college grades and calculates whether t
    cd /path/to/xampp/htdocs/cssc
    ```
 
+4. **Import the SQL database:**
+
+   - Open your web browser and go to `http://localhost/phpmyadmin`.
+   - Create a new database (e.g., `css_system`).
+   - Import the provided SQL file (`database.sql`) into the created database. You can find `database.sql` in the project folder.
+
+5. **Ensure Internet Connectivity:**
+
+   The system requires an active internet connection as it utilizes online resources for certain features and updates.
+
 ## Usage
 
 - Start the XAMPP server.
@@ -54,7 +64,7 @@ We welcome contributions from the community! Here’s how you can help improve t
      git clone https://github.com/your-username/cssc.git
      ```
    - Replace `your-username` with your actual GitHub username.
-   - Move project directory to xampp or lampp folder (Refer to installation above on how to move project)
+   - Move the project directory to XAMPP or LAMPP folder (Refer to installation above on how to move the project).
 
 3. **Create a New Branch:**
 
@@ -70,7 +80,7 @@ We welcome contributions from the community! Here’s how you can help improve t
 
 4. **Make Changes:**
 
-   - Make your desired changes in the codebase. Ensure that your changes are well-documented and follow the existing coding style. (Refer to conventions.txt at z_text_files folder from root directory)
+   - Make your desired changes in the codebase. Ensure that your changes are well-documented and follow the existing coding style. (Refer to `conventions.txt` in the `z_text_files` folder from the root directory.)
 
 5. **Commit Your Changes:**
 
@@ -84,7 +94,7 @@ We welcome contributions from the community! Here’s how you can help improve t
      git commit -m "Add a brief description of your changes"
      ```
 
-   - Make sure to follow commit message convention in conventions.txt
+   - Make sure to follow commit message conventions in `conventions.txt`.
 
 6. **Push to Your Fork:**
 
@@ -98,7 +108,7 @@ We welcome contributions from the community! Here’s how you can help improve t
    - Click the "New Pull Request" button.
    - Select your feature branch from the dropdown, then click "Create Pull Request."
    - Add a title and description for your pull request, explaining your changes and why they should be merged.
-   - Wait for code review and approval of the admin
+   - Wait for code review and approval from the admin.
 
 ### Guidelines for Contributions
 
@@ -192,3 +202,4 @@ Thank you for considering contributing to our project! We appreciate your help i
 ## License
 
 This project is licensed under the MIT [LICENSE](LICENSE).
+
