@@ -1,8 +1,8 @@
-# CSS Student Standing Calculator (Underdevelopment)
+# CSS Student Standing Calculator
 
 ## Overview
 
-This project allows users to input their college grades and calculates whether they qualify for various honors, including Dean's List, VPAA's List, and President's List. It also identifies students recommended for shifting programs due to low performance.
+This project allows users to input their college grades and calculates whether they qualify for Dean's Lister award.
 
 ## Features
 
