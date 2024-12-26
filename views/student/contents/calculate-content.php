@@ -19,11 +19,9 @@ for($i = 0; $i < count($subject_load); $i++){
     $_SESSION['course-fields']['subject-code'][$i] = $subject_load[$i]['subject_code'];
     $_SESSION['course-fields']['units'][$i] = $subject_load[$i]['units'];
 }
-
-
 ?>
 <script>
-    let session_length = <?= count($_SESSION["course-fields"]["subject_code"] ?? []) ?>
+    let session_length = <?= count($_SESSION["course-fields"]["subject_code"] ?? []); ?>
 </script>
 <section class="calculate-section">
     <div class="div-pad" id="calculate-div1">
@@ -69,7 +67,6 @@ for($i = 0; $i < count($subject_load); $i++){
             <h3>SUBJECT CODE:</h3>
             <h3>UNIT:</h3>
             <h3>RATING:</h3>
-            <!-- <h3>ACTION:</h3> -->
         </div>
         <form id="grading" method="POST">
             <?php if (isset($_SESSION['course-fields'])): ?>
@@ -79,15 +76,11 @@ for($i = 0; $i < count($subject_load); $i++){
                         <input type="text" name="subject-code[]" value="<?= $_SESSION['course-fields']['subject-code'][$i] ?>" readonly>
                         <input type="number" name="unit[]" value="<?= $_SESSION['course-fields']['units'][$i] ?>" readonly>
                         <input type="number" name="grade[]" value="<?= $_SESSION['course-fields']['grade'][$i] ?? NULL?>">
-                        <!-- <button type="button" class="subject-remove-buttons" onclick="removeSubjectRow(<?= $i ?>)">remove</button> -->
                     </div>
                 <?php endfor; ?>
             <?php endif; ?>
         </form>
         <div id="calculate-action-buttons">
-            <!-- <button type="button" id="student-calculate-add-row" onclick="addSubjectRow()">
-                Add Row +
-            </button> -->
             <a href="results" id="results-link"><button id="student-calculate-calculate">Calculate</button></a>   
         </div>
     </div>
