@@ -101,7 +101,7 @@ $(document).ready(function () {
           if (url.includes("audit-logs.php")) {
             $.getScript("/cssc/js/admin/audit_logs.js");
         }
-            if (url.includes("profile.php")) {
+            if (url.includes("admin-profile.php")) {
                 $.getScript("/cssc/js/admin/admin_profile.js");
             }
             if (url.includes("settings.php")) {
