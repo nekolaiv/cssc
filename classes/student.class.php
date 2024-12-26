@@ -165,7 +165,7 @@ class Student
     
     // RESULT MODELS
     public function saveEntryToDatabase($email, $gwa, $image_proof){
-        $user_id = cleanInput($_SESSION['profile']['student-id']);
+        $user_id = cleanInput($_SESSION['profile']['user-id']);
         $entry_exists = $this->_entryExists($user_id);
         if($entry_exists){
             $this->_deleteStudentVerifiedEntry($user_id);
@@ -176,7 +176,7 @@ class Student
         $current_term = $this->_getCurrentAcademicTerm();
 
         $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':user_id', $_SESSION['profile']['student-id']);
+        $query->bindParam(':user_id', $_SESSION['profile']['user-id']);
         $query->bindParam(':adviser_id', $_SESSION['profile']['user-id']);
         $query->bindParam(':school_year', $_SESSION['profile']['school-year']);
         $query->bindParam(':semester', $current_term['semester']);
@@ -204,10 +204,10 @@ class Student
 	}
     
 
-    public function getStudentSubmittedGWA($email){
-        $sql = 'SELECT gwa FROM students_verified_entries WHERE email = :email';
+    public function getStudentApplication($id){
+        $sql = 'SELECT total_rating, status FROM student_applications WHERE user_id = :id';
         $query = $this->database->connect()->prepare($sql);
-        $query->bindParam(':email', $email);
+        $query->bindParam(':id', $id);
         $data=NULL;
         if($query->execute()){
             $data = $query->fetch(PDO::FETCH_ASSOC);
