@@ -41,9 +41,9 @@ class Student
         p.descriptive_title as subject_name, p.subject_code as subject_code, p.total_units as units
         FROM user as u
         LEFT JOIN curriculum as c ON u.curriculum_id = c.id
-        LEFT JOIN dean_lister_application_periods as dlap ON dlap.status = 'open'
         LEFT JOIN prospectus as p ON c.id = p.curriculum_id
-        WHERE u.id = :id AND CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED) = p.year_level
+        LEFT JOIN dean_lister_application_periods as dlap ON dlap.status = 'open'
+        WHERE u.id = :id AND (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = p.year_level
         AND dlap.semester = p.semester";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':id', $id);
