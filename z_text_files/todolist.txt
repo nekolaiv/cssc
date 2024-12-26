@@ -59,4 +59,11 @@ STUDENT
 52. add curriculum selector in calculate page and handle the session
 53. add the alerts for logout
 54. add the alerts for submitting of validation entrys
-55. fix leaderboard spacing problem
+55. fix leaderboard spacing problem /
+56. fix topnotcher /
+57. fix curriculum logic
+58. repopulate curriculum, subjects data
+59. refactor image upload
+60. fix topnotcher issue with act
+61. delete excess files
+62. remove minimum error on login

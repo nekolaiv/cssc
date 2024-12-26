@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once('../tools/session.function.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
 
 class CourseFormHandler
 {
@@ -72,11 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($courseFormHandler->saveFormData($_POST)){
         echo json_encode(["success" => "Data saved successfully."]);
     }
-
-    // Handle image upload (store in session or database as BLOB)
-    // $courseFormHandler->handleImageUpload($_FILES);
-
-    // Output session data as JSON (for debugging or further use)
     
 } else {
     // If it's not a POST request, return an error
