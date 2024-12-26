@@ -1245,6 +1245,100 @@ private function getRoleIdByName($roleName) {
     }
     
     
+        /**
+         * Get Admin Profile
+         * @param int $adminId
+         * @return array|false
+         */
+        public function getAdminProfile($adminId) {
+            try {
+                $sql = "
+                    SELECT 
+                        u.identifier, u.firstname, u.middlename, u.lastname, u.email,
+                        a.username
+                    FROM user u
+                    JOIN account a ON u.id = a.user_id
+                    WHERE u.id = :admin_id
+                ";
+                $stmt = $this->database->connect()->prepare($sql);
+                $stmt->bindValue(':admin_id', $adminId, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                error_log('Error in getAdminProfile: ' . $e->getMessage());
+                return false;
+            }
+        }
+        
+    
+        /**
+         * Update Admin Profile
+         * @param int $adminId
+         * @param array $data
+         * @return bool
+         */
+        public function updateAdminProfile($adminId, $data) {
+            try {
+                $sql = "
+                    UPDATE user u
+                    JOIN account a ON u.id = a.user_id
+                    SET 
+                        u.identifier = :identifier,
+                        u.firstname = :firstname,
+                        u.middlename = :middlename,
+                        u.lastname = :lastname,
+                        u.email = :email,
+                        a.username = :username
+                    WHERE u.id = :admin_id
+                ";
+                $stmt = $this->database->connect()->prepare($sql);
+                $stmt->bindValue(':identifier', $data['identifier'], PDO::PARAM_STR);
+                $stmt->bindValue(':firstname', $data['firstname'], PDO::PARAM_STR);
+                $stmt->bindValue(':middlename', $data['middlename'], PDO::PARAM_STR);
+                $stmt->bindValue(':lastname', $data['lastname'], PDO::PARAM_STR);
+                $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+                $stmt->bindValue(':username', $data['username'], PDO::PARAM_STR);
+                $stmt->bindValue(':admin_id', $adminId, PDO::PARAM_INT);
+                return $stmt->execute();
+            } catch (Exception $e) {
+                error_log('Error in updateAdminProfile: ' . $e->getMessage());
+                return false;
+            }
+        }
+    
+        /**
+         * Change Admin Password
+         * @param int $adminId
+         * @param string $currentPassword
+         * @param string $newPassword
+         * @return bool
+         */
+        public function changeAdminPassword($adminId, $currentPassword, $newPassword) {
+            try {
+                $sql = "SELECT a.password FROM account a WHERE a.user_id = :admin_id";
+                $stmt = $this->database->connect()->prepare($sql);
+                $stmt->bindValue(':admin_id', $adminId, PDO::PARAM_INT);
+                $stmt->execute();
+                $currentHash = $stmt->fetchColumn();
+    
+                if (!$currentHash || !password_verify($currentPassword, $currentHash)) {
+                    error_log('changeAdminPassword: Incorrect current password.');
+                    return false;
+                }
+    
+                $newHash = password_hash($newPassword, PASSWORD_BCRYPT);
+                $updateSql = "UPDATE account SET password = :new_password WHERE user_id = :admin_id";
+                $updateStmt = $this->database->connect()->prepare($updateSql);
+                $updateStmt->bindValue(':new_password', $newHash, PDO::PARAM_STR);
+                $updateStmt->bindValue(':admin_id', $adminId, PDO::PARAM_INT);
+                return $updateStmt->execute();
+            } catch (Exception $e) {
+                error_log('Error in changeAdminPassword: ' . $e->getMessage());
+                return false;
+            }
+        }
+    
+    
     
     
     
