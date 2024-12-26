@@ -15,6 +15,7 @@ $subject_load = $student->loadStudentsSubjects($_SESSION['profile']['user-id']);
 // echo "</pre>";
 
 for($i = 0; $i < count($subject_load); $i++){
+    $_SESSION['course-fields']['subject-id'][$i] = $subject_load[$i]['subject_id'];
     $_SESSION['course-fields']['subject-name'][$i] = $subject_load[$i]['subject_name'];
     $_SESSION['course-fields']['subject-code'][$i] = $subject_load[$i]['subject_code'];
     $_SESSION['course-fields']['units'][$i] = $subject_load[$i]['units'];

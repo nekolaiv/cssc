@@ -38,13 +38,14 @@ class Student
     // ASSIGNING STUDENT CURRICULAR SUBJECTS
     public function loadStudentsSubjects($id){
         $sql = "SELECT (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) AS student_year, 
-        p.descriptive_title as subject_name, p.subject_code as subject_code, p.total_units as units
+        p.id AS subject_id, p.descriptive_title as subject_name, p.subject_code as subject_code, p.total_units as units
         FROM user as u
         LEFT JOIN curriculum as c ON u.curriculum_id = c.id
         LEFT JOIN prospectus as p ON c.id = p.curriculum_id
         LEFT JOIN dean_lister_application_periods as dlap ON dlap.status = 'open'
         WHERE u.id = :id AND (CAST(RIGHT(dlap.year, 4) AS SIGNED) - CAST(LEFT(u.identifier, 4) AS SIGNED)) = p.year_level
-        AND dlap.semester = p.semester";
+        AND dlap.semester = p.semester
+        ORDER BY p.id";
         $query = $this->database->connect()->prepare($sql);
         $query->bindParam(':id', $id);
         $data=NULL;
@@ -190,6 +191,67 @@ class Student
         } else {
             return false;
         }
+    }
+
+    public function saveSubjectFields($user_id, $subject_id, $grades){
+
+        $application_id = $this->_getStudentApplicationId($user_id);
+        if($this->_subjectFieldsExists($user_id, $subject_id, $application_id)){
+            $this->_deleteSubjectFields($user_id, $subject_id, $application_id);
+        }
+
+        $sql = "INSERT INTO rating(user_id, subject_id, application_id, rating)
+        VALUES(:user_id, :subject_id, :application_id, :rating);";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+        $query->bindParam(':subject_id', $subject_id);
+        $query->bindParam(':application_id', $application_id['id']);
+        $query->bindParam(':rating', $grades);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function _getStudentApplicationId($user_id){
+        $sql = "SELECT id FROM student_applications WHERE user_id = :user_id;";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+        $data=NULL;
+        if ($query->execute()) {
+            $data = $query->fetch(PDO::FETCH_ASSOC);
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    private function _subjectFieldsExists($user_id, $subject_id, $application_id){
+        $sql = "SELECT COUNT(*) FROM rating 
+        WHERE user_id = :user_id
+        AND subject_id = :subject_id
+        AND application_id = :application_id;";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+        $query->bindParam(':subject_id', $subject_id);
+        $query->bindParam(':application_id', $application_id['id']);
+        if($query->execute()){
+            $row_count = $query->fetchColumn();
+            return $row_count > 0;
+        }
+    }
+
+    private function _deleteSubjectFields($user_id, $subject_id, $application_id){
+        $sql = "DELETE FROM rating 
+        WHERE user_id = :user_id
+        AND subject_id = :subject_id
+        AND application_id = :application_id;";
+        $query = $this->database->connect()->prepare($sql);
+        $query->bindParam(':user_id', $user_id);
+        $query->bindParam(':subject_id', $subject_id);
+        $query->bindParam(':applcation_id', $application_id['id']);        
+        return $query->execute();
     }
 
     private function _getCurrentAcademicTerm(){

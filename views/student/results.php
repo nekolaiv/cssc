@@ -15,6 +15,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
    
     // $folder = '/cssc/assets/student';
     $gwa_result = cleanInput($_SESSION['GWA']['gwa-score']);
+    $user_id = cleanInput($_SESSION['profile']['user-table-id']);
 
     // $destination_path = getcwd().DIRECTORY_SEPARATOR;
     // $target_path = $destination_path . basename( $_FILES["image-proof"]["name"]);
@@ -26,11 +27,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
 
         // Validate image type (only jpeg, png, gif)
         if (in_array($imageType, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
-            // Read image data into a variable for database storage
             $imageData = file_get_contents($imagePath);
 
-            // Save image data to the database
             $result = $student->saveEntryToDatabase($gwa_result, $imageData);
+            $subject_id = $_SESSION['course-fields']['subject-id'];
+            $grades = $_SESSION['course-fields']['grade'];
+
+            for ($i = 0; $i < count($subject_id); $i++) {
+                if ($subject_id[$i] !== NULL && $grades[$i] !== NULL) {
+                    $subject_id[$i] = cleanNumericInput($subject_id[$i]);
+                    $grades[$i] = cleanNumericInput($grades[$i]);
+                    $student->saveSubjectFields($user_id, $subject_id[$i], $grades[$i]);
+                }
+            }
             if ($result) {
                 $_SESSION['validate-button'] = "Submitted";
             } else {
@@ -43,9 +52,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['validate-button'] )){
         echo json_encode(["error" => "No uploaded file or there was an error"]);
     }
 } catch (PDOException $e) {
-    echo "Database Error: " . $e->getMessage();
+    echo json_encode(["error" => $e->getMessage()]);
 } catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
+    echo json_encode(["error" => $e->getMessage()]);
 }
 
 
