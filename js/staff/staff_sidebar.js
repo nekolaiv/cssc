@@ -82,8 +82,8 @@ $(document).ready(function () {
         if (url.includes("audit-logs.php")) {
           $.getScript("/cssc/js/staff/audit_logs.js");
         }
-        if (url.includes("profile.php")) {
-          $.getScript("/cssc/js/profile.js");
+        if (url.includes("staff-profile.php")) {
+          $.getScript("/cssc/js/staff/staff_profile.js");
         }
       },
       error: function () {
