@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once("database.class.php");
-require_once('../tools/session.function.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/database.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 
 class Auth {
     protected $database;
@@ -30,7 +30,7 @@ class Auth {
             $query->execute();
     
             if ($query->rowCount() == 0) {
-                return ['Email does not exist', ''];
+                return ['Email does not exist', ' '];
             }
     
             $user = $query->fetch(PDO::FETCH_ASSOC);
@@ -38,16 +38,17 @@ class Auth {
             $adviser = $this->_getStudentAdviser($user['account_id']);
             $course = $this->_getStudentCourse($user['identifier']);
             $year_level = $this->_getStudentYearLevel($user['identifier']);
-            $status = $this->_getStudentStatus($user['identifier']);
+            $status = $this->_getStudentStatus($user['account_id']);
             $status === false ? $entry_status = NULL : $entry_status = $status;
     
             // Check if account is inactive
             if ($user['status'] !== 'active') {
-                return ['Account is inactive.', ''];
+                return ['Account is inactive', ' '];
             }
     
             // Verify password
             if ($password == $user['password']){
+                echo '<script> alert("First Login Detected!\nKindly create a strong password");</script>';
                 return 'first login';	
             } else if (!password_verify($password, $user['password'])){
                 return [' ', 'incorrect password'];	
@@ -77,12 +78,12 @@ class Auth {
                     'year-level' => $year_level['student_year'],
                     'status' => $entry_status['status'],
                   ];
-               $_SESSION['is-logged-in'] = true;
+                $_SESSION['is-logged-in'] = true;
             }
             return true;
         } catch (PDOException $e) {
             error_log("Login Error: " . $e->getMessage());
-            return ['Something went wrong', $e->getMessage()];
+            return ['Something went wrong', ' '];
         }
     }
     
@@ -147,22 +148,6 @@ class Auth {
 		}
 	}
 
-	// private function _getStudentCourse($id){
-	// 	$sql = 'SELECT u.identifier, d.department_name AS department_name
-    //     FROM user AS u
-    //     LEFT JOIN department as d ON u.department_id = d.id
-    //     WHERE u.identifier = :id';
-	// 	$query = $this->database->connect()->prepare($sql);
-	// 	$query->bindParam(':id', $id);
-	// 	$data=NULL;
-	// 	if($query->execute()){
-	// 		$data = $query->fetch(PDO::FETCH_ASSOC);
-	// 		return $data;
-            
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
 
     private function _getStudentCourse($id){
 		$sql = 'SELECT u.department_id AS department_id, c.course_name AS course_name
@@ -192,7 +177,7 @@ class Auth {
 
             // Check if new password is the same as the old password
             if (password_verify($new_password, $user['password'])) {
-                return ['', 'New password cannot be the same as the old password'];
+                return [' ', 'New password cannot be the same as the old password'];
             }
 
             // Update password
@@ -205,18 +190,17 @@ class Auth {
             if ($query->execute()) {
                 return true;
             } else {
-                return ['Failed to reset password', ''];
+                return ['Failed to reset password', ' '];
             }
         } catch (PDOException $e) {
             error_log("Password Reset Error: " . $e->getMessage());
-            return ['Something went wrong', ''];
+            return ['Something went wrong', ' '];
         }
     }
 
     // HELPER FUNCTION: Get user by email
     private function _getUserByEmail($email) {
-        $sql = "
-            SELECT a.id AS account_id, a.password
+        $sql = "SELECT a.id AS account_id, a.password
             FROM account a
             JOIN user u ON a.user_id = u.id
             WHERE u.email = :email

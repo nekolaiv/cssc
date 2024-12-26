@@ -1,4 +1,9 @@
 
+<?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
+$student = new Student();
+$cs_top1
+?>
 
 <section id="leaderboard-section">
     <div class="div-pad" id="leaderboard-div1">
@@ -8,20 +13,28 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-12">
-                <div class="page-title-box">
-                    <h1 class="page-title">Current Topnotchers</h1>
+        <div class="col-12">
+            <div class="page-title-box">
+                <h1 class="page-title">Current Topnotchers</h1>
+                <div id="leaderboard-courses">
+                    <button class="topnotcher-year active" value ='1'>1st</button>
+                    <button class="topnotcher-year" value ='2'>2nd</button>
+                    <button class="topnotcher-year" value ='3'>3rd</button>
+                    <button class="topnotcher-year" value ='4'>4th</button>
                 </div>
+                
             </div>
         </div>
+        
+    </div>
     <div id="leaderboard-top-notchers">
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS COMPUTER SCIENCE</p></div>
-            <div class="topnotcher-div-2"><h2><?php echo $cs_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
+            <div class="topnotcher-div-2"><h2 id="csFullname"></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $cs_top1['total_rating'] ?? 'None'; ?></h3></div>
+                    <div><h3 id="csTotalRating"></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -29,11 +42,11 @@
         </div>
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>BS INFORMATION TECHNOLOGY</p></div>
-            <div class="topnotcher-div-2"><h2><?php echo $it_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
+            <div class="topnotcher-div-2"><h2 id="itFullname"></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $it_top1['total_rating'] ?? 'None'; ?></h3></div>
+                    <div><h3 id="itTotalRating"></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -41,11 +54,11 @@
         </div>
         <div class="topnotcher-pads">
             <div class="topnotcher-div-1"><p>ASSOCIATE IN COMPUTER TECHNOLOGY</p></div>
-            <div class="topnotcher-div-2"><h2><?php echo $act_top1['fullname'] ?? 'None<br><br>'; ?></h2></div>
+            <div class="topnotcher-div-2"><h2 id="actFullname"></h2></div>
             <div class="topnotcher-div-3">
                 <div class="topnotcher-info">
                     <h4>TOP#1</h4>
-                    <div><h3><?php echo $act_top1['total_rating'] ?? 'None'; ?></h3></div>
+                    <div><h3 id="actTotalRating"></h3></div>
                     <p>RATING</p>
                 </div>
                 <div class="topnotcher-trophy"></div>
@@ -66,10 +79,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <?php
-                        require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
-                        $student = new Student();
-                        ?>
+                        
                         <div class="d-flex justify-content-center align-items-center">
                             <form class="d-flex me-2">
                                 <div class="input-group w-100">
@@ -103,7 +113,7 @@
                                     ?>
                                 </select>
                                 <select id="period-filter" class="form-select">
-                                    <option value="choose">All Submission Period</option>
+                                    <option value="">All Submission Period</option>
                                     <?php
                                     $submission_id = $student->fetchSubmissionId();
                                     foreach ($submission_id as $sid) {
@@ -145,19 +155,6 @@
                                         <td><?= $arr['course'] ?></td>
                                         <td><?= $arr['year_level'] ?></td>
                                         <td><?= $arr['submission_description'] ?></td>
-                                        <!-- <td class="text-center">
-                                            <span class="
-                                                <?php
-                                                // if ($available < 1) {
-                                                //     echo 'badge rounded-pill bg-danger px-3';
-                                                // } elseif ($available <= 5) {
-                                                //     echo 'badge rounded-pill bg-warning px-3';
-                                                // }
-                                                ?>
-                                            ">
-                                                <?= $available ?>
-                                            </span>
-                                        </td> -->
                                     </tr>
                                 <?php
                                     $i++;
@@ -173,3 +170,4 @@
 </div>
 <script src="/cssc/vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="/cssc/vendor/datatable-2.1.8/datatables.min.js"></script>
+<script src="/cssc/js/load_topnotcher.js"></script>

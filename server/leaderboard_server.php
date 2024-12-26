@@ -1,125 +1,24 @@
 <?php
-require_once '../../classes/database.class.php';
-require_once '../../classes/_admin.class.php';
-require_once '../../tools/clean.function.php';
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/classes/student.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/clean.function.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = cleanInput($_POST['action'] ?? '');
-    $admin = new Admin();
+    $year_level = $_POST['year_level'];
+    $student = new Student();
 
-    switch ($action) {
-        /**
-         * Fetch All Applications
-         */
-        case 'read':
-            $filters = [
-                'search' => cleanInput($_POST['search'] ?? ''),
-                'curriculum_id' => cleanInput($_POST['curriculum_id'] ?? ''),
-                'status' => cleanInput($_POST['status'] ?? ''),
-                'submission_date' => cleanInput($_POST['submission_date'] ?? '')
-            ];
-
-            $applications = $admin->getAllApplications($filters);
-            echo json_encode($applications);
-            break;
-
-        /**
-         * Get Application Details
-         */
-        case 'get':
-            $applicationId = intval(cleanInput($_POST['id'] ?? 0));
-
-            if (!$applicationId) {
-                echo json_encode(['error' => 'Invalid application ID.']);
-                break;
-            }
-
-            $application = $admin->getApplicationById($applicationId);
-
-            if ($application) {
-                echo json_encode($application);
-            } else {
-                echo json_encode(['error' => 'Application not found.']);
-            }
-            break;
-
-        /**
-         * Fetch Curriculums
-         */
-        case 'fetch_curriculums':
-            try {
-                $curriculums = $admin->getCurriculums();
-                echo json_encode($curriculums);
-            } catch (Exception $e) {
-                echo json_encode(['error' => 'Failed to fetch curriculums.']);
-            }
-            break;
-
-        /**
-         * Compare Grades
-         */
-        case 'compare_grades':
-            $applicationId = intval(cleanInput($_POST['application_id'] ?? 0));
-            $userId = intval(cleanInput($_POST['user_id'] ?? 0));
-
-            if (!$applicationId || !$userId) {
-                echo json_encode(['error' => 'Invalid application ID or user ID.']);
-                break;
-            }
-
-            try {
-                // Fetch grades and proof image using Admin methods
-                $grades = $admin->getGradesByApplication($applicationId, $userId);
-                $image = $admin->getProofImageByApplication($applicationId);
-
-                echo json_encode([
-                    'grades' => $grades,
-                    'image' => $image
-                ]);
-            } catch (Exception $e) {
-                echo json_encode(['error' => 'Failed to fetch grades and proof image.']);
-            }
-            break;
-
-            case 'change_status':
-                $applicationId = intval(cleanInput($_POST['application_id'] ?? 0));
-                $currentStatus = cleanInput($_POST['current_status'] ?? '');
-            
-                if (!$applicationId || !$currentStatus) {
-                    echo json_encode(['error' => 'Invalid application ID or status.']);
-                    break;
-                }
-            
-                // Determine the new status based on the current status
-                $newStatus = '';
-                if ($currentStatus === 'Pending') {
-                    $newStatus = 'Approved';
-                } elseif ($currentStatus === 'Approved') {
-                    $newStatus = 'Rejected';
-                } elseif ($currentStatus === 'Rejected') {
-                    $newStatus = 'Approved';
-                } else {
-                    echo json_encode(['error' => 'Invalid status transition.']);
-                    break;
-                }
-            
-                try {
-                    // Call the Admin class method to update the status
-                    $isUpdated = $admin->updateApplicationStatus($applicationId, $newStatus);
-            
-                    if ($isUpdated) {
-                        echo json_encode(['success' => true, 'new_status' => $newStatus]);
-                    } else {
-                        echo json_encode(['error' => 'Failed to update application status.']);
-                    }
-                } catch (Exception $e) {
-                    echo json_encode(['error' => 'An error occurred while updating status.']);
-                }
-                break;            
-            
-
-        default:
-            echo json_encode(['error' => 'Invalid action.']);
-            break;
+    $cs_topnotcher = $student->getStudentTopNotcher($year_level, 1);
+    $it_topnotcher = $student->getStudentTopNotcher($year_level, 2);
+    if($year_level <= 2){
+        $act_topnotcher = $student->getStudentTopNotcher($year_level, 3);
+    } else {
+        $act_topnotcher = 'None';
     }
+
+    header('Content-Type: application/json');
+    echo json_encode([
+        'cs_topnotcher' => $cs_topnotcher,
+        'it_topnotcher' => $it_topnotcher,
+        'act_topnotcher' => $act_topnotcher
+    ]);
+
 }

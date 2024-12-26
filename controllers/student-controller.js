@@ -8,6 +8,7 @@ $(document).ready(function () {
 		window.history.pushState({ path: url }, "", url);
 	});
 
+	
 
 	$("#home-link").on("click", function (e) {
 		e.preventDefault();
@@ -127,7 +128,6 @@ $(document).ready(function () {
 			success: function (response) {
 				$(".content").html(response); // Load the response into the content area
 
-				// Initialize DataTable for product table
 				var table = $("#table-products").DataTable({
 					dom: "rtp", // Set DataTable options
 					pageLength: 10, // Default page length
@@ -141,9 +141,7 @@ $(document).ready(function () {
 
 				// Bind change event for category filter
 				$("#course-filter").on("change", function () {
-				if (this.value !== "choose") {
-					table.column(4).search(this.value).draw(); // Filter products by selected category
-				}
+					table.column(4).search(this.value).draw();
 				});
 
 				$("#year-filter").on("change", function () {
@@ -151,9 +149,7 @@ $(document).ready(function () {
 				});
 
 				$("#period-filter").on("change", function () {
-				if (this.value !== "choose") {
-					table.column(6).search(this.value).draw(); // Filter products by selected category
-				}
+					table.column(6).search(this.value).draw();
 				});
 
 				// Event listener for adding a product
@@ -203,23 +199,7 @@ $(document).ready(function () {
 		});
 	}
 
-	// function leadboardLoad(course=null, year=null, period=null){
-	// 	const selectedYear = year;
-	// 	const selectedCourse = course;
-	// 	const selectedPeriod = period;
-	// 	$.ajax({
-	// 		type: "POST",
-	// 		url: "/cssc/server/leaderboard_load.php",
-	// 		data: { year_level: selectedYear, course: selectedCourse, submission_period: selectedPeriod },
-	// 		dataType: "json",
-	// 		success: function(response) {
-	// 			console.log(response);
-	// 		},
-	// 		error: function(xhr, status, error) {
-	// 			console.error("Error loading leaderboard: ", error);
-	// 		}
-	// 	});
-	// }
+	
 
 	
 
