@@ -121,37 +121,59 @@ class Staff {
     }
 
     // Fetch grades by application ID and user ID
-    public function getGradesByApplication($applicationId, $userId) {
-        $sql = "SELECT r.subject_id,
-                       p.subject_code,
-                       p.descriptive_title,
-                       r.rating
-                FROM rating r
-                INNER JOIN prospectus p ON r.subject_id = p.id
-                WHERE r.application_id = :application_id
-                  AND r.user_id = :user_id";
-    
-        $stmt = $this->database->connect()->prepare($sql);
-        $stmt->execute([
-            ':application_id' => $applicationId,
-            ':user_id' => $userId
-        ]);
-    
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    /**
+ * Fetch grades for a specific application and user.
+ */
+public function getGradesByApplication($applicationId, $userId) {
+    $sql = "
+        SELECT r.subject_id,
+               p.subject_code,
+               p.descriptive_title,
+               r.rating
+        FROM rating r
+        INNER JOIN prospectus p ON r.subject_id = p.id
+        WHERE r.application_id = :application_id
+          AND r.user_id = :user_id
+    ";
+
+    // Prepare and execute the query
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->execute([
+        ':application_id' => $applicationId,
+        ':user_id' => $userId
+    ]);
+
+    // Fetch and return results
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Fetch proof image for a specific application.
+ */
+public function getProofImageByApplication($applicationId) {
+    $sql = "
+        SELECT image_proof
+        FROM student_applications
+        WHERE id = :application_id
+    ";
+
+    // Prepare and execute the query
+    $stmt = $this->database->connect()->prepare($sql);
+    $stmt->execute([':application_id' => $applicationId]);
+
+    // Fetch the BLOB data
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Convert BLOB to Base64 if data exists
+    if (!empty($result['image_proof'])) {
+        $base64Image = base64_encode($result['image_proof']);
+        return "data:image/jpeg;base64," . $base64Image; // Assuming JPEG format
     }
 
-    // Fetch proof image by application ID
-    public function getProofImageByApplication($applicationId) {
-        $sql = "SELECT image_proof
-                FROM student_applications
-                WHERE id = :application_id";
-    
-        $stmt = $this->database->connect()->prepare($sql);
-        $stmt->execute([':application_id' => $applicationId]);
-    
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['image_proof'] ?? null;
-    }
+    // Return null if no image data found
+    return null;
+}
+
 
     // Update application status
     public function updateApplicationStatus($applicationId, $newStatus) {
