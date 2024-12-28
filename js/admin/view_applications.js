@@ -191,49 +191,53 @@ $(document).ready(function () {
 
   // Compare Grades
   $(document).on("click", ".compare-grades-btn", function () {
-      const applicationId = $(this).data("id");
-      const userId = $(this).data("user-id");
+    const applicationId = $(this).data("id");
+    const userId = $(this).data("user-id");
 
-      $.post(
-          "/cssc/server/admin/application_server.php",
-          { action: "compare_grades", application_id: applicationId, user_id: userId },
-          function (response) {
-              try {
-                  const data = JSON.parse(response);
+    $.post(
+        "/cssc/server/admin/application_server.php",
+        { action: "compare_grades", application_id: applicationId, user_id: userId },
+        function (response) {
+            try {
+                const data = JSON.parse(response);
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
 
-                  if (data.error) {
-                      alert(data.error);
-                      return;
-                  }
+                // Populate Grades Table
+                const gradesTableBody = $("#gradesTableBody");
+                gradesTableBody.empty();
+                data.grades.forEach(grade => {
+                    gradesTableBody.append(`
+                        <tr>
+                            <td>${grade.subject_code}</td>
+                            <td>${grade.descriptive_title}</td>
+                            <td>${grade.rating}</td>
+                        </tr>
+                    `);
+                });
 
-                  // Populate Grades Table
-                  const gradesTableBody = $("#gradesTableBody");
-                  gradesTableBody.empty();
-                  data.grades.forEach(grade => {
-                      gradesTableBody.append(`
-                          <tr>
-                              <td>${grade.subject_code}</td>
-                              <td>${grade.descriptive_title}</td>
-                              <td>${grade.rating}</td>
-                          </tr>
-                      `);
-                  });
+                // Populate Image Proof
+                const imageProofContainer = $("#imageProofContainer");
+                if (data.image) {
+                    imageProofContainer.html(`
+                        <img src="${data.image}" class="img-fluid" alt="Proof Image">
+                    `);
+                } else {
+                    imageProofContainer.html('<p>No proof image available.</p>');
+                }
 
-                  // Populate Image Proof
-                  const imageProofContainer = $("#imageProofContainer");
-                  imageProofContainer.html(`
-                      <img src="${data.image}" class="img-fluid" alt="Proof Image">
-                  `);
+                $("#compareGradesModal").modal("show");
+            } catch (error) {
+                console.error("Error parsing compare grades data:", error);
+            }
+        }
+    ).fail(function () {
+        alert("Failed to fetch grades for comparison.");
+    });
+});
 
-                  $("#compareGradesModal").modal("show");
-              } catch (error) {
-                  console.error("Error parsing compare grades data:", error);
-              }
-          }
-      ).fail(function () {
-          alert("Failed to fetch grades for comparison.");
-      });
-  });
 
   $(document).on("click", ".change-status-btn", function () {
     const applicationId = $(this).data("id");
