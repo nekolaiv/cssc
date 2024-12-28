@@ -19,17 +19,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/cssc/tools/session.function.php');
     <div class="wrapper">
         <?php require "../../includes/admin_sidebar.php"; ?>
         <div class="main">
-            <!-- Green strip on top -->
-            <div id="dashboard-header" class="bg-success text-white p-2 d-flex justify-content-between align-items-center">
-                <div id="academic-details" class="px-3">
-                    <span id="academic-year">Academic Year: Loading...</span> |
-                    <span id="semester">Semester: Loading...</span>
-                </div>
-                <div id="datetime-details" class="px-3 text-end">
-                    <span id="current-time"></span> |
-                    <span id="current-date"></span>
-                </div>
-            </div>
             <div class="p-3">
                 <div id="content">
                     <h1>Welcome to the Admin Dashboard</h1>

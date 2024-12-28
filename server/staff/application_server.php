@@ -72,21 +72,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         case 'compare_grades':
             $applicationId = intval(cleanInput($_POST['application_id'] ?? 0));
             $userId = intval(cleanInput($_POST['user_id'] ?? 0));
-
+        
             if (!$applicationId || !$userId) {
                 echo json_encode(['error' => 'Invalid application ID or user ID.']);
                 break;
             }
-
+        
             try {
+                // Fetch grades and proof image using Admin methods
                 $grades = $staff->getGradesByApplication($applicationId, $userId);
                 $image = $staff->getProofImageByApplication($applicationId);
-
+        
+                // Log data for debugging
+                error_log('Grades: ' . print_r($grades, true));
+                error_log('Image: ' . ($image ? 'Image retrieved' : 'No image found'));
+        
                 echo json_encode([
                     'grades' => $grades,
                     'image' => $image
                 ]);
             } catch (Exception $e) {
+                error_log('Error in compare_grades: ' . $e->getMessage());
                 echo json_encode(['error' => 'Failed to fetch grades and proof image.']);
             }
             break;
