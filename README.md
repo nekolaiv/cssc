@@ -1,4 +1,4 @@
-# CSS Student Standing Calculator
+# CCS Student Standing Calculator
 
 ## Overview
 
