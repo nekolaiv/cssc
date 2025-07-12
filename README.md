@@ -1,4 +1,4 @@
-# CCS Student Standing Calculator
+# GWA Calculator and Dean’s List Qualification System
 
 ## Overview
 
